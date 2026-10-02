@@ -18,6 +18,7 @@ function cCode(p){const f=v=>Number(v).toFixed(6)+'f';return `/* Pressure filter
  * Parameters below match the current simulation controls.
  * Re-initialize after changing parameters. */
 #include <stddef.h>
+#include <math.h>
 #define FIR_N ${p.n}u
 #define IIR_ALPHA ${f(p.alpha)}
 #define KALMAN_Q ${f(p.q)} /* kPa^2 per sample */
@@ -68,10 +69,24 @@ FilterOutput filters_step(float z_kpa)
     return out;
 }
 
+/* Checked entry: reject invalid input without changing state.
+ * Rejected samples do not perform a Kalman prediction step.
+ * Handle elapsed time / missing samples in your application. */
+int filters_try_step(float z_kpa, FilterOutput *out)
+{
+    if (out == NULL || !isfinite(z_kpa)) return 0;
+    *out = filters_step(z_kpa);
+    return 1;
+}
+
 /* Example in your 10 ms sampling task:
  * float pressure_kpa = ...; // calibrated sensor measurement
- * FilterOutput y = filters_step(pressure_kpa);
- * Use y.iir, y.fir, or y.kalman.
+ * FilterOutput y;
+ * if (filters_try_step(pressure_kpa, &y)) {
+ *     // Use y.iir, y.fir, or y.kalman.
+ * } else {
+ *     // Mark the measurement invalid; do not consume y.
+ * }
  */
 `;}
 function update(){const p=params();defs.forEach(([id])=>$(id+'out').textContent=p[id]);last=simulate(p,$('signal').value,seed);draw(last);$('metrics').innerHTML=[2,3,4,5].map(j=>{const rmse=Math.sqrt(last.reduce((s,r)=>s+(r[j]-r[1])**2,0)/last.length);return `<div class="metric" style="--c:${colors[j-1]}"><span>${names[j-1]}</span><strong>${rmse.toFixed(2)}</strong><small>RMSE / kPa</small></div>`;}).join('');$('code').textContent=cCode(p);}
