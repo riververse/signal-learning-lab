@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>运动控制滤波实验室 · RIVER / SIGNAL LAB</title>
+<meta name="description" content="动手比较 21 种滤波与估计方法，在运动、转速、编码器与 IMU 合成信号中观察噪声、延迟和跟踪误差。">
+<link rel="icon" href="favicon.svg">
+<meta name="filter-lab-build" content="standalone-1.1">
+<style>
+:root{--bg:#f3f5f4;--paper:#fff;--ink:#172e2b;--muted:#627572;--line:#dce5e1;--green:#087c64;--mint:#e7f4ee;--gold:#b56815;--blue:#2874d4;--purple:#885acb;--red:#c34e61;--shadow:0 6px 22px #14352b06}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;font-size:14px;line-height:1.65}button,input,select{font:inherit}button,select{cursor:pointer}button{color:inherit}a{color:var(--green);text-underline-offset:3px}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #67b6a5;outline-offset:3px}button{border:1px solid var(--line);border-radius:8px;background:white;padding:7px 12px;transition:background .15s,border-color .15s}button:hover{background:#edf4f0;border-color:#96b5a8}button.primary{background:var(--green);color:white;border-color:var(--green)}button:disabled{opacity:.45;cursor:default}select{border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff;color:var(--ink);max-width:100%}.topbar{height:65px;border-bottom:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1440px)/2));gap:24px}.brand{display:flex;gap:10px;align-items:center;font-size:16px;font-weight:750;white-space:nowrap}.brand svg{width:30px;height:30px}.topnav{display:flex;align-items:stretch;gap:22px;height:100%}.topnav button{border:0;border-bottom:3px solid transparent;border-radius:0;background:none;padding:2px 0;color:var(--muted)}.topnav button.active{border-color:var(--green);color:var(--green);font-weight:700}.offline{font-size:12px;color:var(--green);white-space:nowrap}.offline:before{content:"";display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#27a67d}main{max-width:1488px;margin:auto;padding:32px 24px 44px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-bottom:25px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--green);font-weight:700;margin-bottom:8px}h1{font-size:clamp(25px,3vw,36px);letter-spacing:-1px;line-height:1.35;margin:0 0 10px;font-weight:760}h2{font-size:18px;margin:0}h3{font-size:15px;margin:0 0 9px}p{margin:0 0 10px}.hero p{color:var(--muted);margin:0}.hero-stats{display:flex;gap:26px;text-align:center;flex:none}.hero-stats strong{display:block;font-family:Consolas,monospace;font-size:25px;font-weight:550;line-height:1.3}.hero-stats span{font-size:11px;color:var(--muted)}.lesson-band{margin-bottom:22px}.section-label{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;font-size:12px;color:var(--muted)}.lesson-list{display:flex;gap:8px;overflow:auto;padding:2px 1px 8px;scrollbar-width:thin}.lesson{flex:none;display:flex;align-items:center;gap:8px;padding:9px 13px;background:#fff}.lesson span{color:#899c94;font-family:Consolas,monospace;font-size:11px}.lesson.active{background:var(--ink);color:#fff;border-color:var(--ink)}.lesson.active span{color:#84c7b3}.workbench{display:grid;grid-template-columns:275px minmax(0,1fr);gap:18px;align-items:start}.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.side-panel{padding:19px;margin-bottom:14px}.panel-title{display:flex;align-items:center;gap:9px;margin-bottom:14px;font-weight:700}.stepno{font:11px Consolas,monospace;color:var(--green);background:var(--mint);padding:3px 7px;border-radius:4px}.field{margin:14px 0}.field:first-child{margin-top:0}.field label,.slider-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:5px}.field select{width:100%}.slider-heading output{color:var(--ink);font-family:Consolas,monospace;font-size:12px}input[type=range]{width:100%;accent-color:var(--green);display:block;cursor:pointer;margin:7px 0}input[type=checkbox]{accent-color:var(--green);width:15px;height:15px;cursor:pointer}.small{font-size:12px;color:var(--muted);line-height:1.7}.micro{font-size:11px;color:var(--muted);line-height:1.6}.divider{height:1px;background:var(--line);margin:16px 0}.row{display:flex;align-items:center;gap:8px}.row.between{justify-content:space-between}.seed{font:11px Consolas,monospace;color:var(--muted)}.filter-list{display:grid;gap:3px;margin-top:8px;max-height:315px;overflow:auto;scrollbar-width:thin}.filter-option{display:flex;align-items:center;gap:7px;min-height:34px;padding:4px 6px;border-radius:6px;font-size:12px}.filter-option.chosen{background:var(--mint)}.filter-option.unavailable{opacity:.4}.filter-option label{display:flex;align-items:center;gap:7px;flex:1;cursor:pointer}.filter-option .kind{margin-left:auto;color:var(--muted);font:10px Consolas,monospace}.filter-option button{font-size:11px;padding:1px 5px;border:0;background:transparent;color:var(--green)}.group-label{font-size:10px;color:var(--muted);margin-top:10px;letter-spacing:1px}.main-stack{display:grid;gap:16px;min-width:0}.chart-panel{padding:20px 22px 14px}.chart-heading{display:flex;justify-content:space-between;gap:15px;align-items:start}.chart-heading .subtitle{font-size:12px;color:var(--muted);margin-top:2px}.chart-controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:11px}.chart-controls button,.chart-controls select{padding:4px 7px;font-size:11px}.chart-controls button.active{background:var(--mint);border-color:#8fbaa9;color:var(--green)}.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:11px;margin:12px 0 4px;color:var(--muted)}.legend button{padding:1px 0;background:none;border:0;font-size:11px;display:inline-flex;align-items:center;gap:5px;color:var(--muted)}.legend button.focused{font-weight:700;color:var(--ink)}.swatch{width:15px;height:3px;display:inline-block;border-radius:2px;margin-right:3px;vertical-align:middle}.swatch.dashed{height:0;border-top:2px dashed var(--ink);background:none!important}.chart-wrap{position:relative;height:310px;min-width:0}.chart-wrap.secondary{height:180px}.chart-wrap canvas{width:100%;height:100%;display:block}.chart-readout{min-height:25px;font:11px/1.8 Consolas,"Microsoft YaHei",monospace;color:var(--muted);display:flex;flex-wrap:wrap;gap:12px;padding:2px 0 0 53px}.callout{padding:12px 15px;background:var(--mint);border-left:3px solid var(--green);border-radius:0 6px 6px 0;color:#305c4f;font-size:12px;line-height:1.85;margin-top:11px}.callout.warning{background:#fff5e7;border-color:#d99d38;color:#82591c}.metric-panel{padding:18px 22px}.metrics-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.metrics-title span{font-size:11px;color:var(--muted)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}th{font-size:10px;font-weight:550;color:var(--muted);border-bottom:1px solid var(--line);padding:8px 10px;white-space:nowrap}td{padding:10px;border-bottom:1px solid #edf0ee;white-space:nowrap}tr:last-child td{border-bottom:0}td.number{font-family:Consolas,monospace}tr.focused td{background:#f0f7f3}.positive{color:var(--green)}.negative{color:var(--red)}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px}.detail-panel{padding:19px 22px;display:grid;grid-template-columns:1.1fr 1fr;gap:25px}.badge{display:inline-block;font-size:10px;line-height:1.5;padding:3px 7px;border-radius:4px;background:#eef3f0;color:var(--muted);margin-right:5px;vertical-align:middle}.badge.offline-badge{background:#fff0db;color:#955b0f}.formula{font:12px/1.8 Consolas,"Microsoft YaHei",monospace;background:#f5f7f5;padding:11px 12px;border-radius:6px;margin:12px 0;overflow-wrap:anywhere}.detail-text{font-size:12px;color:var(--muted)}.detail-text strong{color:var(--ink);font-weight:600}.parameter-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.parameter-grid .field{margin:7px 0}.parameter-grid:has(.field:only-child){grid-template-columns:1fr}.notice{font-size:11px;color:var(--muted);margin-top:8px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.toolbar button{font-size:11px}.footer{margin-top:28px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted)}.tab-page[hidden]{display:none}.map-intro{padding:20px 24px;margin-bottom:20px;font-size:13px}.map-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.algo-card{padding:21px;display:flex;flex-direction:column;gap:7px}.algo-card .small{flex:1}.algo-card .formula{margin:5px 0}.algo-card button{align-self:start;font-size:12px;margin-top:5px}.road-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:16px}.road-card{padding:20px}.source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.source-card{padding:20px;display:flex;flex-direction:column;gap:8px}.source-card h3{margin:0;font-size:16px}.source-card .small{flex:1}.source-card a{overflow-wrap:anywhere}.source-meta{font:11px Consolas,"Microsoft YaHei",monospace;color:var(--gold)}details{margin-top:16px}summary{cursor:pointer;font-size:12px;color:var(--green)}.method-content{font-size:12px;color:var(--muted);padding:12px 0;line-height:1.95}.method-content ol{padding-left:20px;margin:0}.section-head{margin:28px 0 14px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:white;border-radius:7px;padding:9px 17px;font-size:12px;box-shadow:0 4px 20px #0002;z-index:5}.toast[hidden]{display:none}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}.path-list{display:flex;flex-direction:column;gap:10px}.path-row{display:flex;gap:12px;padding:13px 15px;background:#f6f8f6;border-radius:7px}.path-row b{color:var(--green);font:14px Consolas,monospace;margin-top:3px}.path-row div{font-size:12px}.path-row strong{display:block}.zoom-row{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--muted);margin:4px 0 0 53px}.zoom-row input{max-width:210px}.method-chip{border:1px solid #ddd5bc;background:#fff9e9;color:#8b681d;padding:2px 6px;border-radius:5px;font-size:10px}.empty-params{font-size:12px;color:var(--muted);padding:15px 0}.tab-header{margin-bottom:20px}.tab-header p{color:var(--muted);margin-top:7px}.source-date{font-size:11px;color:var(--muted)}@media(min-width:1300px){.chart-wrap{height:345px}}@media(max-width:1100px){.topbar{padding:0 20px}.workbench{grid-template-columns:250px minmax(0,1fr)}.hero-stats{gap:17px}.chart-heading{flex-direction:column;gap:8px}.detail-panel{grid-template-columns:1fr;gap:14px}.source-grid,.map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){main{padding:22px 14px}.topbar{padding:0 14px;height:auto;min-height:62px;flex-wrap:wrap;gap:0}.brand{font-size:14px;margin:12px 0}.topnav{height:43px;width:100%;order:3;gap:25px}.offline{font-size:10px}.hero{align-items:start}.hero-stats{display:none}h1{font-size:28px}.hero p{font-size:12px}.workbench{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:12px}.side-panel{margin:0;padding:15px;min-width:0}.filter-list{max-height:280px}.chart-panel,.metric-panel,.detail-panel{padding:17px 14px}.chart-wrap{height:295px}.chart-wrap.secondary{height:170px}.map-grid,.source-grid,.road-grid,.two-col{grid-template-columns:1fr}.footer{flex-direction:column;gap:5px}.chart-readout,.zoom-row{padding-left:0;margin-left:0}.metrics-title{align-items:start;flex-direction:column;gap:2px}}@media(max-width:420px){.sidebar{grid-template-columns:1fr}.filter-list{max-height:200px}.parameter-grid{grid-template-columns:1fr}.chart-controls{gap:5px}.hero{margin-bottom:18px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>[hidden]{display:none!important}.main-stack{grid-template-columns:minmax(0,1fr)}.main-stack>.panel,.detail-panel>div{min-width:0}.detail-panel .row{flex-wrap:wrap}.table-wrap{width:100%}.chart-wrap canvas.cursor-layer{position:absolute;inset:0;pointer-events:none}.startup-notice{margin:16px max(24px,calc((100vw - 1440px)/2));padding:15px 18px;background:#fff5e7;border:1px solid #edc585;border-radius:9px;color:#82591c;font-size:13px}.startup-notice code{display:block;margin-top:7px;overflow-wrap:anywhere;font-size:12px}</style>
+<style>
+.motion-site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:11px max(24px,calc((100vw - 1440px)/2));background:#e7f4ee;border-bottom:1px solid #c8ded3;font-size:12px}.motion-site-nav a{color:#175a48;text-decoration:none;line-height:1.8}.motion-site-nav a:hover{text-decoration:underline}.motion-site-nav .motion-site-home{font-weight:750;letter-spacing:.04em}.motion-site-nav .motion-site-links{display:flex;gap:8px 20px;flex-wrap:wrap}.motion-integration-note{max-width:1488px;margin:0 auto;padding:12px 24px 0;color:#627572;font-size:12px;line-height:1.8}@media(max-width:760px){.motion-site-nav{padding:10px 14px;gap:6px}.motion-site-nav .motion-site-links{gap:4px 14px}.motion-integration-note{padding:11px 14px 0}}
+</style>
+</head>
+<body>
+<nav class="motion-site-nav" aria-label="学习站导航"><a class="motion-site-home" href="index.html">← RIVER / SIGNAL LAB</a><div class="motion-site-links"><a href="engineering.html">工程选型与调参</a><a href="notes-kalman.html">卡尔曼学习笔记</a><a href="notes-transforms.html">三大变换学习笔记</a></div></nav>
+<p class="motion-integration-note">本页使用合成信号与简化模型，未接入真实电机或 IMU，也未在实际硬件上验证。用于闭环控制、报警或安全相关系统前，需另行检查采样、延迟、异常数据与稳定性。</p>
+<div id="startup-notice" class="startup-notice" role="alert"><strong id="startup-message">交互功能尚未启动。</strong><span> 如果提示持续显示，请确认浏览器已启用 JavaScript，或刷新页面后重试。</span><code id="startup-error"></code></div>
+<script>
+(function(){
+ function showError(message){var notice=document.getElementById('startup-notice');notice.hidden=false;document.getElementById('startup-message').textContent='页面运行遇到问题。';document.getElementById('startup-error').textContent=String(message)+'；请把这条信息告诉我，便于定位。';}
+ window.addEventListener('error',function(event){showError(event.message||'无法加载交互脚本');});
+ window.addEventListener('unhandledrejection',function(event){showError(event.reason&&event.reason.message||event.reason||'计算失败');});
+})();
+</script>
+<header class="topbar">
+ <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#087c64"/><path d="M4 17h5l3-9 5 16 4-12 3 5h4" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>运动控制滤波实验室</div>
+ <nav class="topnav" aria-label="主导航"><button class="active" data-tab="experiment">信号实验</button><button data-tab="map">算法地图</button><button data-tab="sources">GitHub 与进阶</button></nav>
+ <span class="offline">离线可用 · 本地计算</span>
+</header>
+<main>
+<section id="page-experiment" class="tab-page">
+ <div class="hero"><div><div class="eyebrow">MOTION / SIGNAL LAB</div><h1>把滤波效果，直接看见。</h1><p>从编码器到 IMU，亲手比较噪声、响应延迟与跟踪误差。</p></div><div class="hero-stats"><div><strong id="stat-fs">200</strong><span>采样率 / Hz</span></div><div><strong>8.0</strong><span>信号长度 / 秒</span></div><div><strong id="stat-count">21</strong><span>算法与处理方式</span></div></div></div>
+ <div class="lesson-band"><div class="section-label"><span>跟着实验学 · 点击预设，自动装入信号与算法</span><span id="lesson-counter">01 / 09</span></div><div class="lesson-list" id="lessons"></div></div>
+ <div class="workbench">
+  <aside class="sidebar">
+   <div class="panel side-panel"><div class="panel-title"><span class="stepno">01</span>构造传感器信号</div>
+    <div class="field"><label for="scenario">运动场景</label><select id="scenario" data-boot-control disabled><option value="step">位置台阶</option><option value="sine">平滑往复</option><option value="chirp">逐渐加速</option><option value="ramp">梯形位置</option><option value="speed">转速切换</option><option value="spikes">静态毛刺</option><option value="encoder">编码器跨界</option><option value="imu">IMU 姿态融合</option></select></div>
+    <p class="micro" id="scene-desc"></p>
+    <div class="field"><label for="fs">采样率</label><select id="fs"><option value="100">100 Hz · 每 10 ms</option><option value="200" selected>200 Hz · 每 5 ms</option><option value="500">500 Hz · 每 2 ms</option><option value="1000">1000 Hz · 每 1 ms</option></select></div>
+    <div class="field"><div class="slider-heading"><label for="noise">随机噪声 σ / 场景尺度</label><output id="noise-value"></output></div><input id="noise" type="range" min="0" max="0.4" step="0.01" value="0.10"></div>
+    <div class="field"><div class="slider-heading"><label for="spikes">毛刺概率 / 每个采样点</label><output id="spikes-value"></output></div><input id="spikes" type="range" min="0" max="0.08" step="0.002" value="0"></div>
+    <div class="field"><div class="slider-heading"><label for="hum">窄带干扰幅值 / 场景尺度</label><output id="hum-value"></output></div><input id="hum" type="range" min="0" max="0.6" step="0.01" value="0"></div>
+    <p class="micro" id="hum-note">干扰频率 50 Hz；改变采样率会改变可表示的频率范围。</p>
+    <div class="divider"></div><div class="row between"><span class="seed" id="seed-label">SEED 42</span><button id="reseed" title="所有算法仍使用同一组新噪声">换一组噪声 ↻</button></div>
+    <div class="toolbar"><button id="clean">无噪声：只看跟踪</button><button id="reset">重置当前实验</button></div>
+   </div>
+   <div class="panel side-panel"><div class="panel-title"><span class="stepno">02</span>选择对比算法</div><p class="micro">最多同时比较 4 条结果。点击“调参”查看解释并调整该算法。</p><div id="filter-list" class="filter-list"></div></div>
+  </aside>
+  <div class="main-stack">
+   <div class="panel chart-panel">
+    <div class="chart-heading"><div><h2 id="chart-title">位置阶跃：平滑与延迟</h2><div class="subtitle" id="chart-subtitle"></div></div><div class="chart-controls"><button id="play" aria-label="播放信号采集过程">▶ 播放</button><select id="zoom" aria-label="波形时间窗口"><option value="8">全程 · 8 秒</option><option value="2">放大 · 2 秒</option><option value="0.5">细看 · 0.5 秒</option></select><button id="download">导出数据 CSV</button></div></div>
+    <div id="legend" class="legend"></div><div class="chart-wrap"><canvas id="wave-chart" aria-label="原始信号、真实信号与滤波结果对比" role="img"></canvas><canvas id="wave-cursor" class="cursor-layer" aria-hidden="true"></canvas></div>
+    <div class="zoom-row" id="zoom-row" hidden><label for="zoom-start">窗口起点</label><input id="zoom-start" type="range" min="0" max="6" step="0.05" value="0"><output id="zoom-value">0.00 s</output></div>
+    <div id="readout" class="chart-readout">移动鼠标查看同一时刻的数值</div>
+    <div class="callout" id="lesson-text"></div><div class="callout warning" id="scene-warning" hidden></div>
+   </div>
+   <div class="panel chart-panel"><div class="chart-heading"><div><h3 id="secondary-title">误差随时间变化</h3><div class="subtitle" id="secondary-desc">输出 − 真实信号；越靠近 0，当前时刻越准确。</div></div><div class="chart-controls"><button id="show-error" class="active">误差</button><button id="show-spectrum">频谱</button></div></div><div class="chart-wrap secondary"><canvas id="error-chart" aria-label="误差或幅度频谱" role="img"></canvas><canvas id="error-cursor" class="cursor-layer" aria-hidden="true"></canvas></div></div>
+   <div class="panel metric-panel"><div class="metrics-title"><h3 style="margin:0">数值对比</h3><span>整段信号 · 相同噪声 · 不补偿时间延迟</span></div><div class="table-wrap"><table><thead><tr><th>算法</th><th>均方根误差 ↓</th><th>相对原始误差改善 ↑</th><th>最大绝对误差 ↓</th><th title="独立无噪声阶跃首次达到50%幅值的时间，不是通用固定延迟">阶跃 T50 / ms ↓</th></tr></thead><tbody id="metrics"></tbody></table></div><p class="notice" id="metric-note"></p>
+    <details><summary>这些指标怎么计算？为什么不能只挑误差最小的？</summary><div class="method-content"><ol><li>均方根误差（RMSE）= √平均[(输出 − 真值)²]；保留启动过程和真实时延，单位随信号变化。改善百分比可为负，表示这组参数让误差更大。</li><li>T50 是另外生成的无噪声 0 → 场景尺度阶跃，在当前采样率和参数下首次达到 50% 的时间；包括当前采样，0 ms 不等于没有相位滞后。离线、融合、角度展开不报告此值。</li><li>峰值误差会受到毛刺、启动和阶跃滞后影响。较低的 RMSE 不能保证闭环稳定，也不能代替频率响应与相位裕度分析。</li><li>频谱使用最后最多 1024 点，去均值、加 Hann 窗并归一化；这是该段输出信号的幅度谱，不是滤波器传递函数。不同信号片段不能直接当作频率响应比较。</li><li>真值只用于显示与评估，算法不读取真值。卡尔曼量测噪声参考仿真设定的随机噪声；真实设备需要标定。默认参数用于教学，没有逐个调成“最优”。</li><li>除标明离线的小波外，算法按因果顺序处理。首点初始化与窗口未填满时的策略会影响启动曲线。算力说明是典型实现量级，不是 MCU 实测。</li><li>改变采样率时，W 点窗口对应的毫秒长度会改变；按每次采样定义的 q、α、β 等参数不能直接照搬来保持相同的秒级响应。固定 σ 与每采样点毛刺概率，也不代表固定的连续时间噪声强度或每秒毛刺次数。</li></ol></div></details>
+   </div>
+   <div class="panel detail-panel"><div><div class="row between"><h3 id="detail-name"></h3><select id="focus" aria-label="选择要调参的算法"></select></div><div id="detail-badges"></div><p id="detail-idea" class="detail-text" style="margin-top:11px"></p><div id="detail-formula" class="formula"></div><p class="detail-text"><strong>适合怎么调：</strong><span id="detail-tune"></span></p><p class="detail-text"><strong>容易踩的坑：</strong><span id="detail-pitfall"></span></p><p class="micro" id="detail-cost"></p></div><div><div class="panel-title"><span class="stepno">03</span>亲手改变参数</div><div class="parameter-grid" id="parameters"></div><p class="notice">参数仅影响当前选中的算法；每次调整都在同一组信号上重新计算。</p><div class="toolbar"><button id="param-reset">恢复该算法默认参数</button><button id="export-config">导出实验参数 JSON</button></div></div></div>
+  </div>
+ </div>
+</section>
+<section id="page-map" class="tab-page" hidden>
+ <div class="tab-header"><div class="eyebrow">ALGORITHM ATLAS</div><h1>先认清问题，再挑滤波器。</h1><p>平滑、去毛刺、频率选择、模型估计和传感器融合，解决的是不同问题。</p></div>
+ <div class="panel map-intro"><strong>IIR / FIR 是结构类别。</strong>有限冲激响应（FIR）包括滑动平均和窗函数 FIR；无限冲激响应（IIR）包括指数平滑与二阶低通。卡尔曼是状态估计框架，不能简单用“比 IIR 高级”来理解。下列都是可运行的教学实现；名称相近的工程库可能采用不同模型和边界策略。</div>
+ <div id="algorithm-map" class="map-grid"></div>
+ <div class="section-head"><h2>运动控制里的一条学习路线</h2></div><div class="panel map-intro two-col"><div class="path-list"><div class="path-row"><b>01</b><div><strong>先确认数据是否正确</strong>采样周期、单位、角度展开、时间戳、丢样、量化与混叠；软件滤波不能恢复已经混叠的信息。</div></div><div class="path-row"><b>02</b><div><strong>先试一阶低通，再看阶跃</strong>从截止频率与采样率入手，确认电机位置或速度跟踪能接受多少响应延迟。</div></div><div class="path-row"><b>03</b><div><strong>按噪声类型加针对性处理</strong>偶发毛刺看中值/Hampel；固定频率干扰看陷波；低速编码器测速还要考虑测周期法、观测器与时间窗。</div></div></div><div class="path-list"><div class="path-row"><b>04</b><div><strong>利用运动模型</strong>位置和速度联合估计可以比直接低通更好跟踪匀速，但急加速和模型失配会增加误差。</div></div><div class="path-row"><b>05</b><div><strong>再做 IMU 多传感器融合</strong>从单轴角度+陀螺仪入门，再学习三维旋转、四元数、零偏、标定和异常量测剔除。</div></div><div class="path-row"><b>06</b><div><strong>最后回到闭环验证</strong>噪声、带宽和相位延迟一起看。本演示是测量链仿真，没有模拟 PID、电机机械模型或稳定裕度。</div></div></div></div>
+</section>
+<section id="page-sources" class="tab-page" hidden>
+ <div class="tab-header"><div class="eyebrow">OPEN SOURCE / FURTHER READING</div><h1>从波形，走到工程实现。</h1><p>有代表性的开源项目与原始资料。关注度、算法年代和 MCU 适用性分别看待。</p></div>
+ <div class="panel map-intro"><p><strong>这里是代表项目导航，不是实时热度榜。</strong>星标数是检索时页面显示的近似快照，可能有缓存，也会变化。项目被广泛使用不代表适合你的采样率、芯片或控制回路。</p><p class="source-date" id="research-date"></p><p class="small" style="margin:0">页面里的滤波器为独立教学实现，没有直接移植下面的工程库。One Euro、EKF、UKF、小波等都有较长历史；学习辅助估计是较新的研究方向。</p></div>
+ <div class="source-grid" id="sources"></div>
+ <div class="section-head"><h2>更多方法：适用边界与下一步</h2><p class="small">以下只做选型说明，没有在当前波形窗口中冒充实现。</p></div><div id="roadmap" class="road-grid"></div>
+ <div class="section-head"><h2>算法与实现参考</h2></div><div id="references" class="panel map-intro"></div>
+</section>
+<footer class="footer"><span>运动控制滤波实验室 · 教学仿真 · 2026-10-02 · 交互修订版 1.1</span><span>所有计算在浏览器中完成 · 不需安装依赖 · 外部资料链接需联网</span></footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>/* 运动控制滤波实验室：零依赖、可复现的纯数值内核。 */
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  // 浏览器宿主即使暴露 CommonJS，也必须提供页面使用的全局接口。
+  if (typeof window !== 'undefined' || typeof module !== 'object' || !module.exports) root.FilterCore = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const TAU = 2 * Math.PI;
+  const scenarios = [
+    { id:'step', name:'位置台阶', unit:'°', scale:30, description:'伺服位置指令突变；编码器叠加随机噪声。', lesson:'台阶边缘能同时看见抑噪、响应时间和过冲。' },
+    { id:'sine', name:'平滑往复', unit:'°', scale:30, description:'关节以 0.45 Hz 往复运动。', lesson:'平滑不代表准确：观察幅值衰减与跟随延迟。' },
+    { id:'chirp', name:'逐渐加速', unit:'°', scale:30, description:'摆动频率从 0.2 Hz 连续升到 7 Hz。', lesson:'当运动频率进入低通阻带，真实运动也会被滤掉。' },
+    { id:'ramp', name:'梯形位置', unit:'°', scale:30, description:'位置以恒定速度上升、保持，再回程。', lesson:'比较恒速跟踪与拐角：模型预测有用，但会产生过冲。' },
+    { id:'speed', name:'转速切换', unit:'rpm', scale:600, description:'电机转速在多个平台间快速切换。', lesson:'参数有单位，角度传感器上的限速阈值不能直接照搬到转速。' },
+    { id:'spikes', name:'静态毛刺', unit:'°', scale:30, description:'静止在 15°，混入孤立的强脉冲。', lesson:'中值与 Hampel 擅长剔除离群点，均值会把毛刺摊开。' },
+    { id:'encoder', name:'编码器跨界', unit:'°', scale:30, description:'连续转动的真实角度被编码器映射到 [−180°, 180°)。', lesson:'先解包再滤波；把 179° 与 −179° 直接平均会得到错误方向。' },
+    { id:'imu', name:'IMU 姿态融合', unit:'°', scale:30, description:'陀螺仪含 0.8°/s 固定零偏，加速度计含运动干扰。', lesson:'陀螺积分会漂移；互补滤波校正慢漂移，双状态卡尔曼还估计零偏。' }
+  ];
+  const finite = (v, fallback) => Number.isFinite(Number(v)) ? Number(v) : fallback;
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const bounded = (v, fallback, min, max) => clamp(finite(v, fallback), min, max);
+  const median = a => { const s = a.slice().sort((x,y)=>x-y), m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+  const oddWindow = v => { let n=Math.round(bounded(v,15,3,151)); return n%2 ? n : n+1; };
+  const wrap = a => ((a+180)%360+360)%360-180;
+  function randomSource(seed) {
+    let state=(finite(seed,42)>>>0)||0x9e3779b9;
+    const uniform=()=> { state^=state<<13; state^=state>>>17; state^=state<<5; return (state>>>0)/4294967296; };
+    return { uniform, normal:()=>Math.sqrt(-2*Math.log(Math.max(1e-12,uniform())))*Math.cos(TAU*uniform()) };
+  }
+  function generate(options={}) {
+    const scenario=scenarios.find(s=>s.id===options.scenario)||scenarios[0];
+    const fs=bounded(options.fs,200,20,2000), duration=bounded(options.duration,8,0.1,30);
+    const n=Math.min(60000,Math.max(2,Math.round(fs*duration)));
+    const noise=bounded(options.noise,0.12,0,2), spikes=bounded(options.spikes,0.02,0,0.5), hum=bounded(options.hum,0,0,2);
+    const scale=scenario.scale, rng=randomSource(options.seed);
+    const noiseSigma=noise*scale, t=[], truth=[], measured=[], reference=[], gyro=[], accel=[];
+    for(let i=0;i<n;i++) {
+      const time=i/fs, u=time/duration;
+      let value;
+      switch(scenario.id) {
+        case 'sine': value=30*Math.sin(TAU*0.45*time); break;
+        case 'chirp': value=24*Math.sin(TAU*(0.2*time+0.5*6.8/duration*time*time)); break;
+        case 'ramp': value=u<0.15?0:u<0.4?30*(u-0.15)/0.25:u<0.62?30:u<0.9?30*(0.9-u)/0.28:0; break;
+        case 'speed': value=u<0.16?150:u<0.48?600:u<0.74?350:500; break;
+        case 'spikes': value=15; break;
+        case 'encoder': value=150+22*time+18*Math.sin(TAU*0.22*time); break;
+        case 'imu': value=20*Math.sin(TAU*0.3*time)+6*Math.sin(TAU*0.8*time); break;
+        default: value=u<0.18?0:u<0.52?30:u<0.77?12:24;
+      }
+      // 参考传感器仅观察工频源；不含运动轨迹或主通道的独立噪声。
+      const ref=hum===0?0:Math.sin(TAU*Math.min(50,fs*0.4)*time+0.27);
+      const interference=scale*hum*Math.sin(TAU*Math.min(50,fs*0.4)*time+0.72);
+      const gaussian=rng.normal()*noiseSigma;
+      const impulse=rng.uniform()<spikes ? (rng.uniform()<0.5?-1:1)*scale*(0.8+1.4*rng.uniform()) : 0;
+      const motionDisturbance=scenario.id==='imu' ? 7*Math.exp(-Math.pow((u-0.34)/0.045,2))-6*Math.exp(-Math.pow((u-0.72)/0.055,2)) : 0;
+      const observation=value+gaussian+impulse+interference+motionDisturbance;
+      t.push(time); truth.push(value); reference.push(ref);
+      accel.push(observation);
+      measured.push(scenario.id==='encoder'?wrap(observation):observation);
+      const rate=i===0?0:(value-truth[i-1])*fs;
+      gyro.push(rate+(scenario.id==='imu'?0.8:0)+rng.normal()*noise*2.5);
+    }
+    return {t,truth,measured,reference,gyro,accel,fs,scale,unit:scenario.unit,scenario:scenario.id,noiseSigma};
+  }
+  function exponential(x, cutoff, fs) {
+    // 精确数字 −3 dB 截止系数，避免高截止频率时极点匹配产生频响偏差。
+    const d=1-Math.cos(TAU*cutoff/fs), a=Math.sqrt(d*d+2*d)-d, y=[x[0]];
+    for(let i=1;i<x.length;i++) y.push(y[i-1]+a*(x[i]-y[i-1]));
+    return y;
+  }
+  function biquad(x, fs, frequency, q, notch) {
+    const w=TAU*frequency/fs, c=Math.cos(w), a=Math.sin(w)/(2*q), a0=1+a;
+    const b0=(notch?1:(1-c)/2)/a0, b1=(notch?-2*c:1-c)/a0, b2=b0;
+    const a1=-2*c/a0, a2=(1-a)/a0;
+    let x1=x[0],x2=x[0],y1=x[0],y2=x[0];
+    return x.map(v=> { const out=b0*v+b1*x1+b2*x2-a1*y1-a2*y2; x2=x1;x1=v;y2=y1;y1=out;return out; });
+  }
+  function fir(x, fs, cutoff, window) {
+    const h=[], mid=(window-1)/2, fc=cutoff/fs;
+    for(let k=0;k<window;k++) {
+      const z=k-mid, sinc=z===0?2*fc:Math.sin(TAU*fc*z)/(Math.PI*z);
+      h.push(sinc*(0.54-0.46*Math.cos(TAU*k/(window-1))));
+    }
+    const gain=h.reduce((a,b)=>a+b,0);
+    return x.map((_,i)=>h.reduce((sum,c,k)=>sum+c*x[Math.max(0,i-k)]/gain,0));
+  }
+  const sgCache=new Map();
+  function sgWeights(n) {
+    if(sgCache.has(n)) return sgCache.get(n);
+    // 时间以当前端点为 0，归一化到 [−1,0]，避免长窗口正规方程病态。
+    const moments=Array(5).fill(0), times=Array.from({length:n},(_,i)=>(i-n+1)/(n-1));
+    for(const t of times) for(let k=0;k<5;k++) moments[k]+=Math.pow(t,k);
+    const a=Array.from({length:3},(_,r)=>[moments[r],moments[r+1],moments[r+2],r===0?1:0]);
+    for(let col=0;col<3;col++) {
+      let pivot=col;
+      for(let row=col+1;row<3;row++) if(Math.abs(a[row][col])>Math.abs(a[pivot][col])) pivot=row;
+      [a[col],a[pivot]]=[a[pivot],a[col]];
+      const divisor=a[col][col];
+      for(let j=col;j<4;j++) a[col][j]/=divisor;
+      for(let row=0;row<3;row++) if(row!==col) { const factor=a[row][col]; for(let j=col;j<4;j++) a[row][j]-=factor*a[col][j]; }
+    }
+    const weights=times.map(t=>a[0][3]+a[1][3]*t+a[2][3]*t*t);
+    sgCache.set(n,weights); return weights;
+  }
+  function wavelet(x, strength) {
+    let size=1; while(size<x.length) size*=2;
+    const a=Array.from({length:size},(_,i)=>x[Math.min(i,x.length-1)]), temp=Array(size), inv=Math.SQRT1_2;
+    let sigma=0;
+    for(let len=size;len>1;len/=2) {
+      const half=len/2;
+      for(let i=0;i<half;i++) { temp[i]=(a[2*i]+a[2*i+1])*inv; temp[half+i]=(a[2*i]-a[2*i+1])*inv; }
+      // 噪声标定只使用原始完整样本对；末值补齐产生的零细节不参与 MAD。
+      if(len===size) sigma=median(temp.slice(half,half+Math.floor(x.length/2)).map(Math.abs))/0.67448975;
+      for(let i=0;i<len;i++) a[i]=temp[i];
+    }
+    const threshold=sigma*Math.sqrt(2*Math.log(Math.max(2,x.length)))*strength/3;
+    for(let i=1;i<size;i++) a[i]=Math.sign(a[i])*Math.max(0,Math.abs(a[i])-threshold);
+    for(let len=2;len<=size;len*=2) {
+      const half=len/2;
+      for(let i=0;i<half;i++) { temp[2*i]=(a[i]+a[half+i])*inv; temp[2*i+1]=(a[i]-a[half+i])*inv; }
+      for(let i=0;i<len;i++) a[i]=temp[i];
+    }
+    return a.slice(0,x.length);
+  }
+  function twoStateKalman(x, data, p, R, dt, biasMode) {
+    let position=x[0], second=0, p00=R, p01=0, p11=biasMode?1:R/(dt*dt);
+    const sign=biasMode?-1:1, q=bounded(p.q,0.01,1e-8,100), y=[position];
+    for(let i=1;i<x.length;i++) {
+      const f=sign*dt;
+      position+=f*second+(biasMode?finite(data.gyro?.[i],0)*dt:0);
+      // 恒速模型的 Q=diag(qR,qR/dt²)，q 是每次更新的位置噪声与 R 的比值。
+      // 零偏模型用连续噪声积分：Qθ=qRdt，Qb=0.01qRdt。
+      const v00=p00+2*f*p01+f*f*p11+q*R*(biasMode?dt:1);
+      const v01=p01+f*p11, v11=p11+q*R*(biasMode?0.01*dt:1/(dt*dt));
+      const s=v00+R, k0=v00/s, k1=v01/s, innovation=x[i]-position;
+      position+=k0*innovation; second+=k1*innovation;
+      // Joseph 形式保留协方差的对称性与非负性，接近无噪声时也稳定。
+      const one=1-k0;
+      p00=one*one*v00+k0*k0*R;
+      p01=one*(v01-k1*v00)+k0*k1*R;
+      p11=v11-2*k1*v01+k1*k1*(v00+R);
+      p00=Math.max(1e-18,p00); p11=Math.max(1e-18,p11);
+      y.push(position);
+    }
+    return y;
+  }
+  function run(id, data, params={}) {
+    const p=params||{}, fs=bounded(data.fs,200,1,100000), dt=1/fs;
+    const x=Array.from(data.measured||[],(v)=>finite(v,0));
+    if(!x.length) return [];
+    const window=oddWindow(p.window), cutoff=bounded(p.cutoff,5,0.001,fs*0.475);
+    // 已知噪声来自实验设置；真实系统需标定 R，绝不从 truth 估计。
+    const sigma=bounded(data.noiseSigma,Math.abs(finite(data.scale,30))*0.12,1e-6,1e8), R=sigma*sigma;
+    switch(id) {
+      case 'ma': {
+        let sum=0;
+        return x.map((v,i)=> { sum+=v;if(i>=window)sum-=x[i-window];return sum/Math.min(i+1,window); });
+      }
+      case 'median': case 'trimmed': case 'hampel': case 'sg':
+        return x.map((v,i)=> {
+          const values=x.slice(Math.max(0,i-window+1),i+1), n=values.length;
+          if(id==='sg') return n<3?v:sgWeights(n).reduce((sum,c,j)=>sum+c*values[j],0);
+          if(id==='median') return median(values);
+          if(id==='trimmed') { values.sort((a,b)=>a-b); const cut=Math.floor(n*0.2), part=values.slice(cut,n-cut); return part.reduce((a,b)=>a+b,0)/part.length; }
+          const m=median(values), mad=median(values.map(a=>Math.abs(a-m)));
+          const limit=bounded(p.threshold,3,0.1,20)*Math.max(1e-9,1.4826*mad);
+          return Math.abs(v-m)>limit?m:v;
+        });
+      case 'ema': return exponential(x,cutoff,fs);
+      case 'butter': return biquad(x,fs,cutoff,Math.SQRT1_2,false);
+      case 'fir': return fir(x,fs,cutoff,window);
+      case 'notch': return biquad(x,fs,bounded(p.notch,50,0.001,fs*0.475),bounded(p.notchQ,10,0.2,1000),true);
+      case 'alphabeta': {
+        const a=bounded(p.alpha,0.35,0.001,1), b=bounded(p.beta,0.03,0,1);
+        let position=x[0], velocity=0;
+        return x.map((v,i)=> { if(!i)return position; const prediction=position+velocity*dt, r=v-prediction; position=prediction+a*r;velocity+=b*r/dt;return position; });
+      }
+      case 'kalman': {
+        const q=bounded(p.q,0.01,1e-8,100)*R;
+        let value=x[0], covariance=R;
+        return x.map((v,i)=> { if(!i)return value; covariance+=q;const gain=covariance/(covariance+R);value+=gain*(v-value);covariance=(1-gain)*covariance;return value; });
+      }
+      case 'cvkalman': return twoStateKalman(x,data,p,R,dt,false);
+      case 'oneeuro': {
+        const beta=bounded(p.euroBeta,0.04,0,10), derivativeAlpha=1-Math.exp(-TAU/fs);
+        let filtered=x[0], derivative=0;
+        return x.map((v,i)=> { if(!i)return filtered; derivative+=derivativeAlpha*((v-x[i-1])*fs-derivative); const fc=Math.min(fs*0.475,cutoff+beta*Math.abs(derivative));filtered+=(1-Math.exp(-TAU*fc/fs))*(v-filtered);return filtered; });
+      }
+      case 'nlms': {
+        const weights=Array(window).fill(0), mu=bounded(p.mu,0.1,0,1.8);
+        return x.map((v,i)=> {
+          let estimate=0,power=1e-9;
+          const refs=[];
+          for(let k=0;k<window;k++) { const r=i>=k?finite(data.reference?.[i-k],0):0;refs.push(r);estimate+=weights[k]*r;power+=r*r; }
+          const error=v-estimate;
+          for(let k=0;k<window;k++) weights[k]+=mu*error*refs[k]/power;
+          return error;
+        });
+      }
+      case 'wavelet': return wavelet(x,bounded(p.threshold,3,0.1,20));
+      case 'slew': {
+        const step=bounded(p.maxRate,60,0,1e9)*dt; let value=x[0];
+        return x.map(v=>value+=clamp(v-value,-step,step));
+      }
+      case 'deadband': {
+        const band=bounded(p.deadband,0.5,0,1e9); let value=x[0];
+        return x.map(v=> { if(Math.abs(v-value)>band)value=v;return value; });
+      }
+      case 'unwrap': {
+        let value=x[0]; const unwrapped=[value];
+        for(let i=1;i<x.length;i++) { value+=wrap(x[i]-x[i-1]);unwrapped.push(value); }
+        return exponential(unwrapped,cutoff,fs);
+      }
+      case 'complementary': case 'gyro': {
+        const a=bounded(p.tau,0.5,0.001,1e6)/(bounded(p.tau,0.5,0.001,1e6)+dt);
+        let angle=finite(data.accel?.[0],x[0]);
+        return x.map((v,i)=> { if(!i)return angle;const predicted=angle+finite(data.gyro?.[i],0)*dt;angle=id==='gyro'?predicted:a*predicted+(1-a)*finite(data.accel?.[i],v);return angle; });
+      }
+      case 'anglebias': return twoStateKalman(x.map((v,i)=>finite(data.accel?.[i],v)),data,p,R,dt,true);
+      default: return x;
+    }
+  }
+  function metrics(values,data) {
+    const n=Math.min(values.length,data.truth.length);
+    if(!n) return {rmse:0,maxError:0,noiseRatio:0};
+    let sum=0, raw=0, maxError=0;
+    for(let i=0;i<n;i++) { const e=values[i]-data.truth[i], r=data.measured[i]-data.truth[i]; sum+=e*e; raw+=r*r; maxError=Math.max(maxError,Math.abs(e)); }
+    return {rmse:Math.sqrt(sum/n),maxError,noiseRatio:raw>1e-20?Math.sqrt(sum/raw):0};
+  }
+  function spectrum(values, fs=200, options={}) {
+    const n=Math.min(1024,values.length), frequency=[], amplitude=[];
+    if(n<2) return {frequency,amplitude};
+    fs=bounded(fs,200,1,100000);
+    // 基 2 FFT 需要二次幂长度；补零仅插值频谱，不提高真实频率分辨率。
+    let size=1; while(size<n) size*=2;
+    const re=new Float64Array(size), im=new Float64Array(size), offset=values.length-n;
+    let mean=0, sumWindow=0;
+    for(let i=0;i<n;i++) { re[i]=finite(values[offset+i],0);mean+=re[i]; }
+    mean=options?.removeMean?mean/n:0;
+    for(let i=0;i<n;i++) {
+      // 两点 Hann 窗全为零，改用矩形窗；其余按实际样本数计算窗增益。
+      const w=n===2?1:0.5-0.5*Math.cos(TAU*i/(n-1));
+      re[i]=(re[i]-mean)*w;sumWindow+=w;
+    }
+    // 位逆序排列后，逐级原位蝶形合并，复杂度 O(N log N)。
+    for(let i=1,j=0;i<size;i++) {
+      let bit=size>>1;
+      for(;j&bit;bit>>=1) j^=bit;
+      j^=bit;
+      if(i<j) { const value=re[i];re[i]=re[j];re[j]=value; }
+    }
+    for(let length=2;length<=size;length*=2) {
+      const half=length/2, angle=-TAU/length, ca=Math.cos(angle), sa=Math.sin(angle);
+      for(let start=0;start<size;start+=length) {
+        let c=1,s=0;
+        for(let j=0;j<half;j++) {
+          const even=start+j, odd=even+half;
+          const tr=c*re[odd]-s*im[odd], ti=s*re[odd]+c*im[odd];
+          re[odd]=re[even]-tr;im[odd]=im[even]-ti;
+          re[even]+=tr;im[even]+=ti;
+          const next=c*ca-s*sa;s=s*ca+c*sa;c=next;
+        }
+      }
+    }
+    for(let k=0;k<=size/2;k++) {
+      frequency.push(k*fs/size);
+      amplitude.push(Math.hypot(re[k],im[k])/sumWindow*(k===0||k===size/2?1:2));
+    }
+    return {frequency,amplitude};
+  }
+  return {scenarios,generate,run,metrics,spectrum};
+});
+</script>
+<script>/* 中文教学内容。代价描述为典型 MCU 实现的数量级，不是浏览器实测性能。 */
+(function (root) {
+  'use strict';
+
+  const Teaching = {
+    algorithms: {
+      ma: {
+        name: '滑动平均', short: '滑动平均', family: '简单平滑', mode: '实时因果',
+        cost: '滚动和每点 O(1)，保存 W 个样本；直接求和为 O(W)。',
+        idea: '把最近 W 点平均，适合压低编码器位置或转速中的随机抖动。窗口只看过去，因此会拖慢阶跃与运动反向。',
+        tune: '增大窗口可减少独立随机噪声；需要快速响应时减小窗口。200 Hz 下，W=21 的满窗口线性相位延迟约为 50 ms。',
+        pitfall: '单个毛刺会污染接下来 W 个输出；不能把窗口越大视为越好。高频抑制有旁瓣，也可能误压真实振动。',
+        formula: 'y[k] = (x[k] + … + x[k−W+1]) / W', params: ['window']
+      },
+      median: {
+        name: '滑动中值', short: '中值', family: '自适应与稳健', mode: '实时因果',
+        cost: '朴素排序每点 O(W log W)，保存 W 个样本。',
+        idea: '取最近窗口中排在中间的数，孤立的大毛刺通常不会成为输出，适合偶发错误的编码器读数。',
+        tune: '优先用较小奇数窗口。毛刺变宽时再增加窗口，并检查运动边沿是否被推迟。',
+        pitfall: '当异常点占窗口一半或更多时会失效；也可能删掉真实短脉冲。它不是专门针对高斯白噪声的最优平滑器。',
+        formula: 'y[k] = median(x[k−W+1], …, x[k])', params: ['window']
+      },
+      trimmed: {
+        name: '截尾均值', short: '截尾均值', family: '自适应与稳健', mode: '实时因果',
+        cost: '朴素排序每点 O(W log W)，保存 W 个样本。',
+        idea: '先去掉窗口两端的部分极端值，再平均其余样本，在随机噪声与少量毛刺之间折中。',
+        tune: '增大窗口会让平均更稳，也会增加响应时间；本实验的截尾比例固定，窗口是主要调节项。',
+        pitfall: '异常点多于可剔除数量时仍会污染输出；运动突变也可能被当作极端值削弱。',
+        formula: 'y[k] = mean(排序后去掉两端极值的窗口样本)', params: ['window']
+      },
+      hampel: {
+        name: 'Hampel 异常值抑制', short: 'Hampel', family: '自适应与稳健', mode: '实时因果',
+        cost: '朴素中值与绝对偏差排序每点 O(W log W)，保存 W 个样本。',
+        idea: '用局部中值和中值绝对偏差判断当前点是否异常；只替换判定出的毛刺，正常点保留。',
+        tune: '阈值越小越容易触发替换；先用约 3 倍稳健标准差，再检查真实阶跃是否被误判。窗口应能容纳足够多正常点。',
+        pitfall: '不负责持续降低正常样本的白噪声；连续错误和剧烈真实运动会挑战局部判断。局部偏差为零时还需要数值下限。',
+        formula: 'm = median(window)，s ≈ 1.4826·median(|x−m|)；若 |x[k]−m| > 阈值·s，则输出 m',
+        params: ['window', 'threshold']
+      },
+      ema: {
+        name: '指数滑动平均 / 一阶低通', short: '一阶低通', family: '简单平滑', mode: '实时因果',
+        cost: '每点 O(1)，保存 1 个输出状态。',
+        idea: '让输出每次只向新测量靠近一部分，状态少、实现简单，常用于转速显示与轻量测量平滑。',
+        tune: '降低截止频率会更平滑，也更滞后；提高截止频率可更快跟踪。先明确希望保留的运动频率，再调截止。',
+        pitfall: '无法区分毛刺和真实跳变；若放进反馈环路，新增相位滞后可能影响控制性能。直接滤包裹角度会在跨界处出错。',
+        formula: 'y[k] = y[k−1] + a·(x[k]−y[k−1])；本实验按数字 −3 dB 截止换算 a', params: ['cutoff']
+      },
+      butter: {
+        name: '二阶 Butterworth 低通', short: '二阶低通', family: '频率选择', mode: '实时因果',
+        cost: '每点 O(1)，一个二阶节，少量乘加与延时状态。',
+        idea: '通带幅频响应平坦，在截止频率以上比一阶低通更快衰减，适合运动带宽与噪声频带有一定分离的测量。',
+        tune: '截止先设在需要保留的运动频带之上；逐步降低时，同时观察抖动、阶跃过冲与到位时间。截止必须低于奈奎斯特频率。',
+        pitfall: '二阶并不表示零延迟；阶跃可能出现过冲，高频噪声下降也不代表闭环一定更好。',
+        formula: 'H(s) = ωc² / (s² + √2·ωc·s + ωc²)，实验使用离散二阶实现', params: ['cutoff']
+      },
+      fir: {
+        name: 'Hamming 窗 sinc 低通', short: 'FIR 低通', family: '频率选择', mode: '实时因果',
+        cost: '每点 O(W) 乘加，保存 W 个样本和 W 个系数。',
+        idea: '把理想低通的 sinc 系数截断后乘 Hamming 窗，得到有限冲激响应（FIR）低通；对称系数使各频率具有相同群延迟。',
+        tune: '设计截止决定名义过渡带位置；增加抽头数可缩窄过渡带，但计算和延迟一起增加。W 个对称抽头的群延迟为 (W−1)/2 个采样周期。窗法截止通常接近半幅（−6 dB），短窗或过低截止时会偏离，不能直接与 IIR 的 −3 dB 截止等同。',
+        pitfall: '线性相位不等于没有延迟。窗口过短时截止附近分离不明显；阶跃附近也可能出现振铃。',
+        formula: 'h[n] ∝ sinc(2fc·(n−(W−1)/2)/fs)·Hamming[n]；y[k] = Σ h[n]x[k−n]',
+        params: ['window', 'cutoff']
+      },
+      notch: {
+        name: '二阶陷波器', short: '陷波', family: '频率选择', mode: '实时因果',
+        cost: '每点 O(1)，一个二阶节，少量乘加与延时状态。',
+        idea: '针对某个窄频率凿出衰减带，默认观察 50 Hz 干扰。适合已知固定频率的测量污染，也可用于特定共振频段处理。',
+        tune: '把中心频率对准干扰；Q 越大陷波越窄，越需要频率稳定。Q 较小能覆盖漂移，但影响更宽的真实信号频带。',
+        pitfall: '宽带噪声不会因此全部消失。干扰频率漂移会漏过窄陷波；真实运动若也在该频率，会一并被削弱，并可能出现瞬态振铃。',
+        formula: '在 ±ω0 放置零点，用邻近极点控制陷波宽度；ω0 = 2πf0/fs', params: ['notch', 'notchQ']
+      },
+      alphabeta: {
+        name: 'α–β 位置与速度估计', short: 'α–β 跟踪', family: '模型估计', mode: '实时因果',
+        cost: '每点 O(1)，保存位置、速度 2 个状态。',
+        idea: '先按当前速度预测位置，再用位置残差修正位置与速度。固定增益让匀速跟踪比单纯平均更及时。',
+        tune: '增大 α 会更信任当前测量；增大 β 会更快修正速度，也更容易把噪声带进速度状态。先调 α，再缓慢增加 β。',
+        pitfall: '固定增益不能自动反映噪声变化；突然加减速时会跟踪不足，过激增益可能带来振荡。',
+        formula: 'p⁻ = p + vΔt；r = z−p⁻；p = p⁻ + αr；v = v + βr/Δt', params: ['alpha', 'beta']
+      },
+      kalman: {
+        name: '标量 Kalman：随机游走模型', short: '标量 Kalman', family: '模型估计', mode: '实时因果',
+        cost: '每点 O(1)，一个估计状态与一个误差方差。',
+        idea: '假设下一时刻与当前值相近，用过程不确定性与测量不确定性决定信任哪一边。这里没有速度状态。',
+        tune: '本模型的 q 表示 Q/R 比值。增大 q 会更快跟随测量、降低滞后；减小 q 会更平滑，也更容易跟不上运动。',
+        pitfall: '对持续斜坡不会自动预测速度。模型或噪声假设不合适时，Kalman 的名称并不保证优于简单低通。',
+        formula: 'P⁻ = P+Q；K = P⁻/(P⁻+R)；x̂ = x̂⁻+K(z−x̂⁻)；P = (1−K)P⁻', params: ['q']
+      },
+      cvkalman: {
+        name: '恒速度 Kalman：位置与速度', short: '恒速 Kalman', family: '模型估计', mode: '实时因果',
+        cost: '固定 2 维状态，每点 O(1)；保存位置、速度与协方差矩阵。',
+        idea: '用位置和速度共同预测下一点，再通过位置测量更新两个状态；适合连续运动的编码器跟踪。',
+        tune: 'q 在这里控制运动模型的过程噪声尺度。增大它可更快适应加速度，但输出与速度估计会更抖；减小它更相信近似匀速。',
+        pitfall: '它与标量 Kalman 的 q 不是同一个物理含义，数值不能直接对比。急停、反向和错误采样周期都会破坏预测。',
+        formula: '[p, v]ᵀ 的预测矩阵 F = [[1, Δt], [0, 1]]；位置观测 H = [1, 0]', params: ['q']
+      },
+      oneeuro: {
+        name: 'One Euro 自适应低通（离散变体）', short: 'One Euro', family: '自适应与稳健', mode: '实时因果',
+        cost: '每点 O(1)，保存信号与导数的低通状态。',
+        idea: '静止时使用低截止抑制抖动，运动加快时提高截止以减少滞后，适合位置交互与速度变化明显的测量。',
+        tune: '先令速度系数较小，用最小截止调好静止抖动；再增加 euroBeta 改善快速运动的跟随。速度系数依赖信号单位。',
+        pitfall: '毛刺可能抬高截止并漏过。本实验用相邻原始值差分和指数离散化，区别于作者当前 JS 实现；截止是名义频率，靠近采样率一半时不能当成精确 −3 dB 点。',
+        formula: 'd = LPF((x[k]−x[k−1])/Δt, 1 Hz)；fc = min(0.475fs, fc,min + β|d|)；a = 1−exp(−2πfc/fs)', params: ['cutoff', 'euroBeta']
+      },
+      nlms: {
+        name: '归一化最小均方自适应消噪', short: 'NLMS', family: '自适应与稳健', mode: '需要参考通道',
+        cost: '每点 O(W)，保存 W 个权重和参考样本；本实验使用奇数抽头。',
+        idea: '用独立参考通道预测主通道中的相关干扰，再从测量中减掉预测干扰。参考应能看见噪声，并尽量不含目标运动。',
+        tune: 'mu 越大适应越快，但稳态误差与不稳定风险增加；先小步增加。window 调整参考通道的抽头数，本例可先试 9 或 17。',
+        pitfall: '没有相关参考时不能凭空消噪。参考若混入真实运动，可能把运动一起抵消；开始阶段需要收敛时间。',
+        formula: 'e = d−wᵀu；w ← w + mu·e·u/(ε+uᵀu)；输出为残差 e', params: ['window', 'mu']
+      },
+      sg: {
+        name: '尾随端点 Savitzky–Golay', short: '端点 SG', family: '简单平滑', mode: '实时因果',
+        cost: '系数可预计算；每点 O(W)，保存 W 个样本与系数。',
+        idea: '对过去窗口拟合二阶多项式，并在当前端点求值。它能保留局部二次趋势，适合观察位置的连续变化。',
+        tune: '增大窗口可加强平滑，但会让快速变化更难被局部二次模型描述；从较短窗口开始，观察反向、拐点与过冲。',
+        pitfall: '本实验不是常见的中心窗口 SG，不使用未来样本；端点估计的降噪能力较弱，负权重可能造成过冲，且不抗毛刺。',
+        formula: '在最近 W 点最小二乘拟合 a + bt + ct²，输出当前时刻的拟合值', params: ['window']
+      },
+      wavelet: {
+        name: 'Haar 小波软阈值去噪', short: 'Haar 小波', family: '自适应与稳健', mode: '离线整段',
+        cost: '整段 N 点变换与重建约 O(N)，需要保存整段数据及系数。',
+        idea: '把整段信号分解成不同尺度的细节，对细节系数做软阈值再重建；适合回看日志与比较多尺度去噪。',
+        tune: '增大阈值会压低更多细节；观察小幅真实运动是否同时消失。阈值大小应与噪声和信号尺度一起判断。',
+        pitfall: '这里需要整段数据，不能直接替代实时反馈滤波；Haar 基函数可能产生块状痕迹，小波也不等于自动保留所有边沿。',
+        formula: 'λ = σ̂√(2lnN)·强度/3；d → sign(d)·max(|d|−λ, 0)；强度 3 对应通用阈值', params: ['threshold']
+      },
+      slew: {
+        name: '变化率限制', short: '变化率限制', family: '自适应与稳健', mode: '实时因果',
+        cost: '每点 O(1)，保存 1 个输出状态。',
+        idea: '限制输出每秒能改变多少，利用运动速度上限削弱不可能的跳变，也常用于平滑目标指令。',
+        tune: 'maxRate 使用当前信号单位/秒。设在真实最大变化率之上，再观察毛刺抑制是否足够；太低会把真实运动限制成斜坡。',
+        pitfall: '不是线性低通，也不能保证消除小幅高频噪声。量程、单位或真实速度上限变化后必须重新判断。',
+        formula: 'y[k] = y[k−1] + clip(x[k]−y[k−1], −maxRate·Δt, +maxRate·Δt)', params: ['maxRate']
+      },
+      deadband: {
+        name: '死区保持', short: '死区保持', family: '简单平滑', mode: '实时因果',
+        cost: '每点 O(1)，保存 1 个输出状态。',
+        idea: '输入相对当前输出的变化小于阈值时保持不动，可压住静止位置的显示抖动或微小指令变化。',
+        tune: 'deadband 使用信号本身的单位。设为能容忍的静止抖动范围，并核对需要识别的最小真实位移。',
+        pitfall: '会吞掉小幅真实运动并形成台阶；若直接放进精密反馈通道，可能损失分辨率。不能用“看起来不抖”替代误差评估。',
+        formula: '若 |x[k]−y[k−1]| ≤ deadband，则保持；否则更新为 x[k]', params: ['deadband']
+      },
+      unwrap: {
+        name: '角度展开后低通', short: '角度展开', family: '姿态融合', mode: '实时因果',
+        cost: '每点 O(1)，保存前一包裹角、连续角与低通状态。',
+        idea: '先用最短角差把 ±180° 跨界接成连续角，再做一阶低通，避免把边界附近的两个角错误平均到 0°。',
+        tune: '截止的调节方式与一阶低通相同；比较跨界处是否连贯，再比较连续角的抖动和滞后。',
+        pitfall: '若相邻采样的真实转角超过半圈，或出现接近半圈的错误读数，最短角差会认错方向。展示包裹角时仍会有数值跳变。',
+        formula: 'θu[k] = θu[k−1] + wrap180(θw[k]−θw[k−1])；再对 θu 做 EMA', params: ['cutoff']
+      },
+      complementary: {
+        name: '一维互补姿态融合', short: '互补融合', family: '姿态融合', mode: '双传感器',
+        cost: '每点 O(1)，保存角度估计，少量乘加。',
+        idea: '让陀螺仪负责短时快速变化，让加速度计推算的倾角提供低频参考，两者共同估计单轴倾角。',
+        tune: '增大时间常数 tau 会更信任短时陀螺积分，减弱加速度倾角噪声，但校正漂移更慢；减小 tau 则更快拉回参考角。',
+        pitfall: '线性加速度会污染加速度倾角；陀螺偏置不能被显式估计。这里是一维演示，不代表完整三维姿态解算。',
+        formula: 'θ̂ = a·(θ̂前 + ωgyro·Δt) + (1−a)·θacc，a = tau/(tau+Δt)', params: ['tau']
+      },
+      anglebias: {
+        name: '角度与陀螺偏置 Kalman', short: '角度偏置 KF', family: '姿态融合', mode: '双传感器',
+        cost: '固定 2 维状态，每点 O(1)；保存角度、偏置和协方差矩阵。',
+        idea: '同时估计倾角和陀螺仪的缓慢偏置；先用扣除偏置后的角速度预测，再用加速度倾角更新。',
+        tune: 'q 调节本实现的过程噪声尺度；增大后对模型变化更敏感，也可能更抖。观察偏置漂移与线性加速度干扰，不能照搬其他 Kalman 的 q。',
+        pitfall: '加速度倾角长期失真时，滤波器可能把参考误差归入姿态或偏置。运动可观测性、噪声设定和初始化都会影响收敛。',
+        formula: 'θ⁻ = θ + (ωgyro−b)Δt；b⁻ = b；状态 [θ, b]ᵀ，观测为加速度倾角', params: ['q']
+      },
+      gyro: {
+        name: '纯陀螺积分基线', short: '陀螺积分', family: '姿态融合', mode: '基线',
+        cost: '每点 O(1)，保存 1 个角度状态。',
+        idea: '把角速度随时间累加成角度，用来展示陀螺仪的短时跟踪优势和长期漂移。它是对照基线。',
+        tune: '本实验没有滤波参数；比较时间越长，越容易看到零偏积分产生的角度误差。正确采样周期和初始角度仍然必要。',
+        pitfall: '恒定零偏会造成随时间增长的角度误差；没有外部参考就不能长期自动校正漂移。',
+        formula: 'θ[k] = θ[k−1] + ωgyro[k]·Δt', params: []
+      }
+    },
+
+    lessons: [
+      {
+        id: 'smooth-delay', title: '01 · 降噪与滞后怎么取舍', scenario: 'step',
+        filters: ['ma', 'ema', 'butter'], noise: 0.22, spikes: 0, hum: 0,
+        params: { window: 21, cutoff: 5 },
+        text: '先看阶跃前的静止段，再看阶跃后的到位速度。把窗口增大，或把截止降到更低，观察噪声下降是否值得新增的滞后。二阶低通可能过冲；曲线最平不一定最适合反馈控制。'
+      },
+      {
+        id: 'spike-rejection', title: '02 · 偶发毛刺该怎么去', scenario: 'spikes',
+        filters: ['median', 'hampel', 'ema'], noise: 0.08, spikes: 0.035, hum: 0,
+        params: { window: 9, cutoff: 8, threshold: 3 },
+        text: '找一个孤立毛刺，比较中值是否删除它、Hampel 是否只替换异常点，以及一阶低通是否留下拖尾。再加大毛刺密度，观察“窗口内多数点正常”这一前提何时不再成立。'
+      },
+      {
+        id: 'tracking', title: '03 · 低延迟跟踪连续运动', scenario: 'ramp',
+        filters: ['oneeuro', 'alphabeta', 'cvkalman'], noise: 0.14, spikes: 0, hum: 0,
+        params: { cutoff: 1.2, euroBeta: 0.35, alpha: 0.3, beta: 0.025, q: 0.03 },
+        text: '对照匀速段与运动反向处。One Euro 会随速度调截止，α–β 和恒速 Kalman 会预测位置；加快响应后，检查静止抖动与反向过冲是否增加。模型估计的收益取决于运动是否符合假设。'
+      },
+      {
+        id: 'frequency', title: '04 · 扫频看出截止与延迟', scenario: 'chirp',
+        filters: ['fir', 'butter'], noise: 0.05, spikes: 0, hum: 0,
+        params: { window: 41, cutoff: 3 },
+        text: '从低频走向高频，观察幅度何时开始衰减。固定截止，只增加 FIR 抽头数，比较过渡变化与整条曲线的延迟。扫频段的真实运动也会被低通压低，不能把幅度变小直接当成降噪成功。'
+      },
+      {
+        id: 'speed-measurement', title: '05 · 转速信号的抖动与突变', scenario: 'speed',
+        filters: ['ma', 'ema', 'kalman'], noise: 0.2, spikes: 0, hum: 0,
+        params: { window: 15, cutoff: 6, q: 0.02 },
+        text: '对照匀速段的抖动和加减速段的误差。标量 Kalman 采用随机游走假设，没有速度预测状态；把 q 增大，观察它怎样更快跟随测量。若转速来自位置差分，采样与量化也会影响原始噪声。'
+      },
+      {
+        id: 'periodic-interference', title: '06 · 处理 50 Hz 相关干扰', scenario: 'sine',
+        filters: ['notch', 'nlms', 'ema'], noise: 0.04, spikes: 0, hum: 0.4,
+        params: { notch: 50, notchQ: 12, cutoff: 8, window: 17, mu: 0.12 },
+        text: '比较陷波的定点抑制、NLMS 借助独立噪声参考的收敛过程，以及低通对整段频带的压制。先把陷波频率调离 50 Hz，再调回来。NLMS 的参考通道是额外信息，不能按相同传感器成本与单通道算法直接排名。'
+      },
+      {
+        id: 'angle-wrap', title: '07 · 编码器角度跨过 ±180°', scenario: 'encoder',
+        filters: ['ema', 'unwrap'], noise: 0.08, spikes: 0, hum: 0,
+        params: { cutoff: 6 },
+        text: '找到编码器从 +180° 跳到 −180° 的位置。直接平均会误认成反向大跳变；先展开再滤波能保留连续旋转。这里评估累计转角，误差保留圈数差；只有比较朝向而不关心圈数时，才用最短角差。'
+      },
+      {
+        id: 'imu-fusion', title: '08 · IMU：快响应与慢漂移', scenario: 'imu',
+        filters: ['gyro', 'complementary', 'anglebias'], noise: 0.18, spikes: 0, hum: 0,
+        params: { tau: 0.55, q: 0.02 },
+        text: '先观察陀螺积分如何逐渐漂移，再看互补融合和角度偏置 Kalman 如何借助加速度倾角校正。遇到线性加速度污染时，参考倾角也会失真；较少抖动、较小漂移和快速跟踪需要共同权衡。'
+      },
+      {
+        id: 'offline-vs-live', title: '09 · 离线处理与实时窗口', scenario: 'sine',
+        filters: ['wavelet', 'sg', 'fir'], noise: 0.22, spikes: 0, hum: 0,
+        params: { window: 21, cutoff: 10, threshold: 2.5 },
+        text: '小波会读入整段记录，尾随端点 SG 和 FIR 只用当前及过去数据。比较平滑效果时，也要核对数据可用时间。SG 在端点拟合二阶趋势，可能过冲；Haar 软阈值可能留下块状痕迹。'
+      }
+    ],
+
+    roadmap: [
+      {
+        name: 'EKF / UKF：非线性状态估计',
+        reason: '用于非线性运动模型或传感器观测；扩展 Kalman（EKF）做局部线性化，无迹 Kalman（UKF）传播代表性采样点。',
+        limit: '未实现。这些是成熟方法，并非“更新就必然更好”；需提供可信模型、状态和噪声设定，计算量也更高。'
+      },
+      {
+        name: 'Mahony / Madgwick：三维姿态',
+        reason: '面向四元数姿态，可结合陀螺、加速度计以及可选磁力计，处理比本实验单轴融合更完整的姿态问题。',
+        limit: '未实现。两者都是已有姿态估计方法；动态加速度与磁干扰仍需处理，没有可靠航向参考时不能保证航向长期稳定。'
+      },
+      {
+        name: 'Fusion：姿态估计实现库',
+        reason: '可进一步学习姿态融合的工程实现、初始化、异常测量拒绝和传感器标定流程。',
+        limit: '未接入。Fusion 在此指相关开源姿态估计库，不应仅凭库名把它宣传成全新滤波类别；具体行为取决于采用的实现与配置。'
+      },
+      {
+        name: '粒子滤波',
+        reason: '用带权样本表达状态分布，可处理某些非线性、非高斯或多峰估计问题。',
+        limit: '未实现。粒子数与状态维度会带来显著计算开销，还需处理粒子退化与重采样，不适合作为所有 MCU 测量的默认方案。'
+      },
+      {
+        name: '递归最小二乘（RLS）',
+        reason: '可在线识别模型参数或构建自适应噪声抵消器，常比简单 LMS 更快适应某些相关输入。',
+        limit: '未实现。它是成熟的参数估计方法；典型实现每点约 O(W²)，遗忘因子、激励条件与数值稳定性都需要考虑。'
+      },
+      {
+        name: 'H∞ 鲁棒估计',
+        reason: '按指定的最坏情况扰动增益约束设计估计器，适合研究噪声统计不确定时的鲁棒性。',
+        limit: '未实现。需要明确模型和设计目标；更保守并不自动意味着误差更小，也不能替代模型验证。'
+      },
+      {
+        name: '更多小波 / EMD / VMD',
+        reason: '进一步探索多尺度去噪与非平稳振动分解，例如轴承、机械振动和离线运动日志分析。',
+        limit: '仅实现了 Haar 软阈值基线，其余未实现。EMD、VMD 是分解方法，仍需设计分量选择与重建；边界效应、模态混叠或参数敏感性不能忽略。'
+      },
+      {
+        name: 'KalmanNet 等学习辅助估计',
+        reason: '把已有状态空间模型与学习模块结合，用训练数据补充难以准确建模的部分。',
+        limit: '未实现。需要训练数据、独立验证和部署资源；工况变化可能导致失效。学习辅助不是对传统滤波器的普遍替代。'
+      }
+    ]
+  };
+
+  if (root) root.Teaching = Teaching;
+  if (typeof module !== 'undefined' && module.exports) module.exports = Teaching;
+})(typeof window !== 'undefined' ? window : null);
+</script>
+<script>window.Research = {"schemaVersion":1,"retrievedOn":"2026-10-02","locale":"zh-CN","scope":"运动控制学习：编码器、转速、位置、IMU；离线交互演示的一手资料","methodology":"直接读取项目维护者仓库、官方文档与作者论文。Stars 保留页面显示的舍入值，表示本次读取快照，不是实时排行榜、质量评分或推荐排序。适用性说明是根据算法结构做出的教学与工程判断。","displayNotes":["FIR、IIR 是滤波器结构大类；滑动平均属于 FIR，指数平滑属于一阶 IIR，Butterworth 和陷波可用 IIR 实现。","One Euro 发表于 2012 年，适合展示自适应平滑思路，不能称为近两年新发明。","KalmanNet 是 2021 年预印本、2022 年 TSP 论文的学习型状态估计研究方向；不应宣称它在所有真实设备上优于经典滤波。","示例一轴互补滤波仅解释 IMU 融合原理，不等同于复刻 Fusion 完整 AHRS。","小波批量降噪、使用未来样本的居中平滑，与因果实时滤波不能按相同延迟条件直接排名。","静态噪声、动态跟踪、尖峰异常、单频振动是不同问题；不存在单一算法全局最优。"],"projects":[{"id":"cmsis","name":"ARM CMSIS-DSP","repo":"https://github.com/ARM-software/CMSIS-DSP","starsDisplay":"1.1k","category":"嵌入式基础库","language":"C / 可选 C++","verifiedFacts":["为 Cortex-M、Cortex-A 提供优化计算内核。","官方 API 提供 FIR、双二阶 IIR 与归一化 LMS，含浮点和部分定点实现。"],"useFor":"将已设计的 FIR、IIR、陷波与自适应滤波部署到 Arm MCU。","limits":"它负责数值计算，不会自动决定截止频率、控制回路可接受延迟或系统模型。","sources":["cmsis-repo","cmsis-fir","cmsis-biquad","cmsis-nlms"]},{"id":"simplefoc","name":"SimpleFOC / Arduino-FOC","repo":"https://github.com/simplefoc/Arduino-FOC","starsDisplay":"3.0k","category":"运动控制工程","language":"C++","verifiedFacts":["BLDC 与步进电机的磁场定向控制库。","其 LowPassFilter 实现一阶递归低通；时间常数 Tf 与采样间隔 dt 共同决定平滑强度。"],"useFor":"理解电机项目中如何平滑测量值，以及如何把滤波写进逐次采样循环。","limits":"整个控制库的 Stars 不代表某个滤波器的优劣。时间常数增大通常更平滑，也会加重动态滞后。","sources":["simplefoc-repo","simplefoc-lpf-code"]},{"id":"one-euro","name":"作者维护的 OneEuroFilter","repo":"https://github.com/casiez/OneEuroFilter","starsDisplay":"258","category":"自适应低通 / 2012 年","language":"C / C++ / JavaScript / Python 等","verifiedFacts":["根据运动变化速率改变一阶低通的截止频率。","低速降低截止频率以压制抖动，高速提高截止频率以减少滞后。"],"useFor":"位置反馈显示、跟踪输入、速度变化明显的测量平滑；适合交互观察静止与快速运动之间的取舍。","limits":"参数 beta 与信号单位有关。它不建立电机动力学模型，也不能保证闭环稳定；真实反馈环须单独验证。","sources":["one-euro-repo","one-euro-author","one-euro-js"]},{"id":"tinyekf","name":"TinyEKF","repo":"https://github.com/simondlevy/TinyEKF","starsDisplay":"1.2k","category":"微控制器状态估计","language":"C / C++，附 Python 原型","verifiedFacts":["头文件形式的扩展卡尔曼滤波实现。","使用编译期静态内存分配，支持单精度、双精度。"],"useFor":"有状态方程与测量方程的 MCU 状态估计，逐步从电脑原型迁移到嵌入式。","limits":"使用者仍需提供模型、相应 Jacobian 以及噪声协方差；库名中的 Tiny 不代表无需建模。","sources":["tinyekf-repo"]},{"id":"filterpy","name":"FilterPy","repo":"https://github.com/rlabbe/filterpy","starsDisplay":"3.9k","category":"学习与离线原型","language":"Python","verifiedFacts":["实现 Kalman、EKF、UKF、粒子滤波、alpha-beta 与平滑器等。","官方 Kalman 示例区分状态 x、协方差 P、模型 F、测量映射 H、过程噪声 Q 与测量噪声 R。"],"useFor":"在电脑上验证位置—速度估计与噪声参数，再迁移数值核心。","limits":"它是 Python 原型与学习入口，并非裸机 MCU 固件即插即用库。","sources":["filterpy-repo","filterpy-kf"]},{"id":"fusion","name":"xioTechnologies / Fusion","repo":"https://github.com/xioTechnologies/Fusion","starsDisplay":"1.7k","category":"IMU 姿态融合","language":"C，附 Python 包","verifiedFacts":["融合陀螺仪、加速度计，可选磁力计或外部航向。","采用 Madgwick 博士论文第 7 章的修订 AHRS，区别于常称 Madgwick 的第 3 章初版算法。","具有加速度与磁干扰拒绝机制。"],"useFor":"嵌入式 IMU 姿态、重力方向与去重力加速度估计。","limits":"输入需要校准并统一坐标系。它不等同于单通道低通；加速度不能直接当作位置。","sources":["fusion-repo"]},{"id":"pywavelets","name":"PyWavelets","repo":"https://github.com/PyWavelets/pywt","starsDisplay":"2.4k","category":"多尺度分析 / 批处理","language":"Python","verifiedFacts":["提供离散小波变换、重构与系数阈值函数。","软阈值既删除较小系数，也收缩较大系数。"],"useFor":"记录后的振动分析、离线去噪、多尺度观察。","limits":"常见整段分解—阈值—重构流程需要一段数据；若用于在线控制，必须另行设计分块、边界与延迟。","sources":["pywt-repo","pywt-dwt","pywt-threshold"]},{"id":"kalmannet","name":"KalmanNet","repo":"https://github.com/KalmanNet/KalmanNet_TSP","starsDisplay":"456","category":"学习型估计 / 2021—2022 年论文","language":"Python / 神经网络","verifiedFacts":["结合部分已知状态空间模型与循环神经网络，从数据学习状态估计。","官方代码包含模型参数、数据集大小、训练配置与网络设置。"],"useFor":"已有代表性数据、模型存在偏差时的研究实验。","limits":"需要训练数据、训练及部署验证；不应在没有训练的演示中伪造一个 KalmanNet 曲线，也不适合作为初学 MCU 滤波的默认第一步。","sources":["kalmannet-repo","kalmannet-paper"]}],"algorithms":[{"id":"fir","name":"有限冲激响应（FIR）","idea":"输出是当前及有限个历史输入的加权和。","equation":"y[n] = sum(k=0..M-1, b[k]*x[n-k])","applicability":"滑动平均适合低成本压制随机噪声；加窗 FIR 适合明确频率指标。","caution":"一般 FIR 不必然线性相位；实系数对称 FIR 才具有相应线性相位结构。长度 M 的因果对称 FIR 群延迟为 (M-1)/2 个采样。","sourceIds":["cmsis-fir","scipy-firwin"]},{"id":"iir","name":"无限冲激响应（IIR）","idea":"保留少量状态，把新测量与过去输出混合。","equation":"y[n] = (1-a)*y[n-1] + a*x[n]; a=dt/(tau+dt); tau=1/(2*pi*fc)","applicability":"资源有限的速度平滑、低通；双二阶节适合更陡低通或陷波。","caution":"这里 a 是新测量权重，SimpleFOC 源码中 alpha 是旧值权重，两者互为 1 减。上式由后向欧拉离散化得到，fc 是对应连续时间常数的名义截止频率；接近 Nyquist 时不等于精确数字 -3dB 点。","sourceIds":["simplefoc-lpf-code","cmsis-biquad"]},{"id":"notch","name":"陷波（Notch）","idea":"主要削弱某个窄频段，让其他频率尽量通过。","equation":"Q = f0 / bandwidth","applicability":"已识别的机械共振、固定频率干扰。","caution":"窄带干扰频率漂移会削弱效果；也可能删除同频真实运动。Q 越高通常陷波越窄。","sourceIds":["scipy-notch"]},{"id":"kalman","name":"卡尔曼状态估计","idea":"先用运动模型预测，再按不确定度用传感器纠正。","equation":"predict: x-=F*x, P-=F*P*F^T+Q; update: K=P-*H^T/(H*P-*H^T+R), x=x-+K*(z-H*x-)","applicability":"用编码器位置估计位置与速度；或把多个有物理联系的传感器融入状态。","caution":"单状态随机游走 KF 不代表位置—速度模型。模型/单位/Q/R 选错，结果可明显变差；曲线越平滑不代表估计越准。","sourceIds":["filterpy-kf","kalmannet-paper"]},{"id":"oneEuro","name":"One Euro","idea":"慢时更稳，快时跟得更紧。","equation":"dhat=LPF((x[n]-y[n-1])/dt, derivativeCutoff); fc=minCutoff+beta*abs(dhat); y=LPF(x,fc)","applicability":"同一信号既有停留又有快速移动时，直观展示平滑—滞后折中。","caution":"所列导数估计对齐作者当前 JavaScript 实现。minCutoff>0、beta>=0、dt>0；beta 的合理量级随信号单位变化。","sourceIds":["one-euro-author","one-euro-js"]},{"id":"complementary","name":"一轴互补滤波（教学模型）","idea":"陀螺仪负责短时变化，加速度计倾角负责长期参考。","equation":"angle = a*(anglePrev+gyro*dt) + (1-a)*accAngle","applicability":"小范围一轴倾角教学；理解漂移与动态加速度污染。","caution":"仅用加速度计不能观察绕重力方向的航向角。完整三维姿态需处理四元数、坐标系、校准等；这条教学公式不是 Fusion 完整实现。","sourceIds":["fusion-repo"]},{"id":"nlms","name":"归一化最小均方（NLMS）","idea":"在线调整 FIR 系数，使滤波输出接近期望通道。","equation":"y=w^T*x; e=d-y; w=w+mu*e*x/(epsilon+x^T*x)","applicability":"有参考信息时做系统辨识，或用与噪声相关、尽量与真实运动无关的参考通道做自适应噪声抵消。","caution":"在噪声抵消中 x 是噪声参考，d 是带噪主信号，期望恢复的信号在残差 e，而非 y。CMSIS 命名 pRef 表示期望输入 d，别与物理噪声参考通道混淆。它不能凭空从任意单通道里知道什么是噪声。","sourceIds":["cmsis-nlms"]},{"id":"savgol","name":"Savitzky–Golay 局部多项式","idea":"在小窗口内拟合低阶多项式，再取平滑值或导数。","applicability":"位置轨迹平滑、记录后求导；比简单平均更容易保留局部曲线形状。","caution":"常用居中窗口会使用未来样本；实时应用需要等待半窗口或改成因果/端点系数，不能把居中结果标成零延迟。","sourceIds":["scipy-savgol"]}],"extensions":[{"name":"robot_localization","repo":"https://github.com/cra-ros-pkg/robot_localization","description":"ROS 机器人状态融合工程入口，提供 EKF/UKF，支持编码器里程计、IMU 等输入的配置。","caveat":"需要理解坐标系、时间戳与传感器协方差；不是替换一个低通函数。","sourceIds":["robot-localization-repo","robot-localization-doc"]},{"name":"GTSAM","repo":"https://github.com/borglab/gtsam","description":"使用因子图进行机器人与视觉中的平滑、建图，包含 IMU 预积分。","caveat":"更适合多源定位与轨迹优化；不能直接当作低成本单通道实时滤波比较对象。","sourceIds":["gtsam-repo"]}],"implementationChecks":["实际采样频率决定归一化频率；任何可调截止频率须低于 fs/2，改变 fs 后同步调整上限。","因果滤波器只能读当前及过去测量。仿真真值只用于绘图、评估，不得进入滤波更新。","位置差分求速度会放大量化与高频噪声；先清楚标明测量信号和目标状态的单位。","同一输入、同一随机种子、相同评估区间比较算法；启动瞬态应明确显示或统一排除。","延迟指标优先用阶跃响应、正弦相位或明确估计方法，不能以单一误差分数代替。","CMSIS 双二阶反馈系数采用加号约定；从采用减号的设计工具迁移时，a1/a2 需取反。","对 One Euro 标注自适应滤波；对中值等非线性算法，不宜画与线性时不变滤波器同意义的固定频率响应。","低通会带来相位滞后；闭环控制中的允许截止频率要结合系统带宽与稳定裕度判断。","算法演示中的确定性合成信号结果，只代表当前场景与参数。"],"sources":[{"id":"cmsis-repo","title":"ARM CMSIS-DSP 官方仓库","url":"https://github.com/ARM-software/CMSIS-DSP","kind":"官方仓库"},{"id":"cmsis-fir","title":"CMSIS-DSP FIR 官方文档","url":"https://arm-software.github.io/CMSIS-DSP/main/group__FIR.html","kind":"官方文档"},{"id":"cmsis-biquad","title":"CMSIS-DSP 双二阶 IIR 与反馈系数符号","url":"https://arm-software.github.io/CMSIS-DSP/main/group__BiquadCascadeDF1.html","kind":"官方文档"},{"id":"cmsis-nlms","title":"CMSIS-DSP 归一化 LMS 结构与更新公式","url":"https://arm-software.github.io/CMSIS-DSP/main/group__LMS__NORM.html","kind":"官方文档"},{"id":"simplefoc-repo","title":"SimpleFOC 官方仓库","url":"https://github.com/simplefoc/Arduino-FOC","kind":"官方仓库"},{"id":"simplefoc-lpf-code","title":"SimpleFOC 一阶低通源码","url":"https://raw.githubusercontent.com/simplefoc/Arduino-FOC/master/src/common/lowpass_filter.cpp","kind":"官方源码"},{"id":"one-euro-repo","title":"作者维护的 One Euro 多语言实现","url":"https://github.com/casiez/OneEuroFilter","kind":"作者仓库"},{"id":"one-euro-author","title":"One Euro 作者主页与调参说明","url":"https://gery.casiez.net/1euro/","kind":"作者官网"},{"id":"one-euro-js","title":"One Euro 作者 JavaScript 实现","url":"https://raw.githubusercontent.com/casiez/OneEuroFilter/main/javascript/OneEuroFilter.js","kind":"作者源码"},{"id":"tinyekf-repo","title":"TinyEKF 官方仓库","url":"https://github.com/simondlevy/TinyEKF","kind":"作者仓库"},{"id":"filterpy-repo","title":"FilterPy 官方仓库","url":"https://github.com/rlabbe/filterpy","kind":"作者仓库"},{"id":"filterpy-kf","title":"FilterPy KalmanFilter 官方文档","url":"https://filterpy.readthedocs.io/en/latest/kalman/KalmanFilter.html","kind":"官方文档"},{"id":"fusion-repo","title":"Fusion 官方说明：修订 AHRS 与传感器拒绝机制","url":"https://github.com/xioTechnologies/Fusion","kind":"官方仓库"},{"id":"pywt-repo","title":"PyWavelets 官方仓库","url":"https://github.com/PyWavelets/pywt","kind":"官方仓库"},{"id":"pywt-dwt","title":"PyWavelets 离散小波变换","url":"https://pywavelets.readthedocs.io/en/latest/ref/dwt-discrete-wavelet-transform.html","kind":"官方文档"},{"id":"pywt-threshold","title":"PyWavelets 阈值函数","url":"https://pywavelets.readthedocs.io/en/latest/ref/thresholding-functions.html","kind":"官方文档"},{"id":"kalmannet-repo","title":"KalmanNet 论文作者代码","url":"https://github.com/KalmanNet/KalmanNet_TSP","kind":"论文代码"},{"id":"kalmannet-paper","title":"KalmanNet: Neural Network Aided Kalman Filtering for Partially Known Dynamics","url":"https://arxiv.org/abs/2107.10043","kind":"原始论文"},{"id":"scipy-firwin","title":"SciPy FIR 窗函数设计与线性相位","url":"https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html","kind":"官方文档"},{"id":"scipy-notch","title":"SciPy 二阶 IIR 陷波与品质因数","url":"https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.iirnotch.html","kind":"官方文档"},{"id":"scipy-savgol","title":"SciPy Savitzky–Golay 滤波","url":"https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html","kind":"官方文档"},{"id":"robot-localization-repo","title":"robot_localization 官方仓库","url":"https://github.com/cra-ros-pkg/robot_localization","kind":"官方仓库"},{"id":"robot-localization-doc","title":"robot_localization 状态估计官方文档源码","url":"https://raw.githubusercontent.com/cra-ros-pkg/robot_localization/rolling-devel/doc/state_estimation_nodes.rst","kind":"官方文档源码"},{"id":"gtsam-repo","title":"GTSAM 官方仓库","url":"https://github.com/borglab/gtsam","kind":"官方仓库"}]};</script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CORE = window.FilterCore, TEACH = window.Teaching;
+const palette=['#2874d4','#d08122','#885acb','#d65371'];
+const defaults={window:15,cutoff:5,notch:50,notchQ:10,q:0.01,alpha:0.35,beta:0.03,euroBeta:0.04,mu:0.1,threshold:3,maxRate:60,deadband:0.5,tau:0.5};
+const parameterInfo={
+ window:['窗口 / 抽头数',3,81,2,'点'],cutoff:['截止频率',0.2,40,0.1,'Hz'],notch:['陷波中心',1,90,0.5,'Hz'],notchQ:['陷波品质因数 Q',1,40,1,''],q:['过程噪声 / 量测噪声比例',-5,1,0.1,'log'],alpha:['位置校正 α',0.02,0.95,0.01,''],beta:['速度校正 β',0.001,0.3,0.001,''],euroBeta:['速度自适应 β',0,1,0.002,''],mu:['自适应步长 μ',0.005,0.8,0.005,''],threshold:['离群判定阈值',1,6,0.1,'σ'],maxRate:['最大变化率',1,1000,1,'单位/s'],deadband:['不更新的误差带',0.01,10,0.01,'单位'],tau:['陀螺 / 加速度融合时间常数',0.02,3,0.02,'s']
+};
+const state={scenario:'step',fs:200,noise:0.1,spikes:0,hum:0,seed:42,selected:['ma','ema','cvkalman'],focus:'ema',params:{},lesson:0,secondary:'error',zoom:8,zoomStart:0,hover:null,playEnd:Infinity,playing:false,tab:'experiment'};
+for(const id of Object.keys(TEACH.algorithms)) state.params[id]={...defaults};
+let data, results={}, metricRows=[], frame=0, toastTimer, playTimer, spectraCache;
+let pendingRegenerate=false, dataVersion=0, cursorFrame=0, resizeFrame=0;
+const resultCache=new Map(),stepCache=new Map();
+let errorSeriesCache=null;
+function inform(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,3000);}
+function available(id){return !(['gyro','complementary','anglebias'].includes(id)&&state.scenario!=='imu')&&!(id==='unwrap'&&state.scenario!=='encoder');}
+function format(value,digits=2){if(!Number.isFinite(value))return '—';return Math.abs(value)>=10000?value.toExponential(2):value.toFixed(digits);}
+function color(id){return palette[Math.max(0,state.selected.indexOf(id))%palette.length];}
+function stopPlay(){state.playing=false;state.playEnd=Infinity;cancelAnimationFrame(playTimer);$('play').textContent='▶ 播放';}
+function setTab(tab){state.tab=tab;document.querySelectorAll('.tab-page').forEach(p=>p.hidden=p.id!=='page-'+tab);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='experiment')requestAnimationFrame(drawCharts);}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+function lessonConfig(index){return TEACH.lessons[index];}
+function applyLesson(index){
+ stopPlay();const lesson=lessonConfig(index);state.lesson=index;state.scenario=lesson.scenario;state.selected=lesson.filters.slice(0,4);state.focus=state.selected[0];state.noise=lesson.noise??0.1;state.spikes=lesson.spikes??0;state.hum=lesson.hum??0;state.fs=200;state.seed=42;state.zoom=8;state.zoomStart=0;
+ state.selected.forEach(id=>state.params[id]={...defaults,...(lesson.params||{})});
+ if(state.scenario==='speed')state.selected.forEach(id=>{state.params[id].maxRate=1200;state.params[id].deadband=8;state.params[id].euroBeta=0.004;});
+ renderControls();recompute();
+}
+function renderControls(){
+ $('scenario').value=state.scenario;$('fs').value=state.fs;$('zoom').value=state.zoom;$('zoom-start').value=state.zoomStart;
+ ['noise','spikes','hum'].forEach(key=>{$(key).value=state[key];$(key+'-value').textContent=(state[key]*100).toFixed(key==='spikes'?1:0)+'%';});
+ $('seed-label').textContent='SEED '+state.seed;$('stat-fs').textContent=state.fs;
+ const scene=CORE.scenarios.find(s=>s.id===state.scenario);$('scene-desc').textContent=scene?.description||'';
+ $('lessons').innerHTML=TEACH.lessons.map((l,i)=>`<button class="lesson ${state.lesson===i?'active':''}" data-lesson="${i}"><span>${String(i+1).padStart(2,'0')}</span>${esc(l.title.replace(/^\d+\s*·\s*/,''))}</button>`).join('');
+ $('lesson-counter').textContent=state.lesson===null?'自由实验':String(state.lesson+1).padStart(2,'0')+' / '+String(TEACH.lessons.length).padStart(2,'0');
+ $('hum-note').textContent=state.fs===100?'采样率 100 Hz 时，演示将干扰频率设为 40 Hz，避免恰好落在奈奎斯特频率。':'干扰频率 50 Hz；NLMS 额外接收与此干扰相关的参考通道。';
+ renderFilterList();renderDetail();
+}
+function renderFilterList(){
+ let last='';$('filter-list').innerHTML=Object.entries(TEACH.algorithms).map(([id,a])=>{let group='';if(a.family!==last){last=a.family;group=`<div class="group-label">${esc(last)}</div>`;}const chosen=state.selected.includes(id);return group+`<div class="filter-option ${chosen?'chosen':''} ${available(id)?'':'unavailable'}"><label><input type="checkbox" data-filter="${id}" ${chosen?'checked':''} ${available(id)?'':'disabled'}><span>${esc(a.short||a.name)}</span></label>${chosen?`<button data-focus="${id}" title="解释和调整 ${esc(a.name)}">调参</button>`:''}</div>`;}).join('');
+ $('focus').innerHTML=state.selected.map(id=>`<option value="${id}">${esc(TEACH.algorithms[id].short||TEACH.algorithms[id].name)}</option>`).join('');$('focus').value=state.focus;
+}
+$('lessons').addEventListener('click',e=>{const el=e.target.closest('[data-lesson]');if(el)applyLesson(Number(el.dataset.lesson));});
+$('filter-list').addEventListener('change',e=>{const id=e.target.dataset.filter;if(!id)return;if(e.target.checked){if(state.selected.length>=4){e.target.checked=false;inform('同屏最多 4 条结果，先取消一个算法。');return;}state.selected.push(id);state.focus=id;}else{if(state.selected.length===1){e.target.checked=true;inform('至少保留一个算法，方便对比。');return;}state.selected=state.selected.filter(a=>a!==id);if(state.focus===id)state.focus=state.selected[0];}state.lesson=null;renderControls();recompute(false);});
+$('filter-list').addEventListener('click',e=>{const el=e.target.closest('[data-focus]');if(el){state.focus=el.dataset.focus;renderDetail();renderMetrics();renderLegend();$('parameters').scrollIntoView({behavior:'smooth',block:'nearest'});}});
+function focusAlgorithm(id){state.focus=id;$('focus').value=id;renderDetail();renderMetrics();renderLegend();}
+$('focus').addEventListener('change',()=>focusAlgorithm($('focus').value));
+function renderDetail(){
+ const a=TEACH.algorithms[state.focus];if(!a)return;$('focus').value=state.focus;$('detail-name').textContent=a.name;
+ $('detail-badges').innerHTML=`<span class="badge">${esc(a.family)}</span><span class="badge ${state.focus==='wavelet'?'offline-badge':''}">${esc(a.mode)}</span>`;
+ ['idea','formula','tune','pitfall'].forEach(k=>$('detail-'+k).textContent=a[k]);$('detail-cost').textContent='典型实现代价：'+a.cost;
+ const controls=(a.params||[]).filter(k=>parameterInfo[k]);
+ $('parameters').innerHTML=controls.length?controls.map(key=>{let [name,min,max,step,unit]=parameterInfo[key];let value=state.params[state.focus][key];if(key==='cutoff')max=Math.min(40,state.fs*0.4);if(key==='notch')max=state.fs*0.45;if(unit==='log')value=Math.log10(value);if(state.focus==='oneeuro'&&key==='cutoff')name='最低名义截止频率';if(state.focus==='fir'&&key==='window')name='FIR 抽头数';if(state.focus==='fir'&&key==='cutoff')name='FIR 设计截止频率';if(state.focus==='wavelet'&&key==='threshold')name='小波阈值强度（3=通用阈值）';if(['cvkalman','anglebias'].includes(state.focus)&&key==='q')name='过程噪声尺度 q';if(state.scenario==='speed'&&key==='maxRate')max=6000;return `<div class="field"><div class="slider-heading"><label for="param-${key}">${esc(name)}</label><output id="param-value-${key}">${parameterLabel(key,state.params[state.focus][key])}</output></div><input id="param-${key}" data-param="${key}" type="range" min="${min}" max="${max}" step="${step}" value="${value}"></div>`;}).join(''):'<div class="empty-params">这个基线没有可调滤波参数。</div>';
+ if(['kalman','cvkalman','anglebias'].includes(state.focus))$('parameters').insertAdjacentHTML('beforeend','<p class="notice" style="grid-column:1/-1">过程噪声描述对模型的不信任。不同模型的 Q 单位不同。标量：Q=qR；恒速：Q=diag(qR, qR/Δt²)；角度偏置：Q=diag(qRΔt, 0.01qRΔt)。这是教学参数化，实际应按传感器与运动模型建模。</p>');
+}
+function parameterLabel(key,value){let unit=parameterInfo[key][4];const sceneUnit=CORE.scenarios.find(s=>s.id===state.scenario)?.unit||'单位';if(state.focus==='wavelet'&&key==='threshold')unit='';if(key==='maxRate')unit=sceneUnit+'/s';if(key==='deadband')unit=sceneUnit;if(unit==='log')return value<0.001?value.toExponential(1):format(value,4);return `${Number(value.toPrecision(4))} ${unit}`;}
+$('parameters').addEventListener('input',e=>{const key=e.target.dataset.param;if(!key)return;let value=Number(e.target.value);if(parameterInfo[key][4]==='log')value=10**value;state.params[state.focus][key]=value;$('param-value-'+key).textContent=parameterLabel(key,value);schedule(false);});
+$('param-reset').addEventListener('click',()=>{state.params[state.focus]={...defaults,cutoff:Math.min(defaults.cutoff,state.fs*0.4),notch:Math.min(state.fs===100?40:defaults.notch,state.fs*0.45)};renderDetail();recompute(false);});
+function schedule(regenerate=true){pendingRegenerate=pendingRegenerate||regenerate;if(frame)return;frame=requestAnimationFrame(()=>{frame=0;const regenerateNow=pendingRegenerate;pendingRegenerate=false;recompute(regenerateNow);});}
+['noise','spikes','hum'].forEach(key=>$(key).addEventListener('input',()=>{state[key]=Number($(key).value);$(key+'-value').textContent=(state[key]*100).toFixed(key==='spikes'?1:0)+'%';schedule();}));
+$('fs').addEventListener('change',()=>{state.fs=Number($('fs').value);for(const id of Object.keys(state.params)){state.params[id].notch=Math.min(state.fs===100?40:state.params[id].notch,state.fs*0.45);state.params[id].cutoff=Math.min(state.params[id].cutoff,state.fs*0.4);}renderControls();recompute();});
+$('scenario').addEventListener('change',()=>{state.scenario=$('scenario').value;state.lesson=null;stopPlay();if(state.scenario==='imu')state.selected=['gyro','complementary','anglebias'];else if(state.scenario==='encoder')state.selected=['ema','unwrap'];else{state.selected=state.selected.filter(available);if(!state.selected.length)state.selected=['ma','ema','cvkalman'];}state.focus=state.selected[0];renderControls();recompute();});
+$('reseed').addEventListener('click',()=>{state.seed=(state.seed+7919)>>>0;renderControls();recompute();});
+$('reset').addEventListener('click',()=>applyLesson(state.lesson??0));
+$('clean').addEventListener('click',()=>{state.noise=0;state.spikes=0;state.hum=0;renderControls();recompute();if(state.scenario==='imu')inform('随机噪声已关闭；IMU 固定零偏和运动干扰仍保留。');});
+$('zoom').addEventListener('change',()=>{state.zoom=Number($('zoom').value);state.zoomStart=Math.min(state.zoomStart,8-state.zoom);updateZoom();drawCharts();});
+$('zoom-start').addEventListener('input',()=>{state.zoomStart=Number($('zoom-start').value);$('zoom-value').textContent=state.zoomStart.toFixed(2)+' s';drawCharts();});
+function updateZoom(){$('zoom-row').hidden=state.zoom===8;$('zoom-start').max=8-state.zoom;$('zoom-start').value=state.zoomStart;$('zoom-value').textContent=state.zoomStart.toFixed(2)+' s';}
+function recompute(regenerate=true){
+ if(frame){cancelAnimationFrame(frame);frame=0;regenerate=regenerate||pendingRegenerate;pendingRegenerate=false;}
+ if(regenerate||!data){data=CORE.generate({scenario:state.scenario,fs:state.fs,duration:8,noise:state.noise,spikes:state.spikes,hum:state.hum,seed:state.seed});dataVersion++;resultCache.clear();stepCache.clear();state.hover=null;cancelAnimationFrame(cursorFrame);cursorFrame=0;$('readout').textContent='移动鼠标查看同一时刻的数值';}
+ results={};for(const id of state.selected){const key=JSON.stringify(state.params[id]),cached=resultCache.get(id);if(cached&&cached.version===dataVersion&&cached.key===key)results[id]=cached.values;else{results[id]=CORE.run(id,data,state.params[id]);resultCache.set(id,{version:dataVersion,key,values:results[id]});}}spectraCache=null;errorSeriesCache=null;
+ const scene=CORE.scenarios.find(s=>s.id===state.scenario);$('chart-title').textContent=scene?.name||state.scenario;$('chart-subtitle').textContent=`${data.t.length.toLocaleString()} 个采样点 · 单位 ${data.unit} · 原始信号与所有算法共享同一组噪声`;
+ $('lesson-text').textContent=state.lesson===null?(scene?.lesson||'改变一个参数，观察噪声和跟踪误差如何一起变化。'):lessonConfig(state.lesson).text;
+ const warnings=[];if(state.scenario==='imu')warnings.push('单轴倾角教学：加速度计角度含运动干扰，陀螺仪有固定零偏。这里不是三维姿态解算；未实现磁力计、四元数或加速度异常剔除。');if(state.scenario==='encoder')warnings.push('真值显示连续角度；原始编码器在 ±180° 处回绕。请对比“直接低通”与“先展开再低通”。展开假设相邻采样的真实转角小于 180°，且起始圈数已知。');if(state.selected.includes('wavelet'))warnings.push('Haar 小波读取整段数据，包含未来样本；播放只是回放，不代表它能零延迟在线工作。');if(state.selected.includes('nlms'))warnings.push('NLMS 多用一路相关噪声参考，信息条件与单输入滤波器不同。它去除可由参考预测的干扰，不能靠参考消除独立随机噪声。');
+ $('scene-warning').hidden=!warnings.length;$('scene-warning').textContent=warnings.join(' ');
+ $('metric-note').textContent=`误差单位：${data.unit}。负改善表示误差变大；T50 是另测阶跃响应，不能当作所有运动下的固定时延。${state.scenario==='encoder'?'本场景误差按连续多圈角度计算，未做模 360° 补偿。':''}`;
+ renderLegend();renderMetrics();updateZoom();drawCharts();if(state.hover!==null)requestCursor();
+}
+function renderLegend(){
+ $('legend').innerHTML=`<span><i class="swatch dashed"></i>真实信号</span><span><i class="swatch" style="background:#abbab6"></i>${state.scenario==='imu'?'加速度计角度':'原始测量'}</span>`+state.selected.map(id=>`<button data-legend="${id}" class="${id===state.focus?'focused':''}"><i class="swatch" style="background:${color(id)}"></i>${esc(TEACH.algorithms[id].short||TEACH.algorithms[id].name)}${id==='wavelet'?' · 离线':''}</button>`).join('');
+}
+$('legend').addEventListener('click',e=>{const el=e.target.closest('[data-legend]');if(el)focusAlgorithm(el.dataset.legend);});
+function computeMetric(values){let sum=0,max=0;for(let i=0;i<values.length;i++){const err=values[i]-data.truth[i];sum+=err*err;max=Math.max(max,Math.abs(err));}return {rmse:Math.sqrt(sum/values.length),maxError:max};}
+function stepT50(id){
+ if(['wavelet','gyro','anglebias','complementary','unwrap','nlms'].includes(id))return null;
+ const cacheKey=id+JSON.stringify(state.params[id]);if(stepCache.has(cacheKey))return stepCache.get(cacheKey);
+ const n=state.fs*3,start=state.fs,scale=data.scale||30,measured=Array.from({length:n},(_,i)=>i<start?0:scale);const bench={...data,t:Array.from({length:n},(_,i)=>i/state.fs),measured,reference:Array(n).fill(0),accel:measured,gyro:Array(n).fill(0)};delete bench.truth;
+ const y=CORE.run(id,bench,state.params[id]);const i=y.findIndex((v,i)=>i>=start&&v>=scale*0.5),value=i<0?Infinity:(i-start)*1000/state.fs;stepCache.set(cacheKey,value);return value;
+}
+function renderMetrics(){
+ if(!data)return;const raw=computeMetric(data.measured);metricRows=[{id:'raw',...raw,improvement:0,t50:0}];
+ for(const id of state.selected){const m=computeMetric(results[id]);metricRows.push({id,...m,improvement:raw.rmse>1e-12?100*(1-m.rmse/raw.rmse):null,t50:stepT50(id)});}
+ $('metrics').innerHTML=metricRows.map(m=>`<tr class="${m.id===state.focus?'focused':''}"><td><i class="dot" style="background:${m.id==='raw'?'#abbab6':color(m.id)}"></i>${m.id==='raw'?'原始测量':esc(TEACH.algorithms[m.id].short||TEACH.algorithms[m.id].name)}</td><td class="number">${format(m.rmse,3)}</td><td class="number ${m.improvement>=0?'positive':'negative'}">${m.id==='raw'?'基准':m.improvement===null?'—':(m.improvement>=0?'+':'')+format(m.improvement,1)+'%'}</td><td class="number">${format(m.maxError,3)}</td><td class="number">${m.t50===null?'不适用':m.t50===Infinity?'2 秒内未达到':format(m.t50,0)}</td></tr>`).join('');
+}
+function setupCanvas(id){const canvas=$(id),rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);if(rect.width<1)return null;const width=Math.round(rect.width*dpr),height=Math.round(rect.height*dpr);if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {canvas,ctx,w:rect.width,h:rect.height};}
+function niceRange(min,max){if(!Number.isFinite(min)||!Number.isFinite(max))return [-1,1];if(max-min<1e-9){min-=1;max+=1;}const pad=(max-min)*0.1;return [min-pad,max+pad];}
+function chart(id,series,options={}){
+ const env=setupCanvas(id);if(!env)return;const {ctx,w,h}=env;const pad={l:53,r:15,t:20,b:29};const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+ const xmin=options.spectrum?0:state.zoomStart,xmax=options.spectrum?state.fs/2:Math.min(8,state.zoomStart+state.zoom);let ymin=Infinity,ymax=-Infinity;
+ for(const s of series)for(let i=0;i<s.y.length;i++){const x=s.x?s.x[i]:data.t[i];if(x>=xmin&&x<=xmax){ymin=Math.min(ymin,s.y[i]);ymax=Math.max(ymax,s.y[i]);}}
+ if(options.error){const extent=Math.max(Math.abs(ymin),Math.abs(ymax),0.01);ymin=-extent;ymax=extent;}
+ [ymin,ymax]=niceRange(ymin,ymax);if(options.spectrum)ymin=0;
+ const X=x=>pad.l+(x-xmin)/(xmax-xmin)*pw,Y=y=>pad.t+ph-(y-ymin)/(ymax-ymin)*ph;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.font='10px "Segoe UI", "Microsoft YaHei", sans-serif';
+ for(let j=0;j<=4;j++){const val=ymin+(ymax-ymin)*j/4,yy=Y(val);ctx.strokeStyle='#e8eeeb';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillStyle='#83928c';ctx.textAlign='right';ctx.fillText(Math.abs(val)>999?Math.round(val):Number(val.toFixed(Math.abs(val)<1?2:1)),pad.l-9,yy+3);}
+ for(let j=0;j<=8;j++){const val=xmin+(xmax-xmin)*j/8,xx=X(val);ctx.strokeStyle='#f0f3f1';ctx.beginPath();ctx.moveTo(xx,pad.t);ctx.lineTo(xx,h-pad.b);ctx.stroke();if(w>520||j%2===0){ctx.fillStyle='#83928c';ctx.textAlign='center';ctx.fillText(options.spectrum?Math.round(val):val.toFixed(state.zoom<1?2:1),xx,h-8);}}
+ ctx.textAlign='left';ctx.fillStyle='#6b7b74';ctx.fillText(options.spectrum?'幅值 / '+data.unit:options.error?'误差 / '+data.unit:data.unit,3,11);ctx.textAlign='right';ctx.fillText(options.spectrum?'Hz':'时间 / s',w-pad.r,11);
+ if(options.error&&ymin<0&&ymax>0){ctx.strokeStyle='#b6c7bd';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(pad.l,Y(0));ctx.lineTo(w-pad.r,Y(0));ctx.stroke();ctx.setLineDash([]);}
+ ctx.save();ctx.beginPath();ctx.rect(pad.l,pad.t,pw,ph);ctx.clip();
+ for(const s of series){ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.width||1.5;ctx.globalAlpha=s.alpha??1;ctx.setLineDash(s.dashed?[6,5]:[]);let started=false;for(let i=0;i<s.y.length;i++){const x=s.x?s.x[i]:data.t[i];if(x<xmin||x>xmax||(!options.spectrum&&x>state.playEnd))continue;const xx=X(x),yy=Y(s.y[i]);if(!started){ctx.moveTo(xx,yy);started=true;}else ctx.lineTo(xx,yy);}ctx.stroke();}
+ ctx.globalAlpha=1;ctx.setLineDash([]);
+ ctx.restore();
+}
+function spectrum(values){const result=CORE.spectrum(values,state.fs,{removeMean:true});return {x:result.frequency,y:result.amplitude};}
+function drawCharts(){
+ if(!data||state.tab!=='experiment')return;
+ chart('wave-chart',[{y:data.measured,color:'#b5c2bc',width:1,alpha:.72},{y:data.truth,color:'#1b3c31',dashed:true,width:1.6},...state.selected.map(id=>({y:results[id],color:color(id),width:id===state.focus?2:1.6}))]);
+ if(state.secondary==='error'){if(!errorSeriesCache)errorSeriesCache=[{y:data.measured.map((x,i)=>x-data.truth[i]),color:'#d6dfd9',width:1},...state.selected.map(id=>({y:results[id].map((x,i)=>x-data.truth[i]),color:color(id),width:1.4}))];chart('error-chart',errorSeriesCache,{error:true});}
+ else{if(!spectraCache)spectraCache=[{...spectrum(data.measured),color:'#bac5bf',width:1},{...spectrum(data.truth),color:'#1b3c31',dashed:true},...state.selected.map(id=>({...spectrum(results[id]),color:color(id)}))];chart('error-chart',spectraCache,{spectrum:true});}
+ drawCursor();
+}
+function drawCursor(){
+ if(!data||state.tab!=='experiment')return;
+ for(const id of ['wave-cursor','error-cursor']){const env=setupCanvas(id);if(!env)continue;const {ctx,w,h}=env;ctx.clearRect(0,0,w,h);if(state.hover===null||(id==='error-cursor'&&state.secondary==='spectrum'))continue;const x=53+(state.hover-state.zoomStart)/state.zoom*(w-68);if(x<53||x>w-15)continue;ctx.strokeStyle='#718d81';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,20);ctx.lineTo(x,h-29);ctx.stroke();ctx.setLineDash([]);}
+}
+function requestCursor(){if(cursorFrame)return;cursorFrame=requestAnimationFrame(()=>{cursorFrame=0;drawCursor();if(state.hover===null){$('readout').textContent='移动鼠标查看同一时刻的数值';return;}const i=Math.max(0,Math.min(data.t.length-1,Math.round(state.hover*state.fs)));$('readout').innerHTML=`<span>t = ${data.t[i].toFixed(3)} s</span><span>真值 ${format(data.truth[i])}</span><span>测量 ${format(data.measured[i])}</span>`+state.selected.map(id=>`<span style="color:${color(id)}">${esc(TEACH.algorithms[id].short||id)} ${format(results[id][i])}</span>`).join('');});}
+function chooseSecondary(mode){state.secondary=mode;$('show-error').classList.toggle('active',mode==='error');$('show-spectrum').classList.toggle('active',mode==='spectrum');$('secondary-title').textContent=mode==='error'?'误差随时间变化':'输出信号的幅度频谱';$('secondary-desc').textContent=mode==='error'?'输出 − 真实信号；越靠近 0，当前时刻越准确。':'最后最多 1024 点 · Hann 窗 + 去均值 · FFT 补零仅插值，不提高分辨率；不是滤波器频率响应';drawCharts();}
+$('show-error').addEventListener('click',()=>chooseSecondary('error'));$('show-spectrum').addEventListener('click',()=>chooseSecondary('spectrum'));
+$('wave-chart').addEventListener('pointermove',e=>{if(!data)return;const r=e.currentTarget.getBoundingClientRect(),fraction=Math.max(0,Math.min(1,(e.clientX-r.left-53)/(r.width-68)));state.hover=state.zoomStart+fraction*state.zoom;requestCursor();});
+$('wave-chart').addEventListener('pointerleave',()=>{state.hover=null;requestCursor();});
+$('play').addEventListener('click',()=>{if(state.playing){stopPlay();drawCharts();return;}state.playing=true;state.playEnd=0;$('play').textContent='■ 停止';const start=performance.now();function tick(now){if(!state.playing)return;state.playEnd=(now-start)/1000;drawCharts();if(state.playEnd>=8){stopPlay();drawCharts();}else playTimer=requestAnimationFrame(tick);}playTimer=requestAnimationFrame(tick);});
+$('download').addEventListener('click',()=>{const headers=['time_s','truth_'+data.unit,'measured_'+data.unit,...state.selected.map(id=>id+'_'+data.unit)];if(state.scenario==='imu')headers.push('gyro_deg_per_s');if(state.selected.includes('nlms'))headers.push('noise_reference');const lines=[headers.join(',')];for(let i=0;i<data.t.length;i++){const row=[data.t[i],data.truth[i],data.measured[i],...state.selected.map(id=>results[id][i])];if(state.scenario==='imu')row.push(data.gyro[i]);if(state.selected.includes('nlms'))row.push(data.reference[i]);lines.push(row.map(x=>Number(x).toPrecision(9)).join(','));}downloadText('\ufeff'+lines.join('\r\n'),`滤波实验_${state.scenario}_seed${state.seed}.csv`,'text/csv;charset=utf-8');inform('已导出整段信号 CSV；调参区可另存实验参数。');});
+$('export-config').addEventListener('click',()=>{downloadText(JSON.stringify({scenario:state.scenario,fs:state.fs,duration:8,noise:state.noise,spikes:state.spikes,hum:state.hum,seed:state.seed,filters:state.selected,params:Object.fromEntries(state.selected.map(id=>[id,state.params[id]]))},null,2),`滤波参数_${state.scenario}_seed${state.seed}.json`,'application/json');inform('已保存复现实验所需的参数 JSON。');});
+function downloadText(text,name,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function renderMap(){
+ $('algorithm-map').innerHTML=Object.entries(TEACH.algorithms).map(([id,a])=>`<article class="panel algo-card"><div><span class="badge">${esc(a.family)}</span><span class="badge ${id==='wavelet'?'offline-badge':''}">${esc(a.mode)}</span></div><h3>${esc(a.name)}</h3><p class="small">${esc(a.idea)}</p><div class="formula">${esc(a.formula)}</div><p class="micro"><strong>注意：</strong>${esc(a.pitfall)}</p><button data-try="${id}">在波形中试一试 ↗</button></article>`).join('');
+ $('roadmap').innerHTML=(TEACH.roadmap||[]).map(r=>`<article class="panel road-card"><h3>${esc(r.name)}</h3><p class="small">${esc(r.reason)}</p><p class="micro"><strong>边界：</strong>${esc(r.limit)}</p><span class="badge">当前演示未实现</span></article>`).join('');
+}
+$('algorithm-map').addEventListener('click',e=>{const el=e.target.closest('[data-try]');if(!el)return;const id=el.dataset.try;const lessonIndex=TEACH.lessons.findIndex(l=>l.filters.includes(id));if(lessonIndex>=0)applyLesson(lessonIndex);else{if(!available(id))state.scenario=['gyro','anglebias','complementary'].includes(id)?'imu':'encoder';if(!state.selected.includes(id)){if(state.selected.length>=4)state.selected.pop();state.selected.push(id);}state.lesson=null;}if(!state.selected.includes(id)){if(state.selected.length>=4)state.selected.pop();state.selected.push(id);}state.focus=id;renderControls();recompute();setTab('experiment');window.scrollTo({top:0,behavior:'smooth'});});
+function safeUrl(url){try{const u=new URL(url);return u.protocol==='https:'?u.href:'#';}catch{return '#';}}
+function renderSources(){
+ const r=window.Research||{};const projects=r.projects||r.repositories||[];$('research-date').textContent='资料核查日期：2026-10-02 · 页面快照数值，非实时统计。';
+ $('sources').innerHTML=projects.map(p=>`<article class="panel source-card"><span class="source-meta">${p.starsDisplay?'★ '+esc(p.starsDisplay):'开源项目'}${p.language?' · '+esc(p.language):''}</span><h3><a href="${safeUrl(p.url||p.repo)}" target="_blank" rel="noopener noreferrer">${esc(p.name||p.project)} ↗</a></h3><span class="badge">${esc(p.category||'')}</span><p class="small">${esc(p.useFor||p.description||'')}</p><p class="micro">${esc(p.limits||p.note||'')}</p></article>`).join('');
+ const refs=r.references||r.sources||[];$('references').innerHTML=refs.map(s=>typeof s==='string'?`<p><a href="${safeUrl(s)}" target="_blank" rel="noopener noreferrer">${esc(s)}</a></p>`:`<p><a href="${safeUrl(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title||s.name||s.url)}</a>${s.note?' — '+esc(s.note):''}</p>`).join('');
+}
+$('scenario').innerHTML=CORE.scenarios.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');$('stat-count').textContent=Object.keys(TEACH.algorithms).length;renderMap();renderSources();applyLesson(0);
+let chartWidth=0;function onChartResize(){const width=document.querySelector('.main-stack').getBoundingClientRect().width;if(Math.abs(width-chartWidth)<0.5)return;chartWidth=width;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(drawCharts);}
+if(typeof ResizeObserver==='function')new ResizeObserver(onChartResize).observe(document.querySelector('.main-stack'));else window.addEventListener('resize',onChartResize);
+window.FilterLab={getState:()=>JSON.parse(JSON.stringify(state)),getData:()=>data,getResults:()=>results,getMetrics:()=>metricRows,applyLesson,setTab,recompute};
+document.querySelectorAll('[data-boot-control]').forEach(el=>el.disabled=false);$('startup-notice').hidden=true;
+</script>
+</body>
+</html>
