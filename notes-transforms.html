@@ -9,13 +9,19 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="notes.css">
 <script src="notes.js" defer></script>
-<link rel="stylesheet" href="lab-shell.css">
-<script src="lab-shell.js" defer></script>
+<link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2">
+<script src="lab-shell.js?v=0a6f621f" defer></script>
 </head>
 <body class="transforms-notes lab-shell page--notes-transforms">
 <header class="lab-site-header">
  <div class="lab-site-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室首页"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><div class="lab-site-location">三大变换笔记</div><button class="lab-nav-toggle" type="button" aria-expanded="false" aria-controls="lab-global-navigation" hidden><span>全站目录</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></button></div>
- <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航"><div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">原理</span><div class="lab-nav-links"><a href="transforms.html">三大变换</a><a href="kalman.html">卡尔曼增益</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">笔记</span><div class="lab-nav-links"><a href="notes-transforms.html" aria-current="page">三大变换笔记</a><a href="notes-kalman.html">卡尔曼笔记</a></div></div></nav>
+ <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航">
+  <div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div>
+  <div class="lab-nav-group lab-nav-learning">
+   <details class="lab-nav-topic" name="lab-learning-topic" data-current-topic="true"><summary aria-controls="lab-topic-transforms">三大变换<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-transforms"><a href="transforms.html">原理</a><a href="notes-transforms.html" aria-current="page">学习笔记</a></div></details>
+   <details class="lab-nav-topic" name="lab-learning-topic"><summary aria-controls="lab-topic-kalman">卡尔曼滤波<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-kalman"><a href="kalman.html">原理</a><a href="notes-kalman.html">学习笔记</a></div></details>
+  </div>
+ </nav>
 </header>
 
 <a class="skip-link" href="#notebook-content">跳到笔记正文</a>
@@ -115,15 +121,15 @@
 <svg viewBox="0 0 400 290" role="img" aria-labelledby="complex-plot-title complex-plot-desc">
 <title id="complex-plot-title">复数 3 加 4i 的坐标与长度</title>
 <desc id="complex-plot-desc">箭头从原点指向横坐标 3、纵坐标 4。横向和纵向投影构成直角三角形，箭头的长度为 5。</desc>
-<defs><marker id="axis-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#71859b" stroke-width="1.2"/></marker><marker id="vector-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#185a97"/></marker></defs>
-<path d="M58 244 L348 244 M58 244 L58 24" stroke="#71859b" stroke-width="1.5" marker-end="url(#axis-arrow)" fill="none"/>
-<path d="M58 244 L202 244 L202 52 Z" fill="#d8eafa" opacity=".8"/>
-<path d="M202 244 L202 52 L58 52" stroke="#7aa2c5" stroke-width="1.5" stroke-dasharray="5 5" fill="none"/>
-<path d="M58 244 L202 52" stroke="#185a97" stroke-width="3" marker-end="url(#vector-arrow)" fill="none"/>
-<path d="M186 244 L186 228 L202 228" stroke="#7aa2c5" stroke-width="1.2" fill="none"/>
-<g font-family="system-ui,'Microsoft YaHei',sans-serif" fill="#344c66" font-size="14">
+<defs><marker id="axis-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#9ab0c7" stroke-width="1.2"/></marker><marker id="vector-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#72b4ff"/></marker></defs>
+<path d="M58 244 L348 244 M58 244 L58 24" stroke="#9ab0c7" stroke-width="1.5" marker-end="url(#axis-arrow)" fill="none"/>
+<path d="M58 244 L202 244 L202 52 Z" fill="#203e58" opacity=".8"/>
+<path d="M202 244 L202 52 L58 52" stroke="#6588aa" stroke-width="1.5" stroke-dasharray="5 5" fill="none"/>
+<path d="M58 244 L202 52" stroke="#72b4ff" stroke-width="3" marker-end="url(#vector-arrow)" fill="none"/>
+<path d="M186 244 L186 228 L202 228" stroke="#6588aa" stroke-width="1.2" fill="none"/>
+<g font-family="system-ui,'Microsoft YaHei',sans-serif" fill="#c6d8e8" font-size="14">
 <text x="41" y="263">0</text><text x="192" y="265">3</text><text x="35" y="58">4</text><text x="325" y="269">实部</text><text x="28" y="20">虚部</text>
-<text x="223" y="56" fill="#185a97" font-weight="700">3 + 4i</text><text x="103" y="135" transform="rotate(-53.13 103 135)" fill="#185a97">长度 5</text>
+<text x="223" y="56" fill="#72b4ff" font-weight="700">3 + 4i</text><text x="103" y="135" transform="rotate(-53.13 103 135)" fill="#72b4ff">长度 5</text>
 </g>
 </svg>
 <figcaption>横向 3，纵向 4，长度 5。两个坐标共同决定箭头；只看实部，会漏掉纵向信息。</figcaption>

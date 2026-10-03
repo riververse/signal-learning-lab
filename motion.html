@@ -15,13 +15,19 @@
 <style>
 .motion-site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:11px max(24px,calc((100vw - 1440px)/2));background:#e7f4ee;border-bottom:1px solid #c8ded3;font-size:12px}.motion-site-nav a{color:#175a48;text-decoration:none;line-height:1.8}.motion-site-nav a:hover{text-decoration:underline}.motion-site-nav .motion-site-home{font-weight:750;letter-spacing:.04em}.motion-site-nav .motion-site-links{display:flex;gap:8px 20px;flex-wrap:wrap}.motion-integration-note{max-width:1488px;margin:0 auto;padding:12px 24px 0;color:#627572;font-size:12px;line-height:1.8}@media(max-width:760px){.motion-site-nav{padding:10px 14px;gap:6px}.motion-site-nav .motion-site-links{gap:4px 14px}.motion-integration-note{padding:11px 14px 0}}
 </style>
-<link rel="stylesheet" href="lab-shell.css">
-<script src="lab-shell.js" defer></script>
+<link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2">
+<script src="lab-shell.js?v=0a6f621f" defer></script>
 </head>
 <body class="lab-shell page--motion">
 <header class="lab-site-header">
  <div class="lab-site-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室首页"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><div class="lab-site-location">运动控制</div><button class="lab-nav-toggle" type="button" aria-expanded="false" aria-controls="lab-global-navigation" hidden><span>全站目录</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></button></div>
- <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航"><div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html" aria-current="page">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">原理</span><div class="lab-nav-links"><a href="transforms.html">三大变换</a><a href="kalman.html">卡尔曼增益</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">笔记</span><div class="lab-nav-links"><a href="notes-transforms.html">三大变换笔记</a><a href="notes-kalman.html">卡尔曼笔记</a></div></div></nav>
+ <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航">
+  <div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html" aria-current="page">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div>
+  <div class="lab-nav-group lab-nav-learning">
+   <details class="lab-nav-topic" name="lab-learning-topic"><summary aria-controls="lab-topic-transforms">三大变换<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-transforms"><a href="transforms.html">原理</a><a href="notes-transforms.html">学习笔记</a></div></details>
+   <details class="lab-nav-topic" name="lab-learning-topic"><summary aria-controls="lab-topic-kalman">卡尔曼滤波<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-kalman"><a href="kalman.html">原理</a><a href="notes-kalman.html">学习笔记</a></div></details>
+  </div>
+ </nav>
 </header>
 
 
@@ -654,7 +660,7 @@
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const CORE = window.FilterCore, TEACH = window.Teaching;
-const palette=['#2874d4','#d08122','#885acb','#d65371'];
+const palette=['#72b4ff','#f1c57a','#c09aee','#f092ad'];
 const defaults={window:15,cutoff:5,notch:50,notchQ:10,q:0.01,alpha:0.35,beta:0.03,euroBeta:0.04,mu:0.1,threshold:3,maxRate:60,deadband:0.5,tau:0.5};
 const parameterInfo={
  window:['窗口 / 抽头数',3,81,2,'点'],cutoff:['截止频率',0.2,40,0.1,'Hz'],notch:['陷波中心',1,90,0.5,'Hz'],notchQ:['陷波品质因数 Q',1,40,1,''],q:['过程噪声 / 量测噪声比例',-5,1,0.1,'log'],alpha:['位置校正 α',0.02,0.95,0.01,''],beta:['速度校正 β',0.001,0.3,0.001,''],euroBeta:['速度自适应 β',0,1,0.002,''],mu:['自适应步长 μ',0.005,0.8,0.005,''],threshold:['离群判定阈值',1,6,0.1,'σ'],maxRate:['最大变化率',1,1000,1,'单位/s'],deadband:['不更新的误差带',0.01,10,0.01,'单位'],tau:['陀螺 / 加速度融合时间常数',0.02,3,0.02,'s']
@@ -731,7 +737,7 @@ function recompute(regenerate=true){
  renderLegend();renderMetrics();updateZoom();drawCharts();if(state.hover!==null)requestCursor();
 }
 function renderLegend(){
- $('legend').innerHTML=`<span><i class="swatch dashed"></i>真实信号</span><span><i class="swatch" style="background:#abbab6"></i>${state.scenario==='imu'?'加速度计角度':'原始测量'}</span>`+state.selected.map(id=>`<button data-legend="${id}" class="${id===state.focus?'focused':''}"><i class="swatch" style="background:${color(id)}"></i>${esc(TEACH.algorithms[id].short||TEACH.algorithms[id].name)}${id==='wavelet'?' · 离线':''}</button>`).join('');
+ $('legend').innerHTML=`<span><i class="swatch dashed"></i>真实信号</span><span><i class="swatch" style="background:#8da3ba"></i>${state.scenario==='imu'?'加速度计角度':'原始测量'}</span>`+state.selected.map(id=>`<button data-legend="${id}" class="${id===state.focus?'focused':''}"><i class="swatch" style="background:${color(id)}"></i>${esc(TEACH.algorithms[id].short||TEACH.algorithms[id].name)}${id==='wavelet'?' · 离线':''}</button>`).join('');
 }
 $('legend').addEventListener('click',e=>{const el=e.target.closest('[data-legend]');if(el)focusAlgorithm(el.dataset.legend);});
 function computeMetric(values){let sum=0,max=0;for(let i=0;i<values.length;i++){const err=values[i]-data.truth[i];sum+=err*err;max=Math.max(max,Math.abs(err));}return {rmse:Math.sqrt(sum/values.length),maxError:max};}
@@ -744,7 +750,7 @@ function stepT50(id){
 function renderMetrics(){
  if(!data)return;const raw=computeMetric(data.measured);metricRows=[{id:'raw',...raw,improvement:0,t50:0}];
  for(const id of state.selected){const m=computeMetric(results[id]);metricRows.push({id,...m,improvement:raw.rmse>1e-12?100*(1-m.rmse/raw.rmse):null,t50:stepT50(id)});}
- $('metrics').innerHTML=metricRows.map(m=>`<tr class="${m.id===state.focus?'focused':''}"><td><i class="dot" style="background:${m.id==='raw'?'#abbab6':color(m.id)}"></i>${m.id==='raw'?'原始测量':esc(TEACH.algorithms[m.id].short||TEACH.algorithms[m.id].name)}</td><td class="number">${format(m.rmse,3)}</td><td class="number ${m.improvement>=0?'positive':'negative'}">${m.id==='raw'?'基准':m.improvement===null?'—':(m.improvement>=0?'+':'')+format(m.improvement,1)+'%'}</td><td class="number">${format(m.maxError,3)}</td><td class="number">${m.t50===null?'不适用':m.t50===Infinity?'2 秒内未达到':format(m.t50,0)}</td></tr>`).join('');
+ $('metrics').innerHTML=metricRows.map(m=>`<tr class="${m.id===state.focus?'focused':''}"><td><i class="dot" style="background:${m.id==='raw'?'#8da3ba':color(m.id)}"></i>${m.id==='raw'?'原始测量':esc(TEACH.algorithms[m.id].short||TEACH.algorithms[m.id].name)}</td><td class="number">${format(m.rmse,3)}</td><td class="number ${m.improvement>=0?'positive':'negative'}">${m.id==='raw'?'基准':m.improvement===null?'—':(m.improvement>=0?'+':'')+format(m.improvement,1)+'%'}</td><td class="number">${format(m.maxError,3)}</td><td class="number">${m.t50===null?'不适用':m.t50===Infinity?'2 秒内未达到':format(m.t50,0)}</td></tr>`).join('');
 }
 function setupCanvas(id){const canvas=$(id),rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);if(rect.width<1)return null;const width=Math.round(rect.width*dpr),height=Math.round(rect.height*dpr);if(canvas.width!==width)canvas.width=width;if(canvas.height!==height)canvas.height=height;const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {canvas,ctx,w:rect.width,h:rect.height};}
 function niceRange(min,max){if(!Number.isFinite(min)||!Number.isFinite(max))return [-1,1];if(max-min<1e-9){min-=1;max+=1;}const pad=(max-min)*0.1;return [min-pad,max+pad];}
@@ -755,11 +761,11 @@ function chart(id,series,options={}){
  if(options.error){const extent=Math.max(Math.abs(ymin),Math.abs(ymax),0.01);ymin=-extent;ymax=extent;}
  [ymin,ymax]=niceRange(ymin,ymax);if(options.spectrum)ymin=0;
  const X=x=>pad.l+(x-xmin)/(xmax-xmin)*pw,Y=y=>pad.t+ph-(y-ymin)/(ymax-ymin)*ph;
- ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.font='10px "Segoe UI", "Microsoft YaHei", sans-serif';
- for(let j=0;j<=4;j++){const val=ymin+(ymax-ymin)*j/4,yy=Y(val);ctx.strokeStyle='#e8eeeb';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillStyle='#83928c';ctx.textAlign='right';ctx.fillText(Math.abs(val)>999?Math.round(val):Number(val.toFixed(Math.abs(val)<1?2:1)),pad.l-9,yy+3);}
- for(let j=0;j<=8;j++){const val=xmin+(xmax-xmin)*j/8,xx=X(val);ctx.strokeStyle='#f0f3f1';ctx.beginPath();ctx.moveTo(xx,pad.t);ctx.lineTo(xx,h-pad.b);ctx.stroke();if(w>520||j%2===0){ctx.fillStyle='#83928c';ctx.textAlign='center';ctx.fillText(options.spectrum?Math.round(val):val.toFixed(state.zoom<1?2:1),xx,h-8);}}
- ctx.textAlign='left';ctx.fillStyle='#6b7b74';ctx.fillText(options.spectrum?'幅值 / '+data.unit:options.error?'误差 / '+data.unit:data.unit,3,11);ctx.textAlign='right';ctx.fillText(options.spectrum?'Hz':'时间 / s',w-pad.r,11);
- if(options.error&&ymin<0&&ymax>0){ctx.strokeStyle='#b6c7bd';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(pad.l,Y(0));ctx.lineTo(w-pad.r,Y(0));ctx.stroke();ctx.setLineDash([]);}
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#080f18';ctx.fillRect(0,0,w,h);ctx.font='10px "Segoe UI", "Microsoft YaHei", sans-serif';
+ for(let j=0;j<=4;j++){const val=ymin+(ymax-ymin)*j/4,yy=Y(val);ctx.strokeStyle='#253548';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillStyle='#a2b6c9';ctx.textAlign='right';ctx.fillText(Math.abs(val)>999?Math.round(val):Number(val.toFixed(Math.abs(val)<1?2:1)),pad.l-9,yy+3);}
+ for(let j=0;j<=8;j++){const val=xmin+(xmax-xmin)*j/8,xx=X(val);ctx.strokeStyle='#1c2a3a';ctx.beginPath();ctx.moveTo(xx,pad.t);ctx.lineTo(xx,h-pad.b);ctx.stroke();if(w>520||j%2===0){ctx.fillStyle='#a2b6c9';ctx.textAlign='center';ctx.fillText(options.spectrum?Math.round(val):val.toFixed(state.zoom<1?2:1),xx,h-8);}}
+ ctx.textAlign='left';ctx.fillStyle='#afc2d4';ctx.fillText(options.spectrum?'幅值 / '+data.unit:options.error?'误差 / '+data.unit:data.unit,3,11);ctx.textAlign='right';ctx.fillText(options.spectrum?'Hz':'时间 / s',w-pad.r,11);
+ if(options.error&&ymin<0&&ymax>0){ctx.strokeStyle='#486079';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(pad.l,Y(0));ctx.lineTo(w-pad.r,Y(0));ctx.stroke();ctx.setLineDash([]);}
  ctx.save();ctx.beginPath();ctx.rect(pad.l,pad.t,pw,ph);ctx.clip();
  for(const s of series){ctx.beginPath();ctx.strokeStyle=s.color;ctx.lineWidth=s.width||1.5;ctx.globalAlpha=s.alpha??1;ctx.setLineDash(s.dashed?[6,5]:[]);let started=false;for(let i=0;i<s.y.length;i++){const x=s.x?s.x[i]:data.t[i];if(x<xmin||x>xmax||(!options.spectrum&&x>state.playEnd))continue;const xx=X(x),yy=Y(s.y[i]);if(!started){ctx.moveTo(xx,yy);started=true;}else ctx.lineTo(xx,yy);}ctx.stroke();}
  ctx.globalAlpha=1;ctx.setLineDash([]);
@@ -768,14 +774,14 @@ function chart(id,series,options={}){
 function spectrum(values){const result=CORE.spectrum(values,state.fs,{removeMean:true});return {x:result.frequency,y:result.amplitude};}
 function drawCharts(){
  if(!data||state.tab!=='experiment')return;
- chart('wave-chart',[{y:data.measured,color:'#b5c2bc',width:1,alpha:.72},{y:data.truth,color:'#1b3c31',dashed:true,width:1.6},...state.selected.map(id=>({y:results[id],color:color(id),width:id===state.focus?2:1.6}))]);
- if(state.secondary==='error'){if(!errorSeriesCache)errorSeriesCache=[{y:data.measured.map((x,i)=>x-data.truth[i]),color:'#d6dfd9',width:1},...state.selected.map(id=>({y:results[id].map((x,i)=>x-data.truth[i]),color:color(id),width:1.4}))];chart('error-chart',errorSeriesCache,{error:true});}
- else{if(!spectraCache)spectraCache=[{...spectrum(data.measured),color:'#bac5bf',width:1},{...spectrum(data.truth),color:'#1b3c31',dashed:true},...state.selected.map(id=>({...spectrum(results[id]),color:color(id)}))];chart('error-chart',spectraCache,{spectrum:true});}
+ chart('wave-chart',[{y:data.measured,color:'#8da3ba',width:1,alpha:.72},{y:data.truth,color:'#d5e1ec',dashed:true,width:1.6},...state.selected.map(id=>({y:results[id],color:color(id),width:id===state.focus?2:1.6}))]);
+ if(state.secondary==='error'){if(!errorSeriesCache)errorSeriesCache=[{y:data.measured.map((x,i)=>x-data.truth[i]),color:'#6f849c',width:1},...state.selected.map(id=>({y:results[id].map((x,i)=>x-data.truth[i]),color:color(id),width:1.4}))];chart('error-chart',errorSeriesCache,{error:true});}
+ else{if(!spectraCache)spectraCache=[{...spectrum(data.measured),color:'#8da3ba',width:1},{...spectrum(data.truth),color:'#d5e1ec',dashed:true},...state.selected.map(id=>({...spectrum(results[id]),color:color(id)}))];chart('error-chart',spectraCache,{spectrum:true});}
  drawCursor();
 }
 function drawCursor(){
  if(!data||state.tab!=='experiment')return;
- for(const id of ['wave-cursor','error-cursor']){const env=setupCanvas(id);if(!env)continue;const {ctx,w,h}=env;ctx.clearRect(0,0,w,h);if(state.hover===null||(id==='error-cursor'&&state.secondary==='spectrum'))continue;const x=53+(state.hover-state.zoomStart)/state.zoom*(w-68);if(x<53||x>w-15)continue;ctx.strokeStyle='#718d81';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,20);ctx.lineTo(x,h-29);ctx.stroke();ctx.setLineDash([]);}
+ for(const id of ['wave-cursor','error-cursor']){const env=setupCanvas(id);if(!env)continue;const {ctx,w,h}=env;ctx.clearRect(0,0,w,h);if(state.hover===null||(id==='error-cursor'&&state.secondary==='spectrum'))continue;const x=53+(state.hover-state.zoomStart)/state.zoom*(w-68);if(x<53||x>w-15)continue;ctx.strokeStyle='#a6c0d5';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,20);ctx.lineTo(x,h-29);ctx.stroke();ctx.setLineDash([]);}
 }
 function requestCursor(){if(cursorFrame)return;cursorFrame=requestAnimationFrame(()=>{cursorFrame=0;drawCursor();if(state.hover===null){$('readout').textContent='移动鼠标查看同一时刻的数值';return;}const i=Math.max(0,Math.min(data.t.length-1,Math.round(state.hover*state.fs)));$('readout').innerHTML=`<span>t = ${data.t[i].toFixed(3)} s</span><span>真值 ${format(data.truth[i])}</span><span>测量 ${format(data.measured[i])}</span>`+state.selected.map(id=>`<span style="color:${color(id)}">${esc(TEACH.algorithms[id].short||id)} ${format(results[id][i])}</span>`).join('');});}
 function chooseSecondary(mode){state.secondary=mode;$('show-error').classList.toggle('active',mode==='error');$('show-spectrum').classList.toggle('active',mode==='spectrum');$('secondary-title').textContent=mode==='error'?'误差随时间变化':'输出信号的幅度频谱';$('secondary-desc').textContent=mode==='error'?'输出 − 真实信号；越靠近 0，当前时刻越准确。':'最后最多 1024 点 · Hann 窗 + 去均值 · FFT 补零仅插值，不提高分辨率；不是滤波器频率响应';drawCharts();}
