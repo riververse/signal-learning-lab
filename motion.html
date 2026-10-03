@@ -15,9 +15,16 @@
 <style>
 .motion-site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:11px max(24px,calc((100vw - 1440px)/2));background:#e7f4ee;border-bottom:1px solid #c8ded3;font-size:12px}.motion-site-nav a{color:#175a48;text-decoration:none;line-height:1.8}.motion-site-nav a:hover{text-decoration:underline}.motion-site-nav .motion-site-home{font-weight:750;letter-spacing:.04em}.motion-site-nav .motion-site-links{display:flex;gap:8px 20px;flex-wrap:wrap}.motion-integration-note{max-width:1488px;margin:0 auto;padding:12px 24px 0;color:#627572;font-size:12px;line-height:1.8}@media(max-width:760px){.motion-site-nav{padding:10px 14px;gap:6px}.motion-site-nav .motion-site-links{gap:4px 14px}.motion-integration-note{padding:11px 14px 0}}
 </style>
+<link rel="stylesheet" href="lab-shell.css">
+<script src="lab-shell.js" defer></script>
 </head>
-<body>
-<nav class="motion-site-nav" aria-label="学习站导航"><a class="motion-site-home" href="index.html">← RIVER / SIGNAL LAB</a><div class="motion-site-links"><a href="engineering.html">工程选型与调参</a><a href="notes-kalman.html">卡尔曼学习笔记</a><a href="notes-transforms.html">三大变换学习笔记</a></div></nav>
+<body class="lab-shell page--motion">
+<header class="lab-site-header">
+ <div class="lab-site-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室首页"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><div class="lab-site-location">运动控制</div><button class="lab-nav-toggle" type="button" aria-expanded="false" aria-controls="lab-global-navigation" hidden><span>全站目录</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></button></div>
+ <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航"><div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html" aria-current="page">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">原理</span><div class="lab-nav-links"><a href="transforms.html">三大变换</a><a href="kalman.html">卡尔曼增益</a></div></div><div class="lab-nav-group"><span class="lab-nav-label">笔记</span><div class="lab-nav-links"><a href="notes-transforms.html">三大变换笔记</a><a href="notes-kalman.html">卡尔曼笔记</a></div></div></nav>
+</header>
+
+
 <p class="motion-integration-note">本页使用合成信号与简化模型，未接入真实电机或 IMU，也未在实际硬件上验证。用于闭环控制、报警或安全相关系统前，需另行检查采样、延迟、异常数据与稳定性。</p>
 <div id="startup-notice" class="startup-notice" role="alert"><strong id="startup-message">交互功能尚未启动。</strong><span> 如果提示持续显示，请确认浏览器已启用 JavaScript，或刷新页面后重试。</span><code id="startup-error"></code></div>
 <script>
@@ -28,8 +35,8 @@
 })();
 </script>
 <header class="topbar">
- <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#087c64"/><path d="M4 17h5l3-9 5 16 4-12 3 5h4" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>运动控制滤波实验室</div>
- <nav class="topnav" aria-label="主导航"><button class="active" data-tab="experiment">信号实验</button><button data-tab="map">算法地图</button><button data-tab="sources">GitHub 与进阶</button></nav>
+ <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#176e78"/><path d="M4 17h5l3-9 5 16 4-12 3 5h4" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>运动控制滤波实验室</div>
+ <nav class="topnav" aria-label="运动控制实验视图"><button class="active" data-tab="experiment">信号实验</button><button data-tab="map">算法地图</button><button data-tab="sources">GitHub 与进阶</button></nav>
  <span class="offline">离线可用 · 本地计算</span>
 </header>
 <main>
