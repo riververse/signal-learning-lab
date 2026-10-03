@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="中文信号处理学习笔记：复数与旋转、傅里叶系数、四点计算、实信号的正负频率配对，以及拉普拉斯和 Z 变换的学习路线。">
+<title>三大变换学习笔记 · 信号学习实验室</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="notes.css">
+<script src="notes.js" defer></script>
+</head>
+<body class="transforms-notes">
+<a class="skip-link" href="#notebook-content">跳到笔记正文</a>
+<header class="site-header">
+ <div class="topline">
+  <a class="site-name" href="index.html"><span class="site-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>信号学习实验室</a>
+  <nav class="site-links" aria-label="站点导航">
+   <a href="notes-transforms.html" aria-current="page">三大变换笔记</a>
+   <a href="notes-kalman.html">卡尔曼笔记</a>
+   <a href="index.html">滤波实验室 ↗</a>
+  </nav>
+ </div>
+</header>
+<div class="reading-layout">
+ <aside class="side-panel" aria-label="阅读导航">
+  <p class="side-label">本页目录</p>
+  <nav aria-label="桌面笔记目录"><ol class="toc"><li><a href="#fourier-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
+<li><a href="#fourier-route"><span class="toc-index" aria-hidden="true">02</span><span>这条路线怎样连起来</span></a></li>
+<li><a href="#fourier-symbols"><span class="toc-index" aria-hidden="true">03</span><span>先认清每个符号</span></a></li>
+<li><a href="#fourier-complex"><span class="toc-index" aria-hidden="true">04</span><span>复数怎样成为旋转箭头</span></a></li>
+<li><a href="#fourier-rotation"><span class="toc-index" aria-hidden="true">05</span><span>欧拉公式把角度写成一个数</span></a></li>
+<li><a href="#fourier-match"><span class="toc-index" aria-hidden="true">06</span><span>为什么反向旋转后再求平均</span></a></li>
+<li><a href="#fourier-two-arrows"><span class="toc-index" aria-hidden="true">07</span><span>一个真实余弦为什么有两根旋转箭头</span></a></li>
+<li><a href="#fourier-four-samples"><span class="toc-index" aria-hidden="true">08</span><span>用四个样本把 C(3) 真正算出来</span></a></li>
+<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>当前重点：为什么会有实部和虚部</span></a></li>
+<li><a href="#fourier-amplitude"><span class="toc-index" aria-hidden="true">10</span><span>从 C(3) = 3 + 4i 回到余弦</span></a></li>
+<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">11</span><span>回看时最值得防住的误解</span></a></li>
+<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">12</span><span>下一步只检验这三个连接</span></a></li>
+<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">13</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav>
+  <div class="side-bottom">
+   <a href="transforms.html">打开三大变换互动实验 ↗</a>
+   <a href="notes-kalman.html">卡尔曼学习笔记 →</a>
+   <button type="button" class="print-button" data-print>打印笔记（含练习答案）</button>
+  </div>
+ </aside>
+ <main class="reading-main" id="notebook-content" tabindex="-1">
+  <div class="page-heading">
+   <p class="eyebrow">NOTEBOOK 01 · 当前重点：傅里叶</p>
+   <h1>三大变换学习笔记</h1>
+   <p class="deck">从复数、旋转和系数配对开始，把傅里叶的直觉连到公式。拉普拉斯与 Z 变换沿着学习路线逐步接上。</p>
+   <div class="page-meta"><span>最近整理 <time datetime="2026-10-03">2026-10-03</time> · UTC</span><span>按顺序读 · 先作答，再展开答案</span></div>
+  </div>
+  <details class="mobile-toc"><summary>本页目录 · 13 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#fourier-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
+<li><a href="#fourier-route"><span class="toc-index" aria-hidden="true">02</span><span>这条路线怎样连起来</span></a></li>
+<li><a href="#fourier-symbols"><span class="toc-index" aria-hidden="true">03</span><span>先认清每个符号</span></a></li>
+<li><a href="#fourier-complex"><span class="toc-index" aria-hidden="true">04</span><span>复数怎样成为旋转箭头</span></a></li>
+<li><a href="#fourier-rotation"><span class="toc-index" aria-hidden="true">05</span><span>欧拉公式把角度写成一个数</span></a></li>
+<li><a href="#fourier-match"><span class="toc-index" aria-hidden="true">06</span><span>为什么反向旋转后再求平均</span></a></li>
+<li><a href="#fourier-two-arrows"><span class="toc-index" aria-hidden="true">07</span><span>一个真实余弦为什么有两根旋转箭头</span></a></li>
+<li><a href="#fourier-four-samples"><span class="toc-index" aria-hidden="true">08</span><span>用四个样本把 C(3) 真正算出来</span></a></li>
+<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>当前重点：为什么会有实部和虚部</span></a></li>
+<li><a href="#fourier-amplitude"><span class="toc-index" aria-hidden="true">10</span><span>从 C(3) = 3 + 4i 回到余弦</span></a></li>
+<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">11</span><span>回看时最值得防住的误解</span></a></li>
+<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">12</span><span>下一步只检验这三个连接</span></a></li>
+<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">13</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav></details>
+  <article class="notebook" aria-label="三大变换学习笔记正文">
+
+
+<section id="fourier-frontier" class="frontier">
+<h2>现在走到哪里</h2>
+<p><strong>当前重点：</strong>把“复数旋转”的图像，与“余弦一路、正弦一路”的实际计算接起来。</p>
+<ul>
+<li><strong>练习已验证：</strong>5 Hz 逆时针旋转与 4 Hz 顺时针旋转相乘，剩下 1 Hz 逆时针旋转；幅值为 4 的余弦可分成两根长度为 2 的反向旋转箭头；C(3) 从 2 变成 −2 代表相位改变。</li>
+<li><strong>已经讲到：</strong>复数乘法、欧拉公式、频率相乘、积分或求平均、四点系数、相位，以及系数模长与幅值的关系。</li>
+<li><strong>仍需确认：</strong>余弦和正弦两路比较为什么能表示实部、虚部；不能把“任意周期信号的四个等间隔样本平均为零”当成通用结论。</li>
+</ul>
+<p class="note"><strong>继续入口：</strong>先读<a href="#fourier-two-comparisons">两路比较</a>，然后做<a href="#fourier-amplitude">C(3) = 3 + 4i</a>。这道题在当前学习记录里还没有作答，因此保留为待检验点。</p>
+</section>
+
+<section id="fourier-route">
+<h2>这条路线怎样连起来</h2>
+<ol class="learning-route">
+<li><strong>复数是二维坐标。</strong>用一个数同时保存横向和纵向信息。</li>
+<li><strong>乘以 i 会旋转。</strong>从坐标运算走到箭头转动。</li>
+<li><strong>欧拉公式描述匀速转动。</strong>角度随时间增长，频率决定转速。</li>
+<li><strong>乘上反向参考。</strong>匹配的旋转停下来，不匹配的继续转。</li>
+<li><strong>求平均提取稳定部分。</strong>在合适观察长度和采样条件下，绕圈部分相互抵消。</li>
+<li><strong>实余弦拆成两根箭头。</strong>解释正负频率与“一半幅值”。</li>
+<li><strong>四个样本真正算一次。</strong>得到 C(3) = 2，再讨论正负号和相位。</li>
+<li><strong>当前这一步。</strong>把同一个计算拆成 cos / sin 两路，再从复数恢复幅值与相位。</li>
+</ol>
+<p>后续才需要系统展开 DFT 频点、采样、混叠、窗函数与频谱泄漏。拉普拉斯变换和 Z 变换也属于后续连接，不计入本页已经完成的学习进度。</p>
+</section>
+
+<section id="fourier-symbols">
+<h2>先认清每个符号</h2>
+<dl class="symbol-list">
+<dt>x(t) / x[n]</dt><dd>连续时刻 t 的信号值 / 第 n 个采样值。可以是压力、电压，也可以是没有物理单位的练习数值。</dd>
+<dt>t、f、ω</dt><dd>t 是时间，单位 s；f 是频率，单位 Hz，即每秒多少圈；ω = 2πf 是角频率，常写作 rad/s。</dd>
+<dt>i</dt><dd>满足 i² = −1。工程资料也常写 j，意义相同。</dd>
+<dt>A、φ</dt><dd>A ≥ 0 是正弦或余弦的峰值幅度，与 x 同单位；φ 是初相位，公式中默认用弧度。π rad = 180°。</dd>
+<dt>N、Δt、f<sub>s</sub></dt><dd>N 是样本数量；Δt 是相邻样本的时间间隔；采样率 f<sub>s</sub> = 1/Δt，单位 Hz。</dd>
+<dt>C(f)</dt><dd>本页使用的归一化复系数：信号乘参考后再求平均。它与 x 同单位。</dd>
+</dl>
+<div class="formula" aria-label="归一化频率系数">C(f) = (1/N) ∑<sub>n=0</sub><sup>N−1</sup> x[n] e<sup>−i2πf nΔt</sup></div>
+<p>∑ 的意思是把每个样本对应的一项加起来，再除以 N。这里采样时间从 t = 0 起算；改变时间原点会改变相位读数。</p>
+<p class="warning"><strong>约定很重要：</strong>一些书和 FFT 库用不除以 N 的 X[k]，所以 X[k] = N C(f<sub>k</sub>)，其中 f<sub>k</sub> = kf<sub>s</sub>/N。看到系数数值不同，先核对是否归一化，再判断计算对不对。</p>
+</section>
+
+<section id="fourier-complex">
+<h2>复数怎样成为旋转箭头</h2>
+<p>把 a + bi 看成从原点指向 (a, b) 的箭头。实部 a 记录横坐标，虚部 b 记录纵坐标。箭头长度由勾股定理得到：</p>
+<div class="formula">|a + bi| = √(a² + b²)</div>
+<p>例如 3 + 4i 的长度是 5。实部 3、虚部 4 与长度 5 是不同信息，不能只取实部来代表整个箭头有多长。</p>
+<figure class="figure complex-figure">
+<svg viewBox="0 0 400 290" role="img" aria-labelledby="complex-plot-title complex-plot-desc">
+<title id="complex-plot-title">复数 3 加 4i 的坐标与长度</title>
+<desc id="complex-plot-desc">箭头从原点指向横坐标 3、纵坐标 4。横向和纵向投影构成直角三角形，箭头的长度为 5。</desc>
+<defs><marker id="axis-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#71859b" stroke-width="1.2"/></marker><marker id="vector-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#185a97"/></marker></defs>
+<path d="M58 244 L348 244 M58 244 L58 24" stroke="#71859b" stroke-width="1.5" marker-end="url(#axis-arrow)" fill="none"/>
+<path d="M58 244 L202 244 L202 52 Z" fill="#d8eafa" opacity=".8"/>
+<path d="M202 244 L202 52 L58 52" stroke="#7aa2c5" stroke-width="1.5" stroke-dasharray="5 5" fill="none"/>
+<path d="M58 244 L202 52" stroke="#185a97" stroke-width="3" marker-end="url(#vector-arrow)" fill="none"/>
+<path d="M186 244 L186 228 L202 228" stroke="#7aa2c5" stroke-width="1.2" fill="none"/>
+<g font-family="system-ui,'Microsoft YaHei',sans-serif" fill="#344c66" font-size="14">
+<text x="41" y="263">0</text><text x="192" y="265">3</text><text x="35" y="58">4</text><text x="325" y="269">实部</text><text x="28" y="20">虚部</text>
+<text x="223" y="56" fill="#185a97" font-weight="700">3 + 4i</text><text x="103" y="135" transform="rotate(-53.13 103 135)" fill="#185a97">长度 5</text>
+</g>
+</svg>
+<figcaption>横向 3，纵向 4，长度 5。两个坐标共同决定箭头；只看实部，会漏掉纵向信息。</figcaption>
+</figure>
+
+<p>乘以 i 时，直接展开：</p>
+<div class="formula">(a + bi)i = ai + bi² = −b + ai</div>
+<p>坐标从 (a, b) 变成 (−b, a)，正好是逆时针转 90°，长度保持不变。比如 2 + 3i 变成 −3 + 2i。连续乘两次 i 就转 180°，所以 i² = −1 与几何图像吻合。</p>
+<p class="note">“虚部”是这套坐标的名字。传感器输出仍然可以是实数；分析时用两个坐标保存幅值和相位信息，并不要求硬件输出某种“虚数电压”。</p>
+</section>
+
+<section id="fourier-rotation">
+<h2>欧拉公式把角度写成一个数</h2>
+<div class="formula">e<sup>iθ</sup> = cos θ + i sin θ</div>
+<p>右侧的坐标 (cos θ, sin θ) 在单位圆上，因此 e<sup>iθ</sup> 可以当作长度为 1、角度为 θ 的箭头。这是一个公式对应两个坐标的简洁写法。</p>
+<p>令 θ = 2πft，角度就随时间匀速增加。e<sup>i2πft</sup> 逆时针每秒转 f 圈，e<sup>−i2πft</sup> 则顺时针转。同一时刻，两根复数箭头相乘时，长度相乘、角度相加：</p>
+<div class="formula">e<sup>i2πf₁t</sup> e<sup>−i2πf₂t</sup> = e<sup>i2π(f₁−f₂)t</sup></div>
+<div class="worked-example"><h3>已经做对的例子</h3><p>5 Hz 逆时针 × 4 Hz 顺时针 = 1 Hz 逆时针。若第二根改成 5 Hz 顺时针，相对旋转速度变为 0，乘积停住。</p></div>
+<p>这里的“相乘”发生在每一个相同的时刻，不能把先后的样本随意拼接。后面计算傅里叶系数，就是对每一个采样值做这种配对运算。</p>
+</section>
+
+<section id="fourier-match">
+<h2>为什么反向旋转后再求平均</h2>
+<p>想找 3 Hz 成分，就用 3 Hz 顺时针的参考去乘信号。信号里正向 3 Hz 的那根箭头会停下来：它的结果一直朝同一方向，累加时不会互相抵消。其他频率还在转，累加时往往会互相抵消一部分。</p>
+<div class="formula">匹配：e<sup>i2π3t</sup> e<sup>−i2π3t</sup> = 1</div>
+<div class="formula">不匹配：e<sup>i2π5t</sup> e<sup>−i2π3t</sup> = e<sup>i2π2t</sup></div>
+<p>把平均想成“这些箭头首尾相加后，还剩多少，再除以个数”。停止的箭头能留下稳定结果；均匀绕完整圈的箭头可以正负抵消。</p>
+<p class="warning"><strong>有条件才能恰好抵消。</strong>有限长记录里，如果剩余旋转没有覆盖整数圈，平均可能不为零；采样过稀也会混叠。在 DFT 的整频点和完整 N 点记录上，不同基准旋转具有精确的正交关系。先保留这个条件，不必现在背泄漏公式。</p>
+</section>
+
+<section id="fourier-two-arrows">
+<h2>一个真实余弦为什么有两根旋转箭头</h2>
+<p>正向与反向单位箭头相加，纵向分量抵消，横向分量叠加：</p>
+<div class="formula">cos θ = (e<sup>iθ</sup> + e<sup>−iθ</sup>)/2</div>
+<div class="formula">A cos(2πf₀t + φ) = (A/2)e<sup>iφ</sup>e<sup>i2πf₀t</sup> + (A/2)e<sup>−iφ</sup>e<sup>−i2πf₀t</sup></div>
+<p>因此，幅值为 4 的实余弦，可以用两根长度为 2、方向相反的旋转箭头表示。它们组合后，信号在实数轴上来回变化。</p>
+<p>用正频率 f₀ 的反向参考去比较，会留下正向那根的系数：</p>
+<div class="formula">C(f₀) = (A/2)e<sup>iφ</sup></div>
+<p>这解释了为什么前面算到 C(3) = 2 时，原余弦的峰值幅度是 4。另一半在对应的负频率里。对于实数信号，C(−f) 是 C(f) 的共轭，即虚部反号。</p>
+<p class="note">本节等式指理想、匹配的余弦，并满足完整周期或相应 DFT 整频点条件。后面会单独列出直流、奈奎斯特频点和加窗时的区别。</p>
+</section>
+
+<section id="fourier-four-samples">
+<h2>用四个样本把 C(3) 真正算出来</h2>
+<p>取 x(t) = 4 cos(2π·3t)，采样率 12 Hz。每隔 1/12 s 取一个样本，共取四个；四点记录对应一个 3 Hz 周期。</p>
+<div class="table-wrap"><div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的对照表"><table><caption>参考乘积的四点计算</caption><thead><tr><th>时间 t / s</th><th>角度 θ</th><th>x(t)</th><th>e<sup>−iθ</sup></th><th>乘积</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>4</td><td>1</td><td>4</td></tr><tr><td>1/12</td><td>π/2</td><td>0</td><td>−i</td><td>0</td></tr><tr><td>1/6</td><td>π</td><td>−4</td><td>−1</td><td>4</td></tr><tr><td>1/4</td><td>3π/2</td><td>0</td><td>i</td><td>0</td></tr></tbody></table></div></div>
+<div class="formula">C(3) = (4 + 0 + 4 + 0)/4 = 2</div>
+<p>原始四点直接平均是 0；乘过参考后的平均是 2。后一种运算保留了“这个频率与信号怎样配合”的信息。</p>
+<p class="warning">四点只用于把计算动作看清。它没有证明任意周期波形只取四点就足够，也没有证明周期波形的均值一定为零。带偏置的 2 + cos θ，均值就包含 2；更高频成分还可能在这四点上混叠。</p>
+</section>
+
+<section id="fourier-two-comparisons" class="current-focus">
+<h2>当前重点：为什么会有实部和虚部</h2>
+<p>先暂时不想旋转。对同一组实数样本，做两遍“逐点相乘，再求平均”：</p>
+<ol><li>第一遍与 cos θ 比较，得到 U。</li><li>第二遍与 sin θ 比较，得到 V。</li></ol>
+<div class="formula">U = (1/N)∑ x[n] cos θ<sub>n</sub>，V = (1/N)∑ x[n] sin θ<sub>n</sub></div>
+<p>U、V 都是普通实数。符号相同的样本对相乘为正，符号相反的相乘为负；累加结果反映信号与参考在这段记录上的配合程度。只看一条参考会漏掉相差四分之一周期的分量，所以需要两条。</p>
+<p>现在把欧拉公式代回原来的定义：</p>
+<div class="formula">e<sup>−iθ</sup> = cos θ − i sin θ</div>
+<div class="formula">C = (1/N)∑ x[n](cos θ<sub>n</sub> − i sin θ<sub>n</sub>) = U − iV</div>
+<p><strong>于是 Re(C) = U，Im(C) = −V。</strong>这一步只是把两路计算结果装进一个复数。虚部前的负号来自本页选择的负指数参考。若把第二路参考直接定义为 −sin θ，则第二路结果就是虚部本身。</p>
+<div class="worked-example"><h3>余弦一路和正弦一路各测到什么</h3><p>在完整周期、匹配频率条件下，cos² 的平均为 1/2，sin² 的平均为 1/2，cos·sin 的平均为 0。</p><ul><li>x = 4 cos θ：U = 2，V = 0，所以 C = 2。</li><li>x = 4 sin θ：U = 0，V = 2，所以 C = −2i。</li><li>x = 6 cos θ − 8 sin θ：U = 3，V = −4，所以 C = 3 + 4i。</li></ul><p>纯正弦仍然有很强的该频率成分，只是余弦那一路的结果为零。必须把两路结果一起看。</p></div>
+<h3>和相位怎样接起来</h3>
+<div class="formula">A cos(θ + φ) = A cos φ cos θ − A sin φ sin θ</div>
+<p>与上一段的两路结果对照，得到 U = (A/2)cos φ，V = −(A/2)sin φ，所以 C = (A/2)(cos φ + i sin φ)。同一件事既可以用“长度与方向”描述，也可以用“横向与纵向两个分量”描述。</p>
+<details class="checkpoint"><summary>小检查：为什么 4 sin θ 的 C 是 −2i，而不是 0？</summary><p>余弦比较 U 为零，但正弦比较 V = 2；C = U − iV，所以 C = −2i。该频率的幅值没有消失，它的信息落在另一条比较路径上。</p></details>
+</section>
+
+<section id="fourier-amplitude">
+<h2>从 C(3) = 3 + 4i 回到余弦</h2>
+<p><strong>保留练习：</strong>如果这是一个理想、匹配频率的实余弦，在本页归一化约定下，它的峰值幅度是多少？先自己想一下：第一步该取实部，还是先求复数长度？</p>
+<details class="checkpoint"><summary>展开推导和答案</summary><div class="formula">|C(3)| = √(3² + 4²) = 5</div><div class="formula">A = 2|C(3)| = 10</div><p>系数长度是正向旋转分量的幅值 5。原实余弦还有与它配对的负频率分量，因此余弦的峰值幅度是 10。</p><p>相位由箭头方向决定：φ = atan2(4, 3) ≈ 0.9273 rad ≈ 53.13°。因此可写成 x(t) = 10 cos(2π·3t + 53.13°)，也可以写成 6 cos(2π·3t) − 8 sin(2π·3t)。公式计算时要保持角度单位一致。</p></details>
+<h3>再区分三个容易混用的量</h3>
+<ul><li><strong>峰值幅度 A：</strong>单个余弦从中心线到最高点的距离。本例为 10。</li><li><strong>峰峰值：</strong>最大值减最小值，单个余弦为 2A。本例为 20。</li><li><strong>复系数模长 |C|：</strong>在这里为 A/2，本例为 5。</li></ul>
+<p>同样地，C 从 2 变成 −2 时，模长仍为 2，余弦峰值幅度仍为 4；箭头方向转了 π，相位改变 180°。写成“负幅值”也能表达波形，但规范表示通常让 A ≥ 0，把正负变化放进相位。</p>
+</section>
+
+<section id="fourier-pitfalls">
+<h2>回看时最值得防住的误解</h2>
+<dl class="misconceptions">
+<dt>“实部就是幅值。”</dt><dd>实部只是一条坐标。通常先用 √(实部² + 虚部²) 求系数模长，再按定义和信号类型换算幅值。</dd>
+<dt>“频率不匹配，结果就一定是零。”</dt><dd>精确为零需要正交条件。有限观察、非整周期、频点不对齐或采样混叠时，都要重新判断。</dd>
+<dt>“周期信号取四个点就一定抵消。”</dt><dd>周期不等于零均值，四点也可能漏掉波形细节。前面的抵消由特定正弦和采样位置保证。</dd>
+<dt>“任何频谱数值乘 2 就是幅值。”</dt><dd>本页的 A = 2|C| 用于实余弦、归一化系数、正负频率分量可区分、整周期或整频点且未加窗的情形。直流 f = 0 和偶数 N 时的奈奎斯特频点 f<sub>s</sub>/2 不按成对分量翻倍；不归一化 FFT、加窗和频谱泄漏需要相应校正。复数单向旋转信号也不套这个 ×2。</dd>
+<dt>“虚部非零说明测量不真实。”</dt><dd>它是在表达信号相对参考的相位。输入为实数，傅里叶系数仍可为复数。</dd>
+</dl>
+</section>
+
+<section id="fourier-next">
+<h2>下一步只检验这三个连接</h2>
+<ol><li><strong>能解释：</strong>为何一个正弦信号与余弦比较可以得到零，却仍然包含该频率。</li><li><strong>能计算：</strong>给定 U = 3、V = −4，写出 C，并求理想实余弦的峰值幅度。</li><li><strong>能说明条件：</strong>用自己的话说出为什么“求平均能抵消”需要合适的观察长度和采样条件。</li></ol>
+<p>这三点清楚后，再接 DFT 的第 k 个频点对应多少 Hz，并用更多样本观察同一个信号。这样每增加一个工具，都有前面的直觉可以接住。</p>
+<details class="checkpoint"><summary>一题综合自检：若 C = −3 + 4i，会改变什么？</summary><p>模长仍为 5，符合本页条件时余弦峰值幅度仍为 10。实部从 3 变成 −3，方向进入第二象限，φ = atan2(4, −3) ≈ 126.87°。改变的是相位，不是模长。不要仅用 arctan(虚部/实部) 而忽略象限。</p></details>
+<p class="source-note">公式核对：<a href="https://www.dsprelated.com/freebooks/mdft/DFT.html" target="_blank" rel="noopener noreferrer">Julius O. Smith，DFT 定义与负指数约定</a>；<a href="https://www.dsprelated.com/freebooks/mdft/DFT_Derived.html" target="_blank" rel="noopener noreferrer">归一化系数与投影的关系</a>。本页例子与说明按学习路线重新组织。</p>
+</section>
+
+<section id="transforms-preview" class="preview">
+<h2>后续路线 拉普拉斯与 Z 变换</h2>
+<p class="preview-label"><strong>路线预告，尚未计入本页已学进度。</strong></p>
+<p>当前先把傅里叶的“参考比较 → 复系数 → 幅值与相位”走通。之后可以把同一套思路接到系统分析：输入怎样经过系统，输出为什么会有延迟、衰减或振荡。</p>
+<ul><li><strong>拉普拉斯变换：</strong>从连续时间的充放电、衰减和阶跃响应切入，再学习 s、时间常数与传递函数。这里会把纯旋转参考扩展到还带指数衰减或增长的参考。</li><li><strong>Z 变换：</strong>从每隔一段时间更新一次的数字递推切入，把“上一拍怎样影响这一拍”写进 z 的表达式，再接到数字滤波器。</li></ul>
+<p>两者都先从具体变化过程和符号含义开始，不在本页提前堆积推导。已有的<a href="transforms.html">三大变换实验页</a>可以作为可选预览；页面里展示过的内容不自动算作已经理解。</p>
+</section>
+
+  </article>
+  <footer class="reading-footer">
+   <nav class="footer-nav" aria-label="继续学习">
+    <a href="transforms.html">回到三大变换互动实验 ↗</a>
+    <a href="notes-kalman.html">继续读卡尔曼学习笔记 →</a>
+   </nav>
+   <p>笔记中的“已讲解”与“已独立答对”分别记录；阅读过一段解释，不等于已经掌握。</p>
+   <p>学习内容经核对后更新至此。页面日期表示本版整理时间。</p>
+   <p class="print-note">打印版包含全部折叠解释与练习答案。做题时请先遮住答案。</p>
+  </footer>
+ </main>
+</div>
+</body>
+</html>
