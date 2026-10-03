@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>待学习路线 · 传递函数、自控与频谱分析</title>
+<meta name="description" content="待学习：从现有傅里叶与一维卡尔曼线索，接上传递函数、自动控制和工程频谱分析。包含入门导读、前置知识、公式、算例与后续课程安排。">
+<link rel="icon" type="image/png" sizes="800x800" href="favicon-rgb-8b14e515.png">
+<link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2">
+<link rel="stylesheet" href="future-learning.css">
+<script src="lab-shell.js?v=0a6f621f" defer></script>
+</head>
+<body class="lab-shell page--future">
+<header class="lab-site-header">
+ <div class="lab-site-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室首页"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><div class="lab-site-location">待学习路线</div><button class="lab-nav-toggle" type="button" aria-expanded="false" aria-controls="lab-global-navigation" hidden><span>全站目录</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></button></div>
+ <nav class="lab-site-nav" id="lab-global-navigation" aria-label="全站导航">
+  <div class="lab-nav-group"><span class="lab-nav-label">实验</span><div class="lab-nav-links"><a href="index.html">压力滤波</a><a href="motion.html">运动控制</a><a href="frequency.html">频率选择</a><a href="engineering.html">工程应用</a></div></div>
+  <div class="lab-nav-group lab-nav-learning">
+   <details class="lab-nav-topic" name="lab-learning-topic"><summary aria-controls="lab-topic-transforms">三大变换<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-transforms"><a href="transforms.html">原理</a><a href="notes-transforms.html">学习笔记</a></div></details>
+   <details class="lab-nav-topic" name="lab-learning-topic"><summary aria-controls="lab-topic-kalman">卡尔曼滤波<span class="lab-topic-chevron" aria-hidden="true"></span></summary><div class="lab-nav-links lab-topic-links" id="lab-topic-kalman"><a href="kalman.html">原理</a><a href="notes-kalman.html">学习笔记</a></div></details>
+   <div class="lab-nav-links"><a href="future-learning.html" aria-current="page">待学习</a></div>
+  </div>
+ </nav>
+</header>
+<a class="future-skip" href="#future-content">跳到待学习内容</a>
+<main id="future-content">
+  <header class="future-page-meta"><span>学习路线</span><span class="future-status">全部待学习</span></header>
+  <h1>待学习路线</h1>
+  <p class="lead">先读出信号里有什么，再理解系统怎样响应，最后决定怎样控制。把传递函数、自控和频谱分析接到现有的傅里叶与一维卡尔曼学习线上。</p>
+  <p class="future-boundary">本页是入门导读与后续课程安排，三个主题都标为<strong>待学习</strong>。看到公式、看过例子不等于已经掌握；现有学习笔记中的进度保持原样。</p>
+  <nav class="future-jump" aria-label="待学习主题">
+    <a href="#transfer-functions">传递函数<span>系统怎样改变输入</span></a>
+    <a href="#automatic-control">自控<span>怎样让输出跟上目标</span></a>
+    <a href="#spectral-analysis">频谱分析<span>把 ADC 数据变成可判断的频谱</span></a>
+  </nav>
+
+  <section class="future-route" aria-labelledby="route-title">
+    <h2 id="route-title">建议这样接着学</h2>
+    <ol>
+      <li><strong>先接住当前知识</strong><p>沿着<a href="notes-transforms.html#fourier-next">傅里叶笔记的下一步</a>，把复数系数与振幅、相位连起来；沿着<a href="notes-kalman.html#kalman-recursion">一维卡尔曼递推</a>，分清读数、估计和不确定性。不要求先补完一整套高等数学。</p></li>
+      <li><strong>再做一段真实数据的频谱分析</strong><p>从采样率、记录长度和频率刻度入手，再学窗与幅值校正。先能解释一个峰，接着才判断它可能来自哪里。</p></li>
+      <li><strong>接上传递函数</strong><p>从 RC 的“慢慢跟上”和 EMA 的“上一拍”出发，补足必要的拉普拉斯、Z 变换，读懂输入、输出和系统的关系。</p></li>
+      <li><strong>最后进入自动控制</strong><p>先画出反馈环路，再学 P、PI、PID 与稳定性。卡尔曼负责估计，控制器负责决定动作；两者可以配合，但不是同一件事。</p></li>
+    </ol>
+    <p class="future-small">每一阶段都用“能解释一个工程现象、能算一个小例子”作为下一步目标，不按翻过多少页来判定完成。</p>
+  </section>
+
+  <section class="lab future-module" id="transfer-functions" aria-labelledby="transfer-title">
+    <div class="future-module-heading"><h2 id="transfer-title">传递函数</h2><span class="future-status">待学习</span></div>
+    <p class="future-question">输入变了，输出会变多少、跟多快？</p>
+    <p>传感器、RC 低通和电机都会改变输入的大小与时间形状。传递函数把这种<strong>输入到输出的动态关系</strong>写成一个便于计算的模型。它描述系统，不是某一次波形的名字。</p>
+    <dl class="future-context"><dt>先备知识</dt><dd>输入 / 输出、曲线斜率、指数衰减；拉普拉斯与 Z 变换先认识用途，推导按需补上。</dd><dt>工程用途</dt><dd>估计 ADC 前端响应时间、比较滤波器的增益与相位、把传感器和执行器接进控制模型。</dd></dl>
+    <h3>先认清这对表达式</h3>
+    <div class="equation">连续时间：H(s) = Y(s) / U(s)<br>离散时间：H(z) = Y(z) / U(z)</div>
+    <p>这里限定<strong>线性时不变（LTI）、零初始条件</strong>的输入输出关系：线性表示输入的加法与倍数关系可以传到输出；时不变表示同样输入晚一点施加，响应只晚一点出现。U、Y 是输入和输出经过对应变换后的表达，不是直接拿某时刻的 y 除以 u。</p>
+    <p class="future-small">H(s) 用于连续时间模型；H(z) 用于按采样更新的模型，必须知道采样周期。两者不能只靠把字母 s 换成 z 得到。有初始储能或初始状态时，总响应还要计入初始条件。</p>
+
+    <div class="future-example">
+      <h3>导读算例：2 V 输入，RC 为什么只到 1.26 V？</h3>
+      <p>理想一阶 RC 低通，时间常数 τ = RC = 0.2 s，初始输出为 0 V；t = 0 时输入从 0 跳到 2 V 并保持。</p>
+      <div class="equation">0.2 dy/dt + y = u<br>H(s) = 1 / (0.2s + 1)<br>y(t) = 2(1 − e<sup>−t/0.2</sup>) V，t ≥ 0</div>
+      <ol>
+        <li><strong>看最终值：</strong>保持 2 V 输入足够久，输出趋近 2 V。</li>
+        <li><strong>看一个时间常数：</strong>t = 0.2 s，输出约为 2 × 0.632 = 1.26 V。</li>
+        <li><strong>再看三个时间常数：</strong>t = 0.6 s，输出约 1.90 V，还没有严格等于 2 V。</li>
+      </ol>
+      <p>这段慢响应来自模型中的储能过程。对于这个模型，τ 越大，跟随越慢；不需要先手算一遍积分，就能读出工程含义。</p>
+    </div>
+
+    <details class="future-detail">
+      <summary>再往前一点：从 EMA 看到 H(z)</summary>
+      <p>取固定系数 α = 0.2，输入记作 u[n]，输出为 y[n]，并令采样前状态 y[−1] = 0：</p>
+      <div class="equation">y[n] = 0.2u[n] + 0.8y[n−1]<br>H(z) = 0.2 / (1 − 0.8z<sup>−1</sup>)</div>
+      <p>z⁻¹ 表示延迟一拍。若输入从第 0 拍起为 1，前三个输出依次是 0.2、0.36、0.488。公式描述“每拍怎么变”；每拍究竟有多长，仍取决于采样周期。</p>
+      <p>这能接回<a href="notes-kalman.html#kalman-ema">卡尔曼与 EMA 的联系</a>：只有增益固定等条件成立时，相关更新才可当作固定系数 EMA 分析；增益随时间改变的滤波过程，不能直接套一个固定的 LTI 传递函数。</p>
+    </details>
+    <details class="future-detail">
+      <summary>后续课程安排 · 均待学习</summary>
+      <ol class="future-lessons">
+        <li><strong>输入、输出与模型范围</strong><span>从 RC 方程得到 H(s)，说清零初始条件。</span></li>
+        <li><strong>阶跃、极点与稳定性</strong><span>解释时间常数与极点；区分冲激响应和阶跃响应。</span></li>
+        <li><strong>频率响应与离散实现</strong><span>认识 H(jω) 的幅值和相位，再从差分方程得到 H(z)。</span></li>
+      </ol>
+      <p class="note">边界提醒：对适当的有理因果 LTI 输入输出模型，连续时间稳定性检查极点是否严格位于左半平面，离散时间检查是否严格位于单位圆内。系统内部是否稳定，还需检查被约掉或未观测到的动态，不能只看一条平滑曲线。</p>
+    </details>
+    <p class="future-source">概念参考：<a href="https://www.mathworks.com/help/control/ug/transfer-functions.html">MathWorks：连续与离散传递函数</a>。算例按上述理想 RC 与 EMA 模型计算。</p>
+    <div class="future-related"><span>接回现有内容</span><a href="transforms.html">三大变换原理</a><a href="notes-transforms.html#transforms-preview">拉普拉斯与 Z 的后续路线</a><a href="engineering.html#iir">工程中的 IIR</a></div>
+  </section>
+
+  <section class="lab future-module" id="automatic-control" aria-labelledby="control-title">
+    <div class="future-module-heading"><h2 id="control-title">自控（自动控制）</h2><span class="future-status">待学习</span></div>
+    <p class="future-question">目标是 1000 rpm，负载变了，还能跟得住吗？</p>
+    <p>自动控制根据目标与测量的差别，决定电机电压、阀门开度等动作。<strong>开环</strong>可以按预设指令输出；<strong>闭环</strong>把测量结果送回来，按误差继续调整。闭环能应对某些扰动，也会把噪声、延迟和模型误差带进环路。</p>
+    <dl class="future-context"><dt>先备知识</dt><dd>目标与误差、传递函数、阶跃响应；知道传感器和执行器各负责哪一段。</dd><dt>工程用途</dt><dd>电机速度 / 位置控制、恒温、压力调节；兼顾响应速度、超调、稳态误差和执行器限制。</dd></dl>
+    <h3>先把负反馈关系写对</h3>
+    <div class="future-flow" aria-label="负反馈信号关系"><span>目标 r</span><span>误差 e = r − y</span><span>控制器 C</span><span>被控对象 P</span><span>输出 y 反馈比较</span></div>
+    <div class="equation">E = R − Y，U = CE，Y = PU<br>T(s) = Y(s) / R(s) = P(s)C(s) / [1 + P(s)C(s)]</div>
+    <p>这个式子采用<strong>单位负反馈、单输入单输出 LTI 模型和零初始条件</strong>，先不计外加扰动；目标与反馈输出要在同一量纲下比较。PC 是环路传递函数。若传感器还有动态或比例 F(s)，分母相应变成 1 + PCF，不能原样套用。</p>
+    <p class="future-small">这里的 P 表示被控对象（plant），不是卡尔曼中的估计误差方差 P；控制器 C 也不是傅里叶系数 C(f)。看公式时先认清本节定义。</p>
+
+    <div class="future-example">
+      <h3>导读算例：比例控制可以变快，也可能留误差</h3>
+      <p>先看一个归一化的理想一阶对象 P(s) = 1 / (0.5s + 1)，只用比例控制 C(s) = 2，采用上述单位负反馈。</p>
+      <div class="equation">T(s) = 2 / (0.5s + 3)<br>单位阶跃目标下：y(t) = ⅔(1 − e<sup>−6t</sup>)</div>
+      <ol>
+        <li><strong>响应时间：</strong>闭环时间常数为 1/6 s，小于原对象的 0.5 s。</li>
+        <li><strong>最终输出：</strong>目标为 1，输出却趋近 2/3，稳态误差为 1/3。</li>
+        <li><strong>能得出的结论：</strong>这一模型里，单靠当前比例增益没有消除阶跃稳态误差；这不是“所有比例控制都有相同误差”的结论。</li>
+      </ol>
+      <p>真实电机还有限流、摩擦、负载变化与采样延迟。上面的数字用来读懂模型，不是可以直接写进硬件的参数建议。</p>
+    </div>
+
+    <details class="future-detail">
+      <summary>认识 PID 三项：现在、累积、变化速度</summary>
+      <p>先用理想连续时间的并联形式认识含义，积分初值取零：</p>
+      <div class="equation">u(t) = K<sub>p</sub>e(t) + K<sub>i</sub>∫₀ᵗ e(λ)dλ + K<sub>d</sub>de(t)/dt</div>
+      <ul>
+        <li><strong>P 比例：</strong>看现在误差有多大。</li>
+        <li><strong>I 积分：</strong>累积过去的误差；在稳定、未饱和且对象等条件适当时，可消除某些稳态误差。</li>
+        <li><strong>D 微分：</strong>看误差变化有多快；它会对高频测量噪声敏感，实际常使用带滤波的微分项。</li>
+      </ul>
+      <p>例如 e 用 rpm，u 用 0～1 的 PWM 占空比：K<sub>p</sub> 的单位是占空比/rpm，K<sub>i</sub> 是占空比/(rpm·s)，K<sub>d</sub> 是占空比·s/rpm。若 K<sub>p</sub> = 0.002/rpm，误差为 10 rpm，仅 P 项给出的占空比为 0.02，也就是 2 个百分点。</p>
+      <p>离散实现要把采样周期计入积分和微分，还要处理输出饱和、积分抗饱和与启动状态。不同 PID 参数形式不能只按参数名字照搬。</p>
+    </details>
+    <details class="future-detail">
+      <summary>后续课程安排 · 均待学习</summary>
+      <ol class="future-lessons">
+        <li><strong>开环、反馈与误差</strong><span>从一个速度目标画出 r、e、u、y，推到闭环公式。</span></li>
+        <li><strong>P 到 PI，再到 PID</strong><span>逐项看效果，核对单位、采样周期、噪声和饱和。</span></li>
+        <li><strong>稳定性与工程验证</strong><span>区分跟踪效果和稳定性；认识极点、稳定裕度、延迟与测试工况。</span></li>
+      </ol>
+      <p class="note">边界提醒：误差小、曲线平滑或暂时没有振荡，都不是稳定性证明。要结合闭环模型、全部相关动态与实际限制分析，再用目标变化和扰动等工况验证。负反馈也不保证在任意增益与延迟下稳定。</p>
+    </details>
+    <p class="future-source">概念参考：<a href="https://www.mathworks.com/help/control/ref/inputoutputmodel.feedback.html">MathWorks：负反馈连接</a>、<a href="https://www.mathworks.com/help/control/ug/proportional-integral-derivative-pid-controllers.html">PID 的并联与标准形式</a>。</p>
+    <div class="future-related"><span>接回现有内容</span><a href="motion.html">运动控制实验</a><a href="notes-kalman.html#kalman-model">卡尔曼的估计模型</a><a href="engineering.html#kf">压力与变化率估计</a></div>
+  </section>
+
+  <section class="lab future-module" id="spectral-analysis" aria-labelledby="spectrum-title">
+    <div class="future-module-heading"><h2 id="spectrum-title">频谱分析</h2><span class="future-status">待学习</span></div>
+    <p class="future-question">读数在抖，究竟哪些频率值得继续查？</p>
+    <p>傅里叶基础解释“怎样把信号拆成频率成分”；工程频谱分析继续解决<strong>怎样采、截多长、怎样加窗、纵轴是什么单位</strong>。FFT 是快速计算 DFT 的算法，不会自动保证频谱刻度、幅值或判断正确。</p>
+    <dl class="future-context"><dt>先备知识</dt><dd>频率、振幅、相位、复数模长；能把傅里叶系数接回一个余弦。</dd><dt>工程用途</dt><dd>排查 ADC 干扰、分析电机振动、比较滤波前后频带变化；频谱峰是线索，不能独自证明故障或干扰来源。</dd></dl>
+    <h3>先确定横轴，再相信纵轴</h3>
+    <div class="equation">记录时长 T<sub>rec</sub> = N / f<sub>s</sub><br>频点 f<sub>k</sub> = kf<sub>s</sub> / N，频点间隔 Δf = f<sub>s</sub> / N<br>奈奎斯特频率 f<sub>N</sub> = f<sub>s</sub> / 2</div>
+    <p>f<sub>s</sub> 是每秒采样点数，N 是本次分析的点数，k 是频点编号。对均匀采样的实数信号，常画 0 到 f<sub>s</sub>/2 的单边谱；偶数 N 才恰好有奈奎斯特频点。Δf 是频率格子的间隔，<strong>不直接等于分开两个相邻峰的实际能力</strong>，还受窗形、信噪比等影响。</p>
+    <p class="note">采样前先考虑抗混叠：普通基带测量中，要让保留的频率低于 f<sub>s</sub>/2，并按模拟滤波器的过渡带与所需衰减留出余量。采样后才做数字低通，通常无法把已混叠进来的成分重新分开。</p>
+
+    <div class="future-example">
+      <h3>导读算例：50 Hz、3 kPa，FFT 应该读到什么？</h3>
+      <p>假设只有 x[n] = 3 cos(2π·50n/1000) kPa，无直流、无噪声，f<sub>s</sub> = 1000 Hz，N = 1000；采用未归一化的 DFT，不加窗（等效矩形窗）。</p>
+      <ol>
+        <li><strong>记录长度：</strong>T<sub>rec</sub> = 1 s；Δf = 1 Hz；奈奎斯特频率为 500 Hz。</li>
+        <li><strong>峰的位置：</strong>50 Hz 落在 k = 50，记录里恰好包含 50 个周期。</li>
+        <li><strong>峰的幅值：</strong>|X[50]| = 1500；单边峰值振幅 A = 2|X[50]|/N = 3 kPa。</li>
+      </ol>
+      <p>若改成 50.5 Hz，1 秒内不是整数周期，能量会分散到多个频点，不能把最高一格的读数直接当作准确振幅。若模拟输入含 700 Hz，按 1000 Hz 采样会折叠到 300 Hz；这就是采样前抗混叠重要的原因。</p>
+    </div>
+
+    <details class="future-detail">
+      <summary>窗与泄漏：为什么换窗以后峰也变了？</summary>
+      <p>DFT 分析的是有限一段数据。截断相当于乘上窗，通常会使谱能量向附近频率扩散。Hann 等窗可以压低远处旁瓣，但同时拓宽主瓣，改变峰高；它们不是“消除所有泄漏”的开关。</p>
+      <p>加窗后先算 X<sub>w</sub>[k] = DFT{x[n]w[n]}。对落在频点上的孤立实数正弦，在正负频率主瓣不互相干扰等条件下，单边峰值振幅常按下式校正：</p>
+      <div class="equation">A ≈ 2|X<sub>w</sub>[k]| / Σw[n]</div>
+      <p>直流与偶数 N 的奈奎斯特频点不乘 2。非整频点正弦还可能有栅栏效应，不能只用这条校正保证最高格准确。补零可以把显示的频率网格变密，却没有增加记录信息或真正的分辨能力。</p>
+    </details>
+    <details class="future-detail">
+      <summary>振幅谱与 PSD：看峰值，还是看一段频带的噪声？</summary>
+      <p><strong>振幅谱</strong>用于读正弦分量的大小，单位可为 kPa 或 V，并需注明峰值还是 RMS。<strong>功率谱密度（PSD）</strong>表示每单位频率的均方贡献，压力信号的单位是 kPa²/Hz；这里的“功率”不必是以瓦特计的物理功率。</p>
+      <p>采用上述 DFT 约定，窗为实数 w[n]，均匀采样、偶数 N 时，一个单边周期图 PSD 估计在内部正频点的归一化是：</p>
+      <div class="equation">S<sub>xx</sub>[k] = 2|X<sub>w</sub>[k]|² / (f<sub>s</sub> Σw[n]²)<br>频带均方贡献 ≈ Σ<sub>该频带</sub>S<sub>xx</sub>[k] Δf</div>
+      <p>直流和奈奎斯特项仍不乘 2。PSD 校正使用窗的平方和，不能直接套用振幅谱的窗和。对去均值后的噪声，频带积分可估计该频带的方差；Welch 方法再通过分段平均降低估计起伏，代价包括可用分辨能力的变化。</p>
+    </details>
+    <details class="future-detail">
+      <summary>后续课程安排 · 均待学习</summary>
+      <ol class="future-lessons">
+        <li><strong>采样与刻度</strong><span>给一段 ADC 数据补齐 fₛ、N、时间和单位；确认未饱和并检查抗混叠。</span></li>
+        <li><strong>整周期、非整周期与加窗</strong><span>比较 50 Hz 和 50.5 Hz，解释峰位、泄漏及幅值校正。</span></li>
+        <li><strong>从单个峰到噪声频带</strong><span>按问题选择振幅谱或 PSD，记录窗和归一化，再比较滤波前后。</span></li>
+      </ol>
+      <p class="note">工程检查顺序：先看时域是否削顶、丢点或有趋势；根据任务决定是否去均值；再看采样、窗口与单位。怀疑 50 Hz 干扰时，还需改变工况或采样条件做对照，不能只凭一个峰定原因。</p>
+    </details>
+    <p class="future-source">概念参考：<a href="https://www.analog.com/en/resources/technical-articles/guide-to-antialiasing-filter-basics.html">Analog Devices：抗混叠基础</a>、<a href="https://docs.scipy.org/doc/scipy/tutorial/signal.html#spectral-analysis">SciPy：窗与频谱分析</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.periodogram.html">周期图的频谱 / PSD 归一化</a>。</p>
+    <div class="future-related"><span>接回现有内容</span><a href="notes-transforms.html#fourier-amplitude">复数系数到余弦振幅</a><a href="frequency.html">频率选择实验</a><a href="engineering.html#fir">FIR 工程应用</a></div>
+  </section>
+
+  <section class="future-next" aria-labelledby="next-title">
+    <h2 id="next-title">下一步只做一个小连接</h2>
+    <p>先回到傅里叶：已知一个余弦的频率与振幅，算出它应该落在哪个 FFT 频点，再核对纵轴。把这一步解释清楚后，再学非整周期与窗；不用同时推进三个大主题。</p>
+    <p><a href="notes-transforms.html#fourier-next">回到当前傅里叶练习</a><a href="#spectral-analysis">重看频谱入门算例</a></p>
+  </section>
+  <footer class="future-footer"><span>入门导读 · 三个主题均待学习</span><a href="#future-content">回到顶部</a></footer>
+</main>
+</body>
+</html>
