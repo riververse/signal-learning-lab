@@ -1,0 +1,44 @@
+/* Supplemental learning diagrams. Scope to opted-in figures, never the global shell.
+   Future note updates can retain each figure and its surrounding section ID independently. */
+body.lab-shell .learn-visual {
+  margin: 23px 0 26px;
+  padding: 18px;
+  background: #101c29;
+  border: 1px solid #33495f;
+  border-radius: 8px;
+  color: #e3edf7;
+  min-width: 0;
+}
+body.lab-shell .learn-visual > h3 { margin: 0 0 15px; font-size: 18px; line-height: 1.7; color: #e3edf7; }
+body.lab-shell .learn-visual svg { display: block; width: 100%; max-width: 100%; height: auto; }
+body.lab-shell .learn-visual figcaption { margin: 14px 0 0; color: #adc2d5; font-size: 13px; line-height: 1.85; }
+body.lab-shell .learn-visual .lv-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 225px), 1fr)); gap: 12px; align-items: start; }
+body.lab-shell .learn-visual .lv-panel { min-width: 0; }
+body.lab-shell .learn-visual .lv-scroll { width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #55728d #101c29; scrollbar-width: thin; }
+body.lab-shell .learn-visual .lv-scroll > svg { min-width: 560px; }
+body.lab-shell .learn-visual .lv-scroll:focus-visible { outline: 3px solid #f1c57a; outline-offset: 4px; }
+body.lab-shell .learn-visual .lv-scroll-hint { display: none; color: #adc2d5; font-size: 12px; margin: 6px 0 0; }
+body.lab-shell .learn-visual .lv-control { margin: 0 0 17px; padding: 12px 0 14px; border-bottom: 1px solid #33495f; }
+body.lab-shell .learn-visual .lv-control[hidden] { display: none; }
+body.lab-shell .learn-visual label { display: flex; flex-wrap: wrap; gap: 8px 15px; align-items: baseline; font-size: 15px; color: #e3edf7; }
+body.lab-shell .learn-visual output { margin-left: auto; color: #65d6c2; font-variant-numeric: tabular-nums; font-weight: 650; }
+body.lab-shell .learn-visual input[type=range] { display: block; width: 100%; margin: 14px 0 5px; min-height: 32px; accent-color: #65d6c2; cursor: pointer; }
+body.lab-shell .learn-visual .lv-control p { margin: 8px 0 0; color: #adc2d5; font-size: 13px; }
+body.lab-shell .learn-visual .lv-readout { color: #e3edf7; border-top: 1px solid #33495f; padding-top: 11px; margin-bottom: 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+body.lab-shell .notebook .lv-derivation > summary { color: #b9d7eb; }
+body.lab-shell .notebook .lv-detail-content { min-width: 0; }
+body.lab-shell .lv-overview { border-left: 2px solid #65d6c2; padding-left: 17px; }
+@media (max-width: 640px) {
+  body.lab-shell .learn-visual { padding: 12px; margin: 20px 0; }
+  body.lab-shell .learn-visual > h3 { font-size: 16px; }
+  body.lab-shell .learn-visual .lv-scroll-hint { display: block; }
+  body.lab-shell .learn-visual .lv-panels { grid-template-columns: 1fr; }
+  body.lab-shell .learn-visual .lv-panel { max-width: 350px; width: 100%; margin-inline: auto; }
+}
+@media print {
+  body.lab-shell .learn-visual { break-inside: avoid; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  body.lab-shell .learn-visual .lv-control { display: none; }
+  body.lab-shell .learn-visual .lv-scroll { overflow: visible; }
+  body.lab-shell .learn-visual .lv-scroll > svg { min-width: 0; }
+  body.lab-shell .learn-visual .lv-scroll-hint { display: none; }
+}
