@@ -2,7 +2,10 @@
 body.lab-shell .lab-site-header.architecture-header{border-top:3px solid #426c7b;background:#111d2b;position:relative;z-index:20}
 body.lab-shell .architecture-header .architecture-bar{max-width:1320px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:28px}
 body.lab-shell .architecture-header .lab-site-brand{font-size:15px;padding:0;gap:10px}
-body.lab-shell .architecture-header .architecture-nav{display:flex;gap:8px;align-items:center;flex-shrink:0}
+/* Legacy lessons use bare nav/header span selectors. Keep the shared shell self-contained. */
+body.lab-shell .architecture-header .architecture-nav{display:flex;gap:8px;align-items:center;flex-shrink:0;position:static;inset:auto;z-index:auto;margin:0;padding:0;border:0;background:transparent}
+body.lab-shell .architecture-header .lab-site-brand>span,
+body.lab-shell .architecture-header .architecture-nav a>span{color:inherit}
 body.lab-shell .architecture-header .architecture-nav a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;color:#bbcddd;border:1px solid transparent;border-radius:7px;font-size:15px;font-weight:650;text-decoration:none;line-height:1.4}
 body.lab-shell .architecture-header .architecture-nav a:hover{color:#e6f3fb;background:#1a2c3d}
 body.lab-shell .architecture-header .architecture-nav a[aria-current=page]{color:#95e5da;background:#18353b;border-color:#335c64}
@@ -12,7 +15,7 @@ body.lab-shell .site-skip{position:fixed;top:-100px;left:12px;z-index:1000;backg
 body.lab-shell .site-skip:focus{top:12px}
 body.lab-shell .topic-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #416b75;border-radius:6px;padding:9px 15px;background:#1c3c47;color:#d8f5f0;text-decoration:none;font-size:15px;line-height:1.55}
 body.lab-shell .topic-action:hover{background:#285160}
-body.lab-shell .legacy-topic-context{max-width:1280px;margin:14px auto 0;padding:0 28px;color:#a5b5c7;font-size:13px;display:flex;gap:10px 20px;flex-wrap:wrap}
+body.lab-shell .legacy-topic-context{max-width:1280px;margin:14px auto 0;padding:0 28px;color:#a5b5c7;font-size:13px;display:flex;gap:10px 20px;flex-wrap:wrap;position:static;inset:auto;z-index:auto;border:0;background:transparent}
 body.lab-shell .legacy-topic-context a{padding:5px 0}
 @media(max-width:720px){
  body.lab-shell .architecture-header .architecture-bar{display:block;padding:10px 16px 8px}
