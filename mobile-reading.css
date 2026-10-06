@@ -1,0 +1,216 @@
+/* Phone reading layer. Existing desktop visuals and experiment calculations stay intact. */
+body.lab-shell .mr-phone-flow,
+body.lab-shell .mr-scroll-hint { display: none; }
+body.lab-shell .mr-original-diagram { display: contents; }
+body.lab-shell .mr-original-diagram > summary { display: none; }
+body.lab-shell .mr-original-diagram > :not(summary) { margin-left: 0; margin-right: 0; }
+
+@media screen and (max-width: 760px) {
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 20px; }
+  body.lab-shell { font-size: 17px; line-height: 1.85; }
+  body.lab-shell :is(main, section, article, aside, details, .reading-main, .main-stack, .controls > *, .workspace > *) { min-width: 0; }
+  body.lab-shell main { overflow-wrap: break-word; }
+  body.lab-shell p { line-height: 1.85; }
+  body.lab-shell :is(h1,h2,h3,h4) { overflow-wrap: break-word; }
+  body.lab-shell :is(button,select,input,summary) { font-size: 16px; }
+  body.lab-shell :is(button,select,summary) { min-height: 44px; }
+  body.lab-shell input[type=range] { min-height: 44px; margin: 6px 0; }
+  body.lab-shell input[type=checkbox] { flex: 0 0 20px; width: 20px; height: 20px; }
+  body.lab-shell select { max-width: 100%; }
+  body.lab-shell button { white-space: normal; }
+  body.lab-shell :is(.hint,.note,.notice,.source,.source-list,.source-note,.reading-links,.page-shortcut,.key) { font-size: 15px; line-height: 1.85; }
+  body.lab-shell :is(.lead,.intro,.deck) { font-size: 17px; line-height: 1.85; }
+  body.lab-shell :is(.page-meta,.future-source,footer,.reading-footer) { font-size: 13px; line-height: 1.8; }
+  body.lab-shell :is(.status-label,.future-status) { font-size: 13px; }
+  body.lab-shell :is(.note,.warning,.next-checkpoint) { padding: 13px 14px; font-size: 16px; }
+  body.lab-shell :is(.lab,.guide > article,.notebook) { box-shadow: none; }
+  body.lab-shell:not(.page--motion):not(.transforms-notes):not(.kalman-notes) > main { padding: 20px 16px 44px; }
+  body.lab-shell:not(.page--motion):not(.transforms-notes):not(.kalman-notes) > main > header { font-size: 13px; line-height: 1.7; }
+  body.lab-shell:not(.page--motion):not(.transforms-notes):not(.kalman-notes) .lead { font-size: 17px; }
+  body.lab-shell:not(.page--motion) .lab { padding: 22px 14px; }
+  body.lab-shell:not(.page--motion) .step { font-size: 13px; }
+  body.lab-shell .lab :is(h2,h3) { line-height: 1.55; }
+
+  /* Keep the directory compact until requested; every link is finger-sized. */
+  body.lab-shell .lab-site-bar { min-height: 64px; padding: 5px 16px; gap: 8px; }
+  body.lab-shell .lab-site-brand { font-size: 13px; }
+  body.lab-shell .lab-site-mark { width: 26px; height: 26px; }
+  body.lab-shell .lab-nav-toggle { min-height: 44px; font-size: 13px; padding: 10px; }
+  body.lab-shell .lab-nav-label { font-size: 13px; }
+  body.lab-shell .lab-nav-links a,
+  body.lab-shell .lab-site-header .lab-topic-links a { display: flex; align-items: center; min-height: 44px; font-size: 15px; padding: 10px 12px; }
+  body.lab-shell .lab-site-header .lab-nav-topic > summary { font-size: 15px; min-height: 46px; }
+  body.lab-shell .lab-nav-group.lab-nav-learning { width: 100%; }
+  body.lab-shell .lab-site-header details.lab-nav-topic { flex-basis: calc(50% - 8px); }
+
+  /* One reading column: remove the outer notebook frame, keep meaningful callouts. */
+  body.lab-shell .reading-layout { display: block; padding: 24px 16px 0; }
+  body.lab-shell .reading-layout > .side-panel { display: none; }
+  body.lab-shell .reading-main { max-width: 44rem; margin: auto; }
+  body.lab-shell .page-heading { padding: 0 0 22px; }
+  body.lab-shell .page-heading h1 { font-size: clamp(28px,7.6vw,34px); }
+  body.lab-shell .notebook { padding: 0; border: 0; border-radius: 0; background: transparent; }
+  body.lab-shell .notebook > section { padding: 28px 0; }
+  body.lab-shell .notebook > section > h2 { font-size: 23px; gap: 9px; }
+  body.lab-shell .notebook section:first-child > p:first-of-type { font-size: 17px; }
+  body.lab-shell .notebook h3 { font-size: 20px; }
+  body.lab-shell .notebook h4 { font-size: 18px; }
+  body.lab-shell .notebook .frontier-box { padding: 14px; }
+  body.lab-shell .notebook .worked-example { padding: 2px 14px 16px; }
+  body.lab-shell .notebook summary { font-size: 16px; padding: 13px 12px; line-height: 1.7; }
+  body.lab-shell .notebook details > :not(summary) { margin-left: 12px; margin-right: 12px; }
+  body.lab-shell .notebook details .formula { font-size: 17px; padding: 12px; }
+  body.lab-shell .symbol-list { grid-template-columns: 1fr; gap: 0; }
+  body.lab-shell .symbol-list dt { font-size: 16px; padding-bottom: 0; border-bottom: 0; }
+  body.lab-shell .symbol-list dd { font-size: 16px; padding-top: 3px; }
+  body.lab-shell .mobile-toc { margin: 0 0 24px; }
+  body.lab-shell .mobile-toc > summary { padding: 12px 14px; font-size: 16px; }
+  body.lab-shell .mobile-toc .toc { columns: 1; max-height: 55vh; max-height: 55dvh; overflow-y: auto; overscroll-behavior-y: contain; padding: 0 10px 10px; }
+  body.lab-shell .mobile-toc .toc a { font-size: 15px; min-height: 44px; padding: 10px 8px; line-height: 1.6; }
+  body.lab-shell .mobile-toc .toc-index { font-size: 13px; }
+  body.lab-shell .footer-nav a { display: block; padding: 9px 0; min-height: 44px; font-size: 15px; }
+
+  /* Keep equations intact. Only their own viewport can pan sideways. */
+  body.lab-shell :is(.formula,.equation,.math,pre,.table-scroll,.table-wrap,.mr-table-viewport) { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #66849b #101c29; scrollbar-width: thin; }
+  body.lab-shell :is(.formula,.equation,.math) { font-size: 17px; line-height: 1.9; padding: 12px; }
+  body.lab-shell :is(.formula,.equation,.math).mr-scroll { overflow-wrap: normal; word-break: normal; }
+  body.lab-shell pre { font-size: 14px; white-space: pre; }
+  body.lab-shell table { font-size: 15px; line-height: 1.75; }
+  body.lab-shell :is(th,td) { padding: 11px 10px; min-width: 7em; }
+  body.lab-shell .mr-scroll:focus-visible { outline: 3px solid var(--lab-amber); outline-offset: 3px; }
+  body.lab-shell .mr-scroll-hint[data-overflow=true] { display: block; margin: 7px 0 12px; color: var(--lab-muted); font-size: 13px; line-height: 1.6; }
+  body.lab-shell .mr-scroll[data-overflow=true] { border-right: 2px solid #60869e; }
+
+  /* Stack experiment controls and leave their readouts room to breathe. */
+  body.lab-shell :is(.controls,.twocol,.coef-grid) { grid-template-columns: minmax(0,1fr); }
+  body.lab-shell :is(.control label,.controls label,.legend,.facts p,.facts small,.ends,.variance small,.coef-grid small) { font-size: 16px; }
+  body.lab-shell label { flex-wrap: wrap; gap: 6px 12px; }
+  body.lab-shell .modes { gap: 8px; }
+  body.lab-shell .modes :is(a,button) { min-height: 44px; font-size: 15px; padding: 9px 12px; }
+  body.lab-shell .modes a { display: flex; align-items: center; }
+  body.page--transforms main > nav[role=tablist] { position: static; }
+  body.page--transforms main > nav[role=tablist] button { font-size: 15px; }
+  body.page--index .workspace { grid-template-columns: minmax(0,1fr); }
+  body.page--index .plotpanel { padding: 18px 12px; }
+  body.page--index .workspace > aside { padding: 20px 14px; }
+  body.page--index .curve-toggle { font-size: 14px; min-height: 44px; padding: 8px 10px; }
+  body.page--index .control label { font-size: 16px; }
+  body.page--index .hint { font-size: 15px; }
+  body.page--index .metric span { font-size: 14px; }
+  body.page--index .metric small { font-size: 13px; }
+  body.page--index .guide > article { padding: 22px 14px; }
+  body.page--index .guide-nav { gap: 0; font-size: 15px; }
+  body.page--index .guide-nav a { display: block; min-height: 44px; padding: 9px 0; }
+  body.page--index .page-shortcut { font-size: 15px; }
+  body.page--kalman .facts { grid-template-columns: minmax(0,1fr); }
+  body.page--kalman .facts section { padding: 16px; }
+  body.page--kalman .facts strong { font-size: 34px; margin-top: 4px; }
+  body.page--kalman .facts p { margin-top: 8px; }
+
+  /* Supplemental lessons retain their existing pending status. */
+  body.page--future :is(.future-boundary,.future-route li p,.future-context,.future-small,.future-example p,.future-example li,.future-detail p,.future-detail li,.future-detail summary,.note,.control-scenes,.control-symbols,.control-entry-links) { font-size: 16px; }
+  body.page--future .future-module-heading { flex-wrap: wrap; gap: 8px 12px; }
+  body.page--future .future-module-heading h2 { font-size: 25px; }
+  body.page--future .future-question { font-size: 19px; }
+  body.page--future .future-jump a { min-height: 44px; padding: 12px 8px; font-size: 17px; }
+  body.page--future .future-jump span { display: block; margin: 3px 0 0; font-size: 14px; }
+  body.page--future .future-example { padding: 16px 12px; }
+  body.page--future .future-detail { padding-inline: 10px; }
+  body.page--future .control-lesson > summary h3 { font-size: 17px; }
+  body.page--future .control-lesson > summary .control-kind { font-size: 14px; }
+  body.page--future :is(.control-visual-note,.control-visual-key,.future-flow,.future-related,.control-charts figcaption,.control-figure figcaption) { font-size: 15px; }
+  body.page--future .control-figure svg { min-width: 340px; }
+  body.page--future .control-figure-grid { gap: 26px; }
+  body.page--future .control-figure h4 { font-size: 18px; }
+  body.page--future .control-entry-links a { min-height: 44px; display: flex; align-items: center; }
+
+  /* Let small multiples use the column; wide numeric plots preserve their scale. */
+  body.lab-shell .learn-visual { padding: 0; margin: 24px 0; border: 0; border-radius: 0; background: transparent; }
+  body.lab-shell .learn-visual > h3 { font-size: 19px; }
+  body.lab-shell .learn-visual :is(figcaption,.lv-control p,.lv-readout) { font-size: 15px; line-height: 1.85; }
+  body.lab-shell .learn-visual .lv-control { padding: 12px 0; }
+  body.lab-shell .learn-visual label { font-size: 16px; }
+  body.lab-shell .learn-visual input[type=range] { min-height: 44px; }
+  body.lab-shell .learn-visual .lv-panels { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  body.lab-shell .learn-visual .lv-panel { max-width: 400px; }
+  body.lab-shell .learn-visual .lv-scroll > svg { min-width: 600px; }
+  body.lab-shell .figure { padding: 8px; }
+
+  /* Phone equivalents of four existing flow diagrams. */
+  body.lab-shell .mr-phone-flow { display: grid; gap: 12px; margin: 18px 0; font-size: 16px; line-height: 1.75; }
+  body.lab-shell .mr-flow-node { border: 1px solid #405b73; border-left: 3px solid var(--mr-color,#72b4ff); border-radius: 6px; background: #101c29; padding: 12px 14px; }
+  body.lab-shell .mr-flow-node strong { display: block; color: var(--mr-color,#72b4ff); font-size: 17px; }
+  body.lab-shell .mr-flow-node span { display: block; }
+  body.lab-shell .mr-flow-arrow { text-align: center; color: var(--lab-muted); line-height: 1.5; }
+  body.lab-shell .mr-flow-arrow::before { content: '↓'; display: block; font-size: 22px; color: var(--lab-accent); }
+  body.lab-shell .mr-flow-branches { display: grid; gap: 12px; border-left: 2px solid #60869e; padding-left: 14px; margin-left: 8px; }
+  body.lab-shell .mr-flow-return { border-left: 2px dashed #f1c57a; padding: 9px 12px; color: #f1c57a; font-size: 15px; }
+  body.lab-shell .mr-flow-lane { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+  body.lab-shell .mr-flow-lane span:last-child { color: #72b4ff; }
+  body.lab-shell .mr-original-diagram { display: block; margin: 12px 0; padding: 0; border: 1px solid var(--lab-line); background: #101c29; border-radius: 6px; }
+  body.lab-shell .notebook .mr-original-diagram { margin: 12px 0; }
+  body.lab-shell .mr-original-diagram > summary { display: list-item; padding: 11px 12px; font-size: 15px; color: var(--lab-accent); }
+  body.lab-shell .mr-original-diagram > :not(summary),
+  body.lab-shell .notebook .mr-original-diagram > :not(summary) { margin: 0; }
+  body.lab-shell .mr-original-diagram > .lv-scroll-hint { padding: 8px 12px; }
+
+  /* Motion lab uses the same readable control scale, including generated controls. */
+  body.page--motion main { padding: 22px 16px 40px; }
+  body.page--motion .hero p { font-size: 16px; }
+  body.page--motion .sidebar { grid-template-columns: minmax(0,1fr); }
+  body.page--motion :is(.field label,.slider-heading,.slider-heading output,.filter-option,.detail-text,.method-content,.path-row div,.empty-params,.small,.micro,.callout,.notice) { font-size: 15px; line-height: 1.8; }
+  body.page--motion :is(.section-label,.chart-heading .subtitle,.legend,.legend button,.chart-readout,.metrics-title span,.source-meta,.source-date,.zoom-row,.group-label) { font-size: 13px; }
+  body.page--motion :is(.topnav button,.chart-controls button,.chart-controls select,.toolbar button,.filter-option button,.algo-card button) { min-height: 44px; font-size: 14px; }
+  body.page--motion .topnav { gap: 20px; }
+  body.page--motion .topnav button { font-size: 15px; }
+  body.page--motion .filter-option { min-height: 44px; }
+  body.page--motion .filter-option label { min-height: 44px; }
+  body.page--motion .filter-option .kind { font-size: 12px; }
+  body.page--motion .filter-option button { min-width: 44px; padding: 7px; }
+  body.page--motion .legend button { min-height: 44px; padding: 6px 2px; }
+  body.page--motion .filter-list { max-height: 300px; }
+  body.page--motion .parameter-grid { grid-template-columns: minmax(0,1fr); }
+  body.page--motion .chart-controls { gap: 7px; }
+  body.page--motion .chart-readout { gap: 5px 12px; }
+  body.page--motion .zoom-row { flex-wrap: wrap; }
+  body.page--motion .zoom-row input { max-width: none; }
+  body.page--motion .formula { font-size: 15px; }
+  body.page--motion .badge { font-size: 12px; }
+  body.page--motion th { font-size: 13px; }
+  body.page--motion .motion-integration-note { font-size: 12px; line-height: 1.75; }
+}
+
+@media screen and (max-width: 359px) {
+  body.lab-shell .lab-site-bar { padding-inline: 12px; }
+  body.lab-shell .lab-site-brand { gap: 5px; font-size: 12px; }
+  body.lab-shell .lab-site-mark { width: 22px; height: 22px; }
+  body.lab-shell .lab-nav-toggle { padding-inline: 8px; font-size: 12px; }
+  body.lab-shell .lab-nav-toggle svg { display: none; }
+}
+
+@media print {
+  body.lab-shell .mr-phone-flow,
+  body.lab-shell .mr-scroll-hint { display: none !important; }
+  body.lab-shell .mr-original-diagram { display: contents; }
+  body.lab-shell .mr-original-diagram > summary { display: none !important; }
+  body.lab-shell .mr-original-diagram::details-content { display: contents !important; content-visibility: visible !important; }
+  body.lab-shell .mr-original-diagram > .lv-scroll { display: block !important; }
+}
+
+/* Wrappers are layout-neutral off phone screens. */
+@media screen and (min-width: 761px) {
+  body.lab-shell :is(.mr-table-viewport,.mr-chart-viewport) { display: contents; }
+}
+@media screen and (max-width: 760px) {
+  body.lab-shell .mr-chart-viewport { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
+  body.lab-shell .mr-chart-viewport > svg { min-width: var(--mr-chart-width); max-width: none; }
+  body.lab-shell .mr-original-diagram > .mr-scroll-hint { padding: 8px 12px; }
+  body.lab-shell .mr-flow-lane > span { min-width: 0; }
+}
+
+/* Hide the older always-on hint when the measured overflow hint is present. */
+body.lab-shell .mr-scroll-hint + :is(.lv-scroll-hint,.control-figure-hint) { display: none; }
+@media screen and (min-width: 761px) {
+  body.lab-shell .notebook section > .mr-scroll:has(+ .mr-scroll-hint:last-child) { margin-bottom: 0; }
+  body.lab-shell .notebook details > .mr-scroll:has(+ .mr-scroll-hint:last-child) { margin-bottom: 20px; }
+}
