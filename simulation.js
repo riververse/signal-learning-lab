@@ -114,7 +114,19 @@
     frame.style.height = '1250px';
     const frameURL = new URL(standaloneFor(current), root.location.href);
     frameURL.searchParams.set('embed', '1'); frameURL.searchParams.set('bridge', token);
-    frame.src = frameURL.href;
+    // Keep scenario changes in the outer history only. Assigning iframe.src
+    // after pushState would add a second joint-history entry, so one Back
+    // could restore the inner experiment without restoring the outer controls.
+    try {
+      if (frame.contentWindow) frame.contentWindow.location.replace(frameURL.href);
+      else if (serial === 1) frame.src = frameURL.href; // Initial frame only.
+      else { showError('实验窗口尚未就绪，请重新载入。'); return; }
+    } catch (error) {
+      // Do not fall back to src after a blocked navigation: it would restore
+      // the very extra history entry this replacement is meant to prevent.
+      showError('无法切换实验页面，请重新载入。');
+      return;
+    }
     if (root.location.protocol === 'file:') {
       showError('本地文件预览无法验证嵌入页面来源。请通过站点地址访问，或单独打开实验。');
       return;
