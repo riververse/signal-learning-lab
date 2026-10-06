@@ -133,11 +133,25 @@
     }
     const expectedToken = token;
     watchdog = root.setTimeout(() => { if (!ready && token === expectedToken) showError('实验未能完成加载。'); }, 8000);
+    requestHandshake();
+  }
+  function requestHandshake() {
+    if (!current || !frame.contentWindow || root.location.origin === 'null') return;
+    // Session-history restoration may reinstall an older child document after
+    // popstate, including its old URL token. Challenge the active document.
+    try {
+      frame.contentWindow.postMessage({ channel: 'river-lab-embed', type: 'sync',
+        token, page: SCENARIOS[current.scenario].file, algorithm: current.algorithm }, root.location.origin);
+    } catch (error) { /* The existing watchdog reports an unreachable child. */ }
   }
   function acceptMessage(event) {
     if (event.origin !== root.location.origin || event.origin === 'null' || event.source !== frame.contentWindow) return;
     const message = event.data;
-    if (!message || message.channel !== 'river-lab-embed' || message.token !== token || message.page !== SCENARIOS[current.scenario].file) return;
+    if (!message || message.channel !== 'river-lab-embed' || message.page !== SCENARIOS[current.scenario].file || message.algorithm !== current.algorithm) return;
+    // Announcements carry no trusted readiness or size. Only a current-token
+    // acknowledgement can complete loading or change the frame height.
+    if (message.type === 'hello') { requestHandshake(); return; }
+    if (message.token !== token) return;
     if (message.type === 'error') { clearTimeout(watchdog); showError('实验运行遇到问题，请重新载入。'); return; }
     if (message.type === 'ready') {
       ready = true; clearTimeout(watchdog); status.hidden = true;
@@ -151,6 +165,7 @@
   root.addEventListener('message', acceptMessage);
   frame.addEventListener('error', () => showError('无法载入实验页面。'));
   frame.addEventListener('load', () => {
+    requestHandshake();
     if (ready) return;
     try {
       const doc = frame.contentDocument;

@@ -11,7 +11,7 @@
       window.parent.location.pathname.split('/').pop() === 'simulation.html';
   } catch (error) { embedded = false; }
   if (embedded) document.documentElement.classList.add('lab-embedded');
-  const token = query.get('bridge') || '';
+  let token = query.get('bridge') || '';
   const aliases = { ema: 'iir', ma: 'moving-average', movingaverage: 'moving-average', moving_average: 'moving-average', oneEuro: 'oneeuro', 'one-euro': 'oneeuro', lowpass: 'low', highpass: 'high', bandpass: 'band' };
   const requested = query.get('algorithm') || '';
   const algorithm = Object.hasOwn(aliases, requested) ? aliases[requested] : requested;
@@ -27,7 +27,7 @@
     const height = contentHeight();
     if (type === 'resize' && Math.abs(height - lastHeight) <= 2) return;
     lastHeight = height;
-    window.parent.postMessage({ channel: 'river-lab-embed', type, token, page, height }, window.location.origin);
+    window.parent.postMessage({ channel: 'river-lab-embed', type, token, page, algorithm, height }, window.location.origin);
   }
   function scheduleResize() {
     if (scheduled || !embedded) return;
@@ -100,8 +100,23 @@
         try { url = new URL(href, window.location.href); } catch (error) { return; }
         if (url.origin === window.location.origin && /\.html$/.test(url.pathname)) anchor.target = '_top';
       });
-      window.addEventListener('error', reportError);
-      window.addEventListener('unhandledrejection', reportError);
+      let healthy = true;
+      window.addEventListener('message', event => {
+        if (event.source !== window.parent || event.origin !== window.location.origin || event.origin === 'null') return;
+        const message = event.data;
+        if (!message || message.channel !== 'river-lab-embed' || message.type !== 'sync' ||
+            message.page !== page || message.algorithm !== algorithm ||
+            typeof message.token !== 'string' || !message.token || message.token.length > 100) return;
+        // A restored document may have an older bridge token in its URL. Rejoin
+        // the current parent navigation only for this exact page and preset;
+        // do not reapply the preset or discard the restored experiment state.
+        token = message.token;
+        post(healthy ? 'ready' : 'error');
+      });
+      window.addEventListener('pageshow', () => post('hello'));
+      const runtimeError = () => { healthy = false; reportError(); };
+      window.addEventListener('error', runtimeError);
+      window.addEventListener('unhandledrejection', runtimeError);
       if (typeof ResizeObserver === 'function') {
         const observer = new ResizeObserver(scheduleResize);
         observer.observe(document.body);
@@ -113,7 +128,7 @@
       document.addEventListener('change', scheduleResize, true);
       document.addEventListener('click', scheduleResize, true);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleResize);
-      window.requestAnimationFrame(() => post('ready'));
+      window.requestAnimationFrame(() => { post(healthy ? 'ready' : 'error'); post('hello'); });
     } catch (error) {
       if (embedded) post('error');
       else {
