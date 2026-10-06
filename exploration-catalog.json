@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-06",
+  "categories": {
+    "radar": "民用雷达",
+    "dsp": "DSP 基础"
+  },
+  "scope": "公开的信号处理学习方向；不记录个人聊天、隐私或完成状态。",
+  "projects": [
+    {
+      "id": "a121-presence",
+      "category": "radar",
+      "title": "有人经过，也有人静坐",
+      "project": "Acconeer A121 · 人体存在检测",
+      "kind": "开放 Python 算法参考",
+      "application": "照明、门控与室内存在感知：从回波变化判断有人，而不是只看回波强不强。",
+      "chain": [
+        "稀疏 IQ",
+        "快慢低通",
+        "噪声归一化",
+        "存在判断"
+      ],
+      "first_step": "先理解快、慢两条 IIR 输出为什么不同，再顺着 processor 阅读检测分数的形成过程。",
+      "prerequisites": [
+        "采样、均值与方差",
+        "一阶 IIR、时间常数",
+        "Python / NumPy、复数 IQ"
+      ],
+      "algorithms": [
+        "帧内偏差衡量较快运动，帧间快慢低通差衡量较慢运动。",
+        "时间平滑、噪声归一化和阈值组合；可用相位变化增强慢动作敏感度。"
+      ],
+      "hardware": "读源码无需硬件；实时采集需要兼容 A121 评估板、对应 server 与连接环境。",
+      "maturity": "官方检测器，有算法推导、参数说明和 Python 实现；属于工程学习参考。本站未做硬件复现。",
+      "license": "Python 仓库采用 BSD-3-Clause-Clear（Clear BSD），不授予专利许可。第三方组件另有条款；SDK、固件和随附文档须分别核查，不能由 Python 仓库推定为全栈开源。",
+      "warning": "A121 使用脉冲相干雷达（PCR），不要直接套用 FMCW 的距离 FFT 流程。",
+      "official_links": [
+        {
+          "label": "官方算法说明",
+          "url": "https://docs.acconeer.com/en/latest/detectors/a121/presence_detector.html"
+        },
+        {
+          "label": "Python 处理器",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/src/acconeer/exptool/a121/algo/presence/_processors.py"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "Python 许可",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/LICENSE.md"
+        },
+        {
+          "label": "SDK 协议",
+          "url": "https://developer.acconeer.com/software-license-agreement/"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学 IIR / FIR",
+          "url": "knowledge.html?topic=iir-fir"
+        },
+        {
+          "label": "比较低通响应",
+          "url": "simulation.html?scenario=pressure&algorithm=iir"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "a121-breathing",
+      "category": "radar",
+      "title": "从细微起伏里找到节律",
+      "project": "Acconeer A121 · 呼吸参考应用",
+      "kind": "开放 Python 算法参考",
+      "application": "研究静止者的胸部微动如何映射到 IQ 相位，再从时间序列提取主要周期。",
+      "chain": [
+        "IQ 相位",
+        "位移序列",
+        "带通",
+        "功率谱峰值"
+      ],
+      "first_step": "把相位、位移、频率三个量分开，再比较带通前后的慢漂移与高频噪声。",
+      "prerequisites": [
+        "复数、IQ 相位与相位展开",
+        "带通滤波、采样率",
+        "FFT、功率谱与峰值插值"
+      ],
+      "algorithms": [
+        "存在检测先估计目标距离；累积相邻观测的相位变化形成运动时间序列。",
+        "带通保留目标频段，再以功率谱峰值与插值估计节律。"
+      ],
+      "hardware": "阅读和学习无需硬件；真实观测需要 A121 评估硬件及对应软件。动作、姿态和环境会影响结果。",
+      "maturity": "官方 reference application，带实现和测试说明；不代表已经在本站或你的场景中复现。",
+      "license": "Python 仓库采用 BSD-3-Clause-Clear（Clear BSD），不授予专利许可。第三方组件另有条款；SDK、固件和随附文档须分别核查，不能由 Python 仓库推定为全栈开源。",
+      "warning": "仅作算法学习与评估参考，非医疗诊断工具；A121 为脉冲相干雷达。",
+      "official_links": [
+        {
+          "label": "官方应用说明",
+          "url": "https://docs.acconeer.com/en/latest/ref_apps/a121/breathing.html"
+        },
+        {
+          "label": "Python 处理器",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/src/acconeer/exptool/a121/algo/breathing/_processor.py"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "Python 许可",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/LICENSE.md"
+        },
+        {
+          "label": "SDK 协议",
+          "url": "https://developer.acconeer.com/software-license-agreement/"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学频谱分析",
+          "url": "knowledge.html?topic=spectrum"
+        },
+        {
+          "label": "观察教学带通",
+          "url": "simulation.html?scenario=frequency&algorithm=band"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "ti-people-tracking",
+      "category": "radar",
+      "title": "把点云连成运动轨迹",
+      "project": "TI TIDEP-01000 · 人员计数与跟踪",
+      "kind": "厂商工程参考设计",
+      "application": "用毫米波观测距离、方向和速度，把检测点组织成可跟踪的人体目标。",
+      "chain": [
+        "距离 FFT",
+        "Capon / CFAR",
+        "Doppler",
+        "EKF 跟踪"
+      ],
+      "first_step": "先分清“这一帧检测到点”和“多帧维持一条轨迹”，再读设计指南中的数据链路。",
+      "prerequisites": [
+        "FMCW、FFT 与阵列基础",
+        "协方差与波束形成",
+        "卡尔曼滤波、非线性测量模型"
+      ],
+      "algorithms": [
+        "加窗与距离 FFT → 静态杂波去除 → Capon 波束形成与距离角度热图。",
+        "两遍 CFAR 检测、仰角估计、Doppler 估计，再用扩展卡尔曼滤波（EKF）与关联维持群目标轨迹。"
+      ],
+      "hardware": "完整参考设计需匹配 IWR6843 系列评估板、载板与软件版本；PC 用于配置和显示。阅读设计文档无需硬件。",
+      "maturity": "可追溯的 TI 工程参考设计；这里对应 TIDUE71D（2020-04 修订）信号链，不冒充最新研究或已复现项目。",
+      "license": "参考设计、SDK 与固件的许可分开看。所链 SDK manifest 列出部分算法/示例为 BSD-3-Clause，雷达固件和部分工具为 TI 专用条款；具体示例仍须检查所选软件包，不认定整套系统全开源。",
+      "warning": "本站卡尔曼实验是原理入门，不是 TI 的点云处理器或完整 EKF 人员跟踪器。",
+      "official_links": [
+        {
+          "label": "官方设计入口",
+          "url": "https://www.ti.com/tool/TIDEP-01000"
+        },
+        {
+          "label": "设计指南 PDF",
+          "url": "https://www.ti.com/lit/ug/tidue71d/tidue71d.pdf"
+        },
+        {
+          "label": "官方 SDK / 示例入口",
+          "url": "https://www.ti.com/tool/MMWAVE-SDK"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "SDK 许可清单",
+          "url": "https://dr-download-cdn.ti.com/software-development/software-development-kit-sdk/MD-PIrUeCYr3X/03.06.02.00-LTS/mmwave_sdk_software_manifest.html"
+        },
+        {
+          "label": "参考设计使用说明",
+          "url": "https://www.ti.com/legal/important-notice-and-disclaimer.html"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学卡尔曼",
+          "url": "knowledge.html?topic=kalman"
+        },
+        {
+          "label": "观察恒速度估计",
+          "url": "simulation.html?scenario=motion&algorithm=cvkalman"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "cmsis-dsp",
+      "category": "dsp",
+      "title": "让公式在嵌入式设备上工作",
+      "project": "Arm CMSIS-DSP",
+      "kind": "成熟开源算法库",
+      "application": "把滤波、变换与特征提取迁移到 Cortex-M / Cortex-A，进一步理解数值精度和计算代价。",
+      "chain": [
+        "采样块",
+        "FIR / IIR / FFT",
+        "特征",
+        "板端评估"
+      ],
+      "first_step": "从一条 FIR 的输入、系数和状态缓冲区读起，再比较浮点与定点实现。",
+      "prerequisites": [
+        "C、数组和状态缓冲区",
+        "FIR / IIR、FFT",
+        "进阶：定点数、量化与性能分析"
+      ],
+      "algorithms": [
+        "FIR / IIR、卷积与相关、FFT / DCT、MFCC。",
+        "矩阵、统计、LMS；算法实现和特定 Arm 目标优化分层阅读。"
+      ],
+      "hardware": "PC 可从源码和 Python wrapper 入门；板端部署需兼容 Arm 目标与工具链。",
+      "maturity": "官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。",
+      "license": "CMSIS-DSP 本体为 Apache-2.0；外部工具、依赖及具体组件的许可需分别检查。",
+      "warning": "本站的教学滤波是独立实现，尚未集成或运行 CMSIS-DSP。",
+      "official_links": [
+        {
+          "label": "GitHub 源码",
+          "url": "https://github.com/ARM-software/CMSIS-DSP"
+        },
+        {
+          "label": "官方文档",
+          "url": "https://arm-software.github.io/CMSIS-DSP/latest/index.html"
+        },
+        {
+          "label": "已核实版本",
+          "url": "https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "Apache-2.0 许可",
+          "url": "https://github.com/ARM-software/CMSIS-DSP/blob/main/LICENSE"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "复习 IIR / FIR",
+          "url": "knowledge.html?topic=iir-fir"
+        },
+        {
+          "label": "看冲激响应",
+          "url": "notes-iir-fir.html"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "liquid-dsp",
+      "category": "dsp",
+      "title": "把单个算法接成通信链路",
+      "project": "liquid-dsp",
+      "kind": "成熟开源通信 DSP 库",
+      "application": "用轻量 C 组件构建软件无线电基带链路，把滤波、重采样、调制和同步连起来。",
+      "chain": [
+        "IQ 数据",
+        "重采样 / 滤波",
+        "同步 / 解调",
+        "符号"
+      ],
+      "first_step": "先阅读滤波与重采样示例，画出每一段的采样率，再进入同步与均衡。",
+      "prerequisites": [
+        "C、编译与构建基础",
+        "复数 IQ、数字滤波",
+        "进阶：调制、符号时钟和信道"
+      ],
+      "algorithms": [
+        "FIR / IIR、多相重采样、FFT、PSK / QAM / OFDM。",
+        "NCO / PLL、定时同步与均衡；从模块接口追踪数据流。"
+      ],
+      "hardware": "合成数据和软件示例无需射频硬件；真实无线链路另需射频设备及驱动。",
+      "maturity": "有模块 API、示例、自测与基准测试；本次核实变更记录中的 1.8.3（2026-09-26）。",
+      "license": "本体为 MIT/X11；可选 FFTW、libfec 等依赖有独立条款，不能把链接后的所有发行物一概视为 MIT。",
+      "warning": "先以软件数据理解算法；真实发射还需满足当地频谱法规与设备要求。",
+      "official_links": [
+        {
+          "label": "GitHub 源码",
+          "url": "https://github.com/jgaeddert/liquid-dsp"
+        },
+        {
+          "label": "官方文档",
+          "url": "https://liquidsdr.org/doc/"
+        },
+        {
+          "label": "变更记录",
+          "url": "https://github.com/jgaeddert/liquid-dsp/blob/master/CHANGELOG.md"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "MIT 许可",
+          "url": "https://github.com/jgaeddert/liquid-dsp/blob/master/LICENSE"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学数字 PLL",
+          "url": "knowledge.html?topic=pll"
+        },
+        {
+          "label": "复习频谱分析",
+          "url": "knowledge.html?topic=spectrum"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "gnu-radio",
+      "category": "dsp",
+      "title": "看见整条信号链怎样流动",
+      "project": "GNU Radio",
+      "kind": "成熟开源信号处理平台",
+      "application": "在 GNU Radio Companion 中连接模块，观察通信仿真、频谱与软件无线电原型的数据流。",
+      "chain": [
+        "信号源",
+        "处理流图",
+        "频谱 / 时域",
+        "接收结果"
+      ],
+      "first_step": "从“信号源 → 滤波器 → 频谱显示”的纯软件流图入门，逐段检查采样率。",
+      "prerequisites": [
+        "采样率、频谱与滤波",
+        "复数 IQ 的基本含义",
+        "进阶扩展：Python / C++"
+      ],
+      "algorithms": [
+        "滤波、FFT、重采样、调制解调、同步。",
+        "信道模型、均衡与编码；可先使用现成模块，再读内部实现。"
+      ],
+      "hardware": "官方支持不接 RF 硬件的仿真；真实收发需要兼容 SDR 和驱动。",
+      "maturity": "长期维护的 3.x 平台；本次 release 核实为 v3.10.12.0。4.0 为另一开发分支，不混用状态。",
+      "license": "主体采用 GPL v3；已核对核心 FIR 文件的 GPL-3.0-or-later 标注。外部模块、依赖、具体文件和文档分别检查许可。",
+      "warning": "这些能力属于安装后的外部软件；本站没有嵌入 GNU Radio 或自动执行项目代码。",
+      "official_links": [
+        {
+          "label": "GitHub 源码",
+          "url": "https://github.com/gnuradio/gnuradio"
+        },
+        {
+          "label": "官方介绍",
+          "url": "https://www.gnuradio.org/about/"
+        },
+        {
+          "label": "已核实版本",
+          "url": "https://github.com/gnuradio/gnuradio/releases/tag/v3.10.12.0"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "GNU GPL 许可",
+          "url": "https://github.com/gnuradio/gnuradio/blob/main/COPYING"
+        },
+        {
+          "label": "核心 FIR 的许可标注",
+          "url": "https://github.com/gnuradio/gnuradio/blob/main/gr-filter/lib/fir_filter_blk_impl.cc"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学三大变换",
+          "url": "knowledge.html?topic=transforms"
+        },
+        {
+          "label": "观察频率选择",
+          "url": "simulation.html?scenario=frequency&algorithm=low"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    }
+  ]
+}

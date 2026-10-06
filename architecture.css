@@ -1,4 +1,4 @@
-/* Three primary destinations, shared by both new workspaces and preserved lessons. */
+/* Four primary destinations, shared by both new workspaces and preserved lessons. */
 body.lab-shell .lab-site-header.architecture-header{border-top:3px solid #426c7b;background:#111d2b;position:relative;z-index:20}
 body.lab-shell .architecture-header .architecture-bar{max-width:1320px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:28px}
 body.lab-shell .architecture-header .lab-site-brand{font-size:15px;padding:0;gap:10px}
@@ -17,15 +17,15 @@ body.lab-shell .topic-action{display:inline-flex;align-items:center;justify-cont
 body.lab-shell .topic-action:hover{background:#285160}
 body.lab-shell .legacy-topic-context{max-width:1280px;margin:14px auto 0;padding:0 28px;color:#a5b5c7;font-size:13px;display:flex;gap:10px 20px;flex-wrap:wrap;position:static;inset:auto;z-index:auto;border:0;background:transparent}
 body.lab-shell .legacy-topic-context a{padding:5px 0}
-@media(max-width:720px){
+@media(max-width:840px){
  body.lab-shell .architecture-header .architecture-bar{display:block;padding:10px 16px 8px}
  body.lab-shell .architecture-header .lab-site-brand{font-size:14px;min-height:34px;margin-bottom:8px}
  body.lab-shell .architecture-header .lab-site-mark{width:28px;height:28px}
- body.lab-shell .architecture-header .architecture-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ body.lab-shell .architecture-header .architecture-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
  body.lab-shell .architecture-header .architecture-nav a{font-size:14px;padding:11px 4px;gap:6px;min-height:46px}
  body.lab-shell .architecture-header .architecture-nav svg{width:18px;height:18px}
  body.lab-shell .legacy-topic-context{padding:0 16px;font-size:13px}
 }
-@media(max-width:350px){body.lab-shell .architecture-header .architecture-nav svg{display:none}body.lab-shell .architecture-header .architecture-bar{padding-inline:12px}}
+@media(max-width:420px){body.lab-shell .architecture-header .architecture-nav svg{display:none}body.lab-shell .architecture-header .architecture-bar{padding-inline:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
 @media print{body.lab-shell .architecture-header,body.lab-shell .legacy-topic-context{display:none}}

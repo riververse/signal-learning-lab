@@ -1,0 +1,51 @@
+/* Project field guide: retain RIVER's dark measurement surfaces. */
+body.exploration-page .exploration-main{max-width:1200px;margin:0 auto;padding:40px 28px 18px}
+body.exploration-page .exploration-intro{display:grid;grid-template-columns:1.35fr 1fr;gap:42px;align-items:center;margin-bottom:32px}
+body.exploration-page h1{font-size:38px;margin:0 0 14px;letter-spacing:-.025em}
+body.exploration-page .exploration-intro p{max-width:40em;color:var(--lab-muted);margin:0 0 12px}
+body.exploration-page .exploration-state{color:var(--lab-amber);font-size:14px;display:inline-block;border-bottom:1px solid #685a3f;margin-bottom:14px;padding-bottom:3px}
+body.exploration-page .exploration-route{margin:0;padding:22px 24px;border-left:2px solid #426c7b;background:#101b28;list-style:none;display:grid;gap:14px}
+body.exploration-page .exploration-route li{display:grid;grid-template-columns:90px 1fr;gap:15px;color:var(--lab-muted);font-size:14px;line-height:1.7}
+body.exploration-page .exploration-route strong{color:var(--lab-accent);font-size:16px}
+body.exploration-page .exploration-toolbar{border-block:1px solid var(--lab-line);padding:20px 0;display:flex;gap:16px;justify-content:space-between;align-items:end;margin-bottom:12px}
+body.exploration-page .exploration-filters{display:flex;gap:8px;flex-wrap:wrap}
+body.exploration-page .exploration-filter,body.exploration-page .exploration-reset{appearance:none;font:inherit;font-size:14px;min-height:44px;padding:8px 14px;border:1px solid #40556c;border-radius:6px;background:#152334;color:var(--lab-ink);cursor:pointer}
+body.exploration-page .exploration-filter[aria-pressed=true]{background:#183b43;color:#9ce8de;border-color:#629eaa}
+body.exploration-page .exploration-filter:hover,body.exploration-page .exploration-reset:hover{border-color:var(--lab-accent)}
+body.exploration-page .exploration-search{display:grid;gap:6px;font-size:14px;min-width:260px;color:var(--lab-muted)}
+body.exploration-page .exploration-search input{width:100%;min-height:44px;border:1px solid #40556c;border-radius:6px;background:#080f18;color:var(--lab-ink);padding:9px 12px;font-size:16px}
+body.exploration-page .exploration-search input::placeholder{color:#91a7bb}
+body.exploration-page .exploration-count{color:var(--lab-muted);font-size:14px;margin:12px 0 18px}
+body.exploration-page .exploration-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+body.exploration-page .project-card{background:var(--lab-paper);border:1px solid var(--lab-line);border-radius:9px;padding:24px;min-width:0;scroll-margin-top:24px}
+body.exploration-page .project-card:target{border-color:var(--lab-accent)}
+body.exploration-page .project-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:#91bcf4}
+body.exploration-page .project-state{color:var(--lab-amber)}
+body.exploration-page .project-card h2{font-size:23px;line-height:1.5;letter-spacing:-.01em;margin:10px 0 4px}
+body.exploration-page .project-name{font-size:14px;color:var(--lab-muted);margin:0 0 18px;overflow-wrap:anywhere}
+body.exploration-page .project-chain{display:flex;flex-wrap:wrap;align-items:center;gap:7px;list-style:none;padding:14px;margin:0 0 18px;background:var(--lab-plot);border-radius:5px;border-left:2px solid #426c7b}
+body.exploration-page .project-chain li{font-size:13px;color:#a9ded9;line-height:1.7;display:flex;align-items:center;gap:7px}
+body.exploration-page .project-chain li+li::before{content:'›';color:#718b9d;font-size:18px}
+body.exploration-page .project-card p{margin:12px 0;font-size:15px}
+body.exploration-page .project-application{min-height:3.7em}
+body.exploration-page .project-first{color:var(--lab-muted)}
+body.exploration-page .project-warning{color:#f1d7a7;font-size:14px!important}
+body.exploration-page .project-links{display:flex;flex-wrap:wrap;gap:8px 18px;margin:17px 0 6px}
+body.exploration-page .project-links a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+body.exploration-page .project-details{margin-top:14px;border-top:1px solid var(--lab-line)}
+body.exploration-page .project-details summary{min-height:48px;padding:13px 0;cursor:pointer;font-size:14px;color:#c6dce9}
+body.exploration-page .project-details[open] summary{color:var(--lab-accent)}
+body.exploration-page .project-facts{margin:4px 0 12px}
+body.exploration-page .project-facts dt{font-size:13px;color:#91bcf4;margin-top:17px;font-weight:650}
+body.exploration-page .project-facts dd{margin:5px 0 0;font-size:14px;line-height:1.9;overflow-wrap:anywhere;color:#c4d5e3}
+body.exploration-page .project-facts ul{padding-left:20px;margin:0}
+body.exploration-page .project-verification{font-size:12px!important;color:var(--lab-muted);margin:14px 0 0!important}
+body.exploration-page .exploration-empty{padding:24px;background:var(--lab-paper);border:1px solid var(--lab-line);border-radius:6px}
+body.exploration-page .exploration-policy{margin-top:34px;padding:24px 0;border-top:1px solid var(--lab-line);max-width:900px}
+body.exploration-page .exploration-policy h2{font-size:23px;margin:0 0 15px}
+body.exploration-page .exploration-policy p,body.exploration-page .exploration-policy li{font-size:14px;color:var(--lab-muted)}
+body.exploration-page .exploration-policy ul{padding-left:21px}
+body.exploration-page .exploration-policy li+li{margin-top:8px}
+@media(max-width:840px){body.exploration-page .exploration-intro{grid-template-columns:1fr;gap:18px}body.exploration-page .exploration-route{grid-template-columns:repeat(2,minmax(0,1fr))}body.exploration-page .exploration-route li{grid-template-columns:1fr;gap:2px}}
+@media(max-width:640px){body.exploration-page .exploration-main{padding:26px 16px 14px}body.exploration-page h1{font-size:28px}body.exploration-page .exploration-grid{grid-template-columns:1fr;gap:18px}body.exploration-page .exploration-toolbar{display:grid;gap:16px}body.exploration-page .exploration-search{min-width:0}body.exploration-page .project-card{padding:20px}body.exploration-page .project-card h2{font-size:22px}body.exploration-page .project-application{min-height:0}body.exploration-page .exploration-route{padding:18px;gap:18px}body.exploration-page .exploration-filter{padding-inline:11px}}
+@media print{body.exploration-page .exploration-toolbar{display:none}body.exploration-page .exploration-grid{display:block}body.exploration-page .project-card{break-inside:avoid;margin-bottom:18px}}
