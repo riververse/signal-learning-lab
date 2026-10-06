@@ -1,0 +1,91 @@
+body.page--knowledge .knowledge-main{max-width:1280px;margin:auto;padding:34px 28px 70px}
+body.page--knowledge .map-intro{display:flex;align-items:center;justify-content:space-between;gap:28px;margin:8px 0 28px}
+body.page--knowledge .map-intro h1{font-size:clamp(28px,3.4vw,42px);margin:0 0 9px;letter-spacing:-.04em}
+body.page--knowledge .map-intro p{color:#acbdd0;margin:0;font-size:17px}
+body.page--knowledge .map-thread{display:flex;gap:0;margin:0 0 22px;color:#8ba3b9;font-size:14px;flex-wrap:wrap}
+body.page--knowledge .map-thread span{display:flex;align-items:center;padding:8px 0}
+body.page--knowledge .map-thread span:not(:last-child)::after{content:'';height:1px;width:38px;background:#456174;margin:0 16px}
+body.page--knowledge .topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+body.page--knowledge a.topic-card{display:block;min-width:0;color:#deebf5;border:1px solid #2c3c50;border-radius:10px;overflow:hidden;text-decoration:none;background:#131e2b}
+body.page--knowledge a.topic-card:hover{border-color:#719eac;background:#172434}
+body.page--knowledge .topic-diagram{padding:10px 20px 0;background:#0c1723;border-bottom:1px solid #26384a}
+body.page--knowledge .topic-diagram svg{display:block;width:100%;height:128px}
+body.page--knowledge .diagram-blue{stroke:#72b4ff}
+body.page--knowledge .diagram-amber{stroke:#f1c57a}
+body.page--knowledge .diagram-link{stroke:#627e95;stroke-width:1.7}
+body.page--knowledge .topic-card-text{padding:20px 22px 22px}
+body.page--knowledge .topic-card h2{font-size:23px;margin:0 0 8px;font-weight:700}
+body.page--knowledge .topic-card p{font-size:15px;color:#b7c8d8;margin:6px 0;line-height:1.7}
+body.page--knowledge .topic-card .topic-terms{font-size:12px;color:#8ca4ba;margin-top:12px}
+body.page--knowledge .topic-state{display:inline-block;color:#d7bf8c;border-top:1px solid #3d4149;margin-top:17px;padding-top:9px;font-size:12px;line-height:1.6}
+body.page--knowledge .topic-card--transforms .topic-state,body.page--knowledge .topic-card--iir-fir .topic-state,body.page--knowledge .topic-card--kalman .topic-state{color:#9bd2c9}
+body.page--knowledge .map-frontier{display:block;border-left:3px solid #71858e;padding:1px 0 1px 22px;margin:38px 0 28px;max-width:850px}
+body.page--knowledge .map-frontier h2{font-size:19px;margin:0 0 8px}
+body.page--knowledge .map-frontier p{font-size:15px;color:#b7c8d8;line-height:1.9}
+body.page--knowledge .map-frontier a{font-size:14px}
+body.page--knowledge .map-archive{display:flex;gap:14px 26px;flex-wrap:wrap;border-top:1px solid #2c3c50;padding-top:20px;font-size:14px}
+body.page--knowledge .back-to-map{display:inline-block;padding:8px 0;font-size:14px;text-decoration:none}
+body.page--knowledge .topic-heading{display:flex;align-items:center;gap:32px;margin:10px 0 20px}
+body.page--knowledge .topic-heading-diagram{width:200px;background:#0c1723;border:1px solid #2c3c50;border-radius:9px;flex-shrink:0}
+body.page--knowledge .topic-heading-diagram svg{display:block;width:100%;height:auto}
+body.page--knowledge .topic-heading h1{margin:0 0 6px;font-size:clamp(27px,3.2vw,38px)}
+body.page--knowledge .topic-heading p{font-size:16px;color:#a5b5c7;margin:0}
+body.page--knowledge .topic-view-nav{display:flex;gap:12px;border-bottom:1px solid #2c3c50;margin-bottom:30px}
+body.page--knowledge .topic-view-nav a{display:block;min-width:105px;padding:12px 18px;border-bottom:3px solid transparent;text-align:center;text-decoration:none;color:#aabdd0;font-size:16px}
+body.page--knowledge .topic-view-nav a[aria-current=page]{color:#94e2d6;border-bottom-color:#7bdacf}
+body.page--knowledge .knowledge-body{max-width:1000px}
+body.page--knowledge .knowledge-body .topic-lead{max-width:790px;margin-bottom:25px}
+body.page--knowledge .knowledge-body :is(h2,h3,h4){line-height:1.55}
+body.page--knowledge .knowledge-body h2{font-size:25px}
+body.page--knowledge .knowledge-body h3{font-size:20px}
+body.page--knowledge .knowledge-body p,body.page--knowledge .knowledge-body li{font-size:16px;line-height:1.95}
+body.page--knowledge .knowledge-body > article{margin:30px 0;padding:25px 30px;border:1px solid #2c3c50;background:#131e2b;border-radius:8px}
+body.page--knowledge .knowledge-body > article > :is(p,ul){max-width:48em}
+body.page--knowledge .knowledge-body .formula{padding:16px 20px;font-size:16px;line-height:2.1;overflow-x:auto}
+body.page--knowledge .knowledge-body .source-context{font-size:14px;color:#91a9bd;max-width:48em}
+body.page--knowledge .concept-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:24px 0}
+body.page--knowledge .concept-strip article{padding:0 22px;border-left:2px solid #36576b;min-width:0}
+body.page--knowledge .concept-strip h3{margin-top:0}
+body.page--knowledge .concept-strip article p{font-size:15px;color:#b4c6d7}
+body.page--knowledge .topic-actions{display:flex;gap:12px 24px;align-items:center;flex-wrap:wrap;margin:26px 0}
+body.page--knowledge .learning-boundary{margin:32px 0;padding:20px 24px;background:#222629;border-left:3px solid #9a835b;border-radius:0 6px 6px 0;max-width:850px}
+body.page--knowledge .learning-boundary h3{color:#e1c998;margin-top:0}
+body.page--knowledge .learning-boundary p{font-size:15px;margin-bottom:0}
+body.page--knowledge .notebook-entry{padding:25px 30px;background:#131e2b;border:1px solid #2c3c50;border-radius:9px;max-width:850px}
+body.page--knowledge .notebook-entry p{max-width:44em}
+body.page--knowledge .notebook-pending .topic-state{margin:0 0 18px;border:0;padding:0;color:#f1c57a}
+body.page--knowledge .pll-flow{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0}
+body.page--knowledge .pll-flow span{border:1px solid #426474;border-radius:6px;padding:10px 14px;font-size:15px;background:#142837}
+body.page--knowledge .practical-case{margin:30px 0;padding:1px 0 10px 22px;border-left:3px solid #65a898;max-width:850px}
+body.page--knowledge .practical-case h3{margin-top:10px}
+@media(max-width:960px){body.page--knowledge .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.page--knowledge .map-intro{display:block}body.page--knowledge .map-intro>.topic-action{margin-top:20px}}
+@media(max-width:640px){
+ body.page--knowledge .knowledge-main{padding:24px 16px 75px}
+ body.page--knowledge .map-intro p{font-size:16px}
+ body.page--knowledge .map-thread{font-size:12px;margin-bottom:16px}
+ body.page--knowledge .map-thread span:not(:last-child)::after{width:15px;margin:0 9px}
+ body.page--knowledge .topic-grid{grid-template-columns:1fr;gap:15px}
+ body.page--knowledge .topic-diagram{padding:8px 18px 0}
+ body.page--knowledge .topic-diagram svg{height:116px}
+ body.page--knowledge .topic-card-text{padding:17px 20px 20px}
+ body.page--knowledge .topic-card h2{font-size:22px}
+ body.page--knowledge .topic-card p{font-size:16px}
+ body.page--knowledge .topic-card .topic-terms{font-size:13px}
+ body.page--knowledge .topic-state{font-size:13px}
+ body.page--knowledge .map-frontier{padding-left:16px}
+ body.page--knowledge .topic-heading{gap:14px;margin-top:7px}
+ body.page--knowledge .topic-heading-diagram{width:85px;border:0;background:transparent}
+ body.page--knowledge .topic-heading p{font-size:14px}
+ body.page--knowledge .topic-view-nav{margin-bottom:24px}
+ body.page--knowledge .concept-strip{grid-template-columns:1fr;gap:20px}
+ body.page--knowledge .concept-strip article{padding-left:16px}
+ body.page--knowledge .knowledge-body > article,body.page--knowledge .notebook-entry{padding:19px 17px}
+ body.page--knowledge .knowledge-body h2{font-size:22px}
+ body.page--knowledge .knowledge-body h3{font-size:20px}
+ body.page--knowledge .knowledge-body .formula{padding:13px;font-size:15px}
+ body.page--knowledge .learning-boundary{padding:16px}
+ body.page--knowledge .knowledge-body .future-module{padding:20px 16px}
+ body.page--knowledge .knowledge-body .future-module h2{font-size:22px}
+ body.page--knowledge .knowledge-body .future-module-heading{flex-wrap:wrap}
+}
+@media print{body.page--knowledge .topic-view-nav,body.page--knowledge .back-to-map{display:none}body.page--knowledge .topic-card{break-inside:avoid}}

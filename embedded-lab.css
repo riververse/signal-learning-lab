@@ -1,0 +1,63 @@
+/* Only active in a validated, same-origin simulation iframe. Standalone pages retain all content. */
+html.lab-embedded { min-height:0 !important; height:auto !important; background:#0b111b; }
+html.lab-embedded body.lab-shell { min-height:0 !important; height:auto !important; overflow-x:clip; }
+html.lab-embedded body.lab-shell>.lab-site-header,
+html.lab-embedded body.lab-shell>.legacy-topic-context,
+html.lab-embedded body.lab-shell>main>header,
+html.lab-embedded body.lab-shell>main>h1,
+html.lab-embedded body.lab-shell>main>.intro,
+html.lab-embedded body.lab-shell>main>.lead,
+html.lab-embedded body.lab-shell>main>.page-shortcut,
+html.lab-embedded body.lab-shell>.motion-integration-note,
+html.lab-embedded body.lab-shell>.topbar,
+html.lab-embedded body.lab-shell #page-experiment>.hero,
+html.lab-embedded body.lab-shell .question-helper,
+html.lab-embedded body.lab-shell .ask-helper,
+html.lab-embedded body.lab-shell [data-question-helper],
+html.lab-embedded body.lab-shell .learning-helper,
+html.lab-embedded body.lab-shell .lab-question-helper { display:none !important; }
+html.lab-embedded body.lab-shell>main { max-width:none; width:100%; margin:0 !important; padding:22px !important; }
+html.lab-embedded body.page--index>main>.guide,
+html.lab-embedded body.page--index>main>.lesson,
+html.lab-embedded body.page--index>main>.explain,
+html.lab-embedded body.page--index>main>footer,
+html.lab-embedded body.page--motion main>.footer,
+html.lab-embedded body.page--frequency main>.lab~.lab,
+html.lab-embedded body.page--frequency main>footer { display:none !important; }
+html.lab-embedded body.page--frequency main>.lab { margin:0; }
+html.lab-embedded body.lab-shell :is(main,section,aside,.workspace,.workbench,.main-stack,.sidebar,.panel,.detail-panel>div,.controls>div) { min-width:0; }
+html.lab-embedded body.page--index .workspace { grid-template-columns:minmax(0,1fr) 290px; }
+html.lab-embedded body.page--index .plotpanel { padding:20px; }
+html.lab-embedded body.page--index .embedded-focus-control { border-left:2px solid #7bdacf; padding-left:10px; }
+html.lab-embedded body.page--motion .lesson-band { margin-bottom:18px; }
+html.lab-embedded body.page--motion .filter-list { max-height:340px; }
+html.lab-embedded body.page--motion .workbench { grid-template-columns:255px minmax(0,1fr); }
+html.lab-embedded body.page--motion .chart-panel { padding:18px 16px 14px; }
+html.lab-embedded body.page--motion #page-map,
+html.lab-embedded body.page--motion #page-sources { display:none !important; }
+html.lab-embedded body.page--motion .startup-notice { margin:16px 22px 0; }
+html.lab-embedded body.lab-shell .embedded-lab-jumps { display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 16px; font-size:13px; }
+html.lab-embedded body.lab-shell .embedded-lab-jumps a { min-height:36px; display:inline-flex; align-items:center; }
+@media(max-width:1000px) {
+ html.lab-embedded body.page--index .workspace { grid-template-columns:minmax(0,1fr); }
+ html.lab-embedded body.page--motion .workbench { grid-template-columns:230px minmax(0,1fr); }
+}
+@media(max-width:760px) {
+ html.lab-embedded body.lab-shell>main { padding:16px 10px 24px !important; }
+ html.lab-embedded body.page--motion .workbench { display:flex; flex-direction:column; gap:14px; }
+ html.lab-embedded body.page--motion .sidebar { width:100%; display:grid; grid-template-columns:minmax(0,1fr); }
+ html.lab-embedded body.page--motion .main-stack { width:100%; order:-1; }
+ html.lab-embedded body.page--motion .filter-list { max-height:320px; }
+ html.lab-embedded body.page--motion .lesson-band { margin-bottom:12px; }
+ html.lab-embedded body.page--motion .lesson-list { padding-bottom:6px; }
+ html.lab-embedded body.page--motion .lesson { min-height:44px; }
+ html.lab-embedded body.page--motion :is(.chart-panel,.metric-panel,.detail-panel,.side-panel) { padding:16px 12px; }
+ html.lab-embedded body.page--motion .chart-wrap { height:290px; }
+ html.lab-embedded body.page--motion .chart-wrap.secondary { height:185px; }
+ html.lab-embedded body.page--motion .startup-notice { margin:12px 10px 0; }
+ html.lab-embedded body.page--index .plotpanel { padding:16px 12px; }
+ html.lab-embedded body.lab-shell .embedded-lab-jumps { gap:6px 16px; margin-bottom:10px; }
+ html.lab-embedded body.lab-shell .embedded-lab-jumps a { min-height:44px; }
+ html.lab-embedded body.lab-shell :is(canvas,select,input[type=range]) { max-width:100%; }
+ html.lab-embedded body.lab-shell :is(.table-wrap,.formula,.equation,pre,.lesson-list) { max-width:100%; }
+}

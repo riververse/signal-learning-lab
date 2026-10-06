@@ -1,0 +1,66 @@
+
+/* Additions stay inside the automatic-control lesson sequence. */
+body.page--knowledge .control-entry { margin: 27px 0 18px; padding: 18px 0; border-top: 1px solid var(--lab-line); border-bottom: 1px solid var(--lab-line); }
+body.page--knowledge .control-entry h3 { margin-top: 0; }
+body.page--knowledge .control-entry-links { display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px; }
+body.page--knowledge .control-lesson { scroll-margin-top: 24px; }
+body.page--knowledge .control-lesson > summary h3 { display: inline; margin: 0; font-size: 16px; line-height: 1.8; }
+body.page--knowledge .control-lesson > summary .control-kind { display: block; margin: 3px 0 0 17px; color: var(--lab-muted); font-size: 12px; font-weight: 400; }
+body.page--knowledge .control-lesson > p { max-width: 48em; }
+body.page--knowledge .control-check { margin: 22px 0 8px; padding: 0 14px; border-left: 3px solid #90774f; background: #1d2630; }
+body.page--knowledge .control-check > summary { font-size: 14px; color: var(--lab-amber); }
+body.page--knowledge .control-check[open] { padding-bottom: 8px; }
+body.page--knowledge .control-check[open] > summary { border: 0; margin-bottom: 0; }
+body.page--knowledge .control-scenes { display: grid; grid-template-columns: 96px minmax(0,1fr); gap: 0 16px; font-size: 14px; }
+body.page--knowledge .control-scenes dt,body.page--knowledge .control-scenes dd { margin: 0; padding: 10px 0; border-bottom: 1px solid var(--lab-line); }
+body.page--knowledge .control-scenes dt { color: var(--lab-navy); font-weight: 650; }
+body.page--knowledge .control-symbols { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 24px; margin: 18px 0; font-size: 14px; }
+body.page--knowledge .control-symbols dt { color: var(--lab-accent); font-weight: 650; }
+body.page--knowledge .control-symbols dd { margin: 4px 0 8px; color: var(--lab-muted); line-height: 1.8; }
+body.page--knowledge .control-charts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin: 22px 0; }
+body.page--knowledge .control-charts figure { min-width: 0; margin: 0; }
+body.page--knowledge .control-charts svg { display: block; width: 100%; height: auto; border: 1px solid var(--lab-line); background: var(--lab-plot); }
+body.page--knowledge .control-charts figcaption { color: var(--lab-muted); font-size: 12px; line-height: 1.8; padding-top: 9px; }
+body.page--knowledge .control-chart-key { padding: 0; list-style: none; }
+body.page--knowledge .control-chart-key li { padding-left: 14px; border-left: 3px solid var(--case-color); }
+body.page--knowledge .control-chart-key strong { color: var(--case-color); }
+@media (max-width: 640px) {
+ body.page--knowledge .control-charts,body.page--knowledge .control-symbols { grid-template-columns: 1fr; }
+ body.page--knowledge .control-scenes { grid-template-columns: 1fr; gap: 0; }
+ body.page--knowledge .control-scenes dt { border-bottom: 0; padding-bottom: 0; }
+ body.page--knowledge .control-entry-links { gap: 10px 17px; }
+}
+@media print {
+ body.page--knowledge .control-check { background: white !important; }
+ body.page--knowledge .control-charts svg { background: #080f18 !important; print-color-adjust: exact; }
+}
+
+/* Original physical examples: action, disturbance and measured feedback. */
+body.page--knowledge .control-figure-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; margin: 24px 0; align-items: start; }
+body.page--knowledge .control-figure { min-width: 0; margin: 24px 0; }
+body.page--knowledge .control-figure-grid > .control-figure { margin: 0; }
+body.page--knowledge .control-figure h4 { margin: 0 0 10px; font-size: 16px; line-height: 1.7; font-weight: 650; }
+body.page--knowledge .control-figure-viewport { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; border: 1px solid var(--lab-line); background: var(--lab-plot); scrollbar-color: #60869e #080f18; scrollbar-width: thin; }
+body.page--knowledge .control-figure-viewport:focus-visible { outline: 3px solid var(--lab-amber); outline-offset: 3px; }
+body.page--knowledge .control-figure svg { display: block; width: 100%; min-width: 315px; height: auto; }
+body.page--knowledge .control-figure figcaption { margin-top: 10px; font-size: 13px; color: var(--lab-muted); line-height: 1.85; }
+body.page--knowledge .control-figure--loop { max-width: 400px; margin: 24px auto; }
+body.page--knowledge .control-visual-note { font-size: 13px; color: var(--lab-muted); padding-left: 13px; border-left: 2px solid var(--lab-line); }
+body.page--knowledge .control-visual-key { display: flex; flex-wrap: wrap; gap: 5px 18px; margin: 16px 0; padding: 0; list-style: none; font-size: 13px; }
+body.page--knowledge .control-visual-key li { margin: 0; padding: 0; }
+body.page--knowledge .control-visual-key span { display: inline-block; width: 19px; margin-right: 7px; vertical-align: middle; border-top: 2px solid currentColor; }
+body.page--knowledge .control-visual-key .action { color: #7bdacf; }
+body.page--knowledge .control-visual-key .disturbance { color: #f1c57a; }
+body.page--knowledge .control-visual-key .measurement { color: #c3b5ee; }
+body.page--knowledge .control-figure-hint { display: none; }
+@media (max-width: 850px) {
+ body.page--knowledge .control-figure-grid { grid-template-columns: 1fr; }
+ body.page--knowledge .control-figure-grid > .control-figure { max-width: 420px; width: 100%; margin: 0 auto; }
+}
+@media (max-width: 480px) {
+ body.page--knowledge .control-figure-hint { display: block; color: var(--lab-muted); font-size: 12px; }
+}
+@media print {
+ body.page--knowledge .control-figure { break-inside: avoid; }
+ body.page--knowledge .control-figure-viewport { print-color-adjust: exact; }
+}

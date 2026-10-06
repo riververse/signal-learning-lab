@@ -4,6 +4,7 @@
   const header = document.querySelector('.lab-site-header');
   if (!header) return;
   const toggle = header.querySelector('.lab-nav-toggle');
+  if (!toggle) return; // The architecture header uses three always-visible links.
   const topics = [...header.querySelectorAll('.lab-nav-topic')];
   const smallScreen = window.matchMedia('(max-width: 1120px)');
   let open = false;

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="按已经整理的学习记录，选出一个可执行的下一步。学习打卡仅保存在当前浏览器，和已讲解、已验证的历史记录分开。">
+<title>接下来学什么 · RIVER 信号实验室</title>
+<link rel="icon" type="image/png" href="favicon-rgb-8b14e515.png">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="lab-shell.css">
+<link rel="stylesheet" href="mobile-reading.css">
+<link rel="stylesheet" href="next-learning.css">
+<link rel="stylesheet" href="question-helper.css">
+<script src="learning-progress.js" defer></script>
+<script src="question-helper.js" defer></script>
+<link rel="stylesheet" href="architecture.css?v=20261006">
+<script src="architecture.js?v=20261006" defer></script>
+</head>
+<body class="lab-shell page--next-learning" data-learning-topic="transforms">
+<header class="lab-site-header architecture-header"><div class="architecture-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室知识图谱"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><nav class="architecture-nav" aria-label="主要导航"><a href="knowledge.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h5v5H4zM15 3h3v3h-3zM14 13h5v6h-5zM3 15h5v3H3zM9 6h6M6 9v6M8 16h6M16 6v7"/></svg><span>知识图谱</span></a><a href="simulation.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h3l3-7 5 14 3-9 2 2h2M2 20h18"/></svg><span>波形模拟</span></a><a href="next-learning.html" aria-current="page"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h10v15H4zM14 4l4 3v12h-4M7 8h4M7 12h4M7 16h2"/></svg><span>接着学</span></a></nav></div></header>
+<a class="nl-skip" href="#next-main">跳到学习安排</a>
+<main class="nl-main" id="next-main" tabindex="-1">
+ <section class="nl-heading" aria-labelledby="next-title">
+  <div><p class="nl-kicker">从当前卡住的地方继续</p><h1 id="next-title">接下来学什么</h1><p class="nl-lead">先补一个连接，再做一次验证。每次只把一件事弄清楚。</p></div>
+  <a class="nl-back" href="knowledge.html">回到知识库查看全貌</a>
+ </section>
+ <noscript><p class="nl-warning">当前浏览器未启用 JavaScript，不能保存打卡或切换推荐。可以先完成下面的傅里叶幅相练习，再到知识库选择其他主题。</p></noscript>
+ <div class="nl-workspace">
+  <section class="nl-recommend" aria-labelledby="nl-lesson-title">
+   <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">三大变换</span><span class="nl-state-label" id="nl-recommend-label">当前推荐</span></div>
+   <h2 id="nl-lesson-title">把 C(3) = 3 + 4i 读回幅值与相位</h2>
+   <p class="nl-goal" id="nl-goal">沿用笔记的归一化与负指数约定，解释模长、相位以及实余弦的正负频率配对。</p>
+   <div class="nl-check"><h3>做到这一步就够了</h3><p id="nl-check-text">不看答案，写出 |C(3)|、正频率对应余弦的峰值幅度与初相位，并说清为什么不能只取实部 3。</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：这道独立作答在已整理记录里仍待确认，也能接上“傅里叶结果给出什么”的最新追问。</p>
+   <p class="nl-material-note" id="nl-material-note">已有完整笔记与自查答案；打开或读完页面不会自动完成打卡。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-transforms.html#fourier-amplitude">打开本节笔记</a><a class="nl-secondary" id="nl-experiment-link" href="simulation.html?scenario=frequency">打开相关实验</a></div>
+   <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕 C(3) = 3 + 4i，一步一步检查我的幅值和相位理解。">带着这一步提问</button></div>
+   <p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+  </section>
+  <aside class="nl-route-controls" aria-labelledby="nl-choice-title">
+   <h2 id="nl-choice-title">今天想往哪边走？</h2>
+   <label for="nl-topic-select">优先方向</label>
+   <select id="nl-topic-select" disabled><option value="auto">按当前学习缺口推荐</option><option value="transforms">三大变换</option><option value="iir-fir">IIR / FIR</option><option value="kalman">卡尔曼滤波</option><option value="transfer">传递函数</option><option value="control">自动控制</option><option value="spectrum">频谱分析</option><option value="pll">数字 PLL</option></select>
+   <p class="nl-small" id="nl-preference-note">选定方向后，优先补齐它的必要前置，再进入主题。</p>
+   <details class="nl-rules"><summary>推荐是怎么选出来的？</summary><ol><li>采用下方截至 2026-10-06 的整理记录作为起点，不自动读取新聊天。</li><li>默认先补傅里叶未确认的两步，再接卡尔曼第 14 讲与其他明确待学主题。</li><li>如果选了方向，先找该方向尚未打卡的一步；缺前置时先推荐前置。</li><li>打卡后，按固定顺序推进这份有限清单。这是规则推荐，不是 AI 评估。</li></ol></details>
+   <div class="nl-storage"><span class="nl-storage-dot" aria-hidden="true"></span><strong>本机学习记录</strong><p id="nl-storage-note">只保存在此浏览器。更换设备、清理网站数据或使用隐私窗口可能丢失；不会同步 ChatGPT 私人对话。</p></div>
+  </aside>
+ </div>
+ <section class="nl-evidence" aria-labelledby="nl-evidence-title">
+  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>整理记录截至 <time datetime="2026-10-06">2026-10-06</time></span></div>
+  <div class="nl-evidence-grid">
+   <div><h3>傅里叶</h3><p>复数旋转、两路比较和系数幅相已有讲解。C(3) = 3 + 4i 的独立作答仍待确认，最新“是否就是找频率与幅值”的追问也没有完成确认。</p><a href="notes-transforms.html#fourier-frontier">查看笔记中的进度依据</a></div>
+   <div><h3>卡尔曼</h3><p>讲解进度到第 13 讲：二状态、协方差与两个增益。第 14 讲预测协方差是下一步；讲过不等于已经独立验证理解。</p><a href="notes-kalman.html#kalman-frontier">查看已验证与待确认的区分</a></div>
+   <div><h3>IIR / FIR 与后续主题</h3><p>滤波分类、系数和按频率设计已有回看材料。PLL 已有初次概念讨论，输入类型与练习仍待确认。传递函数、自控、频谱继续按待学处理，不根据页面存在或打开次数推断完成。</p><a href="knowledge.html?topic=iir-fir">回看 IIR / FIR 知识</a></div>
+  </div>
+  <p class="nl-small">这里的历史起点不会被本机打卡改写。新聊天中的进展需要另行整理进网站；本站不会悄悄更新。</p>
+ </section>
+ <section class="nl-plan" aria-labelledby="nl-plan-title">
+  <div class="nl-section-heading"><div><h2 id="nl-plan-title">我的下一段路线</h2><p class="nl-small">“已自报完成”只表示你按下了打卡，不表示系统已判定掌握。可以随时撤回。</p></div><span id="nl-progress-count">尚未记录本机完成项</span></div>
+  <div id="nl-lesson-list" class="nl-lesson-list"><p>启用 JavaScript 后可查看有限学习清单，并记录和撤回进度。</p></div>
+  <details class="nl-data-tools"><summary>备份、导入与重置本机记录</summary><p>备份只包含主题选择、步骤编号与打卡时间。导入会合并完成项，并采用备份里的优先方向；不上传文件、不更新历史学习证据。</p><div class="nl-data-actions"><button type="button" id="nl-export" disabled>导出 JSON 备份</button><label class="nl-file-label" for="nl-import">导入 JSON 备份<input type="file" id="nl-import" accept="application/json,.json" disabled></label><button type="button" id="nl-reset" class="nl-quiet" disabled>清空本机打卡</button></div><p class="nl-status" id="nl-data-status" role="status" aria-live="polite"></p></details>
+ </section>
+ <section class="nl-cases" aria-labelledby="nl-cases-title">
+  <div class="nl-section-heading"><div><h2 id="nl-cases-title">学完概念，去真实器件里找它</h2><p class="nl-small">先说清原理，再看数据手册里的实现条件。案例用来连接概念，不代表你的硬件可以直接照抄。</p></div></div>
+  <div class="nl-case-grid">
+   <article><span class="nl-case-tag">IIR · 传感器输出</span><h3>BMP280 为什么内置滤波？</h3><p>在压力噪声与响应速度之间做取舍。对照传感器 IIR 配置，再观察模拟压力的延迟。</p><a href="engineering.html#iir">看工程解释</a><a href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf#page=13" target="_blank" rel="noopener noreferrer">Bosch 官方数据手册 ↗</a></article>
+   <article><span class="nl-case-tag">FIR · 称重与工频</span><h3>ADC 如何抑制 50 / 60 Hz？</h3><p>ADS1262 将数字滤波放在采集链路中。比较衰减、输出速率与建立时间，避免只看平滑曲线。</p><a href="engineering.html#fir">看工程解释</a><a href="https://www.ti.com/lit/ds/symlink/ads1262.pdf#page=47" target="_blank" rel="noopener noreferrer">TI 官方数据手册 ↗</a></article>
+   <article><span class="nl-case-tag">状态估计 · 真实导航</span><h3>从两状态走向 PX4 EKF</h3><p>先理解预测、观测与不确定性，再看实际导航如何融合传感器。PX4 的 EKF 不是这里线性二状态算例的直接复制。</p><a href="engineering.html#kf">看状态估计示例</a><a href="https://docs.px4.io/main/en/advanced_config/tuning_the_ecl_ekf" target="_blank" rel="noopener noreferrer">PX4 官方导航说明 ↗</a></article>
+  </div>
+ </section>
+ <footer class="nl-footer">当前任务卡和资料入口都可直接使用。需要更细的讲解时，用右下角“随时提问”整理问题，再自行带到 ChatGPT。</footer>
+</main>
+</body>
+</html>

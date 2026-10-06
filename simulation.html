@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>波形模拟 · RIVER 信号实验室</title>
+<meta name="description" content="在统一工作区切换压力、运动与频率场景，调节滤波参数，比较噪声、延迟、误差和频谱。">
+<link rel="icon" type="image/png" sizes="800x800" href="favicon-rgb-8b14e515.png">
+<link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2">
+<script src="lab-shell.js?v=20261006-architecture" defer></script>
+<link rel="stylesheet" href="architecture.css?v=20261006">
+<script src="architecture.js?v=20261006" defer></script>
+<link rel="stylesheet" href="simulation.css?v=20261006">
+<script src="simulation.js?v=20261006" defer></script>
+<noscript><style>#simulation-frame,#simulation-status,.simulation-algorithm{display:none!important}</style></noscript>
+<link rel="stylesheet" href="question-helper.css?v=20261006">
+<script src="learning-progress.js?v=20261006" defer></script>
+<script src="question-helper.js?v=20261006" defer></script>
+</head>
+<body class="lab-shell page--simulation">
+<header class="lab-site-header architecture-header"><div class="architecture-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室知识图谱"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><nav class="architecture-nav" aria-label="主要导航"><a href="knowledge.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h5v5H4zM15 3h3v3h-3zM14 13h5v6h-5zM3 15h5v3H3zM9 6h6M6 9v6M8 16h6M16 6v7"/></svg><span>知识图谱</span></a><a href="simulation.html" aria-current="page"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h3l3-7 5 14 3-9 2 2h2M2 20h18"/></svg><span>波形模拟</span></a><a href="next-learning.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h10v15H4zM14 4l4 3v12h-4M7 8h4M7 12h4M7 16h2"/></svg><span>接着学</span></a></nav></div></header>
+<main class="simulation-main">
+ <div class="simulation-intro"><div><h1>波形模拟</h1><p>用同一段信号，看清平滑、响应和误差的取舍。</p></div><a href="knowledge.html" class="simulation-back">回到知识图谱</a></div>
+ <section class="simulation-workspace" aria-label="波形模拟工作区">
+  <nav class="simulation-scenarios" aria-label="选择仿真场景">
+   <a href="simulation.html?scenario=pressure" data-scenario="pressure" aria-current="page"><span class="scenario-glyph" aria-hidden="true">▁▁▆▆</span><span><strong>压力测量</strong><small>抑噪与阶跃响应</small></span></a>
+   <a href="simulation.html?scenario=motion" data-scenario="motion"><span class="scenario-glyph" aria-hidden="true">∿</span><span><strong>运动控制</strong><small>跟踪、误差与频谱</small></span></a>
+   <a href="simulation.html?scenario=frequency" data-scenario="frequency"><span class="scenario-glyph" aria-hidden="true">≋</span><span><strong>频率选择</strong><small>低通、高通与带通</small></span></a>
+  </nav>
+  <div class="simulation-controls">
+   <div class="simulation-algorithm"><label for="simulation-algorithm">算法 / 实验预设</label><select id="simulation-algorithm"><option value="">默认对比</option></select></div>
+   <p id="simulation-scenario-note">100 Hz 压力信号。三种滤波器共享同一组噪声，比较输出与 RMSE。</p>
+   <a id="simulation-standalone" href="pressure.html" target="_blank" rel="noopener">单独打开实验</a>
+  </div>
+  <div class="simulation-classics" aria-label="经典算法入口">
+   <span>经典算法</span>
+   <a href="simulation.html?scenario=pressure&amp;algorithm=iir" data-quick-algorithm="iir">IIR</a>
+   <a href="simulation.html?scenario=pressure&amp;algorithm=fir" data-quick-algorithm="fir">FIR</a>
+   <a href="simulation.html?scenario=pressure&amp;algorithm=kalman" data-quick-algorithm="kalman">Kalman</a>
+   <a href="simulation.html?scenario=motion&amp;algorithm=moving-average" data-quick-algorithm="moving-average">滑动平均</a>
+   <a href="simulation.html?scenario=motion&amp;algorithm=median" data-quick-algorithm="median">中值</a>
+   <small>滑动平均属于 FIR；中值是非线性滤波。</small>
+  </div>
+  <p id="simulation-selection-note" class="simulation-selection-note" aria-live="polite" hidden></p>
+  <div class="simulation-frame-shell" id="simulation-frame-shell" aria-busy="true">
+   <div id="simulation-status" class="simulation-status" role="status"><span>正在准备实验…</span><button id="simulation-retry" type="button" hidden>重新载入</button></div>
+   <iframe id="simulation-frame" title="压力测量波形实验" src="pressure.html?embed=1" loading="eager"></iframe>
+   <noscript><p class="simulation-noscript">切换场景与滤波计算需要 JavaScript。你也可以单独打开 <a href="pressure.html">压力实验</a>、<a href="motion.html">运动实验</a> 或 <a href="frequency.html">频率实验</a>，阅读全部公式和说明。</p></noscript>
+  </div>
+ </section>
+ <details class="simulation-community" id="community">
+  <summary><span>社区实现与源码项目</span><small>核对算法来源、教学变体和未实现边界</small></summary>
+  <div class="simulation-community-body">
+   <p>这些项目提供实现与工程参考，仍然属于 IIR、FIR、状态估计等算法体系。本实验采用独立教学实现，没有直接运行这些库。</p>
+   <div class="simulation-source-grid">
+    <article><h2>ARM CMSIS-DSP</h2><p>面向 Arm 的 FIR、IIR 与自适应滤波内核。网页可试相同算法类别的数学模型。</p><div><a href="simulation.html?scenario=motion&amp;algorithm=fir" data-launch>试 FIR 教学模型</a><a href="https://github.com/ARM-software/CMSIS-DSP" target="_blank" rel="noopener noreferrer">查看源码</a></div></article>
+    <article><h2>SimpleFOC</h2><p>电机控制中的一阶低通参考。网页 EMA 按数字 −3 dB 截止换算，和源码的时间常数离散化不同。</p><div><a href="simulation.html?scenario=motion&amp;algorithm=iir" data-launch>试一阶低通</a><a href="https://github.com/simplefoc/Arduino-FOC" target="_blank" rel="noopener noreferrer">查看源码</a></div></article>
+    <article><h2>One Euro</h2><p>根据运动速度调整平滑强度。当前演示采用原始值差分和指数离散化，明确保留与作者实现的区别。</p><div><a href="simulation.html?scenario=motion&amp;algorithm=oneeuro" data-launch>试离散变体</a><a href="https://github.com/casiez/OneEuroFilter" target="_blank" rel="noopener noreferrer">作者实现</a></div></article>
+    <article><h2>FilterPy</h2><p>Kalman 等估计器的 Python 学习入口。网页可比较标量模型和位置—速度模型。</p><div><a href="simulation.html?scenario=motion&amp;algorithm=cvkalman" data-launch>试恒速 Kalman</a><a href="https://github.com/rlabbe/filterpy" target="_blank" rel="noopener noreferrer">查看源码</a></div></article>
+    <article><h2>PyWavelets</h2><p>多尺度分析与离线去噪参考。网页只实现 Haar 软阈值基线，需要整段数据，包含未来样本。</p><div><a href="simulation.html?scenario=motion&amp;algorithm=wavelet" data-launch>试离线 Haar 基线</a><a href="https://github.com/PyWavelets/pywt" target="_blank" rel="noopener noreferrer">查看源码</a></div></article>
+    <article class="simulation-source-reference"><h2>其他进阶项目</h2><p>TinyEKF 的 EKF、Fusion 的完整 AHRS、KalmanNet 的学习型估计均未接入当前仿真，不生成对应的结果曲线。</p><div><a href="https://github.com/simondlevy/TinyEKF" target="_blank" rel="noopener noreferrer">TinyEKF</a><a href="https://github.com/xioTechnologies/Fusion" target="_blank" rel="noopener noreferrer">Fusion</a><a href="https://github.com/KalmanNet/KalmanNet_TSP" target="_blank" rel="noopener noreferrer">KalmanNet</a></div></article>
+   </div>
+   <p class="simulation-source-footnote">来源沿用运动实验中 2026-10-02 核查的项目资料。这里不展示实时热度或以星标数排名。</p>
+  </div>
+ </details>
+ <footer class="simulation-footer"><p>合成信号 · 浏览器本地计算 · 未经实际硬件验证。运动场景中的频谱是输出信号频谱；频率选择场景展示滤波器幅频响应，两者含义不同。</p><a href="pressure.html#guide">压力算法的完整说明</a><a href="motion.html">运动实验完整页面</a><a href="frequency.html">频率实验完整页面</a></footer>
+</main>
+</body>
+</html>

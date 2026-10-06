@@ -1,0 +1,83 @@
+/* A quiet instrument surround: the original signal engines remain the primary view. */
+body.page--simulation { --sim-ground:#0b111b; --sim-surface:#131e2b; --sim-line:#2c3c50; --sim-ink:#deebf5; --sim-muted:#a5b5c7; --sim-trace:#7bdacf; margin:0; }
+body.page--simulation .simulation-main { max-width:1504px; width:100%; margin:0 auto; padding:30px 28px 48px; }
+body.page--simulation .simulation-main * { min-width:0; }
+body.page--simulation .simulation-intro { display:flex; justify-content:space-between; align-items:center; gap:20px; margin:0 0 24px; }
+body.page--simulation .simulation-intro h1 { margin:0 0 7px; font-size:clamp(26px,3vw,38px); }
+body.page--simulation .simulation-intro p { margin:0; color:var(--sim-muted); font-size:16px; }
+body.page--simulation .simulation-back { flex:none; font-size:14px; }
+body.page--simulation .simulation-workspace { border:1px solid var(--sim-line); border-radius:12px; overflow:hidden; background:var(--sim-ground); }
+body.page--simulation .simulation-scenarios { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-bottom:1px solid var(--sim-line); background:#101b29; }
+body.page--simulation .simulation-scenarios a { display:flex; align-items:center; gap:14px; padding:19px 24px; color:var(--sim-muted); text-decoration:none; border-bottom:3px solid transparent; }
+body.page--simulation .simulation-scenarios a+a { border-left:1px solid var(--sim-line); }
+body.page--simulation .simulation-scenarios a:hover { background:#182837; }
+body.page--simulation .simulation-scenarios a[aria-current="page"] { border-bottom-color:var(--sim-trace); background:#19313a; color:#e0faf4; }
+body.page--simulation .scenario-glyph { font-size:30px; color:var(--sim-trace); line-height:1; min-width:48px; text-align:center; }
+body.page--simulation .simulation-scenarios strong { display:block; font-weight:700; font-size:17px; }
+body.page--simulation .simulation-scenarios small { display:block; font-size:13px; color:var(--sim-muted); margin-top:3px; }
+body.page--simulation .simulation-controls { display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; padding:18px 24px 14px; }
+body.page--simulation .simulation-algorithm { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+body.page--simulation .simulation-algorithm label { color:var(--sim-muted); font-size:13px; }
+body.page--simulation .simulation-algorithm select { color:var(--sim-ink); background:#162534; border:1px solid #50677d; border-radius:6px; font-size:14px; padding:10px 30px 10px 12px; max-width:100%; min-height:44px; }
+body.page--simulation #simulation-scenario-note { flex:1 1 270px; font-size:13px; color:var(--sim-muted); margin:0; line-height:1.75; }
+body.page--simulation #simulation-standalone { font-size:13px; padding:9px 0; }
+body.page--simulation .simulation-classics { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:0 24px 18px; border-bottom:1px solid var(--sim-line); }
+body.page--simulation .simulation-classics>span { font-size:12px; color:var(--sim-muted); margin-right:4px; }
+body.page--simulation .simulation-classics>a { color:var(--sim-ink); border:1px solid #344a60; background:#132232; border-radius:5px; padding:6px 11px; text-decoration:none; font-size:13px; min-height:36px; display:inline-flex; align-items:center; }
+body.page--simulation .simulation-classics>a:hover,body.page--simulation .simulation-classics>a[aria-current="true"] { background:#23444b; border-color:#7bdacf; }
+body.page--simulation .simulation-classics>small { font-size:12px; color:var(--sim-muted); margin-left:8px; }
+body.page--simulation .simulation-selection-note { margin:0; padding:12px 24px; color:#f1c57a; font-size:13px; background:#26271f; }
+body.page--simulation .simulation-frame-shell { min-height:360px; }
+body.page--simulation #simulation-frame { display:block; width:100%; height:1250px; max-width:100%; border:0; background:var(--sim-ground); }
+body.page--simulation .simulation-status { display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; gap:12px; padding:12px 24px; background:#152633; color:var(--sim-muted); font-size:13px; border-bottom:1px solid var(--sim-line); }
+body.page--simulation .simulation-status[data-error="true"] { background:#312820; color:#f1c57a; }
+body.page--simulation .simulation-status button { color:inherit; border:1px solid #68726f; background:transparent; border-radius:5px; padding:8px 12px; font-size:13px; min-height:40px; }
+body.page--simulation .simulation-noscript { padding:20px; color:#f1c57a; }
+body.page--simulation .simulation-community { margin:24px 0 0; border:1px solid var(--sim-line); border-radius:10px; background:var(--sim-surface); }
+body.page--simulation .simulation-community>summary { cursor:pointer; padding:19px 22px; color:var(--sim-ink); font-size:16px; }
+body.page--simulation .simulation-community>summary small { font-size:13px; color:var(--sim-muted); margin-left:12px; }
+body.page--simulation .simulation-community-body { padding:0 22px 20px; }
+body.page--simulation .simulation-community-body>p { font-size:14px; margin:0 0 18px; max-width:86ch; color:var(--sim-muted); }
+body.page--simulation .simulation-source-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; }
+body.page--simulation .simulation-source-grid article { padding:20px 24px 22px 0; border-top:1px solid var(--sim-line); background:none; }
+body.page--simulation .simulation-source-grid h2 { font-size:17px; margin:0 0 8px; }
+body.page--simulation .simulation-source-grid p { font-size:13px; color:var(--sim-muted); line-height:1.85; margin:0 0 14px; }
+body.page--simulation .simulation-source-grid article>div { display:flex; gap:10px 16px; flex-wrap:wrap; font-size:13px; }
+body.page--simulation .simulation-community-body>.simulation-source-footnote { font-size:12px; margin:12px 0 0; }
+body.page--simulation .simulation-footer { font-size:12px; color:var(--sim-muted); padding:20px 2px 0; }
+body.page--simulation .simulation-footer p { max-width:110ch; margin:0 0 8px; }
+body.page--simulation .simulation-footer a { display:inline-block; margin:0 22px 6px 0; }
+body.page--simulation :is(a,button,select,summary):focus-visible { outline:3px solid #f1c57a; outline-offset:3px; }
+@media(max-width:900px) {
+ body.page--simulation .simulation-main { padding:24px 18px 40px; }
+ body.page--simulation .simulation-scenarios a { padding:15px; gap:8px; }
+ body.page--simulation .scenario-glyph { display:none; }
+ body.page--simulation .simulation-source-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+ body.page--simulation .simulation-main { padding:20px 10px 32px; }
+ body.page--simulation .simulation-intro { margin:0 6px 18px; align-items:flex-start; }
+ body.page--simulation .simulation-intro p { font-size:14px; }
+ body.page--simulation .simulation-back { display:none; }
+ body.page--simulation .simulation-scenarios a { padding:12px 9px; justify-content:center; }
+ body.page--simulation .simulation-scenarios strong { font-size:15px; }
+ body.page--simulation .simulation-scenarios small { font-size:11px; line-height:1.65; }
+ body.page--simulation .simulation-controls { padding:16px 13px 12px; gap:9px 14px; }
+ body.page--simulation .simulation-algorithm { width:100%; justify-content:space-between; }
+ body.page--simulation .simulation-algorithm select { width:100%; font-size:16px; }
+ body.page--simulation #simulation-scenario-note { flex-basis:100%; font-size:13px; }
+ body.page--simulation #simulation-standalone { padding:5px 0; min-height:34px; }
+ body.page--simulation .simulation-classics { padding:0 13px 15px; gap:7px; }
+ body.page--simulation .simulation-classics>span { flex-basis:100%; }
+ body.page--simulation .simulation-classics>a { min-height:44px; padding:6px 10px; font-size:14px; }
+ body.page--simulation .simulation-classics>small { flex-basis:100%; margin:3px 0 0; line-height:1.8; }
+ body.page--simulation :is(.simulation-status,.simulation-selection-note) { padding:12px 14px; }
+ body.page--simulation .simulation-community>summary { padding:17px 15px; }
+ body.page--simulation .simulation-community>summary small { display:block; margin:4px 0 0 18px; line-height:1.7; }
+ body.page--simulation .simulation-community-body { padding:0 15px 18px; }
+ body.page--simulation .simulation-source-grid { grid-template-columns:minmax(0,1fr); }
+ body.page--simulation .simulation-source-grid article { padding:18px 0; }
+ body.page--simulation .simulation-source-grid article a { min-height:42px; display:inline-flex; align-items:center; }
+ body.page--simulation .simulation-footer { padding:18px 6px 0; font-size:13px; }
+}
+@media(prefers-reduced-motion:reduce) { body.page--simulation * { scroll-behavior:auto !important; transition:none !important; } }
