@@ -381,5 +381,155 @@
       "last_verified": "2026-10-06",
       "reproduction_status": "未在本站复现"
     }
-  ]
+  ],
+  "radar_guide": {
+    "title": "读懂雷达：从回波到判断",
+    "intro": "先问每一步在解决什么问题，再看算法名字。雷达中的“滤波”只是处理链的一部分；变换、检测、测角和跟踪各有自己的任务。",
+    "map_caption": "教学示意：用四个问题读一条处理链，并非统一的执行顺序。不同架构会省略、分支或重排步骤；下方分别列出 A121 与 TI 的实例。图形不代表实测数据。",
+    "map_steps": [
+      {
+        "title": "采集到什么？",
+        "detail": "复数 IQ 或 ADC 采样",
+        "icon": "sample"
+      },
+      {
+        "title": "提取什么变化？",
+        "detail": "相位、频率或空间特征",
+        "icon": "feature"
+      },
+      {
+        "title": "哪些像目标？",
+        "detail": "分数、阈值与检测点",
+        "icon": "detection"
+      },
+      {
+        "title": "跨帧怎样连接？",
+        "detail": "运动模型与连续轨迹",
+        "icon": "track"
+      }
+    ],
+    "roles": [
+      {
+        "name": "FIR / IIR · 滤波",
+        "question": "保留哪些变化？",
+        "answer": "按频率或时间尺度抑制不需要的成分。低通更平滑，也可能增加滞后；带通只保留关心的频段。"
+      },
+      {
+        "name": "FFT · 变换",
+        "question": "主要频率在哪里？",
+        "answer": "把采样序列分解到频率坐标。FMCW 可由拍频估距离；呼吸应用分析的是微动随时间的节律。FFT 本身不等于去噪。"
+      },
+      {
+        "name": "CFAR · 检测",
+        "question": "这个峰值得保留吗？",
+        "answer": "参考邻近背景估计自适应阈值，挑出候选点。它做检测判决，不负责把波形变平滑；虚警仍取决于假设和参数。"
+      },
+      {
+        "name": "Beamforming · 测角",
+        "question": "回波来自哪个方向？",
+        "answer": "利用多天线之间的相位关系估计方向。Capon 是其中一种自适应波束形成方法，需要匹配阵列与数据。"
+      },
+      {
+        "name": "KF / EKF · 跟踪",
+        "question": "这是上一帧的谁？",
+        "answer": "数据关联决定测量属于谁；KF / EKF 再结合运动预测更新状态。跟踪处理检测后的测量，不能替代前面的目标检测。"
+      }
+    ],
+    "noise_title": "先分清：随机噪声，还是不想要的回波？",
+    "noise_note": "随机噪声会抬高底噪；墙面、桌面等真实反射若与当前任务无关，才叫杂波。减去静态背景可以突出运动，也可能消掉你本来要测的静止目标。先确定目标，再决定去掉什么。",
+    "cases": [
+      {
+        "title": "A121 存在检测 · 看变化",
+        "project_id": "a121-presence",
+        "architecture": "脉冲相干雷达 PCR",
+        "chain": [
+          "稀疏 IQ",
+          "帧内偏差 / 帧间快慢低通差",
+          "时间平滑 + 噪声归一化",
+          "分数与阈值"
+        ],
+        "note": "帧内变化对应较快动作；帧间快、慢一阶 IIR 输出之差突出较慢变化，可结合相位增强。重点读“变化量怎样变成存在分数”，不必先上 FFT。",
+        "sources": [
+          {
+            "label": "官方存在检测说明",
+            "url": "https://docs.acconeer.com/en/latest/detectors/a121/presence_detector.html"
+          }
+        ]
+      },
+      {
+        "title": "A121 呼吸参考 · 看周期",
+        "project_id": "a121-breathing",
+        "architecture": "脉冲相干雷达 PCR",
+        "chain": [
+          "存在检测选距离段",
+          "IQ 去静态分量 + 相位展开",
+          "Butterworth IIR 带通",
+          "Hamming 窗 + FFT + 峰值插值"
+        ],
+        "note": "相位随时间的变化反映胸部微动。这里的 FFT 用来找节律，不是 FMCW 的距离 FFT。应用面向静止者，较大动作会暂停分析；仅作算法学习，不能当作医疗测量。",
+        "sources": [
+          {
+            "label": "官方呼吸应用",
+            "url": "https://docs.acconeer.com/en/latest/ref_apps/a121/breathing.html"
+          },
+          {
+            "label": "滤波、加窗与谱峰源码",
+            "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/src/acconeer/exptool/a121/algo/breathing/_processor.py"
+          }
+        ]
+      },
+      {
+        "title": "TI 人员跟踪 · 看位置与轨迹",
+        "project_id": "ti-people-tracking",
+        "architecture": "FMCW · TIDEP-01000 / TIDUE71D",
+        "chain": [
+          "加窗 + Range FFT",
+          "静态杂波去除",
+          "Capon 距离–方位图",
+          "CFAR + 俯仰估计",
+          "波束加权 + Doppler FFT",
+          "点云关联 / 成组 + EKF"
+        ],
+        "note": "这是该版参考设计的概括顺序：先在距离–方位图上检测，再为检测点估计多普勒。跟踪器用点云关联、成组与 EKF 维护轨迹；不要把这条流程套到所有雷达。",
+        "sources": [
+          {
+            "label": "TI 参考设计入口",
+            "url": "https://www.ti.com/tool/TIDEP-01000"
+          },
+          {
+            "label": "设计指南 §2.3.2–2.3.3",
+            "url": "https://www.ti.com/lit/ug/tidue71d/tidue71d.pdf#page=10"
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "title": "先读呼吸链路",
+        "text": "按距离段 → 相位微动 → 带通 → 频谱逐段读源码。每次只记输入、输出、单位与采样率，先把 IIR 和 FFT 的分工说清楚。",
+        "link": {
+          "label": "复习 IIR / FIR",
+          "url": "knowledge.html?topic=iir-fir"
+        }
+      },
+      {
+        "title": "再做离线小实验",
+        "text": "另起一个 FMCW 教学练习：合成已知拍频与随机噪声，比较不加窗 / 加窗的距离 FFT，再加 CFAR。看峰值、旁瓣与阈值怎样变化；这是建议练习，本站尚未实现雷达仿真。",
+        "link": {
+          "label": "复习傅里叶变换",
+          "url": "knowledge.html?topic=transforms"
+        }
+      },
+      {
+        "title": "最后考虑硬件",
+        "text": "读懂数据维度后，再检查官方板卡、固件与接口。GD32 是否能承担所选环节，要评估 RAM、采样率、FFT 点数、精度和帧时限；不能承诺直接跑通完整链路。",
+        "link": {
+          "label": "查看嵌入式 DSP 入口",
+          "url": "exploration.html?category=dsp#cmsis-dsp"
+        }
+      }
+    ],
+    "boundary": "读文档、看源码和做合成数据练习都可以先不买硬件。以上是公开资料导读，三个工程仍未在本站复现。",
+    "last_verified": "2026-10-06"
+  }
 }
