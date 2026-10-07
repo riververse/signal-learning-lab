@@ -1,0 +1,50 @@
+/* Scoped to the filter-family knowledge module. Shared site colors and type stay intact. */
+body.page--knowledge .ff-comparison{margin:28px 0;padding:24px;border:1px solid #365367;border-radius:9px;background:#0c1723}
+body.page--knowledge .ff-comparison h3{margin:0 0 8px}
+body.page--knowledge .ff-comparison .ff-caption{font-size:14px;color:#a9bdce;margin:0 0 18px}
+body.page--knowledge .ff-controls{display:flex;flex-wrap:wrap;gap:14px 25px;margin:20px 0}
+body.page--knowledge .ff-controls label{display:flex;flex-direction:column;gap:7px;font-size:14px;color:#c7d8e6}
+body.page--knowledge .ff-controls select{font:inherit;color:#e0edf5;background:#172737;border:1px solid #577086;border-radius:5px;padding:10px 34px 10px 11px;min-height:44px}
+body.page--knowledge .ff-controls select:focus-visible,body.page--knowledge #topic-filter-families summary:focus-visible{outline:2px solid #7bdacf;outline-offset:4px}
+body.page--knowledge .ff-legend{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;margin-bottom:22px;color:#cbdce7}
+body.page--knowledge .ff-legend span{display:flex;align-items:center;gap:9px}
+body.page--knowledge .ff-legend span::before{content:'';width:27px;border-top:3px solid #7bdacf}
+body.page--knowledge .ff-legend .ff-cheby::before{border-color:#f1c57a;border-top-style:dashed}
+body.page--knowledge .ff-plot-heading{margin:20px 0 8px;font-size:15px;color:#c5d5e4;font-weight:600}
+body.page--knowledge .ff-chart{position:relative;margin:8px 4px 10px 42px;padding-top:6px}
+body.page--knowledge .ff-plot{height:210px;position:relative;border-left:1px solid #597184;border-bottom:1px solid #597184}
+body.page--knowledge .ff-chart--zoom .ff-plot{height:150px}
+body.page--knowledge .ff-plot svg{display:block;width:100%;height:100%;overflow:hidden}
+body.page--knowledge .ff-plot path[data-ff-curve]{fill:none;stroke:#7bdacf;stroke-width:2.7;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+body.page--knowledge .ff-plot path[data-ff-curve=cheby1]{stroke:#f1c57a;stroke-dasharray:7 4}
+body.page--knowledge .ff-gridline{stroke:#273c4d;stroke-width:1;vector-effect:non-scaling-stroke}
+body.page--knowledge .ff-reference{stroke:#879cac;stroke-width:1;stroke-dasharray:3 5;vector-effect:non-scaling-stroke}
+body.page--knowledge .ff-ylabels{position:absolute;inset:0;pointer-events:none;color:#a1b6c8;font-size:12px}
+body.page--knowledge .ff-ylabels span{position:absolute;right:calc(100% + 8px);transform:translateY(-50%);white-space:nowrap}
+body.page--knowledge .ff-xlabels{display:flex;justify-content:space-between;margin-top:7px;font-size:12px;color:#a1b6c8}
+body.page--knowledge .ff-axis-title{text-align:right;font-size:12px;color:#a1b6c8;margin-top:6px}
+body.page--knowledge .ff-summary{font-size:15px!important;border-top:1px solid #304454;padding-top:16px;margin:22px 0 0;font-variant-numeric:tabular-nums}
+body.page--knowledge .ff-parameters{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:10px 20px;margin:24px 0;font-size:15px;line-height:1.85}
+body.page--knowledge .ff-parameters dt{font-weight:600;color:#d9e9f4}
+body.page--knowledge .ff-parameters dd{margin:0;color:#b4c6d7}
+body.page--knowledge .ff-detail{margin:20px 0;padding:16px 20px;background:#111f2c;border:1px solid #30485b;border-radius:6px}
+body.page--knowledge .ff-detail summary{cursor:pointer;line-height:1.7;font-weight:600;color:#cfe0ec}
+body.page--knowledge .ff-detail .formula{white-space:normal;overflow-wrap:anywhere;margin:15px 0;background:#0c1723}
+body.page--knowledge .ff-source-list{font-size:14px!important;color:#99afc2}
+body.page--knowledge .ff-source-list a{display:inline-block;margin:4px 16px 4px 0}
+body.page--knowledge #topic-filter-families .ff-start{font:inherit;cursor:pointer}
+@media(max-width:640px){
+ body.page--knowledge .ff-comparison{padding:18px 12px}
+ body.page--knowledge .ff-parameters{grid-template-columns:1fr;gap:3px}
+ body.page--knowledge .ff-parameters dd{margin-bottom:12px}
+ body.page--knowledge .ff-detail{padding:15px 14px}
+ body.page--knowledge .ff-controls{gap:15px}
+ body.page--knowledge .ff-controls label{flex:1 1 160px}
+ body.page--knowledge .ff-legend{font-size:13px;gap:10px 15px}
+ body.page--knowledge .ff-chart{margin-left:34px;margin-right:2px}
+ body.page--knowledge .ff-plot{height:190px}
+ body.page--knowledge .ff-chart--zoom .ff-plot{height:140px}
+ body.page--knowledge .ff-xlabels,body.page--knowledge .ff-ylabels,body.page--knowledge .ff-axis-title{font-size:11px}
+ body.page--knowledge #topic-filter-families .topic-heading-diagram{display:none}
+}
+@media print{body.page--knowledge .ff-controls{display:none}body.page--knowledge .ff-comparison{break-inside:avoid}}

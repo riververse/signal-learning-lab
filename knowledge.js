@@ -1,6 +1,6 @@
 (function () {
  'use strict';
- const titles = {'transforms':'三大变换','iir-fir':'IIR 与 FIR','kalman':'卡尔曼滤波','control':'自动控制','transfer':'传递函数','pll':'数字 PLL','spectrum':'频谱分析'};
+ const titles = {'transforms':'三大变换','iir-fir':'IIR 与 FIR','kalman':'卡尔曼滤波','control':'自动控制','transfer':'传递函数','pll':'数字 PLL','spectrum':'频谱分析','filter-families':'巴特沃斯与切比雪夫'};
  const oldPressureIds = ['guide','guide-iir','guide-fir','guide-kalman','plot','legend','metrics','signal','sliders','noise','match','reset','download','code'];
  const file = location.pathname.split('/').pop() || 'index.html';
  function decodedHash() { try { return decodeURIComponent(location.hash.slice(1)); } catch (_) { return ''; } }

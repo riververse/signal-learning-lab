@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <link rel="stylesheet" href="question-helper.css?v=20261006-private-chat1">
 <script src="architecture.js?v=20261006" defer></script>
-<script src="learning-progress.js?v=20261006" defer></script>
+<script src="learning-progress.js?v=20261007-notes" defer></script>
 <script src="question-helper.js?v=20261006-private-chat1" defer></script>
 </head>
 <body class="transforms-notes lab-shell page--notes-transforms">
@@ -37,11 +37,12 @@
 <li><a href="#fourier-match"><span class="toc-index" aria-hidden="true">06</span><span>为什么反向旋转后再求平均</span></a></li>
 <li><a href="#fourier-two-arrows"><span class="toc-index" aria-hidden="true">07</span><span>一个真实余弦为什么有两根旋转箭头</span></a></li>
 <li><a href="#fourier-four-samples"><span class="toc-index" aria-hidden="true">08</span><span>用四个样本把 C(3) 真正算出来</span></a></li>
-<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>当前重点：为什么会有实部和虚部</span></a></li>
+<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>两路比较：为什么会有实部和虚部</span></a></li>
 <li><a href="#fourier-amplitude"><span class="toc-index" aria-hidden="true">10</span><span>从 C(3) = 3 + 4i 回到余弦</span></a></li>
-<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">11</span><span>回看时最值得防住的误解</span></a></li>
-<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">12</span><span>下一步只检验这三个连接</span></a></li>
-<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">13</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav>
+<li><a href="#fourier-dft"><span class="toc-index" aria-hidden="true">11</span><span>DFT 把数组编号换成 Hz</span></a></li>
+<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">12</span><span>回看时最值得防住的误解</span></a></li>
+<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">13</span><span>回看三个连接，再检验 DFT 频点</span></a></li>
+<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">14</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav>
   <div class="side-bottom">
    <a href="transforms.html">打开三大变换互动实验 ↗</a>
    <a href="notes-kalman.html">卡尔曼学习笔记 →</a>
@@ -53,9 +54,9 @@
    <p class="eyebrow">NOTEBOOK 01 · 当前重点：傅里叶</p>
    <h1>三大变换学习笔记</h1>
    <p class="deck">从复数、旋转和系数配对开始，把傅里叶的直觉连到公式。拉普拉斯与 Z 变换沿着学习路线逐步接上。</p>
-   <div class="page-meta"><span>最近整理 <time datetime="2026-10-03">2026-10-03</time> · UTC</span><span>按顺序读 · 先作答，再展开答案</span></div>
+   <div class="page-meta"><span>最近整理 <time datetime="2026-10-07">2026-10-07</time> · 北京时间</span><span>按顺序读 · 先作答，再展开答案</span></div>
   </div>
-  <details class="mobile-toc"><summary>本页目录 · 13 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#fourier-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
+  <details class="mobile-toc"><summary>本页目录 · 14 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#fourier-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
 <li><a href="#fourier-route"><span class="toc-index" aria-hidden="true">02</span><span>这条路线怎样连起来</span></a></li>
 <li><a href="#fourier-symbols"><span class="toc-index" aria-hidden="true">03</span><span>先认清每个符号</span></a></li>
 <li><a href="#fourier-complex"><span class="toc-index" aria-hidden="true">04</span><span>复数怎样成为旋转箭头</span></a></li>
@@ -63,23 +64,24 @@
 <li><a href="#fourier-match"><span class="toc-index" aria-hidden="true">06</span><span>为什么反向旋转后再求平均</span></a></li>
 <li><a href="#fourier-two-arrows"><span class="toc-index" aria-hidden="true">07</span><span>一个真实余弦为什么有两根旋转箭头</span></a></li>
 <li><a href="#fourier-four-samples"><span class="toc-index" aria-hidden="true">08</span><span>用四个样本把 C(3) 真正算出来</span></a></li>
-<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>当前重点：为什么会有实部和虚部</span></a></li>
+<li><a href="#fourier-two-comparisons"><span class="toc-index" aria-hidden="true">09</span><span>两路比较：为什么会有实部和虚部</span></a></li>
 <li><a href="#fourier-amplitude"><span class="toc-index" aria-hidden="true">10</span><span>从 C(3) = 3 + 4i 回到余弦</span></a></li>
-<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">11</span><span>回看时最值得防住的误解</span></a></li>
-<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">12</span><span>下一步只检验这三个连接</span></a></li>
-<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">13</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav></details>
+<li><a href="#fourier-dft"><span class="toc-index" aria-hidden="true">11</span><span>DFT 把数组编号换成 Hz</span></a></li>
+<li><a href="#fourier-pitfalls"><span class="toc-index" aria-hidden="true">12</span><span>回看时最值得防住的误解</span></a></li>
+<li><a href="#fourier-next"><span class="toc-index" aria-hidden="true">13</span><span>回看三个连接，再检验 DFT 频点</span></a></li>
+<li><a href="#transforms-preview"><span class="toc-index" aria-hidden="true">14</span><span>后续路线 拉普拉斯与 Z 变换</span></a></li></ol></nav></details>
   <article class="notebook" aria-label="三大变换学习笔记正文">
 
 
 <section id="fourier-frontier" class="frontier">
 <h2>现在走到哪里</h2>
-<p><strong>当前重点：</strong>把“复数旋转”的图像，与“余弦一路、正弦一路”的实际计算接起来。</p>
+<p><strong>当前重点：</strong>从两路比较、复系数的幅值与相位，继续到 DFT 的频点编号：把数组位置换算为 Hz，再按归一化约定读回幅度。</p>
 <ul>
 <li><strong>练习已验证：</strong>5 Hz 逆时针旋转与 4 Hz 顺时针旋转相乘，剩下 1 Hz 逆时针旋转；幅值为 4 的余弦可分成两根长度为 2 的反向旋转箭头；C(3) 从 2 变成 −2 代表相位改变。</li>
-<li><strong>已经讲到：</strong>复数乘法、欧拉公式、频率相乘、积分或求平均、四点系数、相位，以及系数模长与幅值的关系。</li>
-<li><strong>仍需确认：</strong>余弦和正弦两路比较为什么能表示实部、虚部；不能把“任意周期信号的四个等间隔样本平均为零”当成通用结论。</li>
+<li><strong>已经讲到：</strong>复数乘法、欧拉公式、频率相乘、积分或求平均、四点系数、相位，以及系数模长与幅值的关系；本次补入从时域到频谱的整体认识、DFT 频点与采样参数、X[k] 和 C(f) 的换算，以及 DFT / FFT 的区别。</li>
+<li><strong>仍需确认：</strong>余弦和正弦两路比较为什么能表示实部、虚部；C(3) = 3 + 4i 的幅值题仍未独立作答。新增检查是：保持 12 Hz 采样，把真实样本数从 24 增加到 48，3 Hz 应看哪个频点。不能把“任意周期信号的四个等间隔样本平均为零”当成通用结论。</li>
 </ul>
-<p class="note"><strong>继续入口：</strong>先读<a href="#fourier-two-comparisons">两路比较</a>，然后做<a href="#fourier-amplitude">C(3) = 3 + 4i</a>。这道题在当前学习记录里还没有作答，因此保留为待检验点。</p>
+<p class="note"><strong>继续入口：</strong>先按需要回看<a href="#fourier-two-comparisons">两路比较</a>和<a href="#fourier-amplitude">C(3) = 3 + 4i</a>，再读<a href="#fourier-dft">DFT 的编号、Hz 与归一化</a>。新增内容已经讲解，但没有新增独立答对记录；请求继续下一节不等于前面的检查已经通过。</p>
 </section>
 
 <section id="fourier-route">
@@ -92,9 +94,10 @@
 <li><strong>求平均提取稳定部分。</strong>在合适观察长度和采样条件下，绕圈部分相互抵消。</li>
 <li><strong>实余弦拆成两根箭头。</strong>解释正负频率与“一半幅值”。</li>
 <li><strong>四个样本真正算一次。</strong>得到 C(3) = 2，再讨论正负号和相位。</li>
-<li><strong>当前这一步。</strong>把同一个计算拆成 cos / sin 两路，再从复数恢复幅值与相位。</li>
+<li><strong>两路比较与幅相。</strong>把同一个计算拆成 cos / sin 两路，再从复数恢复幅值与相位。</li>
+<li><strong>当前这一步。</strong>把一串采样值交给 DFT，用 f<sub>s</sub>、N、k 给频谱标上 Hz，并区分累加值与原波形幅度。</li>
 </ol>
-<p>后续才需要系统展开 DFT 频点、采样、混叠、窗函数与频谱泄漏。拉普拉斯变换和 Z 变换也属于后续连接，不计入本页已经完成的学习进度。</p>
+<p>DFT 频点的基础换算已在本次展开；采样限制、混叠、窗函数与频谱泄漏仍需后续系统学习。拉普拉斯变换和 Z 变换也属于后续连接，不计入本页已经完成的学习进度。</p>
 </section>
 
 <section id="fourier-symbols">
@@ -188,8 +191,8 @@
 <p class="warning">四点只用于把计算动作看清。它没有证明任意周期波形只取四点就足够，也没有证明周期波形的均值一定为零。带偏置的 2 + cos θ，均值就包含 2；更高频成分还可能在这四点上混叠。</p>
 </section>
 
-<section id="fourier-two-comparisons" class="current-focus">
-<h2>当前重点：为什么会有实部和虚部</h2>
+<section id="fourier-two-comparisons">
+<h2>两路比较：为什么会有实部和虚部</h2>
 <figure class="learn-visual" id="visual-two-channels"><h3>动手看：幅值不变，信息怎样在两路之间移动</h3><div class="lv-control" data-phase-control hidden><label for="lv-phase">改变初相位 φ <output id="lv-phase-value" for="lv-phase">0°</output></label><input id="lv-phase" type="range" min="-180" max="180" step="15" value="0" aria-describedby="lv-phase-help"><p id="lv-phase-help">试试 −90°：信号变成 4 sin θ，信息落到正弦那一路。</p></div><div class="lv-panels"><div class="lv-panel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="lv-channels-title lv-channels-desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif"><title id="lv-channels-title">余弦和正弦两路比较流程</title><desc id="lv-channels-desc">默认相位为0度。余弦路平均U为2，正弦路平均V为0，复系数C为2。</desc><rect width="320" height="320" fill="#101c29"/><text x="20" y="26" fill="#e3edf7" font-size="17" >同一信号分两路，最后合成 C</text><text x="20" y="69" fill="#e3edf7" font-size="19" >x = 4 cos(θ + φ)</text><path d="M98 81 V110 H52 V134" fill="none" stroke="#33495f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M98 110 H208 V134" fill="none" stroke="#33495f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><text x="20" y="157" fill="#72b4ff" font-size="18" >× cos θ</text><text x="178" y="157" fill="#f1c57a" font-size="18" >× sin θ</text><line x1="58" y1="170" x2="58" y2="201" stroke="#72b4ff" stroke-width="2.5" /><path d="M58,201 L54.0,193.0 L62.0,193.0 Z" fill="#72b4ff"/><line x1="216" y1="170" x2="216" y2="201" stroke="#f1c57a" stroke-width="2.5" /><path d="M216,201 L212.0,193.0 L220.0,193.0 Z" fill="#f1c57a"/><text x="20" y="225" fill="#72b4ff" font-size="16" >取平均 U</text><text x="175" y="225" fill="#f1c57a" font-size="16" >取平均 V</text><text x="20" y="260" fill="#72b4ff" font-size="20" id="lv-u">U = 2.00</text><text x="175" y="260" fill="#f1c57a" font-size="20" id="lv-v">V = 0.00</text><text x="20" y="299" fill="#adc2d5" font-size="14" >C = U − iV：虚部取 V 的相反数</text></svg></div><div class="lv-panel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="lv-phase-title lv-phase-desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif"><title id="lv-phase-title">复系数在实部虚部平面上的方向</title><desc id="lv-phase-desc">默认复系数2指向实轴正方向，模长为2，信号峰值幅度为4。</desc><rect width="320" height="320" fill="#101c29"/><text x="20" y="26" fill="#e3edf7" font-size="17" >系数的方向保存相位</text><line x1="35" y1="156" x2="278" y2="156" stroke="#33495f" stroke-width="1" /><line x1="156" y1="43" x2="156" y2="267" stroke="#33495f" stroke-width="1" /><circle cx="156" cy="156" r="82" fill="none" stroke="#33495f" stroke-dasharray="3 5"/><text x="279" y="179" fill="#adc2d5" font-size="13" text-anchor="end" >实部</text><text x="168" y="52" fill="#adc2d5" font-size="13" >虚部</text><text x="235" y="180" fill="#adc2d5" font-size="12" >2</text><text x="143" y="76" fill="#adc2d5" font-size="12" >2</text><g id="lv-phase-vector"><line x1="156" y1="156" x2="238" y2="156" stroke="#65d6c2" stroke-width="2.5" /><path d="M238,156 L230.0,160.0 L230.0,152.0 Z" fill="#65d6c2"/></g><text x="20" y="298" fill="#65d6c2" font-size="15" >|C| = 2，原信号幅值 A = 4</text></svg></div></div><figcaption>条件：理想的 3 Hz 实余弦，按 96 Hz 采样并取完整一周期的 32 点，使用本页的归一化系数。两条通道的参考各自没有单位，U、V 与输入同单位；此练习输入为无量纲数值。<p id="lv-phase-summary" class="lv-readout" aria-live="polite">φ = 0°：U = 2.00，V = 0.00，C = 2.00 + 0.00i。模长始终为 2。</p></figcaption></figure>
 
 <p>先暂时不想旋转。对同一组实数样本，做两遍“逐点相乘，再求平均”：</p>
@@ -219,6 +222,30 @@
 <p>同样地，C 从 2 变成 −2 时，模长仍为 2，余弦峰值幅度仍为 4；箭头方向转了 π，相位改变 180°。写成“负幅值”也能表达波形，但规范表示通常让 A ≥ 0，把正负变化放进相位。</p>
 </section>
 
+<section id="fourier-dft" class="current-focus">
+<h2>DFT 把数组编号换成 Hz</h2>
+<p><strong>本次新增，已讲解、待独立验证。</strong>现在把“针对一个频率作比较”，接到“给一整串采样值计算一组复系数”。傅里叶分析从时域数据得到频域描述：每个频率上的结果既保留大小信息，也保留相位信息；不必事先知道真实信号含有哪些频率，才能逐个参考频率去计算。</p>
+<h3>先分清 n 和 k</h3>
+<p>x[n] 的 n 是采样编号；X[k] 的 k 是频谱编号。它们本身没有秒或 Hz 的单位，都要结合采样参数解释。仍取 x(t) = 4 cos(2π·3t)，以 f<sub>s</sub> = 12 Hz 连续采 N = 24 点：</p>
+<div class="formula">t<sub>n</sub> = n/f<sub>s</sub>，n = 0, 1, …, N−1<br>T<sub>窗</sub> = N/f<sub>s</sub> = 24/12 = 2 s</div>
+<p>样本时刻为 0、1/12、2/12、…、23/12 s。最后一个样本在 23/12 s；DFT 的周期延拓长度是 24 个采样间隔，对应 2 s。不要把首尾样本的时间差 (N−1)/f<sub>s</sub> 代入频点间隔公式。</p>
+<div class="formula">Δf = f<sub>s</sub>/N = 1/T<sub>窗</sub> = 0.5 Hz<br>f<sub>k</sub> = kΔf = kf<sub>s</sub>/N</div>
+<p>相邻参考频率相差在整个窗口内多转一圈。因此，本例 k = 0、1、2、3、6 分别对应 0、0.5、1、1.5、3 Hz。<strong>X[6] 表示第 6 号频点的复结果，这次对应 3 Hz，不是 6 Hz。</strong></p>
+<p class="note">Δf 是频点间隔，不表示现实信号只能有这些频率。3.2 Hz 也可以存在，只是没有对齐这次的频点。能否分开两个很近的频率，还受真实观察时长、窗函数和噪声影响，不能只看显示刻度是否密。</p>
+<h3>把“乘参考、再累加”写成 DFT</h3>
+<div class="formula">2πf<sub>k</sub>t<sub>n</sub> = 2π(kf<sub>s</sub>/N)(n/f<sub>s</sub>) = 2πkn/N</div>
+<div class="formula">X[k] = ∑<sub>n=0</sub><sup>N−1</sup> x[n]e<sup>−i2πkn/N</sup>，k = 0, 1, …, N−1</div>
+<p>固定一个 k，让 n 遍历所有样本，便得到一个频点的结果；再换 k，得到其他频点。本节采用常见的正向 DFT 不除以 N 的约定，和前面求平均的 C 只差一个尺度：</p>
+<div class="formula">C(f<sub>k</sub>) = X[k]/N</div>
+<div class="worked-example"><h3>把熟悉的 C(3) = 2 接到 X[6] = 48</h3><p>2 s 内有 6 个 3 Hz 周期。每周期的四个参考乘积仍是 4、0、4、0，总和为 8：</p><div class="formula">k = fN/f<sub>s</sub> = 3 × 24/12 = 6<br>X[6] = 6 × 8 = 48<br>C(3) = 48/24 = 2<br>A = 2|X[6]|/N = 2 × 48/24 = 4</div><p>频率看“编号与采样参数”，幅度看“复结果的模长与归一化”。若输入有压力单位，则本例的 C 和还原后的 A 也保留该压力单位；48 是 24 点累加的读数，不能直接当作峰值幅度。</p></div>
+<p class="warning">上面的 ×2 用于实信号中普通的正频率余弦分量，并要求频点对齐、未加窗等当前算例条件。直流和偶数 N 时的奈奎斯特频点不能照搬。完整 DFT 的后半段也不能简单当成额外的高频源：例如本例 k = 18 的 9 Hz 参考在采样序列上等价于 −3 Hz，对应实余弦的另一半；完整负频率与混叠关系留待后续展开。</p>
+<h3>DFT 与 FFT 的区别</h3>
+<p>DFT 定义需要计算的离散频谱；FFT 是高效计算 DFT 的算法。相同数据、相同定义和归一化下，它们对应相同的数学结果，实际计算可能只有数值舍入等实现差异。FFT 不会自动知道 ADC 的采样率，仍需用 f<sub>s</sub>、N、k 给输出标上 Hz。</p>
+<p>只看幅度谱会舍去相位。即使频率和幅度相同，4 cos(2π·3t) 与 4 sin(2π·3t) 在 t = 0 的值也不同；多频率叠加时，相位还会改变波形的相互增强与抵消。某个频点有响应，则是进一步诊断的线索，不能单靠频谱断言它一定来自干扰或某个独立物理源。</p>
+<details class="checkpoint" id="fourier-dft-check"><summary>最新待答检查：仍以 12 Hz 采样，真实样本数从 24 增至 48，3 Hz 还在 X[6] 吗？</summary><p>先自己算 Δf，再求 k。这里明确是多采了 24 个真实样本，不是给原来的 24 点补零。</p><div class="formula">T<sub>窗</sub> = 48/12 = 4 s<br>Δf = 12/48 = 0.25 Hz<br>k = 3/0.25 = 12</div><p>应看 X[12]；这时 X[6] 对应 1.5 Hz。对同一个理想、零初相位的幅度 4 余弦，X[12] = 96，除以 48 仍得 C(3) = 2，还原幅度仍为 4。改变的是采样记录长度与频点编号，信号的物理频率和幅度没有因此改变。</p><p>这个答案是复习材料，目前没有记录到独立作答。补零只增加计算网格密度，不能当作采得了更多真实信息，也不能沿用本例的累加值与幅度归一化。</p></details>
+<p class="source-note">定义与排列核对：<a href="https://numpy.org/doc/stable/reference/routines.fft.html" target="_blank" rel="noopener noreferrer">NumPy：DFT 定义、归一化与正负频率排列</a>。本节沿用本页的负指数约定。</p>
+</section>
+
 <section id="fourier-pitfalls">
 <h2>回看时最值得防住的误解</h2>
 <dl class="misconceptions">
@@ -231,9 +258,9 @@
 </section>
 
 <section id="fourier-next">
-<h2>下一步只检验这三个连接</h2>
+<h2>回看三个连接，再检验 DFT 频点</h2>
 <ol><li><strong>能解释：</strong>为何一个正弦信号与余弦比较可以得到零，却仍然包含该频率。</li><li><strong>能计算：</strong>给定 U = 3、V = −4，写出 C，并求理想实余弦的峰值幅度。</li><li><strong>能说明条件：</strong>用自己的话说出为什么“求平均能抵消”需要合适的观察长度和采样条件。</li></ol>
-<p>这三点清楚后，再接 DFT 的第 k 个频点对应多少 Hz，并用更多样本观察同一个信号。这样每增加一个工具，都有前面的直觉可以接住。</p>
+<p>这三个基础检查继续保留。DFT 的第 k 个频点对应多少 Hz 已在本次讲解，接下来先独立回答<a href="#fourier-dft-check">24 点变 48 点的频点问题</a>，再继续采样限制与非整频点问题。这样每增加一个工具，都有前面的直觉可以接住。</p>
 <details class="checkpoint"><summary>一题综合自检：若 C = −3 + 4i，会改变什么？</summary><p>模长仍为 5，符合本页条件时余弦峰值幅度仍为 10。实部从 3 变成 −3，方向进入第二象限，φ = atan2(4, −3) ≈ 126.87°。改变的是相位，不是模长。不要仅用 arctan(虚部/实部) 而忽略象限。</p></details>
 <p class="source-note">公式核对：<a href="https://www.dsprelated.com/freebooks/mdft/DFT.html" target="_blank" rel="noopener noreferrer">Julius O. Smith，DFT 定义与负指数约定</a>；<a href="https://www.dsprelated.com/freebooks/mdft/DFT_Derived.html" target="_blank" rel="noopener noreferrer">归一化系数与投影的关系</a>。本页例子与说明按学习路线重新组织。</p>
 </section>

@@ -8,8 +8,9 @@
   if(root.document.readyState==='loading')root.document.addEventListener('DOMContentLoaded',function(){core.init(root);});else core.init(root);
 }(typeof window!=='undefined'?window:null,function(){
   'use strict';
-  var TOPICS={transforms:'三大变换','iir-fir':'IIR / FIR',kalman:'卡尔曼滤波',control:'自动控制',transfer:'传递函数',pll:'数字 PLL',spectrum:'频谱分析'};
+  var TOPICS={transforms:'三大变换','iir-fir':'IIR / FIR',kalman:'卡尔曼滤波',control:'自动控制',transfer:'传递函数',pll:'数字 PLL',spectrum:'频谱分析','filter-families':'巴特沃斯与切比雪夫'};
   var GLOSSARY=[
+    {topic:'filter-families',keys:['巴特沃斯','切比雪夫','butterworth','chebyshev','纹波'],title:'先核对截止与纹波的定义',text:'巴特沃斯的截止点是约 −3.01 dB；切比雪夫 I 的 Wn 是 −rp dB 的通带边缘。I 型通带等波纹，II 型阻带等波纹；这些设计家族与 FIR / IIR 的分类维度不同。',href:'knowledge.html?topic=filter-families'},
     {topic:'transforms',keys:['傅里叶','fourier','c(3)','幅值','相位','实部','虚部'],title:'幅值与相位要带着约定看',text:'复系数同时保留两路比较的结果。系数模长怎样换算为实余弦峰值幅度，取决于归一化、正负频率配对，以及 DC / Nyquist 等边界；不要把实部直接当作幅度。',href:'notes-transforms.html#fourier-amplitude'},
     {topic:'iir-fir',keys:['fir','iir','系数','低通','高通','带通','窗口','滤波'],title:'先分清“响应类型”和“实现结构”',text:'低通、高通、带通描述哪些频率被保留；FIR / IIR 描述冲激响应是否在有限步后结束。递推代码不必然是 IIR，系数也不只是 α 或窗口长度。',href:'notes-iir-fir.html#filter-coefficients'},
     {topic:'kalman',keys:['卡尔曼','kalman','协方差','增益','残差','新息','方差'],title:'残差大小和增益不是同一个量',text:'当前线性模型的增益由预测不确定性和测量不确定性决定。新息是测量与预测的差；读数跳变可以增大修正量，但不会直接改写这一轮的增益公式。',href:'notes-kalman.html#kalman-next'},

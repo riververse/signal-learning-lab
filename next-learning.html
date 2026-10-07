@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="mobile-reading.css">
 <link rel="stylesheet" href="next-learning.css">
 <link rel="stylesheet" href="question-helper.css?v=20261006-private-chat1">
-<script src="learning-progress.js" defer></script>
+<script src="learning-progress.js?v=20261007-notes" defer></script>
 <script src="question-helper.js?v=20261006-private-chat1" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
@@ -32,7 +32,7 @@
    <h2 id="nl-lesson-title">把 C(3) = 3 + 4i 读回幅值与相位</h2>
    <p class="nl-goal" id="nl-goal">沿用笔记的归一化与负指数约定，解释模长、相位以及实余弦的正负频率配对。</p>
    <div class="nl-check"><h3>做到这一步就够了</h3><p id="nl-check-text">不看答案，写出 |C(3)|、正频率对应余弦的峰值幅度与初相位，并说清为什么不能只取实部 3。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：这道独立作答在已整理记录里仍待确认，也能接上“傅里叶结果给出什么”的最新追问。</p>
+   <p class="nl-why" id="nl-why">为什么先学它：这道独立作答在已整理记录里仍待确认，也能检验“傅里叶结果给出什么”的已讲解内容。</p>
    <p class="nl-material-note" id="nl-material-note">已有完整笔记与自查答案；打开或读完页面不会自动完成打卡。</p>
    <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-transforms.html#fourier-amplitude">打开本节笔记</a><a class="nl-secondary" id="nl-experiment-link" href="simulation.html?scenario=frequency">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕 C(3) = 3 + 4i，一步一步检查我的幅值和相位理解。">带着这一步提问</button></div>
@@ -43,15 +43,15 @@
    <label for="nl-topic-select">优先方向</label>
    <select id="nl-topic-select" disabled><option value="auto">按当前学习缺口推荐</option><option value="transforms">三大变换</option><option value="iir-fir">IIR / FIR</option><option value="kalman">卡尔曼滤波</option><option value="transfer">传递函数</option><option value="control">自动控制</option><option value="spectrum">频谱分析</option><option value="pll">数字 PLL</option></select>
    <p class="nl-small" id="nl-preference-note">选定方向后，优先补齐它的必要前置，再进入主题。</p>
-   <details class="nl-rules"><summary>推荐是怎么选出来的？</summary><ol><li>采用下方截至 2026-10-06 的整理记录作为起点，不自动读取新聊天。</li><li>默认先补傅里叶未确认的两步，再接卡尔曼第 14 讲与其他明确待学主题。</li><li>如果选了方向，先找该方向尚未打卡的一步；缺前置时先推荐前置。</li><li>打卡后，按固定顺序推进这份有限清单。这是规则推荐，不是 AI 评估。</li></ol></details>
+   <details class="nl-rules"><summary>推荐是怎么选出来的？</summary><ol><li>采用下方截至 2026-10-07（北京时间）的整理记录作为起点，不自动读取新聊天。</li><li>默认先补傅里叶未确认的两步，再验证已讲解的卡尔曼第 14 讲，继续其他明确待学主题。</li><li>如果选了方向，先找该方向尚未打卡的一步；缺前置时先推荐前置。</li><li>打卡后，按固定顺序推进这份有限清单。这是规则推荐，不是 AI 评估。</li></ol></details>
    <div class="nl-storage"><span class="nl-storage-dot" aria-hidden="true"></span><strong>本机学习记录</strong><p id="nl-storage-note">只保存在此浏览器。更换设备、清理网站数据或使用隐私窗口可能丢失；不会同步 ChatGPT 私人对话。</p></div>
   </aside>
  </div>
  <section class="nl-evidence" aria-labelledby="nl-evidence-title">
-  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>整理记录截至 <time datetime="2026-10-06">2026-10-06</time></span></div>
+  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>整理记录截至 <time datetime="2026-10-07">2026-10-07</time> · 北京时间</span></div>
   <div class="nl-evidence-grid">
-   <div><h3>傅里叶</h3><p>复数旋转、两路比较和系数幅相已有讲解。C(3) = 3 + 4i 的独立作答仍待确认，最新“是否就是找频率与幅值”的追问也没有完成确认。</p><a href="notes-transforms.html#fourier-frontier">查看笔记中的进度依据</a></div>
-   <div><h3>卡尔曼</h3><p>讲解进度到第 13 讲：二状态、协方差与两个增益。第 14 讲预测协方差是下一步；讲过不等于已经独立验证理解。</p><a href="notes-kalman.html#kalman-frontier">查看已验证与待确认的区分</a></div>
+   <div><h3>傅里叶</h3><p>复数旋转、两路比较和系数幅相已有讲解；已补入频域整体认识、DFT 频点与 FFT。C(3) = 3 + 4i 及真实样本数从 24 增至 48 的频点检查仍待独立作答，没有新增已验证记录。</p><a href="notes-transforms.html#fourier-frontier">查看笔记中的进度依据</a></div>
+   <div><h3>卡尔曼</h3><p>讲解进度到第 14 讲：双状态预测与 FPFᵀ + Q，已补入误差传播和数值例子。第 15 讲测量更新是下一节预告；第 14 讲仍待独立验证，讲过不等于掌握。</p><a href="notes-kalman.html#kalman-frontier">查看已验证与待确认的区分</a></div>
    <div><h3>IIR / FIR 与后续主题</h3><p>滤波分类、系数和按频率设计已有回看材料。PLL 已有初次概念讨论，输入类型与练习仍待确认。传递函数、自控、频谱继续按待学处理，不根据页面存在或打开次数推断完成。</p><a href="knowledge.html?topic=iir-fir">回看 IIR / FIR 知识</a></div>
   </div>
   <p class="nl-small">这里的历史起点不会被本机打卡改写。新聊天中的进展需要另行整理进网站；本站不会悄悄更新。</p>

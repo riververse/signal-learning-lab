@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <link rel="stylesheet" href="question-helper.css?v=20261006-private-chat1">
 <script src="architecture.js?v=20261006" defer></script>
-<script src="learning-progress.js?v=20261006" defer></script>
+<script src="learning-progress.js?v=20261007-notes" defer></script>
 <script src="question-helper.js?v=20261006-private-chat1" defer></script>
 </head>
 <body class="kalman-notes lab-shell page--notes-kalman">
@@ -30,7 +30,7 @@
  <aside class="side-panel" aria-label="阅读导航">
   <p class="side-label">本页目录</p>
   <nav aria-label="桌面笔记目录"><ol class="toc"><li><a href="#kalman-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
-<li><a href="#kalman-route"><span class="toc-index" aria-hidden="true">02</span><span>前 13 节是怎样连起来的</span></a></li>
+<li><a href="#kalman-route"><span class="toc-index" aria-hidden="true">02</span><span>前 14 节是怎样连起来的</span></a></li>
 <li><a href="#kalman-symbols"><span class="toc-index" aria-hidden="true">03</span><span>每个量各管一件事</span></a></li>
 <li><a href="#kalman-model"><span class="toc-index" aria-hidden="true">04</span><span>先说清楚现在采用什么模型</span></a></li>
 <li><a href="#kalman-variance"><span class="toc-index" aria-hidden="true">05</span><span>方差为什么值得一起保存</span></a></li>
@@ -42,7 +42,8 @@
 <li><a href="#kalman-ema"><span class="toc-index" aria-hidden="true">11</span><span>一维卡尔曼怎样接上 EMA</span></a></li>
 <li><a href="#kalman-two-state"><span class="toc-index" aria-hidden="true">12</span><span>压力与变化率 一起预测和修正</span></a></li>
 <li><a href="#kalman-covariance"><span class="toc-index" aria-hidden="true">13</span><span>协方差 把两个误差联系起来</span></a></li>
-<li><a href="#kalman-next"><span class="toc-index" aria-hidden="true">14</span><span>下一步 让不确定性也向前预测</span></a></li></ol></nav>
+<li><a href="#kalman-prediction"><span class="toc-index" aria-hidden="true">14</span><span>第 14 节 让不确定性也向前预测</span></a></li>
+<li><a href="#kalman-next"><span class="toc-index" aria-hidden="true">15</span><span>下一步 双状态测量更新</span></a></li></ol></nav>
   <div class="side-bottom">
    <a href="kalman.html">打开卡尔曼增益互动实验 ↗</a>
    <a href="notes-transforms.html">三大变换学习笔记 →</a>
@@ -54,10 +55,10 @@
    <p class="eyebrow">NOTEBOOK 02 · 当前重点：二状态与协方差</p>
    <h1>卡尔曼学习笔记</h1>
    <p class="deck">从一维压力估计出发，把压力变化率也放进状态，再用协方差理解一条压力读数为什么能修正两个估计。每一步都能回到压力例子。</p>
-   <div class="page-meta"><span>最近整理 <time datetime="2026-10-03">2026-10-03</time> · UTC</span><span>按顺序读 · 先作答，再展开答案</span></div>
+   <div class="page-meta"><span>最近整理 <time datetime="2026-10-07">2026-10-07</time> · 北京时间</span><span>按顺序读 · 先作答，再展开答案</span></div>
   </div>
-  <details class="mobile-toc"><summary>本页目录 · 14 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#kalman-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
-<li><a href="#kalman-route"><span class="toc-index" aria-hidden="true">02</span><span>前 13 节是怎样连起来的</span></a></li>
+  <details class="mobile-toc"><summary>本页目录 · 15 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#kalman-frontier"><span class="toc-index" aria-hidden="true">01</span><span>现在走到哪里</span></a></li>
+<li><a href="#kalman-route"><span class="toc-index" aria-hidden="true">02</span><span>前 14 节是怎样连起来的</span></a></li>
 <li><a href="#kalman-symbols"><span class="toc-index" aria-hidden="true">03</span><span>每个量各管一件事</span></a></li>
 <li><a href="#kalman-model"><span class="toc-index" aria-hidden="true">04</span><span>先说清楚现在采用什么模型</span></a></li>
 <li><a href="#kalman-variance"><span class="toc-index" aria-hidden="true">05</span><span>方差为什么值得一起保存</span></a></li>
@@ -69,19 +70,20 @@
 <li><a href="#kalman-ema"><span class="toc-index" aria-hidden="true">11</span><span>一维卡尔曼怎样接上 EMA</span></a></li>
 <li><a href="#kalman-two-state"><span class="toc-index" aria-hidden="true">12</span><span>压力与变化率 一起预测和修正</span></a></li>
 <li><a href="#kalman-covariance"><span class="toc-index" aria-hidden="true">13</span><span>协方差 把两个误差联系起来</span></a></li>
-<li><a href="#kalman-next"><span class="toc-index" aria-hidden="true">14</span><span>下一步 让不确定性也向前预测</span></a></li></ol></nav></details>
+<li><a href="#kalman-prediction"><span class="toc-index" aria-hidden="true">14</span><span>第 14 节 让不确定性也向前预测</span></a></li>
+<li><a href="#kalman-next"><span class="toc-index" aria-hidden="true">15</span><span>下一步 双状态测量更新</span></a></li></ol></nav></details>
   <article class="notebook" aria-label="卡尔曼学习笔记正文">
 
 
 <section id="kalman-frontier" class="frontier">
 <h2>现在走到哪里</h2>
-<p><strong>当前范围：</strong>第 1–13 节。从一维随机游走模型、缺测和稳态增益，继续到压力与压力变化率的二状态模型，以及误差协方差如何联系两个增益。</p>
-<ul><li><strong>练习已验证：</strong>K = 0.2、更新到 102；下一步预测仍为 102，方差变为 24.8；测量值等于预测值时，估计可以不变而不确定性降低；连续两次缺测时只做预测；Q = 0 且没有测量时，P 保持不变。</li><li><strong>已讲到，理解还需确认：</strong>Q / R / P₀ 的调整、最小方差增益推导、C 代码实现、稳态增益与 EMA 的联系；第 12 节的压力与压力变化率二状态模型；第 13 节的协方差、误差联系和两个增益。</li><li><strong>本次新增：</strong>整理第 12、13 节已经讲解的内容。尚无新增独立作答记录，不把看过算例记成已经掌握。</li><li><strong>下一步预告：</strong>第 14 节，预测协方差为什么是 P<sup>−</sup> = FP<sup>+</sup>Fᵀ + Q；它尚未计入已讲解内容。</li></ul>
-<p class="note">复习时可以先看<a href="#kalman-recursion">五步递推</a>恢复整条流程，再去<a href="#kalman-gain-proof">增益为什么长这样</a>或<a href="#kalman-ema">与 EMA 的关系</a>。接着看<a href="#kalman-two-state">二状态如何更新</a>和<a href="#kalman-covariance">协方差怎样连接两个误差</a>。不需要从简单加减题重新走一遍。</p>
+<p><strong>当前范围：</strong>第 1–14 节。从一维随机游走模型、缺测和稳态增益，继续到压力与压力变化率的二状态模型、误差协方差，以及 FPFᵀ + Q 怎样传播不确定性。</p>
+<ul><li><strong>练习已验证：</strong>K = 0.2、更新到 102；下一步预测仍为 102，方差变为 24.8；测量值等于预测值时，估计可以不变而不确定性降低；连续两次缺测时只做预测；在此前 F = 1 的一维保持模型中，Q = 0 且没有测量时，P 保持不变。</li><li><strong>已讲到，理解还需确认：</strong>Q / R / P₀ 的调整、最小方差增益推导、C 代码实现、稳态增益与 EMA 的联系；第 12 节的压力与压力变化率二状态模型；第 13 节的协方差、误差联系和两个增益；第 14 节的协方差预测、交叉协方差的形成与二状态 Q 矩阵。</li><li><strong>本次新增：</strong>整理第 14 节已经讲解的内容，补入逐元素推导与完整预测数值。尚无新增独立作答记录，不把看过算例或请求继续记成已经掌握。</li><li><strong>下一步预告：</strong>第 15 节，双状态测量更新：由同一条新息计算两个增益，并更新两个状态与整个协方差；它尚未计入已讲解内容。</li></ul>
+<p class="note">复习时可以先看<a href="#kalman-recursion">五步递推</a>恢复整条流程，再去<a href="#kalman-gain-proof">增益为什么长这样</a>或<a href="#kalman-ema">与 EMA 的关系</a>。接着看<a href="#kalman-two-state">二状态如何更新</a>和<a href="#kalman-covariance">协方差怎样连接两个误差</a>，再看<a href="#kalman-prediction">第 14 节：不确定性向前传播</a>。不需要从简单加减题重新走一遍。</p>
 </section>
 
 <section id="kalman-route">
-<h2>前 13 节是怎样连起来的</h2>
+<h2>前 14 节是怎样连起来的</h2>
 <figure class="learn-visual" id="visual-kalman-cycle"><h3>先把整个循环放在眼前</h3>
 <div class="mr-phone-flow" data-mobile-reading-ui aria-label="卡尔曼预测更新循环，竖向阅读">
  <div>每一轮同时带着：<strong>估计中心 x̂ + 不确定性 P</strong></div>
@@ -97,8 +99,8 @@
 </div>
 <details class="mr-original-diagram" open><summary data-mobile-reading-ui>查看横向原图</summary><div class="lv-scroll" tabindex="0" role="region" aria-label="可横向滚动的示意图"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 280" role="img" aria-labelledby="lv-cycle-title lv-cycle-desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif"><title id="lv-cycle-title">卡尔曼的预测更新循环与缺测分支</title><desc id="lv-cycle-desc">上一轮更新后的估计和方差进入预测。过程噪声Q增加不确定性。有新测量时用增益和新息更新；缺测时跳过融合，沿用预测的估计与方差。</desc><rect width="650" height="280" fill="#101c29"/><text x="24" y="28" fill="#e3edf7" font-size="17" >每一轮同时带着：估计中心 x̂ + 不确定性 P</text><text x="26" y="108" fill="#adc2d5" font-size="17" >上次更新</text><text x="26" y="139" fill="#adc2d5" font-size="21" >x̂⁺，P⁺</text><text x="252" y="108" fill="#72b4ff" font-size="17" >先预测</text><text x="252" y="139" fill="#72b4ff" font-size="21" >x̂⁻，P⁻</text><text x="485" y="108" fill="#65d6c2" font-size="17" >再更新</text><text x="485" y="139" fill="#65d6c2" font-size="21" >x̂⁺，P⁺</text><line x1="151" y1="116" x2="223" y2="116" stroke="#72b4ff" stroke-width="2.5" /><path d="M223,116 L215.0,120.0 L215.0,112.0 Z" fill="#72b4ff"/><line x1="384" y1="116" x2="455" y2="116" stroke="#65d6c2" stroke-width="2.5" /><path d="M455,116 L447.0,120.0 L447.0,112.0 Z" fill="#65d6c2"/><text x="155" y="89" fill="#f1c57a" font-size="14" >P 增加 Q</text><text x="399" y="89" fill="#65d6c2" font-size="14" >K × 新息</text><text x="248" y="186" fill="#f1c57a" font-size="15" >没有新测量？</text><path d="M310 199 V236 H552 V167" fill="none" stroke="#f1c57a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 5"/><text x="361" y="259" fill="#f1c57a" font-size="14" >跳过融合，沿用预测与 P⁻</text><path d="M552 52 V39 H95 V69" fill="none" stroke="#33495f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><text x="391" y="24" fill="#adc2d5" font-size="13" >留给下一轮</text></svg></div><p class="lv-scroll-hint">窄屏可横向查看示意图。</p></details><figcaption>先预测，再决定有没有新的测量可融合。这里画的是本页一维随机游走模型；缺测分支不把旧读数当作新信息。<a href="#kalman-recursion">对照五步递推公式</a>。</figcaption></figure>
 
-<details class="lv-derivation" id="kalman-route-details"><summary>展开第 1–13 节的完整文字路线</summary><div class="lv-detail-content">
-<ol class="learning-route"><li><strong>第 1–3 节：</strong>区分真实压力、测量和估计；引入方差以及 P、Q、R。</li><li><strong>第 4–6 节：</strong>用 K 决定测量参与多少；更新估计和方差；把循环映射到代码。</li><li><strong>第 7–8 节：</strong>新测量与重复旧数据有什么不同；缺测时如何预测；测量恢复后怎样继续。</li><li><strong>第 9 节：</strong>Q、R、P₀ 分别影响什么。</li><li><strong>第 10 节：</strong>用更新后误差方差最小的要求，推导 K。</li><li><strong>第 11 节：</strong>一维卡尔曼与 EMA 的形式联系，以及稳态 K 和 Q/R 的关系。</li><li><strong>第 12 节：</strong>把压力和压力变化率组成状态；用 F 向前预测，用同一个新息分别修正两个量。</li><li><strong>第 13 节：</strong>把一个方差扩展成协方差矩阵 P；解释非对角项，以及压力测量为什么可以影响变化率估计。</li></ol>
+<details class="lv-derivation" id="kalman-route-details"><summary>展开第 1–14 节的完整文字路线</summary><div class="lv-detail-content">
+<ol class="learning-route"><li><strong>第 1–3 节：</strong>区分真实压力、测量和估计；引入方差以及 P、Q、R。</li><li><strong>第 4–6 节：</strong>用 K 决定测量参与多少；更新估计和方差；把循环映射到代码。</li><li><strong>第 7–8 节：</strong>新测量与重复旧数据有什么不同；缺测时如何预测；测量恢复后怎样继续。</li><li><strong>第 9 节：</strong>Q、R、P₀ 分别影响什么。</li><li><strong>第 10 节：</strong>用更新后误差方差最小的要求，推导 K。</li><li><strong>第 11 节：</strong>一维卡尔曼与 EMA 的形式联系，以及稳态 K 和 Q/R 的关系。</li><li><strong>第 12 节：</strong>把压力和压力变化率组成状态；用 F 向前预测，用同一个新息分别修正两个量。</li><li><strong>第 13 节：</strong>把一个方差扩展成协方差矩阵 P；解释非对角项，以及压力测量为什么可以影响变化率估计。</li><li><strong>第 14 节：</strong>从误差传播展开三个协方差元素，再组成 FP<sup>+</sup>Fᵀ + Q；看清零交叉协方差如何变成非零。</li></ol>
 <p>本页按这条路线重排成可回看的笔记，保留相关概念之间的连接。下面的例题是解释和复习材料；展开答案不等于完成理解验证。</p>
 
 </div></details>
@@ -287,20 +289,51 @@
 <p>两个增益使用同一个分母，因为它们面对的是同一条压力新息。K<sub>p</sub> 的分子是压力方差；K<sub>v</sub> 的分子是变化率误差与压力误差的协方差，所以会把已知的误差联系用于修正变化率。</p>
 <div class="worked-example"><h3>接回第 12 节的两个增益</h3><p>取刚才的 P<sup>−</sup>，并设这次测量方差 R = 6 kPa²。它是本例的设定，与前面一维算例的 R = 64 不同。</p><div class="formula">S = 4 + 6 = 10 kPa²<br>K<sub>p</sub> = 4/10 = 0.4<br>K<sub>v</sub> = 50/10 = 5 s⁻¹</div><p>因此，第 12 节使用的 0.4 和 5，可以由这一组预测协方差和测量方差得到。当 y &gt; 0 时，测量提示压力预测可能偏低；由于本例的误差协方差为正，变化率预测也可能偏低，于是它会一同向上修正。这是带着噪声和模型假设的信息融合，不是从一条读数直接知道真相。</p></div>
 <details class="checkpoint"><summary>只看本次更新：如果 P<sub>vp</sub><sup>−</sup> = 0，变化率会怎样？</summary><p>本次 K<sub>v</sub> = 0，因此这一条压力新息不会直接修正 v̂。它不意味着以后永远无法估计变化率：后续的状态传播可以重新建立误差联系，而连续压力读数也包含趋势信息。这里仍需区分“本次没有直接修正”和“整个序列不能估计”。</p></details>
-<p class="note">实际单片机保存并递推的是估计 x̂ 与模型给出的不确定性 P。它通常没有真值可随时比较。P 从初始设定开始，结合 F、Q、H、R 预测和更新；正确的模型与噪声设定，才使这份不确定性有参考意义。如何把 P 向前预测，留给下一节展开。</p>
+<p class="note">实际单片机保存并递推的是估计 x̂ 与模型给出的不确定性 P。它通常没有真值可随时比较。P 从初始设定开始，结合 F、Q、H、R 预测和更新；正确的模型与噪声设定，才使这份不确定性有参考意义。如何把 P 向前预测，现在接到<a href="#kalman-prediction">第 14 节</a>继续展开。</p>
+</section>
+
+<section id="kalman-prediction" class="current-focus">
+<h2>第 14 节 让不确定性也向前预测</h2>
+<p><strong>本次新增，已讲解、待独立验证。</strong>状态中心会随模型传播，描述它的协方差也要一起传播。本节仍采用压力 p 与压力变化率 v 的二状态模型；这里的 v 是 kPa/s，不是物体的空间速度。</p>
+<h3>另设一组旧值，看清误差联系怎样产生</h3>
+<p>本节是新教学算例，不沿用第 13 节的预测协方差。假设上一轮融合后，p̂<sup>+</sup> = 100 kPa，v̂<sup>+</sup> = 20 kPa/s，Δt = 0.01 s = 10 ms：</p>
+<div class="formula">P<sup>+</sup> = <math aria-label="旧协方差，第一行4、0，第二行0、100"><mrow><mo>[</mo><mtable><mtr><mtd><mn>4</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>100</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></div>
+<p>其中 P<sub>pp</sub><sup>+</sup> = 4 kPa²，P<sub>pv</sub><sup>+</sup> = 0 kPa²/s，P<sub>vv</sub><sup>+</sup> = 100 (kPa/s)²。非对角项为零只表示当前两种误差不相关，不表示它们都没有误差。</p>
+<div class="formula">p̂<sup>−</sup> = 100 + 0.01 × 20 = 100.2 kPa<br>v̂<sup>−</sup> = 20 kPa/s</div>
+<p>先暂时设 Q = 0，单独看已有不确定性怎样通过状态模型传播。压力预测用到了变化率，而变化率估计本身不确定，所以它也会给压力预测带来不确定性。</p>
+<h3>从误差出发，再看三个协方差元素</h3>
+<p>仍把误差定义为“估计值 − 真值”。在当前无过程噪声的模型中，右侧均取上一轮融合后的误差：</p>
+<div class="formula">e<sub>p</sub><sup>−</sup> = e<sub>p</sub><sup>+</sup> + Δt·e<sub>v</sub><sup>+</sup><br>e<sub>v</sub><sup>−</sup> = e<sub>v</sub><sup>+</sup></div>
+<details class="lv-derivation" id="kalman-prediction-derivation"><summary>展开平方与乘积，看看 Δt² 和交叉项从哪里来</summary><div class="lv-detail-content"><p>沿用零均值误差假设，可把方差写成误差平方的统计平均。压力误差的平方展开后有三项：</p><div class="formula">P<sub>pp</sub><sup>−</sup> = E[(e<sub>p</sub><sup>+</sup> + Δt·e<sub>v</sub><sup>+</sup>)²]<br>= P<sub>pp</sub><sup>+</sup> + 2Δt·P<sub>pv</sub><sup>+</sup> + Δt²·P<sub>vv</sub><sup>+</sup></div><p>第一项是原压力方差；第二项来自已有误差联系，可以为正或负；第三项是变化率不确定性对压力的贡献。因为误差先乘 Δt、随后再平方，所以这里出现 Δt²。</p><div class="formula">P<sub>pv</sub><sup>−</sup> = E[(e<sub>p</sub><sup>+</sup> + Δt·e<sub>v</sub><sup>+</sup>)e<sub>v</sub><sup>+</sup>]<br>= P<sub>pv</sub><sup>+</sup> + Δt·P<sub>vv</sub><sup>+</sup><br>P<sub>vv</sub><sup>−</sup> = P<sub>vv</sub><sup>+</sup></div><p>即使原来的 P<sub>pv</sub><sup>+</sup> = 0，只要 Δt 与变化率方差非零，新的交叉协方差也可以非零：压力预测误差里现在包含了一部分相同的变化率误差。非零均值时改用去均值误差来定义协方差，线性协方差传播形式仍相同。</p></div></details>
+<div class="worked-example"><h3>没有新过程噪声，也能产生新的误差联系</h3><div class="formula">P<sub>pp</sub><sup>−</sup> = 4 + 2 × 0.01 × 0 + 0.01² × 100 = 4.01 kPa²<br>P<sub>pv</sub><sup>−</sup> = 0 + 0.01 × 100 = 1 kPa²/s<br>P<sub>vv</sub><sup>−</sup> = 100 (kPa/s)²</div><div class="formula">P<sup>−</sup> = <math aria-label="无过程噪声时预测协方差，第一行4.01、1，第二行1、100"><mrow><mo>[</mo><mtable><mtr><mtd><mn>4.01</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>100</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> （暂设 Q = 0）</div><p>压力方差从 4 变为 4.01，交叉协方差从 0 变为 1。它们来自旧误差通过模型的传播，尚未使用新的测量。</p></div>
+<p class="warning">此前“Q = 0、没有测量时 P 不变”针对 F = 1 的一维保持模型。二状态模型的 F 会混合误差，即使 Q = 0，P 也未必不变。也不能反过来宣称所有模型里的所有方差必然增加；要按 F 和原来的 P 具体计算。</p>
+<h3>为什么矩阵形式是 FPFᵀ</h3>
+<div class="formula">F = <math aria-label="状态转移矩阵，第一行1、Δt，第二行0、1"><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mrow><mi>Δt</mi></mrow></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>，Fᵀ = <math aria-label="转置，第一行1、0，第二行Δt、1"><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mrow><mi>Δt</mi></mrow></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math><br>P<sub>k</sub><sup>−</sup> = FP<sub>k−1</sub><sup>+</sup>Fᵀ （暂设 Q = 0）</div>
+<p>上标 T 表示转置，即行列互换，不是乘时间或求平方。状态预测是一次线性组合；协方差涉及两份误差的乘积，两份误差都经过了 F，所以两侧分别出现 F 和 Fᵀ。上面的逐元素展开，就是这条矩阵公式在当前模型里的具体内容。</p>
+<h3>把这段时间新增的扰动加回来</h3>
+<p>设真实状态满足 x<sub>k</sub> = Fx<sub>k−1</sub> + w<sub>k</sub>。新增过程扰动 w 的均值为零，且与上一轮估计误差不相关，其协方差为 Q：</p>
+<div class="formula">x̂<sub>k</sub><sup>−</sup> = Fx̂<sub>k−1</sub><sup>+</sup><br>P<sub>k</sub><sup>−</sup> = FP<sub>k−1</sub><sup>+</sup>Fᵀ + Q</div>
+<p>零均值扰动不直接作为一个随机数加到预测中心上，但它的协方差要加入 P。Q<sub>pp</sub>、Q<sub>pv</sub>、Q<sub>vv</sub> 的单位依次是 kPa²、kPa²/s、(kPa/s)²；Q 描述本时间间隔新增的扰动，P 描述累积到当前的估计误差不确定性。</p>
+<div class="worked-example"><h3>在 10 ms 间隔内，加上教学用 Q</h3><div class="formula">Q = <math aria-label="过程噪声协方差，第一行0.01、0，第二行0、4"><mrow><mo>[</mo><mtable><mtr><mtd><mn>0.01</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable><mo>]</mo></mrow></math><br>P<sup>−</sup> = <math aria-label="无过程噪声时预测协方差，第一行4.01、1，第二行1、100"><mrow><mo>[</mo><mtable><mtr><mtd><mn>4.01</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>100</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> + <math aria-label="过程噪声协方差，第一行0.01、0，第二行0、4"><mrow><mo>[</mo><mtable><mtr><mtd><mn>0.01</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable><mo>]</mo></mrow></math><br> = <math aria-label="含过程噪声时预测协方差，第一行4.02、1，第二行1、104"><mrow><mo>[</mo><mtable><mtr><mtd><mn>4.02</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>104</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></div><p>本例设两种新增扰动不相关，所以 Q 的非对角项为零。预测状态仍为 p̂<sup>−</sup> = 100.2 kPa、v̂<sup>−</sup> = 20 kPa/s，但变化率方差从 100 增至 104 (kPa/s)²。预测数值与预测的不确定性是两项不同的计算。</p></div>
+<p class="note">对角 Q 只是这个教学算例的设定。实际过程扰动可能同时影响压力和变化率，使 Q 的非对角项非零；Q 必须是有效的协方差矩阵，并结合采样间隔与具体噪声模型确定，不能直接照搬这组数值。</p>
+<h3>写成五条可核对的标量预测式</h3>
+<div class="formula">p̂<sup>−</sup> = p̂<sup>+</sup> + Δt·v̂<sup>+</sup><br>v̂<sup>−</sup> = v̂<sup>+</sup><br>P<sub>pp</sub><sup>−</sup> = P<sub>pp</sub><sup>+</sup> + 2Δt·P<sub>pv</sub><sup>+</sup> + Δt²·P<sub>vv</sub><sup>+</sup> + Q<sub>pp</sub><br>P<sub>pv</sub><sup>−</sup> = P<sub>pv</sub><sup>+</sup> + Δt·P<sub>vv</sub><sup>+</sup> + Q<sub>pv</sub><br>P<sub>vv</sub><sup>−</sup> = P<sub>vv</sub><sup>+</sup> + Q<sub>vv</sub></div>
+<p><strong>右侧的 + 全是上一轮融合后的旧值。</strong>实现时先保留旧值副本，或使用单独的预测变量，不能更新一个元素后拿它替换其他式子里的旧元素。当前还在预测阶段，所以没有用到 z、R 或卡尔曼增益。</p>
+<details class="checkpoint"><summary>复习检查：P<sub>pv</sub><sup>+</sup> = 0，为什么预测后仍可能修正变化率？</summary><p>预测可以先产生 P<sub>pv</sub><sup>−</sup> = Δt·P<sub>vv</sub><sup>+</sup> + Q<sub>pv</sub>。在当前数值例里它等于 1 kPa²/s，因此随后压力测量对应的变化率增益不必为零。是否真的修正、修正多大，还要看本次测量新息、R 与增益；具体测量更新留到第 15 节。此题作为复习材料，不计入已独立答对。</p></details>
+<p class="source-note">预测公式核对：<a href="https://ee363.stanford.edu/archive/lectures/kf.pdf" target="_blank" rel="noopener noreferrer">Stephen Boyd，Stanford EE363：均值与协方差传播、卡尔曼滤波</a>。这里按压力与压力变化率的单位重新组织算例。</p>
 </section>
 
 <section id="kalman-next">
-<h2>下一步 让不确定性也向前预测</h2>
-<p class="preview-label"><strong>第 14 节预告，尚未计入已讲解内容。</strong></p>
-<p>现在已经有了两个并行问题：状态怎么向前走，以及对这个状态的把握如何变化。第 12 节用 F 预测中心；下一步要让压力误差、变化率误差和它们的联系一起传播。</p>
+<h2>下一步 双状态测量更新</h2>
+<p class="preview-label"><strong>第 15 节预告，尚未计入已讲解内容。</strong></p>
+<p>现在已经有了两个并行问题：状态怎么向前走，以及对这个状态的把握如何变化。第 12 节用 F 预测中心；第 14 节已经让压力误差、变化率误差和它们的联系一起传播：</p>
 <div class="formula">P<sub>k</sub><sup>−</sup> = FP<sub>k−1</sub><sup>+</sup>Fᵀ + Q</div>
-<p>这里 P<sub>k−1</sub><sup>+</sup> 是上次更新后的二状态协方差，Fᵀ 是 F 的转置，Q 是这个时间间隔的二状态过程噪声协方差矩阵。它已经不是前面一维模型的单个 Q。下一节再从误差如何传播解释这个公式，以及为什么两边都出现 F。</p>
+<p>这里 P<sub>k−1</sub><sup>+</sup> 是上次更新后的二状态协方差，Fᵀ 是 F 的转置，Q 是这个时间间隔的二状态过程噪声协方差矩阵。它已经不是前面一维模型的单个 Q。这一公式及两侧矩阵的含义已在<a href="#kalman-prediction">第 14 节</a>展开。下一节将从预测状态 [100.2, 20] 与预测协方差的四个元素 4.02、1、1、104 出发，在明确测量值和 R 后计算两个增益，并完成状态与协方差更新。</p>
 <h3>后续路线</h3>
-<ol><li><strong>第 14 节：</strong>预测协方差，理解 FPFᵀ + Q 的含义。</li><li><strong>第 15 节：</strong>测量更新，把状态修正与协方差更新接起来。</li><li><strong>第 16 节：</strong>用完整数值例子走通二状态的一轮递推。</li><li><strong>第 17 节：</strong>写成可检查的 C 代码，明确变量和执行顺序。</li><li><strong>第 18 节：</strong>结合采样间隔 Δt 理解调参。</li><li><strong>第 19 节：</strong>验证模型、数值结果与实际表现。</li></ol>
-<p>这些是后续学习安排，不是已经完成的内容；是否理解，以实际作答和验证为准。</p>
+<ol><li><strong>第 14 节（已讲解，待验证）：</strong>预测协方差，理解 FPFᵀ + Q 的含义。</li><li><strong>第 15 节：</strong>测量更新，把状态修正与协方差更新接起来。</li><li><strong>第 16 节：</strong>用完整数值例子走通二状态的一轮递推。</li><li><strong>第 17 节：</strong>写成可检查的 C 代码，明确变量和执行顺序。</li><li><strong>第 18 节：</strong>结合采样间隔 Δt 理解调参。</li><li><strong>第 19 节：</strong>验证模型、数值结果与实际表现。</li></ol>
+<p>第 15–19 节仍是后续学习安排，不是已经完成的内容；第 14 节已经讲解，是否理解仍以实际作答和验证为准。</p>
 <h3>进入下一节前的检查点</h3>
-<ol><li>能区分压力 p 与压力变化率 v 的单位，并把两条预测式对应到 F 的两行。</li><li>能说明为什么两个状态用同一个更新前新息，却用不同单位的增益。</li><li>能说清 P 的对角项和非对角项各记录什么，以及为什么 K 要使用 P<sup>−</sup>。</li></ol>
+<ol><li>能区分压力 p 与压力变化率 v 的单位，并把两条预测式对应到 F 的两行。</li><li>能说明为什么两个状态用同一个更新前新息，却用不同单位的增益。</li><li>能说清 P 的对角项和非对角项各记录什么，以及为什么 K 要使用 P<sup>−</sup>。</li><li>能用第 14 节的旧值独立重算 4.02、1、104，并解释为什么 Q = 0 也不保证二状态 P 不变。</li></ol>
 <details><summary>回看一维模型时，保留这三个基础检查</summary><ol><li>能说明没有测量时，为什么 x̂ 可以不动、P 却继续增加。</li><li>能说明两次相同读数何时算两条新信息，何时只是重复旧信息。</li><li>能解释增益公式中的 P 应取当前预测方差 P<sup>−</sup>，并说清 Q / R 为什么影响稳态权重。</li></ol></details>
 <details class="checkpoint"><summary>综合检查：测量忽然变大，K 一定也会变大吗？</summary><p>在当前线性标量模型里，K 由 P<sup>−</sup> 和 R 决定，公式没有 z。读数突然变大，会使新息变大，从而可能产生更大的修正；它本身不会直接改变本次 K。根据异常或残差额外调整 R 属于另一个需要明确说明的策略。</p></details>
 <p class="source-note">公式参考：<a href="https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/WELCH/kalman.1.html" target="_blank" rel="noopener noreferrer">Welch 与 Bishop，An Introduction to the Kalman Filter：离散卡尔曼滤波（爱丁堡大学镜像）</a>。本页把线性递推分别用于标量随机游走和压力／压力变化率模型；算例与说明按学习路线重新组织。卡尔曼理论的“最优”结论以所采用的模型和误差统计假设为前提。</p>
