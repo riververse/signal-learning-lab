@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Render the public project catalog without executing project code or fetching URLs.
 
-Edit exploration-catalog.json (projects and radar_guide), verify its primary sources,
-then run this script. Preserve radar_guide when updating the project catalog.
+Edit exploration-catalog.json (projects, recent_updates and radar_guide), verify its
+primary sources, then run this script. Keep existing projects, dated update notes
+and radar_guide when adding new material; source-check dates are not release dates.
 HTML is generated statically so project links and details work without JavaScript.
 """
 from pathlib import Path
@@ -13,7 +14,7 @@ import json
 import re
 
 ROOT=Path(__file__).resolve().parent
-EXTERNAL_HOSTS={'github.com','docs.acconeer.com','developer.acconeer.com','www.ti.com','dr-download-cdn.ti.com','arm-software.github.io','liquidsdr.org','www.gnuradio.org'}
+EXTERNAL_HOSTS={'github.com','docs.acconeer.com','developer.acconeer.com','www.ti.com','dr-download-cdn.ti.com','arm-software.github.io','liquidsdr.org','www.gnuradio.org','radarsimx.com','radarsimx.github.io'}
 LOCAL_PAGES={'knowledge.html','simulation.html','notes-iir-fir.html','next-learning.html','exploration.html'}
 
 def text(value):
@@ -44,6 +45,7 @@ def render_card(project,categories):
     external=''.join(link(l,True) for l in p['official_links'])
     learn=''.join(link(l) for l in p['learning_links'])
     licenses=' · '.join(link(l,True) for l in p['license_links'])
+    latest='<p class="project-warning"><strong>近期补充：</strong>'+text(p['latest_note'])+'</p>' if p.get('latest_note') else ''
     chain='<ol class="project-chain" aria-label="简化的处理流程">'+''.join('<li>'+text(v)+'</li>' for v in p['chain'])+'</ol>'
     return f'''<article class="project-card" id="{text(p['id'])}" data-category="{text(p['category'])}" aria-labelledby="{text(p['id'])}-title">
 <div class="project-meta"><span>{text(categories[p['category']])} / {text(p['kind'])}</span><span class="project-state">{text(p['status'])}</span></div>
@@ -52,12 +54,41 @@ def render_card(project,categories):
 <p class="project-application">{text(p['application'])}</p>
 <p class="project-first"><strong>起步：</strong>{text(p['first_step'])}</p>
 <div class="project-links" aria-label="本站学习入口">{learn}</div>
+{latest}
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd>{items(p['prerequisites'])}</dd><dt>关键算法</dt><dd>{items(p['algorithms'])}</dd><dt>硬件与环境</dt><dd>{text(p['hardware'])}</dd><dt>成熟度与复现边界</dt><dd>{text(p['maturity'])}</dd><dt>许可范围</dt><dd>{text(p['license'])}<br>{licenses}</dd></dl>
 <p class="project-warning">{text(p['warning'])}</p>
 <div class="project-links" aria-label="外部官方来源">{external}</div>
 </details><p class="project-verification">来源核验 <time datetime="{text(p['last_verified'])}">{text(p['last_verified'])}</time> · {text(p['reproduction_status'])}</p>
 </article>'''
+
+def render_recent_updates(updates, projects):
+    """Render dated editorial notes without claiming popularity or completion."""
+    if not updates:return ''
+    by_id={p['id']:p for p in projects}
+    if len({u['id'] for u in updates})!=len(updates):raise ValueError('Duplicate update IDs')
+    cards=[]
+    for u in updates:
+        if not re.fullmatch(r'[a-z][a-z0-9-]{0,70}',u['id']):raise ValueError('Invalid update ID')
+        date.fromisoformat(u['last_verified'])
+        if u['project_id'] not in by_id:raise ValueError('Update must refer to an existing project')
+        project=by_id[u['project_id']]
+        sources=''.join(link(s,True) for s in u['sources'])
+        target=link({'label':'查看项目、先修与许可','url':'exploration.html?category='+project['category']+'#'+project['id']})
+        cards.append(f'''<article class="radar-case" id="{text(u['id'])}">
+<p class="radar-architecture">{text(u['date_label'])}</p><h3>{text(u['title'])}</h3>
+<p><strong>{text(u['stage'])}</strong></p><p>{text(u['summary'])}</p>
+<p><strong>从这里开始：</strong>{text(u['practice'])}</p>
+<div class="project-links" aria-label="近期更新官方来源">{sources}{target}</div>
+<p class="project-verification">来源核验 <time datetime="{text(u['last_verified'])}">{text(u['last_verified'])}</time> · 待学习 · 未在本站复现</p>
+</article>''')
+    newest=max(u['last_verified'] for u in updates)
+    return f'''<section class="radar-guide" id="recent-updates" aria-labelledby="recent-updates-title">
+<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="{text(newest)}">{text(newest)}</time> 核验</span>
+<h2 id="recent-updates-title">从新发布与真实修复里，找下一步。</h2>
+<p>这次挑选与滤波、状态估计和雷达学习有关的具体变化。发布日期与本次核验日期分别标注；这是基于官方来源的学习推荐，不是按 Stars 或热度排名。保留原有方向，新条目仍待动手验证。</p></div>
+<div class="radar-cases">{''.join(cards)}</div>
+</section>'''
 
 def render_radar_guide(guide, projects):
     """Keep the guide in the catalog source so scheduled rebuilds retain it."""
@@ -107,6 +138,7 @@ def build():
     if 'href="exploration.html" aria-current="page"' not in header:raise ValueError('Shared navigation must contain exploration')
     cards='\n'.join(render_card(p,categories) for p in projects)
     guide=render_radar_guide(data['radar_guide'],projects)
+    updates=render_recent_updates(data.get('recent_updates',[]),projects)
     buttons='<button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button>'
     buttons+=''.join(f'<button class="exploration-filter" type="button" data-category-filter="{text(k)}" aria-pressed="false">{text(v)}</button>' for k,v in categories.items())
     html=f'''<!doctype html>
@@ -123,7 +155,9 @@ def build():
 <main id="main" class="exploration-main">
 <section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>先收录民用雷达案例与成熟开源 DSP 项目。本站实验帮你理解其中的原理，外部工程仍需在各自环境中验证。</p></div>
 <ol class="exploration-route" aria-label="建议的探索顺序"><li><strong>学原理</strong><span>在知识图谱找到先修概念</span></li><li><strong>看波形</strong><span>用独立教学模拟建立直觉</span></li><li><strong>读实现</strong><span>沿着数据流定位算法代码</span></li><li><strong>再验证</strong><span>检查许可、环境与真实数据</span></li></ol></section>
+<div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
+{updates}
 <section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类">{buttons}</div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
 <p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 {len(projects)} 个学习方向</p>
 <noscript><p>所有项目均可直接阅读；开启 JavaScript 后可按分类和关键词筛选。</p></noscript>
@@ -138,3 +172,4 @@ def build():
     print(f'Rendered {len(projects)} projects into exploration.html')
 
 if __name__=='__main__':build()
+

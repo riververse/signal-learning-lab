@@ -12,9 +12,34 @@
 <main id="main" class="exploration-main">
 <section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>先收录民用雷达案例与成熟开源 DSP 项目。本站实验帮你理解其中的原理，外部工程仍需在各自环境中验证。</p></div>
 <ol class="exploration-route" aria-label="建议的探索顺序"><li><strong>学原理</strong><span>在知识图谱找到先修概念</span></li><li><strong>看波形</strong><span>用独立教学模拟建立直觉</span></li><li><strong>读实现</strong><span>沿着数据流定位算法代码</span></li><li><strong>再验证</strong><span>检查许可、环境与真实数据</span></li></ol></section>
+<div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
-<section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类"><button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button><button class="exploration-filter" type="button" data-category-filter="radar" aria-pressed="false">民用雷达</button><button class="exploration-filter" type="button" data-category-filter="dsp" aria-pressed="false">DSP 基础</button></div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
-<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 6 个学习方向</p>
+<section class="radar-guide" id="recent-updates" aria-labelledby="recent-updates-title">
+<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-10-09">2026-10-09</time> 核验</span>
+<h2 id="recent-updates-title">从新发布与真实修复里，找下一步。</h2>
+<p>这次挑选与滤波、状态估计和雷达学习有关的具体变化。发布日期与本次核验日期分别标注；这是基于官方来源的学习推荐，不是按 Stars 或热度排名。保留原有方向，新条目仍待动手验证。</p></div>
+<div class="radar-cases"><article class="radar-case" id="cmsis-dsp-118-notes">
+<p class="radar-architecture">GitHub 发布 2026-09-10 · 本次补读 1.18.0</p><h3>CMSIS-DSP：滤波公式之外，还要检查内存边界</h3>
+<p><strong>成熟库；自动微分部分为实验功能</strong></p><p>Q15 FIR 在特定宏组合下的状态缓冲区多读问题已修正；本版将支持自动循环融合的 C++ 模板 API 纳入 pack。前者连接 MCU 边界安全，后者适合研究如何减少中间向量与访存。新版反向自动微分支持 f32 / f16，可作为后续探索。</p>
+<p><strong>从这里开始：</strong>先确认具体 GD32 的内核与 FPU，再用同一段输入比较 F32 / Q15 FIR 的误差、饱和、状态缓冲区长度与单块耗时。不要把全部 GD32 系列都当作 Arm，也不必先上实验性自动微分。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0" rel="noopener noreferrer">1.18.0 发布说明</a><a href="https://github.com/ARM-software/CMSIS-DSP/pull/317" rel="noopener noreferrer">Q15 边界修复 PR #317</a><a href="https://arm-software.github.io/CMSIS-DSP/latest/autodiff_concepts.html" rel="noopener noreferrer">自动微分内存模型</a><a href="exploration.html?category=dsp#cmsis-dsp">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="px4-ekf2-sequential-update">
+<p class="radar-architecture">修复合并 2026-08-19 · RC 发布 2026-09-10</p><h3>PX4 EKF2：更新一轴后，新息也得跟着更新</h3>
+<p><strong>已合并修复；v1.18.0-rc1 为预发布</strong></p><p>逐轴融合多轴观测时，每融合一轴，都应根据更新后的状态重新计算下一轴的新息与新息方差。PX4 在 GNSS 速度、位置等直接状态观测上的修复附有复现单元测试，可把课本公式和真实的航向估计故障连起来。</p>
+<p><strong>从这里开始：</strong>先学完矩阵 KF 的测量更新，用二维线性例子比较批量与顺序更新，再读 PR 测试。不把 RC 当稳定生产固件，也不直接移植整套飞控。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/PX4/PX4-Autopilot/pull/28273" rel="noopener noreferrer">修复与复现测试 PR #28273</a><a href="https://github.com/PX4/PX4-Autopilot/releases/tag/v1.18.0-rc1" rel="noopener noreferrer">1.18.0-rc1 发布说明</a><a href="exploration.html?category=estimation#px4-ekf2">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="radarsimpy-154-receive-window">
+<p class="radar-architecture">官方发布 2026-09-13 · 版本 15.4.0</p><h3>RadarSimPy：把接收时间窗放进 FMCW 仿真</h3>
+<p><strong>桌面仿真；公开 Python 层与商业核心分开看</strong></p><p>15.4 新增接收 gate_delay，为远距离 FMCW / stretch 雷达建模接收时间窗；还支持 glTF / GLB 动画目标，适合之后研究转轮、转子的微多普勒。</p>
+<p><strong>从这里开始：</strong>当前先沿单目标拍频 → 距离 FFT → 距离–多普勒 → CFAR 学，用已知真值检查频轴和检测结果。Python 仓为 GPL-3.0，但底层 RadarSimCpp 为商业许可；这不是可直接烧入 GD32 的全开源引擎。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/" rel="noopener noreferrer">15.4.0 官方发布</a><a href="https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html" rel="noopener noreferrer">接收窗学习文档</a><a href="https://radarsimx.com/radarsimx/radarsimcpp/" rel="noopener noreferrer">核心许可边界</a><a href="exploration.html?category=radar#radarsimpy">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 待学习 · 未在本站复现</p>
+</article></div>
+</section>
+<section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类"><button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button><button class="exploration-filter" type="button" data-category-filter="radar" aria-pressed="false">民用雷达</button><button class="exploration-filter" type="button" data-category-filter="dsp" aria-pressed="false">DSP 基础</button><button class="exploration-filter" type="button" data-category-filter="estimation" aria-pressed="false">状态估计</button></div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
+<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 8 个学习方向</p>
 <noscript><p>所有项目均可直接阅读；开启 JavaScript 后可按分类和关键词筛选。</p></noscript>
 <div class="exploration-empty" id="exploration-empty" hidden><p>没有匹配的方向。试试更短的关键词，或清除筛选。</p><button type="button" class="exploration-reset" id="exploration-reset">清除筛选</button></div>
 <div class="exploration-grid" id="exploration-projects"><article class="project-card" id="a121-presence" data-category="radar" aria-labelledby="a121-presence-title">
@@ -24,6 +49,7 @@
 <p class="project-application">照明、门控与室内存在感知：从回波变化判断有人，而不是只看回波强不强。</p>
 <p class="project-first"><strong>起步：</strong>先理解快、慢两条 IIR 输出为什么不同，再顺着 processor 阅读检测分数的形成过程。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=iir-fir">先学 IIR / FIR</a><a href="simulation.html?scenario=pressure&amp;algorithm=iir">比较低通响应</a></div>
+
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>采样、均值与方差</li><li>一阶 IIR、时间常数</li><li>Python / NumPy、复数 IQ</li></ul></dd><dt>关键算法</dt><dd><ul><li>帧内偏差衡量较快运动，帧间快慢低通差衡量较慢运动。</li><li>时间平滑、噪声归一化和阈值组合；可用相位变化增强慢动作敏感度。</li></ul></dd><dt>硬件与环境</dt><dd>读源码无需硬件；实时采集需要兼容 A121 评估板、对应 server 与连接环境。</dd><dt>成熟度与复现边界</dt><dd>官方检测器，有算法推导、参数说明和 Python 实现；属于工程学习参考。本站未做硬件复现。</dd><dt>许可范围</dt><dd>Python 仓库采用 BSD-3-Clause-Clear（Clear BSD），不授予专利许可。第三方组件另有条款；SDK、固件和随附文档须分别核查，不能由 Python 仓库推定为全栈开源。<br><a href="https://github.com/acconeer/acconeer-python-exploration/blob/master/LICENSE.md" rel="noopener noreferrer">Python 许可</a> · <a href="https://developer.acconeer.com/software-license-agreement/" rel="noopener noreferrer">SDK 协议</a></dd></dl>
 <p class="project-warning">A121 使用脉冲相干雷达（PCR），不要直接套用 FMCW 的距离 FFT 流程。</p>
@@ -37,6 +63,7 @@
 <p class="project-application">研究静止者的胸部微动如何映射到 IQ 相位，再从时间序列提取主要周期。</p>
 <p class="project-first"><strong>起步：</strong>把相位、位移、频率三个量分开，再比较带通前后的慢漂移与高频噪声。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=spectrum">先学频谱分析</a><a href="simulation.html?scenario=frequency&amp;algorithm=band">观察教学带通</a></div>
+
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>复数、IQ 相位与相位展开</li><li>带通滤波、采样率</li><li>FFT、功率谱与峰值插值</li></ul></dd><dt>关键算法</dt><dd><ul><li>存在检测先估计目标距离；累积相邻观测的相位变化形成运动时间序列。</li><li>带通保留目标频段，再以功率谱峰值与插值估计节律。</li></ul></dd><dt>硬件与环境</dt><dd>阅读和学习无需硬件；真实观测需要 A121 评估硬件及对应软件。动作、姿态和环境会影响结果。</dd><dt>成熟度与复现边界</dt><dd>官方 reference application，带实现和测试说明；不代表已经在本站或你的场景中复现。</dd><dt>许可范围</dt><dd>Python 仓库采用 BSD-3-Clause-Clear（Clear BSD），不授予专利许可。第三方组件另有条款；SDK、固件和随附文档须分别核查，不能由 Python 仓库推定为全栈开源。<br><a href="https://github.com/acconeer/acconeer-python-exploration/blob/master/LICENSE.md" rel="noopener noreferrer">Python 许可</a> · <a href="https://developer.acconeer.com/software-license-agreement/" rel="noopener noreferrer">SDK 协议</a></dd></dl>
 <p class="project-warning">仅作算法学习与评估参考，非医疗诊断工具；A121 为脉冲相干雷达。</p>
@@ -50,6 +77,7 @@
 <p class="project-application">用毫米波观测距离、方向和速度，把检测点组织成可跟踪的人体目标。</p>
 <p class="project-first"><strong>起步：</strong>先分清“这一帧检测到点”和“多帧维持一条轨迹”，再读设计指南中的数据链路。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=kalman">先学卡尔曼</a><a href="simulation.html?scenario=motion&amp;algorithm=cvkalman">观察恒速度估计</a></div>
+
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>FMCW、FFT 与阵列基础</li><li>协方差与波束形成</li><li>卡尔曼滤波、非线性测量模型</li></ul></dd><dt>关键算法</dt><dd><ul><li>加窗与距离 FFT → 静态杂波去除 → Capon 波束形成与距离角度热图。</li><li>两遍 CFAR 检测、仰角估计、Doppler 估计，再用扩展卡尔曼滤波（EKF）与关联维持群目标轨迹。</li></ul></dd><dt>硬件与环境</dt><dd>完整参考设计需匹配 IWR6843 系列评估板、载板与软件版本；PC 用于配置和显示。阅读设计文档无需硬件。</dd><dt>成熟度与复现边界</dt><dd>可追溯的 TI 工程参考设计；这里对应 TIDUE71D（2020-04 修订）信号链，不冒充最新研究或已复现项目。</dd><dt>许可范围</dt><dd>参考设计、SDK 与固件的许可分开看。所链 SDK manifest 列出部分算法/示例为 BSD-3-Clause，雷达固件和部分工具为 TI 专用条款；具体示例仍须检查所选软件包，不认定整套系统全开源。<br><a href="https://dr-download-cdn.ti.com/software-development/software-development-kit-sdk/MD-PIrUeCYr3X/03.06.02.00-LTS/mmwave_sdk_software_manifest.html" rel="noopener noreferrer">SDK 许可清单</a> · <a href="https://www.ti.com/legal/important-notice-and-disclaimer.html" rel="noopener noreferrer">参考设计使用说明</a></dd></dl>
 <p class="project-warning">本站卡尔曼实验是原理入门，不是 TI 的点云处理器或完整 EKF 人员跟踪器。</p>
@@ -63,11 +91,12 @@
 <p class="project-application">把滤波、变换与特征提取迁移到 Cortex-M / Cortex-A，进一步理解数值精度和计算代价。</p>
 <p class="project-first"><strong>起步：</strong>从一条 FIR 的输入、系数和状态缓冲区读起，再比较浮点与定点实现。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=iir-fir">复习 IIR / FIR</a><a href="notes-iir-fir.html">看冲激响应</a></div>
+<p class="project-warning"><strong>近期补充：</strong>1.18.0 中值得细读的修复：开启 ARM_MATH_LOOPUNROLL 且没有 ARM_MATH_DSP 时，Q15 FIR 状态缓冲区可能被多读一个元素，PR #317 已修正。不要泛化成所有 FIR 的问题。</p>
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
-<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>C、数组和状态缓冲区</li><li>FIR / IIR、FFT</li><li>进阶：定点数、量化与性能分析</li></ul></dd><dt>关键算法</dt><dd><ul><li>FIR / IIR、卷积与相关、FFT / DCT、MFCC。</li><li>矩阵、统计、LMS；算法实现和特定 Arm 目标优化分层阅读。</li></ul></dd><dt>硬件与环境</dt><dd>PC 可从源码和 Python wrapper 入门；板端部署需兼容 Arm 目标与工具链。</dd><dt>成熟度与复现边界</dt><dd>官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。</dd><dt>许可范围</dt><dd>CMSIS-DSP 本体为 Apache-2.0；外部工具、依赖及具体组件的许可需分别检查。<br><a href="https://github.com/ARM-software/CMSIS-DSP/blob/main/LICENSE" rel="noopener noreferrer">Apache-2.0 许可</a></dd></dl>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>C、数组和状态缓冲区</li><li>FIR / IIR、FFT</li><li>进阶：定点数、量化与性能分析</li></ul></dd><dt>关键算法</dt><dd><ul><li>FIR / IIR、卷积与相关、FFT / DCT、MFCC。</li><li>矩阵、统计、LMS；算法实现和特定 Arm 目标优化分层阅读。</li></ul></dd><dt>硬件与环境</dt><dd>PC 可从源码和 Python wrapper 入门；板端部署需兼容 Arm 目标与工具链。</dd><dt>成熟度与复现边界</dt><dd>官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。 本次补充核验该版 Q15 FIR 缓冲区修复、C++ 循环融合与实验性反向自动微分；基础 C API 与实验功能分开评估。</dd><dt>许可范围</dt><dd>CMSIS-DSP 本体为 Apache-2.0；外部工具、依赖及具体组件的许可需分别检查。<br><a href="https://github.com/ARM-software/CMSIS-DSP/blob/main/LICENSE" rel="noopener noreferrer">Apache-2.0 许可</a></dd></dl>
 <p class="project-warning">本站的教学滤波是独立实现，尚未集成或运行 CMSIS-DSP。</p>
-<div class="project-links" aria-label="外部官方来源"><a href="https://github.com/ARM-software/CMSIS-DSP" rel="noopener noreferrer">GitHub 源码</a><a href="https://arm-software.github.io/CMSIS-DSP/latest/index.html" rel="noopener noreferrer">官方文档</a><a href="https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0" rel="noopener noreferrer">已核实版本</a></div>
-</details><p class="project-verification">来源核验 <time datetime="2026-10-06">2026-10-06</time> · 未在本站复现</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://github.com/ARM-software/CMSIS-DSP" rel="noopener noreferrer">GitHub 源码</a><a href="https://arm-software.github.io/CMSIS-DSP/latest/index.html" rel="noopener noreferrer">官方文档</a><a href="https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0" rel="noopener noreferrer">已核实版本</a><a href="https://github.com/ARM-software/CMSIS-DSP/pull/317" rel="noopener noreferrer">Q15 FIR 修复与边界</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 未在本站复现</p>
 </article>
 <article class="project-card" id="liquid-dsp" data-category="dsp" aria-labelledby="liquid-dsp-title">
 <div class="project-meta"><span>DSP 基础 / 成熟开源通信 DSP 库</span><span class="project-state">待学习</span></div>
@@ -76,6 +105,7 @@
 <p class="project-application">用轻量 C 组件构建软件无线电基带链路，把滤波、重采样、调制和同步连起来。</p>
 <p class="project-first"><strong>起步：</strong>先阅读滤波与重采样示例，画出每一段的采样率，再进入同步与均衡。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=pll">先学数字 PLL</a><a href="knowledge.html?topic=spectrum">复习频谱分析</a></div>
+
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>C、编译与构建基础</li><li>复数 IQ、数字滤波</li><li>进阶：调制、符号时钟和信道</li></ul></dd><dt>关键算法</dt><dd><ul><li>FIR / IIR、多相重采样、FFT、PSK / QAM / OFDM。</li><li>NCO / PLL、定时同步与均衡；从模块接口追踪数据流。</li></ul></dd><dt>硬件与环境</dt><dd>合成数据和软件示例无需射频硬件；真实无线链路另需射频设备及驱动。</dd><dt>成熟度与复现边界</dt><dd>有模块 API、示例、自测与基准测试；本次核实变更记录中的 1.8.3（2026-09-26）。</dd><dt>许可范围</dt><dd>本体为 MIT/X11；可选 FFTW、libfec 等依赖有独立条款，不能把链接后的所有发行物一概视为 MIT。<br><a href="https://github.com/jgaeddert/liquid-dsp/blob/master/LICENSE" rel="noopener noreferrer">MIT 许可</a></dd></dl>
 <p class="project-warning">先以软件数据理解算法；真实发射还需满足当地频谱法规与设备要求。</p>
@@ -89,11 +119,40 @@
 <p class="project-application">在 GNU Radio Companion 中连接模块，观察通信仿真、频谱与软件无线电原型的数据流。</p>
 <p class="project-first"><strong>起步：</strong>从“信号源 → 滤波器 → 频谱显示”的纯软件流图入门，逐段检查采样率。</p>
 <div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=transforms">先学三大变换</a><a href="simulation.html?scenario=frequency&amp;algorithm=low">观察频率选择</a></div>
+
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>采样率、频谱与滤波</li><li>复数 IQ 的基本含义</li><li>进阶扩展：Python / C++</li></ul></dd><dt>关键算法</dt><dd><ul><li>滤波、FFT、重采样、调制解调、同步。</li><li>信道模型、均衡与编码；可先使用现成模块，再读内部实现。</li></ul></dd><dt>硬件与环境</dt><dd>官方支持不接 RF 硬件的仿真；真实收发需要兼容 SDR 和驱动。</dd><dt>成熟度与复现边界</dt><dd>长期维护的 3.x 平台；本次 release 核实为 v3.10.12.0。4.0 为另一开发分支，不混用状态。</dd><dt>许可范围</dt><dd>主体采用 GPL v3；已核对核心 FIR 文件的 GPL-3.0-or-later 标注。外部模块、依赖、具体文件和文档分别检查许可。<br><a href="https://github.com/gnuradio/gnuradio/blob/main/COPYING" rel="noopener noreferrer">GNU GPL 许可</a> · <a href="https://github.com/gnuradio/gnuradio/blob/main/gr-filter/lib/fir_filter_blk_impl.cc" rel="noopener noreferrer">核心 FIR 的许可标注</a></dd></dl>
 <p class="project-warning">这些能力属于安装后的外部软件；本站没有嵌入 GNU Radio 或自动执行项目代码。</p>
 <div class="project-links" aria-label="外部官方来源"><a href="https://github.com/gnuradio/gnuradio" rel="noopener noreferrer">GitHub 源码</a><a href="https://www.gnuradio.org/about/" rel="noopener noreferrer">官方介绍</a><a href="https://github.com/gnuradio/gnuradio/releases/tag/v3.10.12.0" rel="noopener noreferrer">已核实版本</a></div>
 </details><p class="project-verification">来源核验 <time datetime="2026-10-06">2026-10-06</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="px4-ekf2" data-category="estimation" aria-labelledby="px4-ekf2-title">
+<div class="project-meta"><span>状态估计 / 开源工程实现 / 预发布修复</span><span class="project-state">待学习</span></div>
+<h2 id="px4-ekf2-title">一条真实修复，看懂顺序测量更新</h2><p class="project-name">PX4 EKF2 · 多轴观测顺序融合</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>预测状态与协方差</li><li>逐轴计算新息</li><li>更新一轴</li><li>重算下一轴并融合</li></ol>
+<p class="project-application">从导航估计器的故障、测试和修复，理解“更新一轴后，下一轴的新息为什么也要重算”。</p>
+<p class="project-first"><strong>起步：</strong>先在二维线性 KF 中对比批量更新与顺序更新，再读 PR #28273 的复现单元测试和改动。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=kalman">先学卡尔曼</a><a href="next-learning.html?topic=kalman">接着学测量更新</a></div>
+
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>矩阵 KF、预测与测量更新</li><li>协方差、新息与观测矩阵 H</li><li>进阶：多传感器融合、EKF 和导航坐标系</li></ul></dd><dt>关键算法</dt><dd><ul><li>针对直接状态观测的顺序融合：每融合一轴，都按更新后的状态重新计算下一轴的新息与新息方差。</li><li>修复涉及 GNSS 速度、位置等观测；它连接估计公式、状态相关性与回归测试。</li></ul></dd><dt>硬件与环境</dt><dd>先读公开源码和单元测试；二维线性 KF 可用桌面合成数据实验。完整 PX4 是飞控系统，不是可直接烧进 GD32 的单文件滤波库。</dd><dt>成熟度与复现边界</dt><dd>PR #28273 于 2026-08-19 合并，并进入 2026-09-10 发布的 v1.18.0-rc1。RC 是供测试的预发布版本，不等同稳定生产固件。</dd><dt>许可范围</dt><dd>PX4 主仓采用 BSD-3-Clause；实际复用时仍需核对所选文件及依赖许可。<br><a href="https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE" rel="noopener noreferrer">PX4 许可</a></dd></dl>
+<p class="project-warning">应先学完矩阵 KF 的测量更新，再读这个工程案例。未在本站或真实飞行器上复现该修复。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://github.com/PX4/PX4-Autopilot/pull/28273" rel="noopener noreferrer">故障、修复与测试 PR</a><a href="https://github.com/PX4/PX4-Autopilot/releases/tag/v1.18.0-rc1" rel="noopener noreferrer">1.18.0-rc1 预发布说明</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="radarsimpy" data-category="radar" aria-labelledby="radarsimpy-title">
+<div class="project-meta"><span>民用雷达 / 公开 Python 层 / 商业仿真核心</span><span class="project-state">待学习</span></div>
+<h2 id="radarsimpy-title">给雷达处理链一份已知真值</h2><p class="project-name">RadarSimPy 15.4.0 · 桌面雷达仿真</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>波形与目标真值</li><li>接收时间窗 / IQ</li><li>距离与多普勒 FFT</li><li>CA / OS-CFAR</li></ol>
+<p class="project-application">先用已知目标生成雷达数据，再检查距离 FFT、距离–多普勒与 CFAR；把处理结果和目标真值对照。</p>
+<p class="project-first"><strong>起步：</strong>从单目标拍频与距离 FFT 开始，先核对采样率、频点和单位，再研究接收门延迟如何影响可观测目标。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=spectrum">复习 FFT 与频谱</a><a href="exploration.html#radar-guide">先读雷达处理链</a></div>
+
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>采样率、DFT / FFT 与频率轴</li><li>复数 IQ、FMCW 拍频</li><li>进阶：距离–多普勒、CFAR 与微多普勒</li></ul></dd><dt>关键算法</dt><dd><ul><li>15.4.0 新增接收 gate_delay，用于建模远距离 FMCW / stretch 雷达的接收时间窗。</li><li>支持由 glTF / GLB 动画驱动目标，适合进一步研究转轮、转子等微多普勒；先完成基础处理链。</li></ul></dd><dt>硬件与环境</dt><dd>Python / C++ 桌面仿真环境；不是 MCU 固件库，不能直接假定可部署到 GD32。运行条件和版本功能需按官方说明核对。</dd><dt>成熟度与复现边界</dt><dd>官方 15.4.0 发布于 2026-09-13，有处理链文档与示例。本站仅整理资料，没有运行、安装或验证仿真结果。</dd><dt>许可范围</dt><dd>公开 RadarSimPy Python 仓标注 GPL-3.0；底层 RadarSimCpp 采用商业许可证，源代码另需许可。不能把整套引擎称为完全开源免费。<br><a href="https://github.com/radarsimx/radarsimpy" rel="noopener noreferrer">Python 仓许可说明</a> · <a href="https://radarsimx.com/radarsimx/radarsimcpp/" rel="noopener noreferrer">RadarSimCpp 核心许可</a></dd></dl>
+<p class="project-warning">许可证、二进制版本与功能限制要分别核实。仿真中的已知真值有助于检查算法，但不能代替真实传感器与现场验证。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/" rel="noopener noreferrer">15.4.0 官方发布</a><a href="https://github.com/radarsimx/radarsimpy" rel="noopener noreferrer">公开 Python 仓</a><a href="https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html" rel="noopener noreferrer">接收时间窗与 stretch 处理</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 未在本站复现</p>
 </article></div></section>
 <section class="radar-guide" id="radar-guide" aria-labelledby="radar-guide-title">
 <div class="radar-guide-heading"><span class="exploration-state">雷达入门导读</span><h2 id="radar-guide-title">读懂雷达：从回波到判断</h2><p>先问每一步在解决什么问题，再看算法名字。雷达中的“滤波”只是处理链的一部分；变换、检测、测角和跟踪各有自己的任务。</p></div>

@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-06",
+  "updated_at": "2026-10-09",
   "categories": {
     "radar": "民用雷达",
-    "dsp": "DSP 基础"
+    "dsp": "DSP 基础",
+    "estimation": "状态估计"
   },
   "scope": "公开的信号处理学习方向；不记录个人聊天、隐私或完成状态。",
   "projects": [
@@ -218,7 +219,7 @@
         "矩阵、统计、LMS；算法实现和特定 Arm 目标优化分层阅读。"
       ],
       "hardware": "PC 可从源码和 Python wrapper 入门；板端部署需兼容 Arm 目标与工具链。",
-      "maturity": "官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。",
+      "maturity": "官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。 本次补充核验该版 Q15 FIR 缓冲区修复、C++ 循环融合与实验性反向自动微分；基础 C API 与实验功能分开评估。",
       "license": "CMSIS-DSP 本体为 Apache-2.0；外部工具、依赖及具体组件的许可需分别检查。",
       "warning": "本站的教学滤波是独立实现，尚未集成或运行 CMSIS-DSP。",
       "official_links": [
@@ -233,6 +234,10 @@
         {
           "label": "已核实版本",
           "url": "https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0"
+        },
+        {
+          "label": "Q15 FIR 修复与边界",
+          "url": "https://github.com/ARM-software/CMSIS-DSP/pull/317"
         }
       ],
       "license_links": [
@@ -252,8 +257,9 @@
         }
       ],
       "status": "待学习",
-      "last_verified": "2026-10-06",
-      "reproduction_status": "未在本站复现"
+      "last_verified": "2026-10-09",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "1.18.0 中值得细读的修复：开启 ARM_MATH_LOOPUNROLL 且没有 ARM_MATH_DSP 时，Q15 FIR 状态缓冲区可能被多读一个元素，PR #317 已修正。不要泛化成所有 FIR 的问题。"
     },
     {
       "id": "liquid-dsp",
@@ -379,6 +385,128 @@
       ],
       "status": "待学习",
       "last_verified": "2026-10-06",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "px4-ekf2",
+      "category": "estimation",
+      "title": "一条真实修复，看懂顺序测量更新",
+      "project": "PX4 EKF2 · 多轴观测顺序融合",
+      "kind": "开源工程实现 / 预发布修复",
+      "application": "从导航估计器的故障、测试和修复，理解“更新一轴后，下一轴的新息为什么也要重算”。",
+      "chain": [
+        "预测状态与协方差",
+        "逐轴计算新息",
+        "更新一轴",
+        "重算下一轴并融合"
+      ],
+      "first_step": "先在二维线性 KF 中对比批量更新与顺序更新，再读 PR #28273 的复现单元测试和改动。",
+      "prerequisites": [
+        "矩阵 KF、预测与测量更新",
+        "协方差、新息与观测矩阵 H",
+        "进阶：多传感器融合、EKF 和导航坐标系"
+      ],
+      "algorithms": [
+        "针对直接状态观测的顺序融合：每融合一轴，都按更新后的状态重新计算下一轴的新息与新息方差。",
+        "修复涉及 GNSS 速度、位置等观测；它连接估计公式、状态相关性与回归测试。"
+      ],
+      "hardware": "先读公开源码和单元测试；二维线性 KF 可用桌面合成数据实验。完整 PX4 是飞控系统，不是可直接烧进 GD32 的单文件滤波库。",
+      "maturity": "PR #28273 于 2026-08-19 合并，并进入 2026-09-10 发布的 v1.18.0-rc1。RC 是供测试的预发布版本，不等同稳定生产固件。",
+      "license": "PX4 主仓采用 BSD-3-Clause；实际复用时仍需核对所选文件及依赖许可。",
+      "warning": "应先学完矩阵 KF 的测量更新，再读这个工程案例。未在本站或真实飞行器上复现该修复。",
+      "official_links": [
+        {
+          "label": "故障、修复与测试 PR",
+          "url": "https://github.com/PX4/PX4-Autopilot/pull/28273"
+        },
+        {
+          "label": "1.18.0-rc1 预发布说明",
+          "url": "https://github.com/PX4/PX4-Autopilot/releases/tag/v1.18.0-rc1"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "PX4 许可",
+          "url": "https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学卡尔曼",
+          "url": "knowledge.html?topic=kalman"
+        },
+        {
+          "label": "接着学测量更新",
+          "url": "next-learning.html?topic=kalman"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-09",
+      "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "radarsimpy",
+      "category": "radar",
+      "title": "给雷达处理链一份已知真值",
+      "project": "RadarSimPy 15.4.0 · 桌面雷达仿真",
+      "kind": "公开 Python 层 / 商业仿真核心",
+      "application": "先用已知目标生成雷达数据，再检查距离 FFT、距离–多普勒与 CFAR；把处理结果和目标真值对照。",
+      "chain": [
+        "波形与目标真值",
+        "接收时间窗 / IQ",
+        "距离与多普勒 FFT",
+        "CA / OS-CFAR"
+      ],
+      "first_step": "从单目标拍频与距离 FFT 开始，先核对采样率、频点和单位，再研究接收门延迟如何影响可观测目标。",
+      "prerequisites": [
+        "采样率、DFT / FFT 与频率轴",
+        "复数 IQ、FMCW 拍频",
+        "进阶：距离–多普勒、CFAR 与微多普勒"
+      ],
+      "algorithms": [
+        "15.4.0 新增接收 gate_delay，用于建模远距离 FMCW / stretch 雷达的接收时间窗。",
+        "支持由 glTF / GLB 动画驱动目标，适合进一步研究转轮、转子等微多普勒；先完成基础处理链。"
+      ],
+      "hardware": "Python / C++ 桌面仿真环境；不是 MCU 固件库，不能直接假定可部署到 GD32。运行条件和版本功能需按官方说明核对。",
+      "maturity": "官方 15.4.0 发布于 2026-09-13，有处理链文档与示例。本站仅整理资料，没有运行、安装或验证仿真结果。",
+      "license": "公开 RadarSimPy Python 仓标注 GPL-3.0；底层 RadarSimCpp 采用商业许可证，源代码另需许可。不能把整套引擎称为完全开源免费。",
+      "warning": "许可证、二进制版本与功能限制要分别核实。仿真中的已知真值有助于检查算法，但不能代替真实传感器与现场验证。",
+      "official_links": [
+        {
+          "label": "15.4.0 官方发布",
+          "url": "https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/"
+        },
+        {
+          "label": "公开 Python 仓",
+          "url": "https://github.com/radarsimx/radarsimpy"
+        },
+        {
+          "label": "接收时间窗与 stretch 处理",
+          "url": "https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "Python 仓许可说明",
+          "url": "https://github.com/radarsimx/radarsimpy"
+        },
+        {
+          "label": "RadarSimCpp 核心许可",
+          "url": "https://radarsimx.com/radarsimx/radarsimcpp/"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "复习 FFT 与频谱",
+          "url": "knowledge.html?topic=spectrum"
+        },
+        {
+          "label": "先读雷达处理链",
+          "url": "exploration.html#radar-guide"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-09",
       "reproduction_status": "未在本站复现"
     }
   ],
@@ -531,5 +659,75 @@
     ],
     "boundary": "读文档、看源码和做合成数据练习都可以先不买硬件。以上是公开资料导读，三个工程仍未在本站复现。",
     "last_verified": "2026-10-06"
-  }
+  },
+  "recent_updates": [
+    {
+      "id": "cmsis-dsp-118-notes",
+      "title": "CMSIS-DSP：滤波公式之外，还要检查内存边界",
+      "date_label": "GitHub 发布 2026-09-10 · 本次补读 1.18.0",
+      "stage": "成熟库；自动微分部分为实验功能",
+      "summary": "Q15 FIR 在特定宏组合下的状态缓冲区多读问题已修正；本版将支持自动循环融合的 C++ 模板 API 纳入 pack。前者连接 MCU 边界安全，后者适合研究如何减少中间向量与访存。新版反向自动微分支持 f32 / f16，可作为后续探索。",
+      "practice": "先确认具体 GD32 的内核与 FPU，再用同一段输入比较 F32 / Q15 FIR 的误差、饱和、状态缓冲区长度与单块耗时。不要把全部 GD32 系列都当作 Arm，也不必先上实验性自动微分。",
+      "sources": [
+        {
+          "label": "1.18.0 发布说明",
+          "url": "https://github.com/ARM-software/CMSIS-DSP/releases/tag/v1.18.0"
+        },
+        {
+          "label": "Q15 边界修复 PR #317",
+          "url": "https://github.com/ARM-software/CMSIS-DSP/pull/317"
+        },
+        {
+          "label": "自动微分内存模型",
+          "url": "https://arm-software.github.io/CMSIS-DSP/latest/autodiff_concepts.html"
+        }
+      ],
+      "project_id": "cmsis-dsp",
+      "last_verified": "2026-10-09"
+    },
+    {
+      "id": "px4-ekf2-sequential-update",
+      "title": "PX4 EKF2：更新一轴后，新息也得跟着更新",
+      "date_label": "修复合并 2026-08-19 · RC 发布 2026-09-10",
+      "stage": "已合并修复；v1.18.0-rc1 为预发布",
+      "summary": "逐轴融合多轴观测时，每融合一轴，都应根据更新后的状态重新计算下一轴的新息与新息方差。PX4 在 GNSS 速度、位置等直接状态观测上的修复附有复现单元测试，可把课本公式和真实的航向估计故障连起来。",
+      "practice": "先学完矩阵 KF 的测量更新，用二维线性例子比较批量与顺序更新，再读 PR 测试。不把 RC 当稳定生产固件，也不直接移植整套飞控。",
+      "sources": [
+        {
+          "label": "修复与复现测试 PR #28273",
+          "url": "https://github.com/PX4/PX4-Autopilot/pull/28273"
+        },
+        {
+          "label": "1.18.0-rc1 发布说明",
+          "url": "https://github.com/PX4/PX4-Autopilot/releases/tag/v1.18.0-rc1"
+        }
+      ],
+      "project_id": "px4-ekf2",
+      "last_verified": "2026-10-09"
+    },
+    {
+      "id": "radarsimpy-154-receive-window",
+      "title": "RadarSimPy：把接收时间窗放进 FMCW 仿真",
+      "date_label": "官方发布 2026-09-13 · 版本 15.4.0",
+      "stage": "桌面仿真；公开 Python 层与商业核心分开看",
+      "summary": "15.4 新增接收 gate_delay，为远距离 FMCW / stretch 雷达建模接收时间窗；还支持 glTF / GLB 动画目标，适合之后研究转轮、转子的微多普勒。",
+      "practice": "当前先沿单目标拍频 → 距离 FFT → 距离–多普勒 → CFAR 学，用已知真值检查频轴和检测结果。Python 仓为 GPL-3.0，但底层 RadarSimCpp 为商业许可；这不是可直接烧入 GD32 的全开源引擎。",
+      "sources": [
+        {
+          "label": "15.4.0 官方发布",
+          "url": "https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/"
+        },
+        {
+          "label": "接收窗学习文档",
+          "url": "https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html"
+        },
+        {
+          "label": "核心许可边界",
+          "url": "https://radarsimx.com/radarsimx/radarsimcpp/"
+        }
+      ],
+      "project_id": "radarsimpy",
+      "last_verified": "2026-10-09"
+    }
+  ]
 }
