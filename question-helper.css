@@ -19,3 +19,14 @@
 .qh-host .qh-selection-label{align-items:flex-start}
 .qh-host .qh-selection-label input{margin-top:3px}
 @media(max-width:600px){.qh-host .qh-chat-url{font-size:16px}.qh-host .qh-copy-open{flex:1 0 100%}.qh-host .qh-setting-actions button{flex:1 1 auto}.qh-host .qh-actions .qh-copy,.qh-host .qh-actions .qh-open{flex-basis:calc(50% - 5px)}}
+
+/* The compact header owns this action so it never obscures mobile lessons. */
+.qh-header-action{display:none}
+@media screen and (max-width:840px){
+  body.lab-shell .architecture-header .architecture-bar.has-question-action{grid-template-columns:minmax(0,1fr) 44px 44px;column-gap:8px}
+  .architecture-bar.has-question-action .qh-header-action{display:block;grid-column:3;grid-row:1;width:44px;height:44px}
+  .qh-header-action.qh-host .qh-launcher{position:static;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;padding:10px;border-radius:6px;box-shadow:none}
+  .qh-header-action .qh-launcher span,body.lab-shell .has-question-action .signal-motion-toggle span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  body.lab-shell .has-question-action .signal-motion-toggle{grid-column:2;grid-row:1;justify-content:center;width:44px;height:44px;padding:10px;gap:0}
+}
+

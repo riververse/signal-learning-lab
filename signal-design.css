@@ -32,7 +32,8 @@
   body.lab-shell :is(.formula,.equation,.math,pre,.table-scroll) { scrollbar-color:#526e81 #0c1822; scrollbar-width:thin; }
 
   /* Overview: one live signal composition, then a compact, readable subject index. */
-  body.page--knowledge .knowledge-main { max-width:1280px; padding:42px 32px 70px; }
+  /* The main ID keeps this spacing above the older four-class reading selector. */
+  body.page--knowledge > #main-content.knowledge-main { max-width:1280px; padding:42px 32px 70px; }
   body.page--knowledge .map-intro { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); grid-template-rows:auto auto; column-gap:54px; row-gap:22px; align-items:end; margin:10px 0 34px; }
   body.page--knowledge .map-intro > div { grid-column:1; align-self:end; }
   body.page--knowledge .map-intro h1 { font-size:clamp(34px,4.4vw,54px); line-height:1.25; margin:0 0 20px; }
@@ -86,6 +87,78 @@
   body.lab-shell .reading-layout > .side-panel { border-color:#2b4052; }
   body.lab-shell .toc a { line-height:1.75; }
 
+  /* Legacy notebooks resolve their neutral aliases here, beside the new palette.
+     Semantic accent and trace tokens deliberately keep their original values. */
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) {
+    --paper:var(--lab-paper); --ground:var(--lab-ground);
+    --ink:var(--lab-ink); --muted:var(--lab-muted); --line:var(--lab-line);
+  }
+  body.page--motion { --paper:var(--lab-paper); --muted:var(--lab-muted); --line:var(--lab-line); }
+
+  /* Legacy experiments: quieter section frames and more legible instrument controls. */
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering,.page--future) .lab {
+    margin-block:32px; border-radius:8px; border-color:var(--lab-line);
+  }
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering,.page--future) .lab h2 {
+    font-weight:600; line-height:1.55; margin-bottom:18px;
+  }
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering) .lab > p { max-width:46em; }
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering) .lab > h2:not(:first-child) { margin-top:28px; }
+  body.lab-shell:is(.page--index,.page--frequency,.page--kalman,.page--transforms,.page--engineering) main :is(button,select) {
+    min-height:44px; line-height:1.6;
+  }
+  body.lab-shell:is(.page--frequency,.page--engineering) .controls {
+    gap:20px 28px; margin-block:24px; padding-block:18px; border-block:1px solid var(--lab-line);
+  }
+  body.page--frequency .components { gap:16px; margin-block:20px 28px; }
+  body.lab-shell.page--frequency .component { border-radius:6px; background:#142635; padding:18px; }
+  body.lab-shell:is(.page--kalman,.page--transforms) :is(.result,.check) {
+    border-left:2px solid #426674; border-radius:0 6px 6px 0; background:#142635;
+  }
+  body.page--kalman .result strong { font-weight:600; font-variant-numeric:tabular-nums; }
+  body.page--transforms main > nav[role=tablist] button { font-weight:550; }
+  body.page--engineering .modes a { min-height:44px; display:inline-flex; align-items:center; }
+  body.page--engineering .lab > h3 { margin-block:28px 14px; font-weight:600; }
+  body.page--index .workspace > aside { border-top-width:2px; }
+  body.page--index .workspace h2 { font-size:18px; font-weight:600; }
+  body.page--index .curve-toggle { min-height:44px; font-size:14px; }
+  body.page--index .guide > article { border-radius:8px; margin-block:24px; }
+  body.page--index .guide h3 { font-weight:600; line-height:1.55; }
+  body.page--index .guide-nav a { display:inline-flex; align-items:center; min-height:44px; }
+
+  /* Motion keeps its plot geometry and color-coded series; only the UI frame changes. */
+  body.page--motion .panel-title { font-size:15px; font-weight:600; }
+  body.page--motion :is(.chart-controls,.toolbar) { gap:8px; }
+  body.page--motion :is(.field select,.chart-controls button,.chart-controls select,.toolbar button,.lesson,.algo-card button) {
+    min-height:44px; font-size:14px; line-height:1.6;
+  }
+  body.page--motion .filter-option { min-height:44px; }
+  body.page--motion .filter-option button { min-width:44px; min-height:44px; font-size:14px; }
+  body.page--motion .main-stack > .panel { border-radius:8px; }
+  body.page--motion :is(.detail-text strong,.slider-heading output) { color:var(--lab-ink); }
+  body.page--motion .method-content { line-height:1.95; }
+
+  /* Notebook chapters, examples and disclosures form one steady reading rhythm. */
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .page-heading {
+    margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--lab-line);
+  }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook h3 { font-weight:600; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook .worked-example {
+    border-left:2px solid #426674; border-radius:0 6px 6px 0; margin-block:28px;
+  }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook details { margin-block:22px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook summary { min-height:48px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .toc a { min-height:44px; }
+  body.page--notes-iir-fir .if-design-route { gap:0; }
+  body.page--notes-iir-fir .if-design-route li { border-width:0 0 1px; border-radius:0; padding-inline:0; }
+  body.page--future .future-module-heading { padding-bottom:20px; }
+  body.page--future .future-question { margin-block:24px 16px; }
+  body.page--future .future-context { margin-block:24px 28px; }
+  body.lab-shell.page--future .future-example { background:#142635; border-left-width:2px; margin-block:30px; }
+  body.lab-shell.page--future .future-detail { border-radius:6px; }
+  body.page--future .future-related { gap:8px 24px; }
+  body.page--future :is(.future-related,.control-entry-links) a { display:inline-flex; align-items:center; min-height:44px; }
+
   /* The four destinations share spacing and surfaces; simulator engines are untouched. */
   body.page--next-learning .nl-main, body.exploration-page .exploration-main { max-width:1280px; }
   body.page--next-learning .nl-recommend { border-top-width:2px; background:#122530; box-shadow:none; }
@@ -99,6 +172,23 @@
   body.lab-shell .signal-particles circle { stroke:none; }
   body.lab-shell[data-signal-motion=paused] .signal-particles,
   body.lab-shell[data-signal-motion=reduced] .signal-particles { opacity:0; }
+}
+@media screen and (min-width:761px) {
+  /* Keep the existing larger phone type; desktop controls need their own readable floor. */
+  body.page--index :is(.control label,.hint,.metric span) { font-size:14px; }
+  body.page--index .metric small { font-size:12px; }
+  body.page--index :is(.guide,.lesson,.explain) > h2 { margin-bottom:20px; font-size:25px; font-weight:600; }
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering,.page--future) .lab { padding:32px; }
+  body.lab-shell:is(.page--frequency,.page--kalman,.page--transforms,.page--engineering) .lab h2 { font-size:24px; }
+  body.lab-shell:is(.page--frequency,.page--engineering) .controls label { font-size:16px; }
+  body.page--motion :is(.field label,.slider-heading,.slider-heading output,.filter-option,.detail-text,.method-content,.path-row div,.empty-params,.small,.micro,.callout,.notice) { font-size:14px; line-height:1.85; }
+  body.page--motion .hero p { font-size:16px; max-width:44em; }
+  body.page--motion :is(.chart-heading .subtitle,.metrics-title span,.group-label,.source-date) { font-size:12px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook > section { padding-block:40px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook h3 { font-size:20px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook summary { font-size:16px; }
+  body.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .toc a { font-size:14px; }
+  body.page--future :is(.future-boundary,.future-route li p,.future-context,.future-example p,.future-example li,.future-detail p,.future-detail li,.future-detail summary) { font-size:16px; }
 }
 @media screen and (max-width:1050px) {
   body.lab-shell .architecture-header .architecture-bar { gap:12px; padding-inline:24px; flex-wrap:wrap; }
@@ -115,7 +205,7 @@
   body.lab-shell .architecture-header .architecture-nav { grid-column:1/-1; grid-row:2; width:100%; margin:0; gap:4px; }
   body.lab-shell .architecture-header .architecture-nav a { font-size:14px; padding:10px 4px; min-height:46px; }
   body.lab-shell .signal-motion-toggle { grid-column:2; grid-row:1; font-size:12px; padding-inline:9px; }
-  body.page--knowledge .knowledge-main { padding:28px 20px 60px; }
+  body.page--knowledge > #main-content.knowledge-main { padding:28px 20px 60px; }
   body.page--knowledge .map-intro { grid-template-columns:minmax(0,1fr) minmax(0,.95fr); gap:18px; }
   body.page--knowledge .map-intro h1 { font-size:36px; margin-bottom:16px; }
   body.page--knowledge .map-intro p { font-size:16px; }
@@ -129,7 +219,7 @@
   body.lab-shell .architecture-header .architecture-bar { padding-inline:14px; }
   body.lab-shell .architecture-header .lab-site-brand { font-size:13px; gap:7px; }
   body.lab-shell .architecture-header .architecture-nav svg { display:none; }
-  body.page--knowledge .knowledge-main { padding:26px 16px 60px; }
+  body.page--knowledge > #main-content.knowledge-main { padding:26px 16px 60px; }
   body.page--knowledge .map-intro { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; margin:0 0 26px; }
   body.page--knowledge .map-intro > div, body.page--knowledge .map-intro > .topic-action { grid-column:1; }
   body.page--knowledge .map-intro .signal-hero { grid-column:1; grid-row:3; margin-top:5px; }
