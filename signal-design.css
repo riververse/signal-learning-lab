@@ -40,6 +40,7 @@
   body.page--knowledge .map-intro > .topic-action { grid-column:1; justify-self:start; align-self:start; margin:0; }
   body.page--knowledge .map-intro .signal-hero { grid-column:2; grid-row:1 / 3; align-self:stretch; margin:0; min-width:0; }
   body.lab-shell .signal-hero { position:relative; border:1px solid #2b4354; background:#0e1b27; border-radius:12px; overflow:hidden; }
+  body.lab-shell .signal-mobile-caption { display:none; }
   body.lab-shell .signal-hero > svg { display:block; width:100%; height:100%; min-height:240px; }
   body.lab-shell .signal-hero svg text { font-family:inherit; font-size:11px; fill:#9bb2c3; }
   body.lab-shell .signal-hero svg .signal-legend { fill:#d0e2ec; font-size:12px; }
@@ -135,6 +136,9 @@
   body.page--knowledge .map-intro h1 { font-size:34px; margin-bottom:14px; }
   body.page--knowledge .map-intro p { font-size:16px; }
   body.page--knowledge .signal-hero > svg { min-height:0; height:auto; }
+  body.page--knowledge .signal-hero svg text:not(.signal-formula) { display:none; }
+  body.page--knowledge .signal-hero svg .signal-formula { font-size:17px; }
+  body.page--knowledge .signal-mobile-caption { display:block; padding:0 16px 13px; color:#b7cbd9; font-size:13px; line-height:1.7; text-align:center; }
   body.page--knowledge .map-thread { font-size:12px; flex-wrap:nowrap; justify-content:space-between; margin-bottom:20px; padding-block:13px; }
   body.page--knowledge .map-thread span:not(:last-child)::after { width:12px; margin:0 9px; }
   body.page--knowledge .topic-grid { grid-template-columns:minmax(0,1fr); gap:14px; }

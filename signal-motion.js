@@ -35,12 +35,13 @@
     const model={svg,visible:false,group,trails,speed};
     models.push(model); return model;
   }
-  const intro = document.querySelector('.map-intro');
+  const intro = document.querySelector('body.page--knowledge #knowledge-overview .map-intro');
   if (intro) {
     const figure=document.createElement('figure');
     figure.className='signal-hero'; figure.setAttribute('aria-label','信号分解示意：连续波形、等间隔采样与两个频率分量。动画为示意，不是实时测量。');
     const svg=make('svg',{viewBox:'0 0 480 248',role:'img','aria-hidden':'true'});
-    figure.append(svg); intro.append(figure);
+    figure.append(svg);
+    const caption=document.createElement('figcaption'); caption.className='signal-mobile-caption'; caption.textContent='连续波形与采样 → 频率分量'; figure.append(caption); intro.append(figure);
     const grid=make('g',{stroke:'#253d4e','stroke-width':0.7,opacity:0.75}); svg.append(grid);
     for(let x=24;x<=456;x+=24) line(grid,`M${x} 48V215`,'#253d4e',0.6);
     for(let y=59;y<=215;y+=26) line(grid,`M24 ${y}H456`,'#253d4e',0.6);
@@ -67,7 +68,7 @@
   }
 
   // Trace only the existing illustrations, never SVG figures in lessons or live plots.
-  document.querySelectorAll('.topic-diagram svg,.topic-heading-diagram svg').forEach(svg => {
+  document.querySelectorAll('body.page--knowledge .topic-diagram svg,body.page--knowledge .topic-heading-diagram svg').forEach(svg => {
     const card=svg.closest('.topic-card');
     const topic=card ? [...card.classList].find(name=>name.startsWith('topic-card--'))?.slice(12) : svg.closest('[data-topic]')?.dataset.topic;
     // Statistical distributions and response plots remain static: no suggestion of changing data.
