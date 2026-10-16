@@ -62,7 +62,10 @@
   const statusText = status.querySelector('span');
   const retry = $('simulation-retry');
   let current, serial = 0, token = '', watchdog = null, ready = false;
+  let restoreTimer = null, restoring = false, repairs = 0, repairedDocument = null;
   function showError(message) {
+    clearTimeout(watchdog);
+    ready = false;
     status.hidden = false;
     status.dataset.error = 'true';
     statusText.textContent = message + ' 可点击“单独打开实验”继续。';
@@ -98,42 +101,80 @@
     $('simulation-selection-note').hidden = !current.notice;
     $('simulation-selection-note').textContent = current.notice;
   }
-  function load(state, historyMode) {
+  function showLoading() {
+    clearTimeout(watchdog);
+    ready = false;
+    status.hidden = false; status.dataset.error = 'false'; statusText.textContent = '正在准备' + SCENARIOS[current.scenario].title + '…'; retry.hidden = true;
+    $('simulation-frame-shell').setAttribute('aria-busy', 'true');
+    const expectedToken = token;
+    watchdog = root.setTimeout(() => { if (!ready && token === expectedToken) showError('实验未能完成加载。'); }, 8000);
+  }
+  function frameMatches() {
+    try {
+      const actual = new URL(frame.contentWindow.location.href);
+      const expected = new URL(standaloneFor(current), root.location.href);
+      const requested = actual.searchParams.get('algorithm') || '';
+      const algorithm = Object.hasOwn(ALIASES, requested) ? ALIASES[requested] : requested;
+      return actual.origin === expected.origin && actual.pathname === expected.pathname &&
+        actual.searchParams.get('embed') === '1' && algorithm === current.algorithm &&
+        (restoring || actual.searchParams.get('bridge') === token);
+    } catch (error) { return false; }
+  }
+  function navigateFrame() {
+    const frameURL = new URL(standaloneFor(current), root.location.href);
+    frameURL.searchParams.set('embed', '1'); frameURL.searchParams.set('bridge', token);
+    // Replace the child entry: only the outer controls should add history steps.
+    try {
+      if (frame.contentWindow) frame.contentWindow.location.replace(frameURL.href);
+      else if (serial === 1) frame.src = frameURL.href; // Initial frame only.
+      else { showError('实验窗口尚未就绪，请重新载入。'); return; }
+    } catch (error) {
+      // Falling back to src here would add an unwanted joint-history entry.
+      showError('无法切换实验页面，请重新载入。');
+    }
+  }
+  function reconcileRestoredFrame() {
+    if (!restoring || restoreTimer !== null) return;
+    const expectedToken = token;
+    // popstate can precede restoration of the nested document. Inspect it only
+    // after that task; pageshow/hello and load also catch a later restoration.
+    restoreTimer = root.setTimeout(() => {
+      restoreTimer = null;
+      if (token !== expectedToken || !restoring) return;
+      if (frameMatches()) { requestHandshake(); return; }
+      if (ready) showLoading();
+      let doc = null;
+      try { doc = frame.contentDocument; } catch (error) { /* Navigation reports failure. */ }
+      // Coalesce hello/load for one stale document and bound recovery if the
+      // browser restores another child after the first replacement was started.
+      if (repairs >= 2 || (doc && doc === repairedDocument)) return;
+      repairedDocument = doc;
+      repairs++;
+      showLoading();
+      navigateFrame();
+    }, 0);
+  }
+  function load(state, historyMode, restore = false) {
     current = state;
     refreshControls();
     if (historyMode && root.history && root.location.protocol !== 'file:') {
       const url = new URL(root.location.href); url.search = queryFor(current);
       root.history[historyMode + 'State']({ scenario: current.scenario, algorithm: current.algorithm }, '', url);
     }
-    clearTimeout(watchdog);
-    ready = false;
+    clearTimeout(restoreTimer); restoreTimer = null;
+    restoring = restore; repairs = 0; repairedDocument = null;
     token = String(Date.now()) + '-' + (++serial);
-    status.hidden = false; status.dataset.error = 'false'; statusText.textContent = '正在准备' + SCENARIOS[current.scenario].title + '…'; retry.hidden = true;
-    $('simulation-frame-shell').setAttribute('aria-busy', 'true');
+    showLoading();
     // A fresh bounded height lets both a tall and a short scenario resize correctly.
     frame.style.height = '1250px';
-    const frameURL = new URL(standaloneFor(current), root.location.href);
-    frameURL.searchParams.set('embed', '1'); frameURL.searchParams.set('bridge', token);
-    // Keep scenario changes in the outer history only. Assigning iframe.src
-    // after pushState would add a second joint-history entry, so one Back
-    // could restore the inner experiment without restoring the outer controls.
-    try {
-      if (frame.contentWindow) frame.contentWindow.location.replace(frameURL.href);
-      else if (serial === 1) frame.src = frameURL.href; // Initial frame only.
-      else { showError('实验窗口尚未就绪，请重新载入。'); return; }
-    } catch (error) {
-      // Do not fall back to src after a blocked navigation: it would restore
-      // the very extra history entry this replacement is meant to prevent.
-      showError('无法切换实验页面，请重新载入。');
-      return;
-    }
+    if (restoring) reconcileRestoredFrame();
+    else navigateFrame();
     if (root.location.protocol === 'file:') {
+      clearTimeout(watchdog);
       showError('本地文件预览无法验证嵌入页面来源。请通过站点地址访问，或单独打开实验。');
       return;
     }
-    const expectedToken = token;
-    watchdog = root.setTimeout(() => { if (!ready && token === expectedToken) showError('实验未能完成加载。'); }, 8000);
-    requestHandshake();
+    if (!restoring) requestHandshake();
   }
   function requestHandshake() {
     if (!current || !frame.contentWindow || root.location.origin === 'null') return;
@@ -147,14 +188,21 @@
   function acceptMessage(event) {
     if (event.origin !== root.location.origin || event.origin === 'null' || event.source !== frame.contentWindow) return;
     const message = event.data;
-    if (!message || message.channel !== 'river-lab-embed' || message.page !== SCENARIOS[current.scenario].file || message.algorithm !== current.algorithm) return;
+    if (!message || message.channel !== 'river-lab-embed') return;
+    // A same-origin announcement may belong to the wrong restored experiment.
+    // It can request reconciliation, but can never establish readiness or size.
+    if (message.type === 'hello') {
+      if (restoring) reconcileRestoredFrame();
+      else if (message.page === SCENARIOS[current.scenario].file && message.algorithm === current.algorithm) requestHandshake();
+      return;
+    }
+    if (message.page !== SCENARIOS[current.scenario].file || message.algorithm !== current.algorithm || !frameMatches()) return;
     // Announcements carry no trusted readiness or size. Only a current-token
     // acknowledgement can complete loading or change the frame height.
-    if (message.type === 'hello') { requestHandshake(); return; }
     if (message.token !== token) return;
     if (message.type === 'error') { clearTimeout(watchdog); showError('实验运行遇到问题，请重新载入。'); return; }
     if (message.type === 'ready') {
-      ready = true; clearTimeout(watchdog); status.hidden = true;
+      ready = true; clearTimeout(watchdog); status.hidden = true; status.dataset.error = 'false'; retry.hidden = true;
       $('simulation-frame-shell').setAttribute('aria-busy', 'false');
     }
     if ((message.type === 'resize' || message.type === 'ready') && typeof message.height === 'number' && Number.isFinite(message.height)) {
@@ -165,6 +213,7 @@
   root.addEventListener('message', acceptMessage);
   frame.addEventListener('error', () => showError('无法载入实验页面。'));
   frame.addEventListener('load', () => {
+    if (restoring) { reconcileRestoredFrame(); return; }
     requestHandshake();
     if (ready) return;
     try {
@@ -186,6 +235,10 @@
   });
   $('simulation-algorithm').addEventListener('change', event => load(resolve(new URLSearchParams({ scenario: current.scenario, algorithm: event.target.value }).toString()), 'push'));
   retry.addEventListener('click', () => load(current));
-  root.addEventListener('popstate', () => load(resolve(root.location.search)));
+  root.addEventListener('popstate', () => load(resolve(root.location.search), null, true));
+  root.addEventListener('pageshow', event => {
+    if (event.persisted) load(resolve(root.location.search), null, true);
+  });
   load(resolve(root.location.search), 'replace');
 })(typeof window === 'undefined' ? null : window);
+
