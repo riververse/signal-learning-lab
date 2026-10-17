@@ -15,7 +15,7 @@ import re
 
 ROOT=Path(__file__).resolve().parent
 EXTERNAL_HOSTS={'github.com','docs.acconeer.com','developer.acconeer.com','www.ti.com','dr-download-cdn.ti.com','arm-software.github.io','liquidsdr.org','www.gnuradio.org','radarsimx.com','radarsimx.github.io'}
-LOCAL_PAGES={'knowledge.html','simulation.html','notes-iir-fir.html','next-learning.html','exploration.html'}
+LOCAL_PAGES={'hardware-filters.html','knowledge.html','simulation.html','notes-iir-fir.html','next-learning.html','exploration.html'}
 
 def text(value):
     if not isinstance(value,str):raise ValueError('Expected text')

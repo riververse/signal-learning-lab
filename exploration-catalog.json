@@ -254,6 +254,10 @@
         {
           "label": "看冲激响应",
           "url": "notes-iir-fir.html"
+        },
+        {
+          "label": "硬件滤波：从 MCU 到 FMAC / FPGA",
+          "url": "hardware-filters.html"
         }
       ],
       "status": "待学习",

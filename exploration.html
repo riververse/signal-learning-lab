@@ -90,7 +90,7 @@
 <ol class="project-chain" aria-label="简化的处理流程"><li>采样块</li><li>FIR / IIR / FFT</li><li>特征</li><li>板端评估</li></ol>
 <p class="project-application">把滤波、变换与特征提取迁移到 Cortex-M / Cortex-A，进一步理解数值精度和计算代价。</p>
 <p class="project-first"><strong>起步：</strong>从一条 FIR 的输入、系数和状态缓冲区读起，再比较浮点与定点实现。</p>
-<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=iir-fir">复习 IIR / FIR</a><a href="notes-iir-fir.html">看冲激响应</a></div>
+<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=iir-fir">复习 IIR / FIR</a><a href="notes-iir-fir.html">看冲激响应</a><a href="hardware-filters.html">硬件滤波：从 MCU 到 FMAC / FPGA</a></div>
 <p class="project-warning"><strong>近期补充：</strong>1.18.0 中值得细读的修复：开启 ARM_MATH_LOOPUNROLL 且没有 ARM_MATH_DSP 时，Q15 FIR 状态缓冲区可能被多读一个元素，PR #317 已修正。不要泛化成所有 FIR 的问题。</p>
 <details class="project-details"><summary>先修、算法、硬件与来源</summary>
 <dl class="project-facts"><dt>先修知识</dt><dd><ul><li>C、数组和状态缓冲区</li><li>FIR / IIR、FFT</li><li>进阶：定点数、量化与性能分析</li></ul></dd><dt>关键算法</dt><dd><ul><li>FIR / IIR、卷积与相关、FFT / DCT、MFCC。</li><li>矩阵、统计、LMS；算法实现和特定 Arm 目标优化分层阅读。</li></ul></dd><dt>硬件与环境</dt><dd>PC 可从源码和 Python wrapper 入门；板端部署需兼容 Arm 目标与工具链。</dd><dt>成熟度与复现边界</dt><dd>官方库含测试与示例；本次核实 v1.18.0（2026-09-10）。成熟基础设施，不按热度冒充前沿。 本次补充核验该版 Q15 FIR 缓冲区修复、C++ 循环融合与实验性反向自动微分；基础 C API 与实验功能分开评估。</dd><dt>许可范围</dt><dd>CMSIS-DSP 本体为 Apache-2.0；外部工具、依赖及具体组件的许可需分别检查。<br><a href="https://github.com/ARM-software/CMSIS-DSP/blob/main/LICENSE" rel="noopener noreferrer">Apache-2.0 许可</a></dd></dl>
@@ -166,4 +166,3 @@
 <section class="exploration-policy" aria-labelledby="exploration-policy-title"><h2 id="exploration-policy-title">收录依据</h2><ul><li>优先看官方源码、文档、测试和复现入口，辨别它解决的信号处理问题。</li><li>经典基础库、厂商参考设计与前沿研究分别判断；Stars 和流行度不能替代成熟度证据。</li><li>新方向先作为待学习条目。来源、许可或复现条件不清楚时，明确标注边界，不宣称已经掌握或跑通。</li><li>只整理公开技术概念与项目资料。本站不自动下载、安装或运行这些外部项目。</li></ul><p>来源核验日期表示最近一次资料检查，并非硬件测试日期。卡片中的信号链为教学概括；实际实现以链接的官方版本为准。</p></section>
 <footer class="architecture-footer">RIVER 信号实验室 · 用仿真理解原理，用真实数据检验判断。</footer>
 </main></body></html>
-
