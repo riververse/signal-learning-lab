@@ -76,7 +76,7 @@ class CasesTest(unittest.TestCase):
     def test_09_new_resources_exist(self):
         for s in self.doc.scripts+self.doc.styles:self.assertTrue((ROOT/urlsplit(s).path).is_file(),s)
         self.assertEqual(self.doc.styles[-1].split('?')[0],'signal-design.css')
-        self.assertIn('question-helper.js?v=20261017-hardware',self.doc.scripts)
+        self.assertIn('question-helper.js?v=20261017-cases-r2',self.doc.scripts)
     def test_09b_components_have_scoped_layout(self):
         css=read('engineering-cases.css')
         self.assertIn('.engineering-cases-page .case-chain{display:flex;flex-wrap:wrap',css)
@@ -126,11 +126,19 @@ class CasesTest(unittest.TestCase):
         self.assertIn('topic-card--hardware',read('index.html'))
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_18_all_unrelated_files_preserved(self):
-        changed={'index.html','knowledge.html','build-exploration.py','exploration-catalog.json','exploration.html'}
+        changed={'index.html','knowledge.html','build-exploration.py','exploration-catalog.json','exploration.html','question-helper.js'}
         for p in BASE.iterdir():
             if p.is_file() and p.name not in changed:self.assertEqual(p.read_bytes(),(ROOT/p.name).read_bytes(),p.name)
         self.assertEqual(len(list(BASE.glob('*.html'))),16)
         self.assertTrue(all((ROOT/p.name).exists() for p in BASE.glob('*.html')))
+    def test_18a_question_helper_case_context(self):
+        subprocess.run(['node',str(ROOT/'test-question-helper.cjs')],check=True,capture_output=True)
+    @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
+    def test_18b_question_helper_additive_guard_only(self):
+        guard="    if(file==='engineering-cases.html')return '';\n"
+        helper=read('question-helper.js')
+        self.assertEqual(helper.count(guard),1)
+        self.assertEqual(helper.replace(guard,'',1),(BASE/'question-helper.js').read_text())
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_19_existing_lesson_html_byte_preserved(self):
         s=re.sub(r'<!-- engineering-cases:addition -->.*?<!-- /engineering-cases:addition -->','',read('index.html'),flags=re.S)

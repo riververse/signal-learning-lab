@@ -25,6 +25,7 @@
     var query=new URLSearchParams(search||''),chosen=query.get('topic');if(validTopic(chosen))return chosen;
     if(validTopic(explicit))return explicit;
     var file=(path||'').split('/').pop();
+    if(file==='engineering-cases.html')return '';
     if(/kalman/.test(file))return 'kalman';if(/transforms/.test(file))return 'transforms';if(/iir-fir|hardware-filters|frequency|pressure|engineering/.test(file))return 'iir-fir';if(/motion/.test(file))return 'control';
     if(file==='simulation.html'){var scenario=query.get('scenario');return scenario==='motion'?'control':scenario==='frequency'?'spectrum':'iir-fir';}
     if(/control|automatic/.test(hash||''))return 'control';if(/spectral|spectrum/.test(hash||''))return 'spectrum';if(/transfer/.test(hash||''))return 'transfer';
