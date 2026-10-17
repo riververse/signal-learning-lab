@@ -14,8 +14,8 @@ import json
 import re
 
 ROOT=Path(__file__).resolve().parent
-EXTERNAL_HOSTS={'github.com','docs.acconeer.com','developer.acconeer.com','www.ti.com','dr-download-cdn.ti.com','arm-software.github.io','liquidsdr.org','www.gnuradio.org','radarsimx.com','radarsimx.github.io'}
-LOCAL_PAGES={'hardware-filters.html','knowledge.html','simulation.html','notes-iir-fir.html','next-learning.html','exploration.html'}
+EXTERNAL_HOSTS={'www.nxp.com','mcuxpresso.nxp.com','community.nxp.com','www.analog.com','wiki.analog.com','github.com','docs.acconeer.com','developer.acconeer.com','www.ti.com','dr-download-cdn.ti.com','arm-software.github.io','liquidsdr.org','www.gnuradio.org','radarsimx.com','radarsimx.github.io'}
+LOCAL_PAGES={'engineering-cases.html','hardware-filters.html','knowledge.html','simulation.html','notes-iir-fir.html','next-learning.html','exploration.html'}
 
 def text(value):
     if not isinstance(value,str):raise ValueError('Expected text')
@@ -153,8 +153,9 @@ def build():
 <link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261016r2" defer></script></head><body class="lab-shell exploration-page"><a class="site-skip" href="#main">跳到探索内容</a>
 {header}
 <main id="main" class="exploration-main">
-<section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>先收录民用雷达案例与成熟开源 DSP 项目。本站实验帮你理解其中的原理，外部工程仍需在各自环境中验证。</p></div>
+<section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>收录民用雷达、开源 DSP 与企业工程案例。除实现代码，也读应用笔记、参考设计、厂商测试和技术答复；本站实验帮助理解原理，外部工程仍需在各自环境中验证。</p></div>
 <ol class="exploration-route" aria-label="建议的探索顺序"><li><strong>学原理</strong><span>在知识图谱找到先修概念</span></li><li><strong>看波形</strong><span>用独立教学模拟建立直觉</span></li><li><strong>读实现</strong><span>沿着数据流定位算法代码</span></li><li><strong>再验证</strong><span>检查许可、环境与真实数据</span></li></ol></section>
+<div class="radar-jump"><a href="engineering-cases.html">企业工程案例：NXP 磁校准 · ADI 振动采集 · TI 超声液位 <span aria-hidden="true">→</span></a></div>
 <div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
 {updates}
@@ -164,7 +165,7 @@ def build():
 <div class="exploration-empty" id="exploration-empty" hidden><p>没有匹配的方向。试试更短的关键词，或清除筛选。</p><button type="button" class="exploration-reset" id="exploration-reset">清除筛选</button></div>
 <div class="exploration-grid" id="exploration-projects">{cards}</div></section>
 {guide}
-<section class="exploration-policy" aria-labelledby="exploration-policy-title"><h2 id="exploration-policy-title">收录依据</h2><ul><li>优先看官方源码、文档、测试和复现入口，辨别它解决的信号处理问题。</li><li>经典基础库、厂商参考设计与前沿研究分别判断；Stars 和流行度不能替代成熟度证据。</li><li>新方向先作为待学习条目。来源、许可或复现条件不清楚时，明确标注边界，不宣称已经掌握或跑通。</li><li>只整理公开技术概念与项目资料。本站不自动下载、安装或运行这些外部项目。</li></ul><p>来源核验日期表示最近一次资料检查，并非硬件测试日期。卡片中的信号链为教学概括；实际实现以链接的官方版本为准。</p></section>
+<section class="exploration-policy" aria-labelledby="exploration-policy-title"><h2 id="exploration-policy-title">收录依据</h2><ul><li>优先看官方源码、应用笔记、参考设计、工程文章、厂商技术答复与测试报告，辨别它解决的信号处理问题。</li><li>经典基础库、厂商参考设计与前沿研究分别判断；Stars 和流行度不能替代成熟度证据。</li><li>新方向先作为待学习条目。来源、许可或复现条件不清楚时，明确标注边界，不宣称已经掌握或跑通。</li><li>只整理公开技术概念与项目资料。本站不自动下载、安装或运行这些外部项目。</li></ul><p>来源核验日期表示最近一次资料检查，并非硬件测试日期。卡片中的信号链为教学概括；实际实现以链接的官方版本为准。</p></section>
 <footer class="architecture-footer">RIVER 信号实验室 · 用仿真理解原理，用真实数据检验判断。</footer>
 </main></body></html>
 '''

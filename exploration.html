@@ -10,12 +10,13 @@
 <link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261016r2" defer></script></head><body class="lab-shell exploration-page"><a class="site-skip" href="#main">跳到探索内容</a>
 <header class="lab-site-header architecture-header"><div class="architecture-bar"><a class="lab-site-brand" href="index.html" aria-label="RIVER 信号实验室知识图谱"><svg class="lab-site-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M3 19h7l4-10 7 18 5-12 3 4h4"/></svg><span>RIVER <span class="lab-brand-divider">/</span> 信号实验室</span></a><nav class="architecture-nav" aria-label="主要导航"><a href="knowledge.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h5v5H4zM15 3h3v3h-3zM14 13h5v6h-5zM3 15h5v3H3zM9 6h6M6 9v6M8 16h6M16 6v7"/></svg><span>知识图谱</span></a><a href="simulation.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h3l3-7 5 14 3-9 2 2h2M2 20h18"/></svg><span>波形模拟</span></a><a href="next-learning.html"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M4 4h10v15H4zM14 4l4 3v12h-4M7 8h4M7 12h4M7 16h2"/></svg><span>接着学</span></a><a href="exploration.html" aria-current="page"><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m14 7-2 6-5 2 2-6z"/></svg><span>探索</span></a></nav></div></header>
 <main id="main" class="exploration-main">
-<section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>先收录民用雷达案例与成熟开源 DSP 项目。本站实验帮你理解其中的原理，外部工程仍需在各自环境中验证。</p></div>
+<section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>收录民用雷达、开源 DSP 与企业工程案例。除实现代码，也读应用笔记、参考设计、厂商测试和技术答复；本站实验帮助理解原理，外部工程仍需在各自环境中验证。</p></div>
 <ol class="exploration-route" aria-label="建议的探索顺序"><li><strong>学原理</strong><span>在知识图谱找到先修概念</span></li><li><strong>看波形</strong><span>用独立教学模拟建立直觉</span></li><li><strong>读实现</strong><span>沿着数据流定位算法代码</span></li><li><strong>再验证</strong><span>检查许可、环境与真实数据</span></li></ol></section>
+<div class="radar-jump"><a href="engineering-cases.html">企业工程案例：NXP 磁校准 · ADI 振动采集 · TI 超声液位 <span aria-hidden="true">→</span></a></div>
 <div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
 <section class="radar-guide" id="recent-updates" aria-labelledby="recent-updates-title">
-<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-10-09">2026-10-09</time> 核验</span>
+<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-10-17">2026-10-17</time> 核验</span>
 <h2 id="recent-updates-title">从新发布与真实修复里，找下一步。</h2>
 <p>这次挑选与滤波、状态估计和雷达学习有关的具体变化。发布日期与本次核验日期分别标注；这是基于官方来源的学习推荐，不是按 Stars 或热度排名。保留原有方向，新条目仍待动手验证。</p></div>
 <div class="radar-cases"><article class="radar-case" id="cmsis-dsp-118-notes">
@@ -36,10 +37,28 @@
 <p><strong>从这里开始：</strong>当前先沿单目标拍频 → 距离 FFT → 距离–多普勒 → CFAR 学，用已知真值检查频轴和检测结果。Python 仓为 GPL-3.0，但底层 RadarSimCpp 为商业许可；这不是可直接烧入 GD32 的全开源引擎。</p>
 <div class="project-links" aria-label="近期更新官方来源"><a href="https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/" rel="noopener noreferrer">15.4.0 官方发布</a><a href="https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html" rel="noopener noreferrer">接收窗学习文档</a><a href="https://radarsimx.com/radarsimx/radarsimcpp/" rel="noopener noreferrer">核心许可边界</a><a href="exploration.html?category=radar#radarsimpy">查看项目、先修与许可</a></div>
 <p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="nxp-magnetic-calibration-case-note">
+<p class="radar-architecture">ISSDK 1.8 文档：页面未标明发布日期；员工论坛答复：2016-06-13。源码版权年份不当作发布日期。</p><h3>先校准，再相信航向</h3>
+<p><strong>新增工程阅读 · 待学习 · 未本站实物复现</strong></p><p>从校准数据覆盖、候选参数验收到分片计算，读一条真实的融合前处理链。 厂商实现文档 + 员工技术答复；没有本案例的独立实测或受控航向精度报告。</p>
+<p><strong>从这里开始：</strong>先在 magnetic.h 找到缓冲数量与误差字段，再对照 magnetic.c 的候选解接受分支；不要先调融合噪声。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://www.nxp.com/pages/nxp-e-compass-software:E-Compass" rel="noopener noreferrer">NXP e-compass 应用与器件环境</a><a href="https://mcuxpresso.nxp.com/api_doc/comp/246/a00857_source.html" rel="noopener noreferrer">ISSDK 1.8 magnetic.h：容量、参数与状态</a><a href="exploration.html?category=estimation#nxp-magnetic-calibration">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="adi-vibration-chain-case-note">
+<p class="radar-architecture">CN0540 Rev. 0：2020-09；Rev. A：2021-05（以 PDF 修订历史为准）；平台技术文章：2021-08-13。</p><h3>振动数据进入 FFT 之前</h3>
+<p><strong>新增工程阅读 · 待学习 · 未本站实物复现</strong></p><p>CN0540 / CN0549：偏置、滤波、安装与数据流怎样一起决定可用信号。 厂商参考设计与台架测量 + 厂商技术文章；数值不是本站或第三方独立实测。</p>
+<p><strong>从这里开始：</strong>对照 CN0540 表 4 的输出数据率与 −3 dB 带宽，再读表 5 的输入与恒流源条件。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf" rel="noopener noreferrer">CN0540 Rev. A：第 8 页表 4/5，第 15 页修订历史</a><a href="https://www.analog.com/en/resources/technical-articles/high-fidelity-vibration-acquisition-platform.html" rel="noopener noreferrer">高保真振动采集平台：机械安装、网关与算法接口</a><a href="exploration.html?category=dsp#adi-vibration-chain">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="ti-ultrasonic-level-case-note">
+<p class="radar-architecture">TIDU616 测试报告：2014-10-23；TIDU617 设计概述 Rev. A：2015-05-26（日期来自官方设计页）。</p><h3>超声波计时到可信液位</h3>
+<p><strong>新增工程阅读 · 待学习 · 未本站实物复现</strong></p><p>TIDA-00322：从 1 MHz 回波到高度，拆开声速、选波与误差统计。 厂商台架测试报告 + 参考设计；公式换算另标为本站计算，无独立实物测量。</p>
+<p><strong>从这里开始：</strong>先核对 TIDU616 的水温、声速、TOF 与卷尺基准，用一行数据复算高度，再审查选波。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://www.ti.com/tool/TIDA-00322" rel="noopener noreferrer">TIDA-00322 官方设计页：环境、日期与文件入口</a><a href="https://www.ti.com/lit/pdf/TIDU616" rel="noopener noreferrer">TIDU616：第 1–2 页硬件，第 6 页条件与结果</a><a href="exploration.html?category=estimation#ti-ultrasonic-level">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 待学习 · 未在本站复现</p>
 </article></div>
 </section>
 <section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类"><button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button><button class="exploration-filter" type="button" data-category-filter="radar" aria-pressed="false">民用雷达</button><button class="exploration-filter" type="button" data-category-filter="dsp" aria-pressed="false">DSP 基础</button><button class="exploration-filter" type="button" data-category-filter="estimation" aria-pressed="false">状态估计</button></div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
-<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 8 个学习方向</p>
+<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 11 个学习方向</p>
 <noscript><p>所有项目均可直接阅读；开启 JavaScript 后可按分类和关键词筛选。</p></noscript>
 <div class="exploration-empty" id="exploration-empty" hidden><p>没有匹配的方向。试试更短的关键词，或清除筛选。</p><button type="button" class="exploration-reset" id="exploration-reset">清除筛选</button></div>
 <div class="exploration-grid" id="exploration-projects"><article class="project-card" id="a121-presence" data-category="radar" aria-labelledby="a121-presence-title">
@@ -153,6 +172,48 @@
 <p class="project-warning">许可证、二进制版本与功能限制要分别核实。仿真中的已知真值有助于检查算法，但不能代替真实传感器与现场验证。</p>
 <div class="project-links" aria-label="外部官方来源"><a href="https://radarsimx.com/2026/09/13/radarsimpy-v15-4-0-release/" rel="noopener noreferrer">15.4.0 官方发布</a><a href="https://github.com/radarsimx/radarsimpy" rel="noopener noreferrer">公开 Python 仓</a><a href="https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html" rel="noopener noreferrer">接收时间窗与 stretch 处理</a></div>
 </details><p class="project-verification">来源核验 <time datetime="2026-10-09">2026-10-09</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="nxp-magnetic-calibration" data-category="estimation" aria-labelledby="nxp-magnetic-calibration-title">
+<div class="project-meta"><span>状态估计 / 企业工程案例</span><span class="project-state">待学习</span></div>
+<h2 id="nxp-magnetic-calibration-title">先校准，再相信航向</h2><p class="project-name">NXP · 从校准数据覆盖、候选参数验收到分片计算，读一条真实的融合前处理链。</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>三轴磁场与加速度</li><li>校准缓冲区</li><li>硬铁 / 软铁参数</li><li>质量验收</li><li>姿态融合</li></ol>
+<p class="project-application">航向抖动可以来自噪声，持续的角度偏差也可能来自板上磁性材料或坐标轴定义。若送进融合器的观测带着结构性误差，只调测量噪声 R 会把“偏得很稳定”误当作可信。这个案例先检查观测成立的条件，再谈平滑。</p>
+<p class="project-first"><strong>起步：</strong>先在 magnetic.h 找到缓冲数量与误差字段，再对照 magnetic.c 的候选解接受分支；不要先调融合噪声。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="engineering-cases.html#nxp-magnetic-calibration">读完整约束、结果与复现清单</a><a href="knowledge.html?topic=kalman">卡尔曼：模型与测量不确定性</a><a href="simulation.html?scenario=motion&amp;algorithm=kalman">运动估计教学模拟</a></div>
+<p class="project-warning"><strong>近期补充：</strong>2026-10-17 整理为工程案例；该日期不是原始资料发布日期。</p>
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>向量、矩阵与坐标轴</li><li>测量偏置与随机噪声</li><li>卡尔曼预测 / 更新的分工</li></ul></dd><dt>关键算法</dt><dd><ul><li>硬铁与软铁校准、4 / 7 / 10 参数模型</li><li>方向覆盖缓冲、拟合误差验收、分片计算</li></ul></dd><dt>硬件与环境</dt><dd>历史 NXP e-compass / Sensor Fusion 环境，MAG3110 / FXOS8700CQ 等磁传感器与加速度计；本页固定阅读 ISSDK 1.8 的 magnetic.h / magnetic.c。源码包含 KL25Z 运行时间注释，但未给出可重现的完整编译配置。</dd><dt>成熟度与复现边界</dt><dd>厂商实现文档 + 员工技术答复；没有本案例的独立实测或受控航向精度报告。 ISSDK 1.8 文档：页面未标明发布日期；员工论坛答复：2016-06-13。源码版权年份不当作发布日期。</dd><dt>许可范围</dt><dd>官方 API 文档源码标注 BSD-3-Clause；产品软件包和其他材料的许可应分别核对。本文只做阅读分析，不提供打包代码。<br><a href="https://www.nxp.com/pages/nxp-e-compass-software:E-Compass" rel="noopener noreferrer">原始材料与适用条款</a></dd></dl>
+<p class="project-warning">待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://www.nxp.com/pages/nxp-e-compass-software:E-Compass" rel="noopener noreferrer">NXP e-compass 应用与器件环境</a><a href="https://mcuxpresso.nxp.com/api_doc/comp/246/a00857_source.html" rel="noopener noreferrer">ISSDK 1.8 magnetic.h：容量、参数与状态</a><a href="https://mcuxpresso.nxp.com/api_doc/comp/246/a00854_source.html" rel="noopener noreferrer">ISSDK 1.8 magnetic.c：缓冲与候选解验收</a><a href="https://community.nxp.com/t5/Sensors/problem-about-Seven-Parameter-Magnetic-Calibration-Model/m-p/519089" rel="noopener noreferrer">七参数校准移植：NXP 员工关于特征向量符号的答复</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="adi-vibration-chain" data-category="dsp" aria-labelledby="adi-vibration-chain-title">
+<div class="project-meta"><span>DSP 基础 / 企业工程案例</span><span class="project-state">待学习</span></div>
+<h2 id="adi-vibration-chain-title">振动数据进入 FFT 之前</h2><p class="project-name">Analog Devices · CN0540 / CN0549</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>机械安装与 IEPE</li><li>偏置补偿 / 保护</li><li>模拟抗混叠</li><li>ADC / 数字 FIR</li><li>IIO 数据流 / FFT</li></ol>
+<p class="project-application">轴承异常可能只在特定频带出现。把 ADC 位数加高，却让安装结构产生共振、模拟输入削顶，或在抽取时删掉目标频带，后面的 FFT 和机器学习都只能分析受损数据。这个案例把“可信数据”拆成可逐项检查的链路。</p>
+<p class="project-first"><strong>起步：</strong>对照 CN0540 表 4 的输出数据率与 −3 dB 带宽，再读表 5 的输入与恒流源条件。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="engineering-cases.html#adi-vibration-chain">读完整约束、结果与复现清单</a><a href="hardware-filters.html#alias-lab">先看模拟 / 数字滤波的边界</a><a href="knowledge.html?topic=spectrum">频谱分析与幅值口径</a><a href="notes-iir-fir.html">FIR / IIR 与系数</a></div>
+<p class="project-warning"><strong>近期补充：</strong>2026-10-17 整理为工程案例；该日期不是原始资料发布日期。</p>
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>采样与抗混叠</li><li>FIR、抽取与有效带宽</li><li>FFT、rms 与噪声频带</li></ul></dd><dt>关键算法</dt><dd><ul><li>模拟抗混叠 + ADC 数字 FIR 抽取</li><li>FFT 特征之前的偏置补偿、噪声与机械验证</li></ul></dd><dt>硬件与环境</dt><dd>EVAL-CN0540-ARDZ：IEPE 输入、LTC2606 偏置 DAC、ADA4945-1 驱动与 AD7768-1 ADC。平台连接 CN0532 / ADXL1002、机械安装块以及 DE10-Nano 或 Cora Z7 网关，软件为 ADI Kuiper Linux / IIO。不同测试配置分开看。</dd><dt>成熟度与复现边界</dt><dd>厂商参考设计与台架测量 + 厂商技术文章；数值不是本站或第三方独立实测。 CN0540 Rev. 0：2020-09；Rev. A：2021-05（以 PDF 修订历史为准）；平台技术文章：2021-08-13。</dd><dt>许可范围</dt><dd>参考电路、设计文件与 IIO 软件许可分别适用；公开可读不等于所有设计可无条件再发布。这里只链接官方材料。<br><a href="https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf" rel="noopener noreferrer">原始材料与适用条款</a></dd></dl>
+<p class="project-warning">待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf" rel="noopener noreferrer">CN0540 Rev. A：第 8 页表 4/5，第 15 页修订历史</a><a href="https://www.analog.com/en/resources/technical-articles/high-fidelity-vibration-acquisition-platform.html" rel="noopener noreferrer">高保真振动采集平台：机械安装、网关与算法接口</a><a href="https://wiki.analog.com/resources/eval/user-guides/circuits-from-the-lab/cn0540" rel="noopener noreferrer">CN0540 官方配置与数据采集用户指南</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="ti-ultrasonic-level" data-category="estimation" aria-labelledby="ti-ultrasonic-level-title">
+<div class="project-meta"><span>状态估计 / 企业工程案例</span><span class="project-state">待学习</span></div>
+<h2 id="ti-ultrasonic-level-title">超声波计时到可信液位</h2><p class="project-name">Texas Instruments · TIDA-00322</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>脉冲激励</li><li>换能器 / 水面反射</li><li>LNA / PGA / 带通</li><li>START / STOP 计时</li><li>声速补偿 / 液位</li></ol>
+<p class="project-application">飞行时间 TOF 只有在回波来自目标界面、声速适用于介质与温度、固定延迟已处理时，才能变成可信距离。仅看计时器分辨率，会漏掉选错波、温度变化和安装声路这些系统误差。</p>
+<p class="project-first"><strong>起步：</strong>先核对 TIDU616 的水温、声速、TOF 与卷尺基准，用一行数据复算高度，再审查选波。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="engineering-cases.html#ti-ultrasonic-level">读完整约束、结果与复现清单</a><a href="knowledge.html?topic=iir-fir">IIR / FIR：平滑与延迟</a><a href="simulation.html?scenario=pressure&amp;algorithm=fir">压力波形中的滤波对照</a><a href="hardware-filters.html#signal-chain">模拟前端与采样边界</a></div>
+<p class="project-warning"><strong>近期补充：</strong>2026-10-17 整理为工程案例；该日期不是原始资料发布日期。</p>
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>时间、频率与单位换算</li><li>固定偏置和比例误差</li><li>IIR / FIR 的平滑与延迟</li></ul></dd><dt>关键算法</dt><dd><ul><li>回波事件检测与飞行时间</li><li>温度相关声速换算、固定延迟与误差预算</li></ul></dd><dt>硬件与环境</dt><dd>TIDA00322EVM，TDC1000 超声 AFE、C2000 MCU、5 V 升 30 V 发射驱动；STEMiNC SMD10T2R111 1 MHz 换能器，88 cm 亚克力水槽底部安装。原测试平均水温 23 °C，自来水，20 V 板供电，30 V 激励。</dd><dt>成熟度与复现边界</dt><dd>厂商台架测试报告 + 参考设计；公式换算另标为本站计算，无独立实物测量。 TIDU616 测试报告：2014-10-23；TIDU617 设计概述 Rev. A：2015-05-26（日期来自官方设计页）。</dd><dt>许可范围</dt><dd>TI 设计资料有单独使用条款；公开测试报告不等于固件或硬件设计无限制开源。本文未复制完整报告或下载执行软件。<br><a href="https://www.ti.com/tool/TIDA-00322" rel="noopener noreferrer">原始材料与适用条款</a></dd></dl>
+<p class="project-warning">待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://www.ti.com/tool/TIDA-00322" rel="noopener noreferrer">TIDA-00322 官方设计页：环境、日期与文件入口</a><a href="https://www.ti.com/lit/pdf/TIDU616" rel="noopener noreferrer">TIDU616：第 1–2 页硬件，第 6 页条件与结果</a><a href="https://www.ti.com/lit/pdf/TIDU617" rel="noopener noreferrer">TIDU617 Rev. A：接收链、发射与温度测量</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 未在本站复现</p>
 </article></div></section>
 <section class="radar-guide" id="radar-guide" aria-labelledby="radar-guide-title">
 <div class="radar-guide-heading"><span class="exploration-state">雷达入门导读</span><h2 id="radar-guide-title">读懂雷达：从回波到判断</h2><p>先问每一步在解决什么问题，再看算法名字。雷达中的“滤波”只是处理链的一部分；变换、检测、测角和跟踪各有自己的任务。</p></div>
@@ -163,6 +224,6 @@
 <div class="radar-start"><h3>建议起步顺序</h3><ol class="radar-sequence"><li><h4>先读呼吸链路</h4><p>按距离段 → 相位微动 → 带通 → 频谱逐段读源码。每次只记输入、输出、单位与采样率，先把 IIR 和 FFT 的分工说清楚。</p><a href="knowledge.html?topic=iir-fir">复习 IIR / FIR</a></li><li><h4>再做离线小实验</h4><p>另起一个 FMCW 教学练习：合成已知拍频与随机噪声，比较不加窗 / 加窗的距离 FFT，再加 CFAR。看峰值、旁瓣与阈值怎样变化；这是建议练习，本站尚未实现雷达仿真。</p><a href="knowledge.html?topic=transforms">复习傅里叶变换</a></li><li><h4>最后考虑硬件</h4><p>读懂数据维度后，再检查官方板卡、固件与接口。GD32 是否能承担所选环节，要评估 RAM、采样率、FFT 点数、精度和帧时限；不能承诺直接跑通完整链路。</p><a href="exploration.html?category=dsp#cmsis-dsp">查看嵌入式 DSP 入口</a></li></ol><p class="radar-boundary">读文档、看源码和做合成数据练习都可以先不买硬件。以上是公开资料导读，三个工程仍未在本站复现。</p></div>
 <p class="radar-verification">资料核验 <time datetime="2026-10-06">2026-10-06</time> · 项目卡保留先修、许可与原始来源。</p>
 </section>
-<section class="exploration-policy" aria-labelledby="exploration-policy-title"><h2 id="exploration-policy-title">收录依据</h2><ul><li>优先看官方源码、文档、测试和复现入口，辨别它解决的信号处理问题。</li><li>经典基础库、厂商参考设计与前沿研究分别判断；Stars 和流行度不能替代成熟度证据。</li><li>新方向先作为待学习条目。来源、许可或复现条件不清楚时，明确标注边界，不宣称已经掌握或跑通。</li><li>只整理公开技术概念与项目资料。本站不自动下载、安装或运行这些外部项目。</li></ul><p>来源核验日期表示最近一次资料检查，并非硬件测试日期。卡片中的信号链为教学概括；实际实现以链接的官方版本为准。</p></section>
+<section class="exploration-policy" aria-labelledby="exploration-policy-title"><h2 id="exploration-policy-title">收录依据</h2><ul><li>优先看官方源码、应用笔记、参考设计、工程文章、厂商技术答复与测试报告，辨别它解决的信号处理问题。</li><li>经典基础库、厂商参考设计与前沿研究分别判断；Stars 和流行度不能替代成熟度证据。</li><li>新方向先作为待学习条目。来源、许可或复现条件不清楚时，明确标注边界，不宣称已经掌握或跑通。</li><li>只整理公开技术概念与项目资料。本站不自动下载、安装或运行这些外部项目。</li></ul><p>来源核验日期表示最近一次资料检查，并非硬件测试日期。卡片中的信号链为教学概括；实际实现以链接的官方版本为准。</p></section>
 <footer class="architecture-footer">RIVER 信号实验室 · 用仿真理解原理，用真实数据检验判断。</footer>
 </main></body></html>

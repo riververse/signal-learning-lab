@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-09",
+  "updated_at": "2026-10-17",
   "categories": {
     "radar": "民用雷达",
     "dsp": "DSP 基础",
@@ -512,6 +512,219 @@
       "status": "待学习",
       "last_verified": "2026-10-09",
       "reproduction_status": "未在本站复现"
+    },
+    {
+      "id": "nxp-magnetic-calibration",
+      "category": "estimation",
+      "title": "先校准，再相信航向",
+      "project": "NXP · 从校准数据覆盖、候选参数验收到分片计算，读一条真实的融合前处理链。",
+      "kind": "企业工程案例",
+      "application": "航向抖动可以来自噪声，持续的角度偏差也可能来自板上磁性材料或坐标轴定义。若送进融合器的观测带着结构性误差，只调测量噪声 R 会把“偏得很稳定”误当作可信。这个案例先检查观测成立的条件，再谈平滑。",
+      "chain": [
+        "三轴磁场与加速度",
+        "校准缓冲区",
+        "硬铁 / 软铁参数",
+        "质量验收",
+        "姿态融合"
+      ],
+      "first_step": "先在 magnetic.h 找到缓冲数量与误差字段，再对照 magnetic.c 的候选解接受分支；不要先调融合噪声。",
+      "prerequisites": [
+        "向量、矩阵与坐标轴",
+        "测量偏置与随机噪声",
+        "卡尔曼预测 / 更新的分工"
+      ],
+      "algorithms": [
+        "硬铁与软铁校准、4 / 7 / 10 参数模型",
+        "方向覆盖缓冲、拟合误差验收、分片计算"
+      ],
+      "hardware": "历史 NXP e-compass / Sensor Fusion 环境，MAG3110 / FXOS8700CQ 等磁传感器与加速度计；本页固定阅读 ISSDK 1.8 的 magnetic.h / magnetic.c。源码包含 KL25Z 运行时间注释，但未给出可重现的完整编译配置。",
+      "maturity": "厂商实现文档 + 员工技术答复；没有本案例的独立实测或受控航向精度报告。 ISSDK 1.8 文档：页面未标明发布日期；员工论坛答复：2016-06-13。源码版权年份不当作发布日期。",
+      "license": "官方 API 文档源码标注 BSD-3-Clause；产品软件包和其他材料的许可应分别核对。本文只做阅读分析，不提供打包代码。",
+      "warning": "待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。",
+      "official_links": [
+        {
+          "label": "NXP e-compass 应用与器件环境",
+          "url": "https://www.nxp.com/pages/nxp-e-compass-software:E-Compass"
+        },
+        {
+          "label": "ISSDK 1.8 magnetic.h：容量、参数与状态",
+          "url": "https://mcuxpresso.nxp.com/api_doc/comp/246/a00857_source.html"
+        },
+        {
+          "label": "ISSDK 1.8 magnetic.c：缓冲与候选解验收",
+          "url": "https://mcuxpresso.nxp.com/api_doc/comp/246/a00854_source.html"
+        },
+        {
+          "label": "七参数校准移植：NXP 员工关于特征向量符号的答复",
+          "url": "https://community.nxp.com/t5/Sensors/problem-about-Seven-Parameter-Magnetic-Calibration-Model/m-p/519089"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "原始材料与适用条款",
+          "url": "https://www.nxp.com/pages/nxp-e-compass-software:E-Compass"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "读完整约束、结果与复现清单",
+          "url": "engineering-cases.html#nxp-magnetic-calibration"
+        },
+        {
+          "label": "卡尔曼：模型与测量不确定性",
+          "url": "knowledge.html?topic=kalman"
+        },
+        {
+          "label": "运动估计教学模拟",
+          "url": "simulation.html?scenario=motion&algorithm=kalman"
+        }
+      ],
+      "status": "待学习",
+      "reproduction_status": "未在本站复现",
+      "last_verified": "2026-10-17",
+      "latest_note": "2026-10-17 整理为工程案例；该日期不是原始资料发布日期。"
+    },
+    {
+      "id": "adi-vibration-chain",
+      "category": "dsp",
+      "title": "振动数据进入 FFT 之前",
+      "project": "Analog Devices · CN0540 / CN0549",
+      "kind": "企业工程案例",
+      "application": "轴承异常可能只在特定频带出现。把 ADC 位数加高，却让安装结构产生共振、模拟输入削顶，或在抽取时删掉目标频带，后面的 FFT 和机器学习都只能分析受损数据。这个案例把“可信数据”拆成可逐项检查的链路。",
+      "chain": [
+        "机械安装与 IEPE",
+        "偏置补偿 / 保护",
+        "模拟抗混叠",
+        "ADC / 数字 FIR",
+        "IIO 数据流 / FFT"
+      ],
+      "first_step": "对照 CN0540 表 4 的输出数据率与 −3 dB 带宽，再读表 5 的输入与恒流源条件。",
+      "prerequisites": [
+        "采样与抗混叠",
+        "FIR、抽取与有效带宽",
+        "FFT、rms 与噪声频带"
+      ],
+      "algorithms": [
+        "模拟抗混叠 + ADC 数字 FIR 抽取",
+        "FFT 特征之前的偏置补偿、噪声与机械验证"
+      ],
+      "hardware": "EVAL-CN0540-ARDZ：IEPE 输入、LTC2606 偏置 DAC、ADA4945-1 驱动与 AD7768-1 ADC。平台连接 CN0532 / ADXL1002、机械安装块以及 DE10-Nano 或 Cora Z7 网关，软件为 ADI Kuiper Linux / IIO。不同测试配置分开看。",
+      "maturity": "厂商参考设计与台架测量 + 厂商技术文章；数值不是本站或第三方独立实测。 CN0540 Rev. 0：2020-09；Rev. A：2021-05（以 PDF 修订历史为准）；平台技术文章：2021-08-13。",
+      "license": "参考电路、设计文件与 IIO 软件许可分别适用；公开可读不等于所有设计可无条件再发布。这里只链接官方材料。",
+      "warning": "待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。",
+      "official_links": [
+        {
+          "label": "CN0540 Rev. A：第 8 页表 4/5，第 15 页修订历史",
+          "url": "https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf"
+        },
+        {
+          "label": "高保真振动采集平台：机械安装、网关与算法接口",
+          "url": "https://www.analog.com/en/resources/technical-articles/high-fidelity-vibration-acquisition-platform.html"
+        },
+        {
+          "label": "CN0540 官方配置与数据采集用户指南",
+          "url": "https://wiki.analog.com/resources/eval/user-guides/circuits-from-the-lab/cn0540"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "原始材料与适用条款",
+          "url": "https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "读完整约束、结果与复现清单",
+          "url": "engineering-cases.html#adi-vibration-chain"
+        },
+        {
+          "label": "先看模拟 / 数字滤波的边界",
+          "url": "hardware-filters.html#alias-lab"
+        },
+        {
+          "label": "频谱分析与幅值口径",
+          "url": "knowledge.html?topic=spectrum"
+        },
+        {
+          "label": "FIR / IIR 与系数",
+          "url": "notes-iir-fir.html"
+        }
+      ],
+      "status": "待学习",
+      "reproduction_status": "未在本站复现",
+      "last_verified": "2026-10-17",
+      "latest_note": "2026-10-17 整理为工程案例；该日期不是原始资料发布日期。"
+    },
+    {
+      "id": "ti-ultrasonic-level",
+      "category": "estimation",
+      "title": "超声波计时到可信液位",
+      "project": "Texas Instruments · TIDA-00322",
+      "kind": "企业工程案例",
+      "application": "飞行时间 TOF 只有在回波来自目标界面、声速适用于介质与温度、固定延迟已处理时，才能变成可信距离。仅看计时器分辨率，会漏掉选错波、温度变化和安装声路这些系统误差。",
+      "chain": [
+        "脉冲激励",
+        "换能器 / 水面反射",
+        "LNA / PGA / 带通",
+        "START / STOP 计时",
+        "声速补偿 / 液位"
+      ],
+      "first_step": "先核对 TIDU616 的水温、声速、TOF 与卷尺基准，用一行数据复算高度，再审查选波。",
+      "prerequisites": [
+        "时间、频率与单位换算",
+        "固定偏置和比例误差",
+        "IIR / FIR 的平滑与延迟"
+      ],
+      "algorithms": [
+        "回波事件检测与飞行时间",
+        "温度相关声速换算、固定延迟与误差预算"
+      ],
+      "hardware": "TIDA00322EVM，TDC1000 超声 AFE、C2000 MCU、5 V 升 30 V 发射驱动；STEMiNC SMD10T2R111 1 MHz 换能器，88 cm 亚克力水槽底部安装。原测试平均水温 23 °C，自来水，20 V 板供电，30 V 激励。",
+      "maturity": "厂商台架测试报告 + 参考设计；公式换算另标为本站计算，无独立实物测量。 TIDU616 测试报告：2014-10-23；TIDU617 设计概述 Rev. A：2015-05-26（日期来自官方设计页）。",
+      "license": "TI 设计资料有单独使用条款；公开测试报告不等于固件或硬件设计无限制开源。本文未复制完整报告或下载执行软件。",
+      "warning": "待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。",
+      "official_links": [
+        {
+          "label": "TIDA-00322 官方设计页：环境、日期与文件入口",
+          "url": "https://www.ti.com/tool/TIDA-00322"
+        },
+        {
+          "label": "TIDU616：第 1–2 页硬件，第 6 页条件与结果",
+          "url": "https://www.ti.com/lit/pdf/TIDU616"
+        },
+        {
+          "label": "TIDU617 Rev. A：接收链、发射与温度测量",
+          "url": "https://www.ti.com/lit/pdf/TIDU617"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "原始材料与适用条款",
+          "url": "https://www.ti.com/tool/TIDA-00322"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "读完整约束、结果与复现清单",
+          "url": "engineering-cases.html#ti-ultrasonic-level"
+        },
+        {
+          "label": "IIR / FIR：平滑与延迟",
+          "url": "knowledge.html?topic=iir-fir"
+        },
+        {
+          "label": "压力波形中的滤波对照",
+          "url": "simulation.html?scenario=pressure&algorithm=fir"
+        },
+        {
+          "label": "模拟前端与采样边界",
+          "url": "hardware-filters.html#signal-chain"
+        }
+      ],
+      "status": "待学习",
+      "reproduction_status": "未在本站复现",
+      "last_verified": "2026-10-17",
+      "latest_note": "2026-10-17 整理为工程案例；该日期不是原始资料发布日期。"
     }
   ],
   "radar_guide": {
@@ -732,6 +945,66 @@
       ],
       "project_id": "radarsimpy",
       "last_verified": "2026-10-09"
+    },
+    {
+      "id": "nxp-magnetic-calibration-case-note",
+      "project_id": "nxp-magnetic-calibration",
+      "date_label": "ISSDK 1.8 文档：页面未标明发布日期；员工论坛答复：2016-06-13。源码版权年份不当作发布日期。",
+      "title": "先校准，再相信航向",
+      "stage": "新增工程阅读 · 待学习 · 未本站实物复现",
+      "summary": "从校准数据覆盖、候选参数验收到分片计算，读一条真实的融合前处理链。 厂商实现文档 + 员工技术答复；没有本案例的独立实测或受控航向精度报告。",
+      "practice": "先在 magnetic.h 找到缓冲数量与误差字段，再对照 magnetic.c 的候选解接受分支；不要先调融合噪声。",
+      "sources": [
+        {
+          "label": "NXP e-compass 应用与器件环境",
+          "url": "https://www.nxp.com/pages/nxp-e-compass-software:E-Compass"
+        },
+        {
+          "label": "ISSDK 1.8 magnetic.h：容量、参数与状态",
+          "url": "https://mcuxpresso.nxp.com/api_doc/comp/246/a00857_source.html"
+        }
+      ],
+      "last_verified": "2026-10-17"
+    },
+    {
+      "id": "adi-vibration-chain-case-note",
+      "project_id": "adi-vibration-chain",
+      "date_label": "CN0540 Rev. 0：2020-09；Rev. A：2021-05（以 PDF 修订历史为准）；平台技术文章：2021-08-13。",
+      "title": "振动数据进入 FFT 之前",
+      "stage": "新增工程阅读 · 待学习 · 未本站实物复现",
+      "summary": "CN0540 / CN0549：偏置、滤波、安装与数据流怎样一起决定可用信号。 厂商参考设计与台架测量 + 厂商技术文章；数值不是本站或第三方独立实测。",
+      "practice": "对照 CN0540 表 4 的输出数据率与 −3 dB 带宽，再读表 5 的输入与恒流源条件。",
+      "sources": [
+        {
+          "label": "CN0540 Rev. A：第 8 页表 4/5，第 15 页修订历史",
+          "url": "https://www.analog.com/media/en/reference-design-documentation/reference-designs/cn0540.pdf"
+        },
+        {
+          "label": "高保真振动采集平台：机械安装、网关与算法接口",
+          "url": "https://www.analog.com/en/resources/technical-articles/high-fidelity-vibration-acquisition-platform.html"
+        }
+      ],
+      "last_verified": "2026-10-17"
+    },
+    {
+      "id": "ti-ultrasonic-level-case-note",
+      "project_id": "ti-ultrasonic-level",
+      "date_label": "TIDU616 测试报告：2014-10-23；TIDU617 设计概述 Rev. A：2015-05-26（日期来自官方设计页）。",
+      "title": "超声波计时到可信液位",
+      "stage": "新增工程阅读 · 待学习 · 未本站实物复现",
+      "summary": "TIDA-00322：从 1 MHz 回波到高度，拆开声速、选波与误差统计。 厂商台架测试报告 + 参考设计；公式换算另标为本站计算，无独立实物测量。",
+      "practice": "先核对 TIDU616 的水温、声速、TOF 与卷尺基准，用一行数据复算高度，再审查选波。",
+      "sources": [
+        {
+          "label": "TIDA-00322 官方设计页：环境、日期与文件入口",
+          "url": "https://www.ti.com/tool/TIDA-00322"
+        },
+        {
+          "label": "TIDU616：第 1–2 页硬件，第 6 页条件与结果",
+          "url": "https://www.ti.com/lit/pdf/TIDU616"
+        }
+      ],
+      "last_verified": "2026-10-17"
     }
   ]
 }
