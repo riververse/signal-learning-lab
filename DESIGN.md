@@ -1,3 +1,23 @@
+# RIVER visual direction · approved 2026-10-19
+
+The approved design is an open, cool-toned signal learning studio. Start with the phenomenon, connect a readable explanation to a broad figure, then offer a meaningful action. The homepage signal decomposition is real-valued and user-driven, not ambient decoration. All legacy numerical engines, content, URLs and learning records remain authoritative.
+
+## Final stylesheet ownership
+Load in this order after legacy compatibility styles: `river-design.css`, `river-reading.css`, `river-experiments.css`. The last three stylesheets own current presentation. `signal-studio.css` remains compatibility only; do not append a future design there. Every formal page uses `body.river-v2`. Catalog generators and next-learning templates carry the same final styles.
+
+- Canvas: #FFFFFF; working figure ground #F4F6FA; selected state #E8EEFB.
+- Heading #192C43; prose #34465B; secondary text #586B82.
+- Signal blue #3361D8; output violet #6C4FCE; secondary trace #2D7391. Preserve established experimental trace/legend mappings.
+- Ordinary text targets at least 4.5:1, including labels and coordinates. Decorative rules can remain #D9E1EC.
+- Chinese sans typography with strong heading/body rhythm; compact metadata, generous long-form line-height. Reading measures generally 35–42 Chinese characters.
+- A single broad experimental ground, rather than repeated nested cards. Distinguish controls, data and interpretation using spacing and structure.
+- Mobile keeps every main navigation destination, reflows topic rows and controls, and redraws the homepage diagram instead of shrinking tiny desktop labels.
+- Preserve real pause/resume, off-screen and reduced-motion behavior. Motion must convey changing samples, states or user actions. Do not add decorative particle loops.
+
+Before publishing, rerun all model, learning, routing and generator tests. Then inspect actual HTTPS desktop and narrow-browser pages against the approved artboards; source/static validation is not visual acceptance. Do not infer mastery from published lessons.
+
+## Previous design record
+
 # RIVER mathematical studio
 
 The interface is a clean coordinate space for learning signals. Lesson content,

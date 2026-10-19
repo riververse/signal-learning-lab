@@ -3,7 +3,7 @@
 
 These checks do not run vendor code, access hardware or claim browser visual QA.
 
-2026-10-19 theme migration: the final stylesheet is signal-studio.css, the
+2026-10-19 theme migration: the final stylesheet is river-experiments.css, the
 shared navigation also has studio-nav, and the hardware entry is a studio-topic
 link. Resource ordering, navigation destinations/current state, and the hardware
 destination remain asserted. The optional historical --baseline checks retain
@@ -84,7 +84,8 @@ class CasesTest(unittest.TestCase):
                 if u.fragment:self.assertIn(unquote(u.fragment),Doc(dest.read_text()).ids,href)
     def test_09_new_resources_exist(self):
         for s in self.doc.scripts+self.doc.styles:self.assertTrue((ROOT/urlsplit(s).path).is_file(),s)
-        self.assertEqual(self.doc.styles[-1].split('?')[0],'signal-studio.css')
+        self.assertEqual(self.doc.styles[-1].split('?')[0],'river-experiments.css')
+        self.assertEqual([x.split('?')[0] for x in self.doc.styles[-3:]],['river-design.css','river-reading.css','river-experiments.css'])
         self.assertIn('question-helper.js?v=20261017-cases-r2',self.doc.scripts)
     def test_09b_components_have_scoped_layout(self):
         css=read('engineering-cases.css')
