@@ -1515,3 +1515,8 @@ body.math-studio.lab-shell.page--knowledge .studio-flow-mobile { display: none; 
  body.math-studio.lab-shell.page--knowledge .studio-flow-desktop { display: none; }
  body.math-studio.lab-shell.page--knowledge .studio-flow-mobile { display: block; }
 }
+
+/* Keep chart legends identical to the rendered signal, including line style. */
+body.math-studio.lab-shell.hardware-page .hw-target::before{color:#4B43E8;border-top-style:dashed}
+body.math-studio.lab-shell.page--frequency .legend label:last-child{color:#4B43E8}
+body.math-studio.lab-shell.page--motion .swatch.dashed{border-top-color:#202734}
