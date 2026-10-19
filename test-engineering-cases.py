@@ -29,9 +29,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_four_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),4);self.assertEqual(len({x['vendor'] for x in self.cases}),3)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft'])
+    def test_01_five_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),5);self.assertEqual(len({x['vendor'] for x in self.cases}),4)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -40,7 +40,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -160,13 +160,13 @@ class CasesTest(unittest.TestCase):
             pattern=r'<article class="case-study" id="'+re.escape(c['id'])+r'".*?</article>'
             self.assertEqual(re.search(pattern,self.html,re.S).group(),re.search(pattern,(BASE/'engineering-cases.html').read_text(),re.S).group())
     def test_22_fixed_point_case_contracts(self):
-        case=self.cases[-1];text=json.dumps(case,ensure_ascii=False)
+        case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 4 个案例',self.html)
+        self.assertIn('工程阅读 / 5 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
-        self.assertEqual(self.cases[-1]['id'],'ti-fixed-point-fft')
-        self.assertNotIn(self.cases[-1]['id'],[p['id'] for p in self.catalog['projects']])
+        self.assertEqual(case['id'],'ti-fixed-point-fft')
+        self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
     def test_23_own_fft_model_not_vendor_execution(self):
         # Independent ideal DFT only: no Q15 kernel, vendor source or hardware.
         n,fs,amplitude,k=256,8192,.5,32
@@ -186,4 +186,103 @@ class CasesTest(unittest.TestCase):
         self.renderer.url('https://software-dl.ti.com/msp430/',True)
         for value in ['https://software-dl.ti.com.evil.example/x','https://software-dl.ti.com@evil.example/x','http://software-dl.ti.com/x']:
             with self.assertRaises(ValueError):self.renderer.url(value,True)
+    def test_25_biquad_case_evidence_and_migration_contract(self):
+        c=next(c for c in self.cases if c['id']=='arm-biquad-state-precision')
+        content=json.dumps(c,ensure_ascii=False)
+        for token in ['1.14.3','2023-01-20','postShift','1.99798583984375','0.998992919921875','168 字节','32 ms','未下载、编译或执行','不是整机应用报告','LICENSE.txt','Apache 2.0','无本站或独立第三方板卡实测']:
+            self.assertIn(token,content)
+        self.assertEqual(c['last_verified'],'2026-10-19')
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        self.assertTrue(all('/v1.14.3/' in s['url'] for s in c['sources'] if 'arm-software.github.io' in s['url']))
+        self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'arm-software.github.io','www.keil.arm.com'})
+        self.assertIn('knowledge.html?topic=iir-fir',[link['url'] for link in c['learning_links']])
+        self.assertIn('没有模拟 CMSIS-DSP',content)
+    @staticmethod
+    def own_df1(samples,coeffs,state=(0.,0.,0.,0.)):
+        # Original ideal recurrence, not a vendor implementation or Q15 emulator.
+        # Keep one explicit state per stream; do not download or execute CMSIS-DSP.
+        b0,b1,b2,a1,a2=coeffs;x1,x2,y1,y2=state;out=[]
+        for x in samples:
+            y=b0*x+b1*x1+b2*x2+a1*y1+a2*y2
+            out.append(y);x1,x2,y1,y2=x,x1,y,y1
+        return out,(x1,x2,y1,y2)
+    def test_26_own_biquad_exact_baseline_and_wrong_sign(self):
+        coeffs=[.0625,0,0,1.5,-.5625]
+        stored=[round(c*2**14) for c in coeffs]
+        self.assertEqual(stored,[1024,0,0,24576,-9216])
+        self.assertEqual([stored[0],0,*stored[1:]],[1024,0,0,0,24576,-9216])
+        self.assertEqual([c/2**14 for c in stored],coeffs)
+        response,_=self.own_df1([.25,0,0,0],coeffs)
+        self.assertEqual(response,[.015625,.0234375,.0263671875,.0263671875])
+        self.assertEqual([y*2**15 for y in response],[512,768,864,864])
+        self.assertEqual(coeffs[0]/(1-coeffs[3]-coeffs[4]),1)
+        a1,a2=-1.5,.5625
+        poles=[(a1+cmath.sqrt(a1*a1+4*a2))/2,(a1-cmath.sqrt(a1*a1+4*a2))/2]
+        self.assertAlmostEqual(poles[0].real,.3106601717798212,14)
+        self.assertAlmostEqual(poles[1].real,-1.8106601717798212,14)
+        self.assertGreater(max(map(abs,poles)),1.8)
+    def test_27_own_near_unit_coefficient_failure(self):
+        # Exact decimal rational inputs, nearest-integer conversion only.
+        from fractions import Fraction as F
+        r=F(999,1000)
+        q=[round(c*2**14) for c in [(1-r)**2,0,0,2*r,-r*r]]
+        self.assertEqual(q,[0,0,0,32735,-16351])
+        b0,b1,b2,a1,a2=[F(c,2**14) for c in q]
+        self.assertEqual(b0,0);self.assertEqual(a1+a2,1)
+        # Characteristic polynomial has roots 1 and 16351/16384.
+        for z in [F(1),F(16351,16384)]:self.assertEqual(z*z-a1*z-a2,0)
+        output,_=self.own_df1([.25,-.25,.125]*20,list(map(float,[b0,b1,b2,a1,a2])))
+        self.assertEqual(output,[0.]*60)
+        # Own floor-quantized positive-state recurrence. No claim of vendor bit equivalence.
+        y1=y2=64
+        for _ in range(128):
+            y=(q[3]*y1+q[4]*y2)//2**14
+            self.assertEqual(y,64);y1,y2=y,y1
+    def test_28_own_cascade_preserves_nonzero_input_and_dc(self):
+        from fractions import Fraction as F
+        r=F(999,1000);b=round((1-r)*2**15);a=round(r*2**15)
+        self.assertEqual([b,0,0,0,a,0],[33,0,0,0,32735,0])
+        self.assertGreater(b,0);self.assertLess(F(a,2**15),1)
+        self.assertEqual(F(a,2**15),F('0.998992919921875'))
+        self.assertEqual((F(b,2**15)/(1-F(a,2**15)))**2,1)
+        self.assertNotEqual(F(a,2**15),r)
+        y=64
+        for _ in range(64):y=a*y//2**15
+        self.assertEqual(y,0)
+    def test_29_own_stream_block_and_channel_invariants(self):
+        coeffs=[.0625,0,0,1.5,-.5625]
+        a=[.25]+[0.]*63;b=[0.]*8+[-.125]*56
+        expected,final=self.own_df1(a,coeffs)
+        state=(0.,0.,0.,0.);chunked=[];offset=0
+        for size in [1,7,24,32]:
+            part,state=self.own_df1(a[offset:offset+size],coeffs,state)
+            chunked.extend(part);offset+=size
+        self.assertEqual(offset,len(a));self.assertEqual(chunked,expected);self.assertEqual(state,final)
+        reset_output=[];offset=0
+        for size in [1,7,24,32]:
+            part,_=self.own_df1(a[offset:offset+size],coeffs)
+            reset_output.extend(part);offset+=size
+        self.assertNotEqual(reset_output,expected);self.assertEqual(reset_output[1],0)
+        states=[(0.,0.,0.,0.)]*2;outputs=[[],[]]
+        for i in range(64):
+            for channel,samples in enumerate([a,b]):
+                part,states[channel]=self.own_df1([samples[i]],coeffs,states[channel])
+                outputs[channel].extend(part)
+        self.assertEqual(outputs,[self.own_df1(samples,coeffs)[0] for samples in [a,b]])
+        self.assertEqual(self.own_df1(a,coeffs)[0],expected)
+    def test_30_biquad_memory_and_service_budget(self):
+        self.assertEqual((6+4)*2,20)
+        self.assertEqual((6+4)*2*2,40)
+        self.assertEqual((6+4)*2*2+2*32*2,168)
+        self.assertEqual(32/1000*1000,32)
+    def test_31_arm_source_host_validation_is_exact(self):
+        for value in ['https://arm-software.github.io/CMSIS-DSP/v1.14.3/index.html','https://www.keil.arm.com/packs/cmsis-dsp-arm/versions/']:
+            self.renderer.url(value,True)
+        for host in ['arm-software.github.io','www.keil.arm.com']:
+            for value in [f'https://{host}.evil.example/a',f'https://{host}@evil.example/a',f'http://{host}/a',f'https://{host}:443/a']:
+                with self.assertRaises(ValueError):self.renderer.url(value,True)
+        with self.assertRaises(ValueError):self.renderer.url('https://other.github.io/CMSIS-DSP/v1.14.3/index.html',True)
+    def test_32_biquad_keeps_general_question_context(self):
+        script="const a=require('node:assert/strict'),h=require('./question-helper.js');a.equal(h.inferTopic('/engineering-cases.html','','#arm-biquad-state-precision',''),'');a.equal(h.inferTopic('/engineering-cases.html','?topic=iir-fir','#arm-biquad-state-precision',''),'iir-fir');"
+        subprocess.run(['node','-e',script],cwd=ROOT,check=True,capture_output=True)
 if __name__=='__main__':unittest.main(verbosity=2)
