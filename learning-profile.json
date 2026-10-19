@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "version": "2026-10-19.1",
+  "reviewedAt": "2026-10-19",
+  "reviewLabel": "2026-10-19 · 北京时间",
+  "evidenceNote": "依据已复核的学习对话整理。看过讲解、提出问题和观察到现象，都不等于独立答对；本页不读取私人聊天，也不自动判分。",
+  "preferredPriority": [
+    "filters-frequency-delay",
+    "filters-design-families",
+    "fourier-bin-check",
+    "kalman-14",
+    "fourier-amplitude",
+    "fourier-overview",
+    "filters-impulse",
+    "filters-coefficients",
+    "filters-specification",
+    "sampling",
+    "spectrum-axis",
+    "spectrum-window",
+    "transfer-first-order",
+    "transfer-z",
+    "control-feedback",
+    "control-poles",
+    "pll-input",
+    "pll-loop",
+    "kalman-15",
+    "kalman-16"
+  ],
+  "lessonAdditions": [
+    {
+      "id": "filters-frequency-delay",
+      "topic": "iir-fir",
+      "title": "平均为什么会让正弦变小，甚至消失？",
+      "prerequisites": [],
+      "prerequisiteText": "会逐拍读采样点并求平均；先用四个数验证。",
+      "goal": "用一次 4 点平均，把平滑、延迟与频率抵消连起来，再与 EMA 的渐衰权重对照。",
+      "check": "取稳态重复输入 1、0、−1、0，算 4 点平均的连续两拍输出；解释为何会抵消、恒定输入为何保留，再说明加大窗口为何可能同时增大延迟、减小某些正弦的幅度。",
+      "why": "最近已观察到平滑带来的滞后，下一步需要解释窗口如何改变幅度，以及何时会完全抵消。",
+      "frontier": "已观察到平均窗口与 EMA 平滑强度影响滞后；幅度变化、抵消根因和 FIR / IIR 的适用判断仍待独立验证。",
+      "href": "notes-iir-fir.html#filter-average",
+      "experiment": "simulation.html?scenario=frequency",
+      "material": "先用 4 点平均手算，再对照笔记中的频率零点与边界；EMA 对照只解释权重与取舍，不把曲线更平当作更正确。",
+      "estimatedMinutes": "10–15 分钟"
+    },
+    {
+      "id": "filters-design-families",
+      "topic": "iir-fir",
+      "title": "FIR / IIR 与巴特沃斯，分的是同一件事吗？",
+      "prerequisites": [
+        "filters-frequency-delay"
+      ],
+      "prerequisiteText": "先能解释平均导致的抵消与延迟，再区分结构和响应指标。",
+      "goal": "把冲激响应分类、频率响应形状和设计方法放在不同层次，先理解巴特沃斯与切比雪夫的取舍。",
+      "check": "分别说明 FIR / IIR 与巴特沃斯、切比雪夫描述什么；再举一个通带纹波、过渡带或延迟指标，说明为什么不能仅凭“适合正弦”选滤波器。",
+      "why": "最新追问已经到结构和设计家族的关系；先补清抵消机制，再接这个概念连接。",
+      "frontier": "已提出 FIR / IIR 与设计家族的关系问题；当前没有独立解释正确的记录。",
+      "href": "knowledge.html?topic=filter-families",
+      "experiment": "simulation.html?scenario=frequency",
+      "material": "知识页含巴特沃斯与切比雪夫的设计比较；椭圆部分待继续讲解。相关实验辅助观察幅度与延迟，不是设计家族的系数设计器。",
+      "estimatedMinutes": "10–15 分钟"
+    },
+    {
+      "id": "fourier-bin-check",
+      "topic": "transforms",
+      "title": "多采一倍真实样本，3 Hz 还在 X[6] 吗？",
+      "prerequisites": [],
+      "prerequisiteText": "会使用 Δf = fs / N 与 k = f / Δf，并分清真实样本与补零。",
+      "goal": "保持 fs = 12 Hz，把真实采样点从 24 增至 48，区分物理频率、频点编号与观察时长。",
+      "check": "不看答案，算 N = 48 时的观察时长、Δf 和 3 Hz 所在 k；说明 X[6] 现在对应几 Hz，以及真实加采样为何不等于补零。",
+      "why": "傅里叶讲解已推进到 DFT 频点；这道最近的 3 Hz 检查尚未收到独立回答。",
+      "frontier": "已讲解频域整体认识、DFT 频点与 FFT；最新真实样本翻倍检查与较早的 C(3) = 3 + 4i 均待独立作答。",
+      "href": "notes-transforms.html#fourier-dft-check",
+      "experiment": "simulation.html?scenario=frequency",
+      "material": "笔记有这道检查及自查答案；先独立计算，再展开答案。相关仿真用于观察频率，不代替本题手算。",
+      "estimatedMinutes": "10–15 分钟"
+    }
+  ],
+  "lessonOverrides": {
+    "kalman-14": {
+      "goal": "回看第 14 讲已讲过的二状态预测，用预测状态 [100.2, 20] 与协方差 [[4.02, 1], [1, 104]] 核对误差传播。",
+      "check": "根据笔记给定的 F、P、Q，独立重算预测状态 [100.2, 20] 与 P⁻ = [[4.02, 1], [1, 104]]；解释交叉协方差从哪里来，以及为什么两侧都乘矩阵。",
+      "frontier": "第 14 讲状态和协方差预测已有讲解；第 15 讲只是预告，仍需先独立核算第 14 讲。",
+      "prerequisiteText": "回看本节给定的二状态 F、P、Q 和单位，再独立计算。",
+      "estimatedMinutes": "10–15 分钟"
+    },
+    "fourier-amplitude": {
+      "frontier": "复系数幅相已有讲解；C(3) = 3 + 4i 的独立幅相检查仍未确认。",
+      "prerequisiteText": "先核对笔记的归一化和负指数约定，再做复数模长与相位计算。"
+    }
+  },
+  "evidence": {
+    "filters-frequency-delay": {
+      "status": "pending",
+      "observedAt": "2026-10-14",
+      "summary": "已观察到加大窗口或加重 EMA 平滑会增加滞后；幅度是否变化、为何变平的解释仍待核对。"
+    },
+    "filters-design-families": {
+      "status": "pending",
+      "observedAt": "2026-10-14",
+      "summary": "已提出 FIR / IIR 与巴特沃斯、切比雪夫、椭圆关系的疑问，尚无独立答对证据。"
+    },
+    "fourier-bin-check": {
+      "status": "pending",
+      "summary": "12 Hz 采样、真实点数从 24 增至 48 的 3 Hz 频点检查尚未独立作答。"
+    },
+    "fourier-amplitude": {
+      "status": "pending",
+      "summary": "较早的 C(3) = 3 + 4i 检查仍未独立作答，保留为并行回看任务。"
+    },
+    "fourier-overview": {
+      "status": "explained",
+      "summary": "傅里叶总体认识、复系数与 DFT 频点已有讲解；未据此推断掌握。"
+    },
+    "kalman-14": {
+      "status": "explained",
+      "summary": "第 14 讲已讲到预测状态和协方差数值例；独立复算仍待确认。"
+    },
+    "kalman-15": {
+      "status": "pending",
+      "summary": "测量更新目前是下一讲预告，不按已讲解或已掌握处理。"
+    }
+  },
+  "topicSummaries": [
+    {
+      "topic": "iir-fir",
+      "title": "IIR / FIR · 当前主线",
+      "status": "pending",
+      "frontier": "从看到滞后，走到解释抵消与幅度。",
+      "summary": "最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。",
+      "check": "下一次验证：4 点平均为何会抵消 1、0、−1、0？",
+      "href": "notes-iir-fir.html#filter-boundaries"
+    },
+    {
+      "topic": "transforms",
+      "title": "傅里叶 · 并行检查",
+      "status": "explained",
+      "frontier": "已讲解 DFT 频点与 FFT；最新频点题待答。",
+      "summary": "保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。",
+      "check": "下一次验证：观察时长、Δf 与 k 怎样一起变化？",
+      "href": "notes-transforms.html#fourier-frontier"
+    },
+    {
+      "topic": "kalman",
+      "title": "卡尔曼 · 预测之后",
+      "status": "explained",
+      "frontier": "第 14 讲已讲解，第 15 讲为预告。",
+      "summary": "已讲到预测状态 [100.2, 20] 与协方差 [[4.02, 1], [1, 104]]；尚无新增独立答对证据。",
+      "check": "下一次验证：独立重算 FPFᵀ + Q，再接测量更新。",
+      "href": "notes-kalman.html#kalman-frontier"
+    }
+  ],
+  "latestLearningAt": "2026-10-14"
+}
