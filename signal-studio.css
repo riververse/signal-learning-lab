@@ -1,11 +1,11 @@
 /* Approved cool mathematical studio; load after all legacy styles. */
-/* RIVER mathematical studio preview. Isolated from the published site; load last on preview pages. */
+/* Shared production skin. Preserve scientific content, geometry and interaction contracts. */
 body.math-studio {
   --studio-paper: #f2f5fa;
   --studio-white: #ffffff;
   --studio-ink: #202734;
-  --studio-muted: #606b7d;
-  --studio-line: #d6dde8;
+  --studio-muted: #536176;
+  --studio-line: #bdc8d8;
   --studio-blue: #4b43e8;
   --studio-blue-wash: #eeedff;
   --studio-math: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
@@ -60,7 +60,7 @@ body.math-studio {
 .math-studio .studio-flow-mobile { display: none; }
 .math-studio .studio-flow text { font-family: var(--studio-sans); fill: var(--studio-ink); }
 .math-studio .studio-flow .s-axis { fill: none; stroke: #d1d9e7; stroke-width: 1; }
-.math-studio .studio-flow .s-tick { font-size: 12px; fill: #606b7d; }
+.math-studio .studio-flow .s-tick { font-size: 12px; fill: #536176; }
 .math-studio .studio-flow .s-label { font-size: 14px; fill: #4f5a70; }
 .math-studio .studio-flow .s-label-main { font-size: 18px; font-weight: 600; }
 .math-studio .studio-flow .s-label-formula { font-family: var(--studio-math); font-size: 20px; font-style: italic; }
@@ -75,7 +75,7 @@ body.math-studio {
 .math-studio .studio-figure figcaption strong { color: var(--studio-ink); font-weight: 500; }
 .math-studio .studio-reading-line { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; border-top: 1px solid var(--studio-line); border-bottom: 1px solid var(--studio-line); padding: 22px 0 24px; }
 .math-studio .studio-reading-step { display: flex; align-items: flex-start; gap: 16px; min-width: 0; }
-.math-studio .studio-reading-step > span { font-family: var(--studio-serif); font-size: 28px; line-height: 1.2; color: #606b7d; }
+.math-studio .studio-reading-step > span { font-family: var(--studio-serif); font-size: 28px; line-height: 1.2; color: #536176; }
 .math-studio .studio-reading-step strong { display: block; font-size: 14px; font-weight: 600; }
 .math-studio .studio-reading-step p { margin-top: 3px; color: var(--studio-muted); font-size: 12px; }
 .math-studio .studio-index { padding-top: 62px; }
@@ -541,28 +541,28 @@ body.math-studio.lab-shell .qh-host :is(button,a,input,textarea,select,summary):
 
 /* Production palette compatibility. Layout and interactions remain in their original files. */
 /* Literal palette compatibility: style.css */
-:where(body.math-studio) header{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) header{border-bottom:1px solid #bdc8d8}
 :where(body.math-studio) .brand,:where(body.math-studio).brand{color:#087d70}
-:where(body.math-studio) .tag,:where(body.math-studio).tag,:where(body.math-studio) .hint,:where(body.math-studio).hint,:where(body.math-studio) footer{color:#606b7d}
-:where(body.math-studio) .intro,:where(body.math-studio).intro{color:#606b7d}
-:where(body.math-studio) .plotpanel,:where(body.math-studio).plotpanel,:where(body.math-studio) aside,:where(body.math-studio) article{border:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) button,:where(body.math-studio) select{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .tag,:where(body.math-studio).tag,:where(body.math-studio) .hint,:where(body.math-studio).hint,:where(body.math-studio) footer{color:#536176}
+:where(body.math-studio) .intro,:where(body.math-studio).intro{color:#536176}
+:where(body.math-studio) .plotpanel,:where(body.math-studio).plotpanel,:where(body.math-studio) aside,:where(body.math-studio) article{border:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) button,:where(body.math-studio) select{background:#ffffff;border:1px solid #bdc8d8}
 :where(body.math-studio) button:hover{background:#e9edf6}
 :where(body.math-studio) button:focus-visible,:where(body.math-studio) input:focus-visible,:where(body.math-studio) select:focus-visible{outline:3px solid #4b43e8}
 :where(body.math-studio) .control output,:where(body.math-studio).control output{color:#202734}
 :where(body.math-studio) input[type=range]{accent-color:#087d70}
-:where(body.math-studio) .metric small,:where(body.math-studio).metric small{color:#606b7d}
+:where(body.math-studio) .metric small,:where(body.math-studio).metric small{color:#536176}
 :where(body.math-studio) article b{color:#1d64b3}
 :where(body.math-studio) .formula,:where(body.math-studio).formula{color:#202734}
 :where(body.math-studio) .iir,:where(body.math-studio).iir{color:#087d70}
 :where(body.math-studio) .fir,:where(body.math-studio).fir{color:#1d64b3}
 :where(body.math-studio) .kalman,:where(body.math-studio).kalman{color:#9a5800}
-:where(body.math-studio) .notice,:where(body.math-studio).notice{border-left:3px solid #9a5800;background:#ffffff;color:#606b7d}
-:where(body.math-studio) pre{background:#ffffff;border:1px solid #d6dde8}
-:where(body.math-studio) footer{border-top:1px solid #d6dde8}
+:where(body.math-studio) .notice,:where(body.math-studio).notice{border-left:3px solid #9a5800;background:#ffffff;color:#536176}
+:where(body.math-studio) pre{background:#ffffff;border:1px solid #bdc8d8}
+:where(body.math-studio) footer{border-top:1px solid #bdc8d8}
 :where(body.math-studio) .guide .formula,:where(body.math-studio).guide .formula{background:#ffffff}
 :where(body.math-studio) .guide a,:where(body.math-studio).guide a,:where(body.math-studio) .reading-links a,:where(body.math-studio).reading-links a{color:#1d64b3}
-:where(body.math-studio) .curve-toggle,:where(body.math-studio).curve-toggle{border:1px solid #d6dde8}
+:where(body.math-studio) .curve-toggle,:where(body.math-studio).curve-toggle{border:1px solid #bdc8d8}
 :where(body.math-studio) .curve-toggle:focus-within,:where(body.math-studio).curve-toggle:focus-within{outline:2px solid #4b43e8}
 
 /* Literal palette compatibility: notes.css */
@@ -571,362 +571,362 @@ body.math-studio.lab-shell .qh-host :is(button,a,input,textarea,select,summary):
 body:where(.math-studio).kalman-notes{--accent:#4b43e8;--accent-soft:#e9edf6}
 :where(body.math-studio) .skip-link,:where(body.math-studio).skip-link{background:#ffffff}
 :where(body.math-studio) .toc a:hover,:where(body.math-studio).toc a:hover{background:#ffffff}
-:where(body.math-studio) .toc-index,:where(body.math-studio).toc-index{color:#606b7d}
+:where(body.math-studio) .toc-index,:where(body.math-studio).toc-index{color:#536176}
 :where(body.math-studio) .notebook,:where(body.math-studio).notebook{box-shadow:none}
-:where(body.math-studio) .frontier-box,:where(body.math-studio).frontier-box{border:1px solid #d6dde8}
-:where(body.math-studio) .note,:where(body.math-studio).note,:where(body.math-studio) .warning,:where(body.math-studio).warning,:where(body.math-studio) .next-checkpoint,:where(body.math-studio).next-checkpoint{border-left:3px solid #d6dde8;background:#e9edf6;color:#202734}
+:where(body.math-studio) .frontier-box,:where(body.math-studio).frontier-box{border:1px solid #bdc8d8}
+:where(body.math-studio) .note,:where(body.math-studio).note,:where(body.math-studio) .warning,:where(body.math-studio).warning,:where(body.math-studio) .next-checkpoint,:where(body.math-studio).next-checkpoint{border-left:3px solid #bdc8d8;background:#e9edf6;color:#202734}
 :where(body.math-studio) .warning,:where(body.math-studio).warning{border-left-color:#9a5800;color:#9a5800}
-:where(body.math-studio) .formula,:where(body.math-studio).formula,:where(body.math-studio) .equation,:where(body.math-studio).equation{background:#ffffff;border:1px solid #d6dde8;color:#1d64b3}
-:where(body.math-studio) .kalman-notes .formula,:where(body.math-studio).kalman-notes .formula,:where(body.math-studio) .kalman-notes .equation,:where(body.math-studio).kalman-notes .equation{background:#ffffff;border-color:#d6dde8;color:#202734}
+:where(body.math-studio) .formula,:where(body.math-studio).formula,:where(body.math-studio) .equation,:where(body.math-studio).equation{background:#ffffff;border:1px solid #bdc8d8;color:#1d64b3}
+:where(body.math-studio) .kalman-notes .formula,:where(body.math-studio).kalman-notes .formula,:where(body.math-studio) .kalman-notes .equation,:where(body.math-studio).kalman-notes .equation{background:#ffffff;border-color:#bdc8d8;color:#202734}
 :where(body.math-studio) code{background:#ffffff}
 :where(body.math-studio) pre{background:#ffffff}
 :where(body.math-studio) .worked-example,:where(body.math-studio).worked-example{background:#ffffff}
 :where(body.math-studio) .worked-example .formula,:where(body.math-studio).worked-example .formula{background:#ffffff}
-:where(body.math-studio) .notebook details,:where(body.math-studio).notebook details{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .notebook details,:where(body.math-studio).notebook details{border:1px solid #bdc8d8;background:#ffffff}
 :where(body.math-studio) th{background:#ffffff;color:#202734}
 :where(body.math-studio) tbody tr:nth-child(even){background:#ffffff}
-:where(body.math-studio) .status-label,:where(body.math-studio).status-label{background:#e9edf6;color:#606b7d}
+:where(body.math-studio) .status-label,:where(body.math-studio).status-label{background:#e9edf6;color:#536176}
 :where(body.math-studio) .status-label.pending,:where(body.math-studio).status-label.pending{background:#e9edf6;color:#9a5800}
 :where(body.math-studio) .figure,:where(body.math-studio).figure{background:#ffffff}
-:where(body.math-studio) .learning-route>li::before,:where(body.math-studio).learning-route>li::before{border:1px solid #d6dde8}
+:where(body.math-studio) .learning-route>li::before,:where(body.math-studio).learning-route>li::before{border:1px solid #bdc8d8}
 
 /* Literal palette compatibility: future-learning.css */
-body:where(.math-studio).page--future .future-status{border:1px solid #d6dde8;background:#e9edf6}
-body:where(.math-studio).page--future .future-boundary{border-left:3px solid #d6dde8;color:#606b7d}
-body:where(.math-studio).page--future .future-context{border-left:2px solid #d6dde8}
-body:where(.math-studio).page--future .equation{border:1px solid #d6dde8}
-body:where(.math-studio).page--future .future-example{border-left:3px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--future .future-detail summary{color:#606b7d}
-body:where(.math-studio).page--future .note{border-left:3px solid #d6dde8}
-body:where(.math-studio).page--future .future-flow span:not(:last-child)::after{color:#606b7d}
+body:where(.math-studio).page--future .future-status{border:1px solid #bdc8d8;background:#e9edf6}
+body:where(.math-studio).page--future .future-boundary{border-left:3px solid #bdc8d8;color:#536176}
+body:where(.math-studio).page--future .future-context{border-left:2px solid #bdc8d8}
+body:where(.math-studio).page--future .equation{border:1px solid #bdc8d8}
+body:where(.math-studio).page--future .future-example{border-left:3px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--future .future-detail summary{color:#536176}
+body:where(.math-studio).page--future .note{border-left:3px solid #bdc8d8}
+body:where(.math-studio).page--future .future-flow span:not(:last-child)::after{color:#536176}
 
 /* Literal palette compatibility: lab-shell.css */
 body:where(.math-studio).lab-shell ::selection{background:#e9edf6;color:#202734}
 body:where(.math-studio).lab-shell :is(a, button, input, select, summary):focus-visible{outline:3px solid #4b43e8}
-body:where(.math-studio).lab-shell .lab-site-mark{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell .lab-brand-divider{color:#606b7d}
-body:where(.math-studio).lab-shell .lab-nav-group + .lab-nav-group{border-left:1px solid #d6dde8}
-body:where(.math-studio).lab-shell .lab-nav-label{color:#606b7d}
-body:where(.math-studio).lab-shell .lab-nav-links a{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-mark{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-brand-divider{color:#536176}
+body:where(.math-studio).lab-shell .lab-nav-group + .lab-nav-group{border-left:1px solid #bdc8d8}
+body:where(.math-studio).lab-shell .lab-nav-label{color:#536176}
+body:where(.math-studio).lab-shell .lab-nav-links a{color:#536176}
 body:where(.math-studio).lab-shell .lab-nav-links a:hover{background:#ffffff}
 body:where(.math-studio).lab-shell .lab-nav-links a[aria-current=page]{background:#e9edf6}
-body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)){border-color:#d6dde8;color:#202734}
-body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)):hover{background:#e9edf6;border-color:#d6dde8}
+body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)){border-color:#bdc8d8;color:#202734}
+body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)):hover{background:#e9edf6;border-color:#bdc8d8}
 body:where(.math-studio).lab-shell:not(.page--motion) .answers button,body:where(.math-studio).lab-shell:not(.page--motion) .check button{background:#ffffff}
-body:where(.math-studio).lab-shell:not(.page--motion) .answers button:hover,body:where(.math-studio).lab-shell:not(.page--motion) .check button:hover{border-color:#d6dde8}
-body:where(.math-studio).lab-shell:not(.page--motion) select{border-color:#d6dde8}
-body:where(.math-studio).lab-shell:not(.page--motion) :is(.equation,.math,.formula){background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).lab-shell:not(.page--motion) :is(.note,.notice){border-left-color:#d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell:not(.page--motion) .answers button:hover,body:where(.math-studio).lab-shell:not(.page--motion) .check button:hover{border-color:#bdc8d8}
+body:where(.math-studio).lab-shell:not(.page--motion) select{border-color:#bdc8d8}
+body:where(.math-studio).lab-shell:not(.page--motion) :is(.equation,.math,.formula){background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).lab-shell:not(.page--motion) :is(.note,.notice){border-left-color:#bdc8d8;background:#ffffff}
 body:where(.math-studio).lab-shell:not(.page--motion) details{background:#ffffff}
 body:where(.math-studio).lab-shell:not(.page--motion) :is(.result,.check,.coef-grid>div,.component,.twocol article){background:#ffffff}
 body:where(.math-studio).lab-shell:not(.page--motion) pre{background:#ffffff}
-body:where(.math-studio).page--index .page-shortcut a{border-bottom:1px solid #d6dde8}
-body:where(.math-studio).page--index .curve-toggle{border:1px solid #d6dde8;color:#606b7d;background:#ffffff}
-body:where(.math-studio).page--index .metric span{color:#606b7d}
-body:where(.math-studio).page--index .control label{color:#606b7d}
+body:where(.math-studio).page--index .page-shortcut a{border-bottom:1px solid #bdc8d8}
+body:where(.math-studio).page--index .curve-toggle{border:1px solid #bdc8d8;color:#536176;background:#ffffff}
+body:where(.math-studio).page--index .metric span{color:#536176}
+body:where(.math-studio).page--index .control label{color:#536176}
 body:where(.math-studio).page--index .guide .formula{background:#ffffff}
 body:where(.math-studio).page--index .iir{color:#087d70}
 body:where(.math-studio).page--index .fir{color:#1d64b3}
 body:where(.math-studio).page--index .kalman{color:#9a5800}
-body:where(.math-studio).page--index .cards article{border-top:2px solid #d6dde8}
-body:where(.math-studio).page--index .cards article + article{border-left:1px solid #d6dde8}
-body:where(.math-studio).page--index .notice{border-left:3px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--kalman .facts section{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).page--kalman .facts section + section{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--index .cards article{border-top:2px solid #bdc8d8}
+body:where(.math-studio).page--index .cards article + article{border-left:1px solid #bdc8d8}
+body:where(.math-studio).page--index .notice{border-left:3px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--kalman .facts section{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).page--kalman .facts section + section{background:#ffffff;border-color:#bdc8d8}
 body:where(.math-studio).page--kalman .mix div:first-child{background:#e9edf6}
 body:where(.math-studio).page--kalman .mix div:last-child{background:#e9edf6}
-body:where(.math-studio).page--transforms main > nav[role=tablist] button[aria-selected=false]{background:#e9edf6;color:#606b7d;border-color:#d6dde8}
-body:where(.math-studio).page--frequency .modes button[aria-pressed=false]{background:#e9edf6;color:#606b7d;border-color:#d6dde8}
+body:where(.math-studio).page--transforms main > nav[role=tablist] button[aria-selected=false]{background:#e9edf6;color:#536176;border-color:#bdc8d8}
+body:where(.math-studio).page--frequency .modes button[aria-pressed=false]{background:#e9edf6;color:#536176;border-color:#bdc8d8}
 body:where(.math-studio).page--frequency .track{background:#e9edf6}
-body:where(.math-studio).page--engineering .modes a{border:1px solid #d6dde8}
+body:where(.math-studio).page--engineering .modes a{border:1px solid #bdc8d8}
 body:where(.math-studio).lab-shell .toc a[aria-current=location]{background:#e9edf6}
 body:where(.math-studio).lab-shell .toc a:hover{background:#ffffff}
-body:where(.math-studio).lab-shell .notebook .frontier-box{border-color:#d6dde8}
-body:where(.math-studio).lab-shell .notebook .worked-example{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).lab-shell .notebook :is(.formula,.equation){background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .notebook .frontier-box{border-color:#bdc8d8}
+body:where(.math-studio).lab-shell .notebook .worked-example{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).lab-shell .notebook :is(.formula,.equation){background:#ffffff;border-color:#bdc8d8}
 body:where(.math-studio).lab-shell .notebook .warning{background:#e9edf6;color:#9a5800}
-body:where(.math-studio).lab-shell .notebook .next-checkpoint{color:#606b7d}
-body:where(.math-studio).lab-shell .notebook th{background:#ffffff;color:#606b7d}
+body:where(.math-studio).lab-shell .notebook .next-checkpoint{color:#536176}
+body:where(.math-studio).lab-shell .notebook th{background:#ffffff;color:#536176}
 body:where(.math-studio).lab-shell .notebook tbody tr:nth-child(even){background:#ffffff}
-body:where(.math-studio).lab-shell .notebook .status-label{background:#e9edf6;color:#606b7d}
+body:where(.math-studio).lab-shell .notebook .status-label{background:#e9edf6;color:#536176}
 body:where(.math-studio).lab-shell .notebook .status-label.pending{background:#e9edf6;color:#9a5800}
-body:where(.math-studio).page--motion .hero .eyebrow{color:#606b7d}
-body:where(.math-studio).page--motion .hero-stats{border-left:1px solid #d6dde8}
-body:where(.math-studio).page--motion .side-panel{border-top:3px solid #d6dde8}
-body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#d6dde8}
-body:where(.math-studio).page--motion .lesson.active span{color:#606b7d}
-body:where(.math-studio).page--motion button:hover{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).page--motion .chart-controls button.active{border-color:#d6dde8}
+body:where(.math-studio).page--motion .hero .eyebrow{color:#536176}
+body:where(.math-studio).page--motion .hero-stats{border-left:1px solid #bdc8d8}
+body:where(.math-studio).page--motion .side-panel{border-top:3px solid #bdc8d8}
+body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#bdc8d8}
+body:where(.math-studio).page--motion .lesson.active span{color:#536176}
+body:where(.math-studio).page--motion button:hover{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).page--motion .chart-controls button.active{border-color:#bdc8d8}
 body:where(.math-studio).page--motion .stepno{background:#ffffff}
 body:where(.math-studio).page--motion .filter-option.chosen{background:#e9edf6}
-body:where(.math-studio).page--motion .callout{color:#606b7d;background:#ffffff}
+body:where(.math-studio).page--motion .callout{color:#536176;background:#ffffff}
 body:where(.math-studio).page--motion .callout.warning{color:#9a5800;background:#e9edf6;border-color:#9a5800}
-body:where(.math-studio).page--motion .formula{color:#606b7d;background:#ffffff}
+body:where(.math-studio).page--motion .formula{color:#536176;background:#ffffff}
 body:where(.math-studio).page--motion tr.focused td{background:#e9edf6}
-body:where(.math-studio).page--motion td{border-color:#d6dde8}
-body:where(.math-studio).page--motion .badge{background:#e9edf6;color:#606b7d}
+body:where(.math-studio).page--motion td{border-color:#bdc8d8}
+body:where(.math-studio).page--motion .badge{background:#e9edf6;color:#536176}
 body:where(.math-studio).page--motion .badge.offline-badge{background:#e9edf6;color:#9a5800}
 body:where(.math-studio).page--motion .path-row{background:#ffffff}
 body:where(.math-studio).page--motion .source-meta{color:#9a5800}
-body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{color:#536176}
 body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary:hover,body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[open] > summary{background:#ffffff}
 body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[data-current-topic=true] > summary{background:#e9edf6}
 body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links{box-shadow:none}
 body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links a:hover{background:#ffffff}
 body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links a[aria-current=page]{background:#e9edf6}
-@media (max-width: 1120px){body:where(.math-studio).lab-shell .lab-nav-links a{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell .lab-nav-links a[aria-current=page]{border-color:#d6dde8;background:#e9edf6}
-body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[data-current-topic=true] > summary{border-color:#d6dde8;background:#e9edf6}}
-@media screen{body:where(.math-studio).lab-shell :is(.figure,code){background:#ffffff;color:#606b7d}
-body:where(.math-studio).lab-shell .toc-index{color:#606b7d}
-body:where(.math-studio).lab-shell .learning-route>li::before{border-color:#d6dde8}
-body:where(.math-studio).page--frequency .legend label:first-child{color:#606b7d}
+@media (max-width: 1120px){body:where(.math-studio).lab-shell .lab-nav-links a{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-nav-links a[aria-current=page]{border-color:#bdc8d8;background:#e9edf6}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[data-current-topic=true] > summary{border-color:#bdc8d8;background:#e9edf6}}
+@media screen{body:where(.math-studio).lab-shell :is(.figure,code){background:#ffffff;color:#536176}
+body:where(.math-studio).lab-shell .toc-index{color:#536176}
+body:where(.math-studio).lab-shell .learning-route>li::before{border-color:#bdc8d8}
+body:where(.math-studio).page--frequency .legend label:first-child{color:#536176}
 body:where(.math-studio).page--frequency .legend label:last-child{color:#1d64b3}
-body:where(.math-studio).page--motion button,body:where(.math-studio).page--motion select{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).page--motion button.primary{border-color:#d6dde8;color:#202734}
+body:where(.math-studio).page--motion button,body:where(.math-studio).page--motion select{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).page--motion button.primary{border-color:#bdc8d8;color:#202734}
 body:where(.math-studio).page--motion .lesson{background:#ffffff}
-body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#d6dde8;color:#202734}
-body:where(.math-studio).page--motion .lesson span{color:#606b7d}
-body:where(.math-studio).page--motion .method-chip{background:#ffffff;border-color:#d6dde8;color:#9a5800}
-body:where(.math-studio).page--motion .startup-notice{background:#ffffff;border-color:#d6dde8;color:#9a5800}
-body:where(.math-studio).page--motion .toast{background:#ffffff;color:#202734;border:1px solid #d6dde8}
+body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#bdc8d8;color:#202734}
+body:where(.math-studio).page--motion .lesson span{color:#536176}
+body:where(.math-studio).page--motion .method-chip{background:#ffffff;border-color:#bdc8d8;color:#9a5800}
+body:where(.math-studio).page--motion .startup-notice{background:#ffffff;border-color:#bdc8d8;color:#9a5800}
+body:where(.math-studio).page--motion .toast{background:#ffffff;color:#202734;border:1px solid #bdc8d8}
 body:where(.math-studio).page--motion .positive{color:#087d70}
 body:where(.math-studio).page--motion .negative{color:#b74167}
-body:where(.math-studio).page--motion .swatch.dashed{border-top-color:#606b7d}
-body:where(.math-studio).lab-shell .lab-site-header{border-top-color:#d6dde8}
-body:where(.math-studio).lab-shell .lab-site-brand{color:#606b7d}
+body:where(.math-studio).page--motion .swatch.dashed{border-top-color:#536176}
+body:where(.math-studio).lab-shell .lab-site-header{border-top-color:#bdc8d8}
+body:where(.math-studio).lab-shell .lab-site-brand{color:#536176}
 body:where(.math-studio).lab-shell .lab-site-mark{background:#ffffff}
 body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links{box-shadow:none}}
 
 /* Literal palette compatibility: architecture.css */
-body:where(.math-studio).lab-shell .lab-site-header.architecture-header{border-top:3px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell .architecture-header .architecture-nav a{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-header.architecture-header{border-top:3px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a{color:#536176}
 body:where(.math-studio).lab-shell .architecture-header .architecture-nav a:hover{color:#202734;background:#ffffff}
-body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{color:#087d70;background:#e9edf6;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{color:#087d70;background:#e9edf6;border-color:#bdc8d8}
 body:where(.math-studio).lab-shell .site-skip{background:#ffffff;color:#202734}
-body:where(.math-studio).lab-shell .topic-action{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+body:where(.math-studio).lab-shell .topic-action{border:1px solid #bdc8d8;background:#ffffff;color:#202734}
 body:where(.math-studio).lab-shell .topic-action:hover{background:#e9edf6}
-body:where(.math-studio).lab-shell .legacy-topic-context{color:#606b7d}
+body:where(.math-studio).lab-shell .legacy-topic-context{color:#536176}
 
 /* Literal palette compatibility: knowledge.css */
-body:where(.math-studio).page--knowledge .map-intro p{color:#606b7d}
-body:where(.math-studio).page--knowledge .map-thread{color:#606b7d}
+body:where(.math-studio).page--knowledge .map-intro p{color:#536176}
+body:where(.math-studio).page--knowledge .map-thread{color:#536176}
 body:where(.math-studio).page--knowledge .map-thread span:not(:last-child)::after{background:#e9edf6}
-body:where(.math-studio).page--knowledge a.topic-card{color:#202734;border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--knowledge a.topic-card:hover{border-color:#d6dde8;background:#ffffff}
-body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge a.topic-card{color:#202734;border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--knowledge a.topic-card:hover{border-color:#bdc8d8;background:#ffffff}
+body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-bottom:1px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .diagram-blue{stroke:#1d64b3}
 body:where(.math-studio).page--knowledge .diagram-amber{stroke:#9a5800}
 body:where(.math-studio).page--knowledge .diagram-link{stroke:#1d64b3}
-body:where(.math-studio).page--knowledge .topic-card p{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-state{color:#9a5800;border-top:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .topic-card--transforms .topic-state,body:where(.math-studio).page--knowledge .topic-card--iir-fir .topic-state,body:where(.math-studio).page--knowledge .topic-card--kalman .topic-state{color:#606b7d}
-body:where(.math-studio).page--knowledge .map-frontier{border-left:3px solid #d6dde8}
-body:where(.math-studio).page--knowledge .map-frontier p{color:#606b7d}
-body:where(.math-studio).page--knowledge .map-archive{border-top:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .topic-heading p{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-view-nav{border-bottom:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .topic-view-nav a{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-card p{color:#536176}
+body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#536176}
+body:where(.math-studio).page--knowledge .topic-state{color:#9a5800;border-top:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .topic-card--transforms .topic-state,body:where(.math-studio).page--knowledge .topic-card--iir-fir .topic-state,body:where(.math-studio).page--knowledge .topic-card--kalman .topic-state{color:#536176}
+body:where(.math-studio).page--knowledge .map-frontier{border-left:3px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .map-frontier p{color:#536176}
+body:where(.math-studio).page--knowledge .map-archive{border-top:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .topic-heading p{color:#536176}
+body:where(.math-studio).page--knowledge .topic-view-nav{border-bottom:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .topic-view-nav a{color:#536176}
 body:where(.math-studio).page--knowledge .topic-view-nav a[aria-current=page]{color:#087d70;border-bottom-color:#087d70}
-body:where(.math-studio).page--knowledge .knowledge-body > article{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--knowledge .knowledge-body .source-context{color:#606b7d}
-body:where(.math-studio).page--knowledge .concept-strip article{border-left:2px solid #d6dde8}
-body:where(.math-studio).page--knowledge .concept-strip article p{color:#606b7d}
-body:where(.math-studio).page--knowledge .learning-boundary{background:#ffffff;border-left:3px solid #d6dde8}
+body:where(.math-studio).page--knowledge .knowledge-body > article{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--knowledge .knowledge-body .source-context{color:#536176}
+body:where(.math-studio).page--knowledge .concept-strip article{border-left:2px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .concept-strip article p{color:#536176}
+body:where(.math-studio).page--knowledge .learning-boundary{background:#ffffff;border-left:3px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .learning-boundary h3{color:#9a5800}
-body:where(.math-studio).page--knowledge .notebook-entry{background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .notebook-entry{background:#ffffff;border:1px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .notebook-pending .topic-state{color:#9a5800}
-body:where(.math-studio).page--knowledge .pll-flow span{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .pll-flow span{border:1px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).page--knowledge .practical-case{border-left:3px solid #087d70}
 
 /* Literal palette compatibility: knowledge-lessons.css */
-body:where(.math-studio).page--knowledge .control-check{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .control-check{border-left:3px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).page--knowledge .control-figure-viewport{scrollbar-color:#8999b3 #f2f5fa}
 body:where(.math-studio).page--knowledge .control-visual-key .action{color:#087d70}
 body:where(.math-studio).page--knowledge .control-visual-key .disturbance{color:#9a5800}
-body:where(.math-studio).page--knowledge .control-visual-key .measurement{color:#606b7d}
+body:where(.math-studio).page--knowledge .control-visual-key .measurement{color:#536176}
 
 /* Literal palette compatibility: filter-families.css */
-body:where(.math-studio).page--knowledge .ff-comparison{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--knowledge .ff-comparison .ff-caption{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-controls label{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-controls select{color:#202734;background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-comparison{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--knowledge .ff-comparison .ff-caption{color:#536176}
+body:where(.math-studio).page--knowledge .ff-controls label{color:#536176}
+body:where(.math-studio).page--knowledge .ff-controls select{color:#202734;background:#ffffff;border:1px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .ff-controls select:focus-visible,body:where(.math-studio).page--knowledge #topic-filter-families summary:focus-visible{outline:2px solid #4b43e8}
-body:where(.math-studio).page--knowledge .ff-legend{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-legend{color:#536176}
 body:where(.math-studio).page--knowledge .ff-legend span::before{border-top:3px solid #087d70}
 body:where(.math-studio).page--knowledge .ff-legend .ff-cheby::before{border-color:#9a5800}
-body:where(.math-studio).page--knowledge .ff-plot-heading{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-plot{border-left:1px solid #d6dde8;border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-plot-heading{color:#536176}
+body:where(.math-studio).page--knowledge .ff-plot{border-left:1px solid #bdc8d8;border-bottom:1px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .ff-plot path[data-ff-curve]{stroke:#087d70}
 body:where(.math-studio).page--knowledge .ff-plot path[data-ff-curve=cheby1]{stroke:#9a5800}
-body:where(.math-studio).page--knowledge .ff-gridline{stroke:#d6dde8}
+body:where(.math-studio).page--knowledge .ff-gridline{stroke:#bdc8d8}
 body:where(.math-studio).page--knowledge .ff-reference{stroke:#1d64b3}
-body:where(.math-studio).page--knowledge .ff-ylabels{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-xlabels{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-axis-title{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-summary{border-top:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-ylabels{color:#536176}
+body:where(.math-studio).page--knowledge .ff-xlabels{color:#536176}
+body:where(.math-studio).page--knowledge .ff-axis-title{color:#536176}
+body:where(.math-studio).page--knowledge .ff-summary{border-top:1px solid #bdc8d8}
 body:where(.math-studio).page--knowledge .ff-parameters dt{color:#202734}
-body:where(.math-studio).page--knowledge .ff-parameters dd{color:#606b7d}
-body:where(.math-studio).page--knowledge .ff-detail{background:#ffffff;border:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .ff-detail summary{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-parameters dd{color:#536176}
+body:where(.math-studio).page--knowledge .ff-detail{background:#ffffff;border:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .ff-detail summary{color:#536176}
 body:where(.math-studio).page--knowledge .ff-detail .formula{background:#ffffff}
-body:where(.math-studio).page--knowledge .ff-source-list{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-source-list{color:#536176}
 
 /* Literal palette compatibility: notes-iir-fir.css */
-:where(body.math-studio) .page--notes-iir-fir .if-controls :is(select,button),:where(body.math-studio).page--notes-iir-fir .if-controls :is(select,button){border:1px solid #d6dde8}
+:where(body.math-studio) .page--notes-iir-fir .if-controls :is(select,button),:where(body.math-studio).page--notes-iir-fir .if-controls :is(select,button){border:1px solid #bdc8d8}
 :where(body.math-studio) .page--notes-iir-fir .if-meter,:where(body.math-studio).page--notes-iir-fir .if-meter{background:#ffffff}
 
 /* Literal palette compatibility: hardware-filters.css */
 :where(body.math-studio) .hardware-page,:where(body.math-studio).hardware-page{color:#202734;background:#ffffff}
 :where(body.math-studio) .hw-main a,:where(body.math-studio).hw-main a{color:#087d70}
 :where(body.math-studio) .hw-status,:where(body.math-studio).hw-status{color:#9a5800}
-:where(body.math-studio) .hw-lede,:where(body.math-studio).hw-lede{color:#606b7d}
-:where(body.math-studio) .hw-hero-diagram,:where(body.math-studio).hw-hero-diagram{color:#087d70;background:#ffffff;border:1px solid #d6dde8}
-:where(body.math-studio) .hw-hero-diagram figcaption,:where(body.math-studio).hw-hero-diagram figcaption,:where(body.math-studio) .hw-caption,:where(body.math-studio).hw-caption,:where(body.math-studio) .hw-chart figcaption,:where(body.math-studio).hw-chart figcaption{color:#606b7d}
-:where(body.math-studio) .hw-jumps,:where(body.math-studio).hw-jumps{border-block:1px solid #d6dde8}
+:where(body.math-studio) .hw-lede,:where(body.math-studio).hw-lede{color:#536176}
+:where(body.math-studio) .hw-hero-diagram,:where(body.math-studio).hw-hero-diagram{color:#087d70;background:#ffffff;border:1px solid #bdc8d8}
+:where(body.math-studio) .hw-hero-diagram figcaption,:where(body.math-studio).hw-hero-diagram figcaption,:where(body.math-studio) .hw-caption,:where(body.math-studio).hw-caption,:where(body.math-studio) .hw-chart figcaption,:where(body.math-studio).hw-chart figcaption{color:#536176}
+:where(body.math-studio) .hw-jumps,:where(body.math-studio).hw-jumps{border-block:1px solid #bdc8d8}
 :where(body.math-studio) .hw-index,:where(body.math-studio).hw-index{color:#087d70;border-top:2px solid #087d70}
-:where(body.math-studio) .hw-section-title p,:where(body.math-studio).hw-section-title p{color:#606b7d}
-:where(body.math-studio) .hw-taxonomy,:where(body.math-studio).hw-taxonomy{border:1px solid #d6dde8}
+:where(body.math-studio) .hw-section-title p,:where(body.math-studio).hw-section-title p{color:#536176}
+:where(body.math-studio) .hw-taxonomy,:where(body.math-studio).hw-taxonomy{border:1px solid #bdc8d8}
 :where(body.math-studio) .hw-taxonomy>div,:where(body.math-studio).hw-taxonomy>div{background:#ffffff}
-:where(body.math-studio) .hw-taxonomy>div:nth-child(odd),:where(body.math-studio).hw-taxonomy>div:nth-child(odd){border-right:1px solid #d6dde8}
-:where(body.math-studio) .hw-taxonomy>div:nth-child(-n+2),:where(body.math-studio).hw-taxonomy>div:nth-child(-n+2){border-bottom:1px solid #d6dde8}
-:where(body.math-studio) .hw-taxonomy dt,:where(body.math-studio).hw-taxonomy dt{color:#606b7d}
-:where(body.math-studio) .hw-taxonomy p,:where(body.math-studio).hw-taxonomy p{color:#606b7d}
+:where(body.math-studio) .hw-taxonomy>div:nth-child(odd),:where(body.math-studio).hw-taxonomy>div:nth-child(odd){border-right:1px solid #bdc8d8}
+:where(body.math-studio) .hw-taxonomy>div:nth-child(-n+2),:where(body.math-studio).hw-taxonomy>div:nth-child(-n+2){border-bottom:1px solid #bdc8d8}
+:where(body.math-studio) .hw-taxonomy dt,:where(body.math-studio).hw-taxonomy dt{color:#536176}
+:where(body.math-studio) .hw-taxonomy p,:where(body.math-studio).hw-taxonomy p{color:#536176}
 :where(body.math-studio) .hw-note,:where(body.math-studio).hw-note{background:#ffffff;border-left:3px solid #087d70}
-:where(body.math-studio) .hw-chain,:where(body.math-studio).hw-chain{border:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain,:where(body.math-studio).hw-chain{border:1px solid #bdc8d8}
 :where(body.math-studio) .hw-chain li,:where(body.math-studio).hw-chain li{background:#ffffff}
-:where(body.math-studio) .hw-chain li:not(:nth-child(3n)),:where(body.math-studio).hw-chain li:not(:nth-child(3n)){border-right:1px solid #d6dde8}
-:where(body.math-studio) .hw-chain li:nth-child(-n+3),:where(body.math-studio).hw-chain li:nth-child(-n+3){border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain li:not(:nth-child(3n)),:where(body.math-studio).hw-chain li:not(:nth-child(3n)){border-right:1px solid #bdc8d8}
+:where(body.math-studio) .hw-chain li:nth-child(-n+3),:where(body.math-studio).hw-chain li:nth-child(-n+3){border-bottom:1px solid #bdc8d8}
 :where(body.math-studio) .hw-chain strong:before,:where(body.math-studio).hw-chain strong:before{color:#087d70}
-:where(body.math-studio) .hw-chain span,:where(body.math-studio).hw-chain span{color:#606b7d}
-:where(body.math-studio) .hw-pair article,:where(body.math-studio).hw-pair article{border-top:1px solid #d6dde8}
-:where(body.math-studio) .hw-pair p,:where(body.math-studio).hw-pair p{color:#606b7d}
-:where(body.math-studio) .hw-detail,:where(body.math-studio).hw-detail{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .hw-chain span,:where(body.math-studio).hw-chain span{color:#536176}
+:where(body.math-studio) .hw-pair article,:where(body.math-studio).hw-pair article{border-top:1px solid #bdc8d8}
+:where(body.math-studio) .hw-pair p,:where(body.math-studio).hw-pair p{color:#536176}
+:where(body.math-studio) .hw-detail,:where(body.math-studio).hw-detail{border:1px solid #bdc8d8;background:#ffffff}
 :where(body.math-studio) .hw-detail summary::marker,:where(body.math-studio).hw-detail summary::marker{color:#087d70}
-:where(body.math-studio) .hw-detail p,:where(body.math-studio).hw-detail p{color:#606b7d}
+:where(body.math-studio) .hw-detail p,:where(body.math-studio).hw-detail p{color:#536176}
 :where(body.math-studio) .hw-detail pre,:where(body.math-studio).hw-detail pre{background:#ffffff}
-:where(body.math-studio) .hw-lab,:where(body.math-studio).hw-lab{border:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .hw-model,:where(body.math-studio).hw-model{color:#606b7d}
-:where(body.math-studio) .hw-controls label,:where(body.math-studio).hw-controls label{color:#606b7d}
-:where(body.math-studio) .hw-controls select,:where(body.math-studio).hw-controls select{color:#202734;background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .hw-lab,:where(body.math-studio).hw-lab{border:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .hw-model,:where(body.math-studio).hw-model{color:#536176}
+:where(body.math-studio) .hw-controls label,:where(body.math-studio).hw-controls label{color:#536176}
+:where(body.math-studio) .hw-controls select,:where(body.math-studio).hw-controls select{color:#202734;background:#ffffff;border:1px solid #bdc8d8}
 :where(body.math-studio) .hw-button,:where(body.math-studio).hw-button{color:#202734;background:#e9edf6;border:1px solid #087d70}
-:where(body.math-studio) .hw-reset,:where(body.math-studio).hw-reset{color:#606b7d;border-color:#d6dde8}
+:where(body.math-studio) .hw-reset,:where(body.math-studio).hw-reset{color:#536176;border-color:#bdc8d8}
 :where(body.math-studio) .hw-main :focus-visible,:where(body.math-studio).hw-main :focus-visible{outline:3px solid #4b43e8}
-:where(body.math-studio) .hw-metrics,:where(body.math-studio).hw-metrics{border-block:1px solid #d6dde8}
-:where(body.math-studio) .hw-metrics span,:where(body.math-studio).hw-metrics span{color:#606b7d}
+:where(body.math-studio) .hw-metrics,:where(body.math-studio).hw-metrics{border-block:1px solid #bdc8d8}
+:where(body.math-studio) .hw-metrics span,:where(body.math-studio).hw-metrics span{color:#536176}
 :where(body.math-studio) .hw-chart svg,:where(body.math-studio).hw-chart svg{background:#ffffff}
-:where(body.math-studio) .hw-chart svg text,:where(body.math-studio).hw-chart svg text{fill:#606b7d}
-:where(body.math-studio) .hw-legend,:where(body.math-studio).hw-legend{color:#606b7d}
+:where(body.math-studio) .hw-chart svg text,:where(body.math-studio).hw-chart svg text{fill:#536176}
+:where(body.math-studio) .hw-legend,:where(body.math-studio).hw-legend{color:#536176}
 :where(body.math-studio) .hw-target:before,:where(body.math-studio).hw-target:before{color:#087d70}
 :where(body.math-studio) .hw-actual:before,:where(body.math-studio).hw-actual:before{color:#9a5800}
-:where(body.math-studio) .hw-result,:where(body.math-studio).hw-result{border-left:3px solid #9a5800;color:#606b7d}
+:where(body.math-studio) .hw-result,:where(body.math-studio).hw-result{border-left:3px solid #9a5800;color:#536176}
 :where(body.math-studio) .hw-formula,:where(body.math-studio).hw-formula{color:#087d70;background:#ffffff}
-:where(body.math-studio) .hw-state,:where(body.math-studio).hw-state{border:1px solid #d6dde8}
-:where(body.math-studio) .hw-state span,:where(body.math-studio).hw-state span{color:#606b7d}
+:where(body.math-studio) .hw-state,:where(body.math-studio).hw-state{border:1px solid #bdc8d8}
+:where(body.math-studio) .hw-state span,:where(body.math-studio).hw-state span{color:#536176}
 :where(body.math-studio) .hw-state.is-active,:where(body.math-studio).hw-state.is-active{border-color:#087d70;background:#e9edf6}
-:where(body.math-studio) .hw-step-controls output,:where(body.math-studio).hw-step-controls output{color:#606b7d}
-:where(body.math-studio) .hw-implementation-note,:where(body.math-studio).hw-implementation-note{color:#606b7d}
-:where(body.math-studio) .hw-implementations article,:where(body.math-studio).hw-implementations article{border:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .hw-implementations p,:where(body.math-studio).hw-implementations p,:where(body.math-studio) .hw-implementations li,:where(body.math-studio).hw-implementations li{color:#606b7d}
+:where(body.math-studio) .hw-step-controls output,:where(body.math-studio).hw-step-controls output{color:#536176}
+:where(body.math-studio) .hw-implementation-note,:where(body.math-studio).hw-implementation-note{color:#536176}
+:where(body.math-studio) .hw-implementations article,:where(body.math-studio).hw-implementations article{border:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .hw-implementations p,:where(body.math-studio).hw-implementations p,:where(body.math-studio) .hw-implementations li,:where(body.math-studio).hw-implementations li{color:#536176}
 :where(body.math-studio) .hw-implementations .hw-choice,:where(body.math-studio).hw-implementations .hw-choice{color:#087d70}
-:where(body.math-studio) .hw-scenarios article,:where(body.math-studio).hw-scenarios article{border-top:2px solid #d6dde8}
-:where(body.math-studio) .hw-scenarios p,:where(body.math-studio).hw-scenarios p{color:#606b7d}
-:where(body.math-studio) .hw-budget dl>div,:where(body.math-studio).hw-budget dl>div{border-top:1px solid #d6dde8}
+:where(body.math-studio) .hw-scenarios article,:where(body.math-studio).hw-scenarios article{border-top:2px solid #bdc8d8}
+:where(body.math-studio) .hw-scenarios p,:where(body.math-studio).hw-scenarios p{color:#536176}
+:where(body.math-studio) .hw-budget dl>div,:where(body.math-studio).hw-budget dl>div{border-top:1px solid #bdc8d8}
 :where(body.math-studio) .hw-budget dt,:where(body.math-studio).hw-budget dt{color:#087d70}
-:where(body.math-studio) .hw-budget dd,:where(body.math-studio).hw-budget dd{color:#606b7d}
-:where(body.math-studio) .hw-check,:where(body.math-studio).hw-check{border-color:#d6dde8}
-:where(body.math-studio) .hw-sources,:where(body.math-studio).hw-sources{border-top:1px solid #d6dde8}
-:where(body.math-studio) .hw-sources p,:where(body.math-studio).hw-sources p,:where(body.math-studio) .hw-sources li,:where(body.math-studio).hw-sources li{color:#606b7d}
-@media(max-width:840px){:where(body.math-studio) .hw-chain li:nth-child(odd),:where(body.math-studio).hw-chain li:nth-child(odd){border-right:1px solid #d6dde8}
-:where(body.math-studio) .hw-chain li:nth-child(-n+4),:where(body.math-studio).hw-chain li:nth-child(-n+4){border-bottom:1px solid #d6dde8}}
-@media(max-width:560px){:where(body.math-studio) .hw-taxonomy>div:not(:last-child),:where(body.math-studio).hw-taxonomy>div:not(:last-child){border-bottom:1px solid #d6dde8}}
+:where(body.math-studio) .hw-budget dd,:where(body.math-studio).hw-budget dd{color:#536176}
+:where(body.math-studio) .hw-check,:where(body.math-studio).hw-check{border-color:#bdc8d8}
+:where(body.math-studio) .hw-sources,:where(body.math-studio).hw-sources{border-top:1px solid #bdc8d8}
+:where(body.math-studio) .hw-sources p,:where(body.math-studio).hw-sources p,:where(body.math-studio) .hw-sources li,:where(body.math-studio).hw-sources li{color:#536176}
+@media(max-width:840px){:where(body.math-studio) .hw-chain li:nth-child(odd),:where(body.math-studio).hw-chain li:nth-child(odd){border-right:1px solid #bdc8d8}
+:where(body.math-studio) .hw-chain li:nth-child(-n+4),:where(body.math-studio).hw-chain li:nth-child(-n+4){border-bottom:1px solid #bdc8d8}}
+@media(max-width:560px){:where(body.math-studio) .hw-taxonomy>div:not(:last-child),:where(body.math-studio).hw-taxonomy>div:not(:last-child){border-bottom:1px solid #bdc8d8}}
 
 /* Literal palette compatibility: engineering-cases.css */
 :where(body.math-studio) .engineering-cases-page,:where(body.math-studio).engineering-cases-page{background:#ffffff;color:#202734}
-:where(body.math-studio) .cases-back,:where(body.math-studio).cases-back{color:#606b7d}
+:where(body.math-studio) .cases-back,:where(body.math-studio).cases-back{color:#536176}
 :where(body.math-studio) .case-kicker,:where(body.math-studio).case-kicker{color:#087d70}
-:where(body.math-studio) .cases-intro p,:where(body.math-studio).cases-intro p,:where(body.math-studio) .case-study p,:where(body.math-studio).case-study p,:where(body.math-studio) .cases-evidence p,:where(body.math-studio).cases-evidence p{color:#606b7d}
+:where(body.math-studio) .cases-intro p,:where(body.math-studio).cases-intro p,:where(body.math-studio) .case-study p,:where(body.math-studio).case-study p,:where(body.math-studio) .cases-evidence p,:where(body.math-studio).cases-evidence p{color:#536176}
 :where(body.math-studio) .cases-intro .cases-lede,:where(body.math-studio).cases-intro .cases-lede{color:#202734}
-:where(body.math-studio) .case-index-card,:where(body.math-studio).case-index-card{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .case-index-card,:where(body.math-studio).case-index-card{border:1px solid #bdc8d8;background:#ffffff}
 :where(body.math-studio) .case-index-card span,:where(body.math-studio).case-index-card span{color:#087d70}
 :where(body.math-studio) .case-index-card strong,:where(body.math-studio).case-index-card strong{color:#202734}
-:where(body.math-studio) .case-index-card small,:where(body.math-studio).case-index-card small{color:#606b7d}
+:where(body.math-studio) .case-index-card small,:where(body.math-studio).case-index-card small{color:#536176}
 :where(body.math-studio) .case-index-card:hover,:where(body.math-studio).case-index-card:hover{border-color:#087d70}
 :where(body.math-studio) .cases-evidence,:where(body.math-studio).cases-evidence{border-left:3px solid #9a5800;background:#ffffff}
-:where(body.math-studio) .case-study,:where(body.math-studio).case-study{border-top:1px solid #d6dde8}
+:where(body.math-studio) .case-study,:where(body.math-studio).case-study{border-top:1px solid #bdc8d8}
 :where(body.math-studio) .case-heading .case-kicker,:where(body.math-studio).case-heading .case-kicker{color:#087d70}
-:where(body.math-studio) .case-kicker span,:where(body.math-studio).case-kicker span{border:1px solid #d6dde8}
-:where(body.math-studio) .case-meta,:where(body.math-studio).case-meta{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .case-kicker span,:where(body.math-studio).case-kicker span{border:1px solid #bdc8d8}
+:where(body.math-studio) .case-meta,:where(body.math-studio).case-meta{background:#ffffff;border:1px solid #bdc8d8}
 :where(body.math-studio) .case-meta dt,:where(body.math-studio).case-meta dt{color:#1d64b3}
-:where(body.math-studio) .case-meta dd,:where(body.math-studio).case-meta dd{color:#606b7d}
+:where(body.math-studio) .case-meta dd,:where(body.math-studio).case-meta dd{color:#536176}
 :where(body.math-studio) .case-section h3,:where(body.math-studio).case-section h3,:where(body.math-studio) .case-transfer h3,:where(body.math-studio).case-transfer h3,:where(body.math-studio) .case-sources h3,:where(body.math-studio).case-sources h3{color:#202734}
 :where(body.math-studio) .case-block h4,:where(body.math-studio).case-block h4{color:#202734}
 :where(body.math-studio) .case-citations a,:where(body.math-studio).case-citations a{color:#087d70}
-:where(body.math-studio) .case-procedure,:where(body.math-studio).case-procedure{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .case-procedure,:where(body.math-studio).case-procedure{background:#ffffff;border:1px solid #bdc8d8}
 :where(body.math-studio) .case-procedure .case-boundary,:where(body.math-studio).case-procedure .case-boundary{color:#9a5800}
-:where(body.math-studio) .case-procedure li,:where(body.math-studio).case-procedure li{color:#606b7d}
+:where(body.math-studio) .case-procedure li,:where(body.math-studio).case-procedure li{color:#536176}
 :where(body.math-studio) .case-transfer,:where(body.math-studio).case-transfer{border-left:3px solid #087d70}
 :where(body.math-studio) .case-sources a,:where(body.math-studio).case-sources a{color:#1d64b3}
-:where(body.math-studio) .case-sources li span,:where(body.math-studio).case-sources li span{color:#606b7d}
-:where(body.math-studio) .case-footer,:where(body.math-studio).case-footer{color:#606b7d;border-top:1px solid #d6dde8}
+:where(body.math-studio) .case-sources li span,:where(body.math-studio).case-sources li span{color:#536176}
+:where(body.math-studio) .case-footer,:where(body.math-studio).case-footer{color:#536176;border-top:1px solid #bdc8d8}
 :where(body.math-studio) .case-footer a,:where(body.math-studio).case-footer a{color:#087d70}
 :where(body.math-studio) .engineering-cases-page a:focus-visible,:where(body.math-studio).engineering-cases-page a:focus-visible{outline:2px solid #4b43e8}
-:where(body.math-studio) .engineering-cases-page .case-chain,:where(body.math-studio).engineering-cases-page .case-chain{background:#ffffff;border-left:2px solid #d6dde8}
-:where(body.math-studio) .engineering-cases-page .case-chain li,:where(body.math-studio).engineering-cases-page .case-chain li{color:#606b7d}
-:where(body.math-studio) .engineering-cases-page .case-chain li+li:before,:where(body.math-studio).engineering-cases-page .case-chain li+li:before{color:#606b7d}
+:where(body.math-studio) .engineering-cases-page .case-chain,:where(body.math-studio).engineering-cases-page .case-chain{background:#ffffff;border-left:2px solid #bdc8d8}
+:where(body.math-studio) .engineering-cases-page .case-chain li,:where(body.math-studio).engineering-cases-page .case-chain li{color:#536176}
+:where(body.math-studio) .engineering-cases-page .case-chain li+li:before,:where(body.math-studio).engineering-cases-page .case-chain li+li:before{color:#536176}
 :where(body.math-studio) .engineering-cases-page .case-transfer .project-links a,:where(body.math-studio).engineering-cases-page .case-transfer .project-links a{color:#1d64b3}
 
 /* Literal palette compatibility: exploration.css */
-body:where(.math-studio).exploration-page .exploration-state{border-bottom:1px solid #d6dde8}
-body:where(.math-studio).exploration-page .exploration-route{border-left:2px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).exploration-page .exploration-filter,body:where(.math-studio).exploration-page .exploration-reset{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-state{border-bottom:1px solid #bdc8d8}
+body:where(.math-studio).exploration-page .exploration-route{border-left:2px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-filter,body:where(.math-studio).exploration-page .exploration-reset{border:1px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).exploration-page .exploration-filter[aria-pressed=true]{background:#e9edf6;color:#087d70;border-color:#1d64b3}
-body:where(.math-studio).exploration-page .exploration-search input{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).exploration-page .exploration-search input::placeholder{color:#606b7d}
+body:where(.math-studio).exploration-page .exploration-search input{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-search input::placeholder{color:#536176}
 body:where(.math-studio).exploration-page .project-meta{color:#1d64b3}
-body:where(.math-studio).exploration-page .project-chain{border-left:2px solid #d6dde8}
-body:where(.math-studio).exploration-page .project-chain li{color:#606b7d}
-body:where(.math-studio).exploration-page .project-chain li+li::before{color:#606b7d}
+body:where(.math-studio).exploration-page .project-chain{border-left:2px solid #bdc8d8}
+body:where(.math-studio).exploration-page .project-chain li{color:#536176}
+body:where(.math-studio).exploration-page .project-chain li+li::before{color:#536176}
 body:where(.math-studio).exploration-page .project-warning{color:#9a5800}
-body:where(.math-studio).exploration-page .project-details summary{color:#606b7d}
+body:where(.math-studio).exploration-page .project-details summary{color:#536176}
 body:where(.math-studio).exploration-page .project-facts dt{color:#1d64b3}
-body:where(.math-studio).exploration-page .project-facts dd{color:#606b7d}
-body:where(.math-studio).exploration-page .radar-jump{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .project-facts dd{color:#536176}
+body:where(.math-studio).exploration-page .radar-jump{border:1px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).exploration-page .radar-guide{border-top:2px solid #1d64b3}
-body:where(.math-studio).exploration-page .radar-map li+li::before{color:#606b7d}
+body:where(.math-studio).exploration-page .radar-map li+li::before{color:#536176}
 body:where(.math-studio).exploration-page .radar-map svg{stroke:#087d70}
-body:where(.math-studio).exploration-page .radar-roles>div{border-left:2px solid #d6dde8}
+body:where(.math-studio).exploration-page .radar-roles>div{border-left:2px solid #bdc8d8}
 body:where(.math-studio).exploration-page .radar-roles dt{color:#1d64b3}
 body:where(.math-studio).exploration-page .radar-caution{background:#ffffff}
 body:where(.math-studio).exploration-page .radar-caution h3{color:#9a5800}
-body:where(.math-studio).exploration-page .radar-caution p{color:#606b7d}
+body:where(.math-studio).exploration-page .radar-caution p{color:#536176}
 body:where(.math-studio).exploration-page p.radar-architecture{color:#1d64b3}
-body:where(.math-studio).exploration-page .radar-process li{background:#ffffff;border:1px solid #d6dde8;color:#606b7d}
-body:where(.math-studio).exploration-page .radar-process li+li::before{color:#606b7d}
-body:where(.math-studio).exploration-page .radar-start{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).exploration-page p.radar-boundary{border-top:1px solid #d6dde8;color:#606b7d}
+body:where(.math-studio).exploration-page .radar-process li{background:#ffffff;border:1px solid #bdc8d8;color:#536176}
+body:where(.math-studio).exploration-page .radar-process li+li::before{color:#536176}
+body:where(.math-studio).exploration-page .radar-start{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).exploration-page p.radar-boundary{border-top:1px solid #bdc8d8;color:#536176}
 
 /* Literal palette compatibility: simulation.css */
-body:where(.math-studio).page--simulation{--sim-ground:#f2f5fa;--sim-surface:#ffffff;--sim-line:#d6dde8;--sim-ink:#202734;--sim-muted:#606b7d;--sim-trace:#4b43e8}
+body:where(.math-studio).page--simulation{--sim-ground:#f2f5fa;--sim-surface:#ffffff;--sim-line:#bdc8d8;--sim-ink:#202734;--sim-muted:#536176;--sim-trace:#4b43e8}
 body:where(.math-studio).page--simulation .simulation-scenarios{background:#ffffff}
 body:where(.math-studio).page--simulation .simulation-scenarios a:hover{background:#ffffff}
 body:where(.math-studio).page--simulation .simulation-scenarios a[aria-current="page"]{background:#e9edf6;color:#202734}
-body:where(.math-studio).page--simulation .simulation-algorithm select{background:#ffffff;border:1px solid #d6dde8}
-body:where(.math-studio).page--simulation .simulation-classics>a{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--simulation .simulation-algorithm select{background:#ffffff;border:1px solid #bdc8d8}
+body:where(.math-studio).page--simulation .simulation-classics>a{border:1px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).page--simulation .simulation-classics>a:hover,body:where(.math-studio).page--simulation .simulation-classics>a[aria-current="true"]{background:#e9edf6;border-color:#087d70}
 body:where(.math-studio).page--simulation .simulation-selection-note{color:#9a5800;background:#ffffff}
 body:where(.math-studio).page--simulation .simulation-status{background:#e9edf6}
 body:where(.math-studio).page--simulation .simulation-status[data-error="true"]{background:#e9edf6;color:#9a5800}
-body:where(.math-studio).page--simulation .simulation-status button{border:1px solid #d6dde8}
+body:where(.math-studio).page--simulation .simulation-status button{border:1px solid #bdc8d8}
 body:where(.math-studio).page--simulation .simulation-noscript{color:#9a5800}
 body:where(.math-studio).page--simulation :is(a,button,select,summary):focus-visible{outline:3px solid #4b43e8}
 
 /* Literal palette compatibility: frequency.css */
-:where(body.math-studio) .modes button[aria-pressed=false],:where(body.math-studio).modes button[aria-pressed=false]{color:#1d64b3;background:#e9edf6;border-color:#d6dde8}
-:where(body.math-studio) .legend label:first-child,:where(body.math-studio).legend label:first-child{color:#606b7d}
+:where(body.math-studio) .modes button[aria-pressed=false],:where(body.math-studio).modes button[aria-pressed=false]{color:#1d64b3;background:#e9edf6;border-color:#bdc8d8}
+:where(body.math-studio) .legend label:first-child,:where(body.math-studio).legend label:first-child{color:#536176}
 :where(body.math-studio) .legend label:last-child,:where(body.math-studio).legend label:last-child{color:#1d64b3}
 :where(body.math-studio) .component,:where(body.math-studio).component{background:#ffffff}
 :where(body.math-studio) .component strong,:where(body.math-studio).component strong{color:#1d64b3}
@@ -936,293 +936,293 @@ body:where(.math-studio).page--simulation :is(a,button,select,summary):focus-vis
 :where(body.math-studio) .twocol article,:where(body.math-studio).twocol article{background:#ffffff}
 
 /* Literal palette compatibility: kalman.css */
-:where(body.math-studio) header{border-bottom:1px solid #d6dde8;color:#1d64b3}
-:where(body.math-studio) header span{color:#606b7d}
-:where(body.math-studio) .lead,:where(body.math-studio).lead{color:#606b7d}
-:where(body.math-studio) .facts section,:where(body.math-studio).facts section{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) header{border-bottom:1px solid #bdc8d8;color:#1d64b3}
+:where(body.math-studio) header span{color:#536176}
+:where(body.math-studio) .lead,:where(body.math-studio).lead{color:#536176}
+:where(body.math-studio) .facts section,:where(body.math-studio).facts section{background:#ffffff;border:1px solid #bdc8d8}
 :where(body.math-studio) .facts section+section,:where(body.math-studio).facts section+section{background:#e9edf6;border-color:#9a5800}
-:where(body.math-studio) .facts p,:where(body.math-studio).facts p{color:#606b7d}
-:where(body.math-studio) .lab,:where(body.math-studio).lab{border:1px solid #d6dde8}
-:where(body.math-studio) .step,:where(body.math-studio).step{color:#606b7d}
+:where(body.math-studio) .facts p,:where(body.math-studio).facts p{color:#536176}
+:where(body.math-studio) .lab,:where(body.math-studio).lab{border:1px solid #bdc8d8}
+:where(body.math-studio) .step,:where(body.math-studio).step{color:#536176}
 :where(body.math-studio) output{color:#1d64b3}
 :where(body.math-studio) input{accent-color:#1d64b3}
-:where(body.math-studio) .ends,:where(body.math-studio).ends{color:#606b7d}
+:where(body.math-studio) .ends,:where(body.math-studio).ends{color:#536176}
 :where(body.math-studio) .mix div:first-child,:where(body.math-studio).mix div:first-child{background:#e9edf6}
 :where(body.math-studio) .mix div:last-child,:where(body.math-studio).mix div:last-child{background:#e9edf6}
 :where(body.math-studio) .result,:where(body.math-studio).result{background:#ffffff}
-:where(body.math-studio) .result p,:where(body.math-studio).result p{color:#606b7d}
-:where(body.math-studio) .note,:where(body.math-studio).note{color:#606b7d;border-left:3px solid #d6dde8}
-:where(body.math-studio) details{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .result p,:where(body.math-studio).result p{color:#536176}
+:where(body.math-studio) .note,:where(body.math-studio).note{color:#536176;border-left:3px solid #bdc8d8}
+:where(body.math-studio) details{border:1px solid #bdc8d8;background:#ffffff}
 :where(body.math-studio) .variance strong,:where(body.math-studio).variance strong{color:#1d64b3}
-:where(body.math-studio) .variance small,:where(body.math-studio).variance small{color:#606b7d}
-:where(body.math-studio) button{background:#e9edf6;border:1px solid #d6dde8}
+:where(body.math-studio) .variance small,:where(body.math-studio).variance small{color:#536176}
+:where(body.math-studio) button{background:#e9edf6;border:1px solid #bdc8d8}
 :where(body.math-studio) button:hover{background:#e9edf6}
 :where(body.math-studio) button:focus-visible,:where(body.math-studio) summary:focus-visible,:where(body.math-studio) input:focus-visible{outline:3px solid #4b43e8}
 :where(body.math-studio) .equation,:where(body.math-studio).equation,:where(body.math-studio) .math,:where(body.math-studio).math{background:#ffffff}
-:where(body.math-studio) .answers button,:where(body.math-studio).answers button{color:#202734;background:#ffffff;border-color:#d6dde8}
+:where(body.math-studio) .answers button,:where(body.math-studio).answers button{color:#202734;background:#ffffff;border-color:#bdc8d8}
 :where(body.math-studio) .answers button:hover,:where(body.math-studio).answers button:hover{background:#e9edf6}
-:where(body.math-studio) footer{color:#606b7d}
+:where(body.math-studio) footer{color:#536176}
 :where(body.math-studio) footer a{color:#1d64b3}
 
 /* Literal palette compatibility: transforms.css */
 :where(body.math-studio) nav{background:#ffffff}
-:where(body.math-studio) nav button{background:#e9edf6;color:#1d64b3;border-color:#d6dde8}
-:where(body.math-studio) nav button[aria-selected=true]{background:#e9edf6;border-color:#d6dde8}
+:where(body.math-studio) nav button{background:#e9edf6;color:#1d64b3;border-color:#bdc8d8}
+:where(body.math-studio) nav button[aria-selected=true]{background:#e9edf6;border-color:#bdc8d8}
 :where(body.math-studio) nav button:hover{background:#e9edf6}
 :where(body.math-studio) a{color:#1d64b3}
 :where(body.math-studio) .coef-grid>div,:where(body.math-studio).coef-grid>div{background:#ffffff}
-:where(body.math-studio) .coef-grid small,:where(body.math-studio).coef-grid small{color:#606b7d}
+:where(body.math-studio) .coef-grid small,:where(body.math-studio).coef-grid small{color:#536176}
 :where(body.math-studio) .check,:where(body.math-studio).check{background:#ffffff}
-:where(body.math-studio) .check button,:where(body.math-studio).check button{color:#1d64b3;border-color:#d6dde8}
+:where(body.math-studio) .check button,:where(body.math-studio).check button{color:#1d64b3;border-color:#bdc8d8}
 :where(body.math-studio) .check button:hover,:where(body.math-studio).check button:hover{background:#e9edf6}
 
 /* Literal palette compatibility: engineering.css */
-:where(body.math-studio) select{border:1px solid #d6dde8;color:#202734}
+:where(body.math-studio) select{border:1px solid #bdc8d8;color:#202734}
 :where(body.math-studio) select:focus-visible{outline:3px solid #4b43e8}
 :where(body.math-studio) .modes a,:where(body.math-studio).modes a{background:#e9edf6}
 :where(body.math-studio) pre{background:#ffffff}
 
 /* Literal palette compatibility: learning-visuals.css */
-body:where(.math-studio).lab-shell .learn-visual{background:#ffffff;border:1px solid #d6dde8;color:#202734}
+body:where(.math-studio).lab-shell .learn-visual{background:#ffffff;border:1px solid #bdc8d8;color:#202734}
 body:where(.math-studio).lab-shell .learn-visual > h3{color:#202734}
-body:where(.math-studio).lab-shell .learn-visual figcaption{color:#606b7d}
+body:where(.math-studio).lab-shell .learn-visual figcaption{color:#536176}
 body:where(.math-studio).lab-shell .learn-visual .lv-scroll{scrollbar-color:#8999b3 #f2f5fa}
 body:where(.math-studio).lab-shell .learn-visual .lv-scroll:focus-visible{outline:3px solid #4b43e8}
-body:where(.math-studio).lab-shell .learn-visual .lv-scroll-hint{color:#606b7d}
-body:where(.math-studio).lab-shell .learn-visual .lv-control{border-bottom:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .learn-visual .lv-scroll-hint{color:#536176}
+body:where(.math-studio).lab-shell .learn-visual .lv-control{border-bottom:1px solid #bdc8d8}
 body:where(.math-studio).lab-shell .learn-visual label{color:#202734}
 body:where(.math-studio).lab-shell .learn-visual output{color:#087d70}
 body:where(.math-studio).lab-shell .learn-visual input[type=range]{accent-color:#087d70}
-body:where(.math-studio).lab-shell .learn-visual .lv-control p{color:#606b7d}
-body:where(.math-studio).lab-shell .learn-visual .lv-readout{color:#202734;border-top:1px solid #d6dde8}
-body:where(.math-studio).lab-shell .notebook .lv-derivation > summary{color:#606b7d}
+body:where(.math-studio).lab-shell .learn-visual .lv-control p{color:#536176}
+body:where(.math-studio).lab-shell .learn-visual .lv-readout{color:#202734;border-top:1px solid #bdc8d8}
+body:where(.math-studio).lab-shell .notebook .lv-derivation > summary{color:#536176}
 body:where(.math-studio).lab-shell .lv-overview{border-left:2px solid #087d70}
 
 /* Literal palette compatibility: next-learning.css */
-:where(body.math-studio) .nl-main,:where(body.math-studio).nl-main{--nl-blue:#1d64b3;--nl-dim:#606b7d}
+:where(body.math-studio) .nl-main,:where(body.math-studio).nl-main{--nl-blue:#1d64b3;--nl-dim:#536176}
 :where(body.math-studio) .nl-main :is(a,button,input,select,summary):focus-visible,:where(body.math-studio).nl-main :is(a,button,input,select,summary):focus-visible{outline:3px solid #4b43e8}
 :where(body.math-studio) .nl-skip,:where(body.math-studio).nl-skip{background:#ffffff}
-:where(body.math-studio) .nl-kicker,:where(body.math-studio).nl-kicker{color:#606b7d}
-:where(body.math-studio) .nl-lead,:where(body.math-studio).nl-lead{color:#606b7d}
-:where(body.math-studio) .nl-recommend,:where(body.math-studio).nl-recommend{border:1px solid #d6dde8;border-top:3px solid #087d70;background:#ffffff}
-:where(body.math-studio) .nl-chip,:where(body.math-studio).nl-chip{color:#087d70;background:#ffffff;border:1px solid #d6dde8}
-:where(body.math-studio) .nl-state-label,:where(body.math-studio).nl-state-label{color:#606b7d}
-:where(body.math-studio) .nl-goal,:where(body.math-studio).nl-goal{color:#606b7d}
+:where(body.math-studio) .nl-kicker,:where(body.math-studio).nl-kicker{color:#536176}
+:where(body.math-studio) .nl-lead,:where(body.math-studio).nl-lead{color:#536176}
+:where(body.math-studio) .nl-recommend,:where(body.math-studio).nl-recommend{border:1px solid #bdc8d8;border-top:3px solid #087d70;background:#ffffff}
+:where(body.math-studio) .nl-chip,:where(body.math-studio).nl-chip{color:#087d70;background:#ffffff;border:1px solid #bdc8d8}
+:where(body.math-studio) .nl-state-label,:where(body.math-studio).nl-state-label{color:#536176}
+:where(body.math-studio) .nl-goal,:where(body.math-studio).nl-goal{color:#536176}
 :where(body.math-studio) .nl-check,:where(body.math-studio).nl-check{border-left:2px solid #1d64b3;background:#ffffff}
 :where(body.math-studio) .nl-check h3,:where(body.math-studio).nl-check h3{color:#1d64b3}
-:where(body.math-studio) .nl-main .nl-why,:where(body.math-studio).nl-main .nl-why{color:#606b7d}
-:where(body.math-studio) .nl-main .nl-material-note,:where(body.math-studio).nl-main .nl-material-note{color:#606b7d}
+:where(body.math-studio) .nl-main .nl-why,:where(body.math-studio).nl-main .nl-why{color:#536176}
+:where(body.math-studio) .nl-main .nl-material-note,:where(body.math-studio).nl-main .nl-material-note{color:#536176}
 :where(body.math-studio) .nl-actions .nl-primary,:where(body.math-studio).nl-actions .nl-primary{background:#e9edf6;color:#202734;border:1px solid #087d70}
 :where(body.math-studio) .nl-actions .nl-primary:hover,:where(body.math-studio).nl-actions .nl-primary:hover{background:#e9edf6}
-:where(body.math-studio) .nl-actions .nl-secondary,:where(body.math-studio).nl-actions .nl-secondary{color:#202734;border:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .nl-completion,:where(body.math-studio).nl-completion{border-top:1px solid #d6dde8}
-:where(body.math-studio) .nl-completion #nl-complete,:where(body.math-studio).nl-completion #nl-complete{background:#ffffff;border-color:#d6dde8;color:#606b7d}
-:where(body.math-studio) .nl-main .nl-text-button,:where(body.math-studio).nl-main .nl-text-button{color:#606b7d}
+:where(body.math-studio) .nl-actions .nl-secondary,:where(body.math-studio).nl-actions .nl-secondary{color:#202734;border:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .nl-completion,:where(body.math-studio).nl-completion{border-top:1px solid #bdc8d8}
+:where(body.math-studio) .nl-completion #nl-complete,:where(body.math-studio).nl-completion #nl-complete{background:#ffffff;border-color:#bdc8d8;color:#536176}
+:where(body.math-studio) .nl-main .nl-text-button,:where(body.math-studio).nl-main .nl-text-button{color:#536176}
 :where(body.math-studio) .nl-status,:where(body.math-studio).nl-status{color:#087d70}
-:where(body.math-studio) .nl-route-controls label,:where(body.math-studio).nl-route-controls label{color:#606b7d}
+:where(body.math-studio) .nl-route-controls label,:where(body.math-studio).nl-route-controls label{color:#536176}
 :where(body.math-studio) .nl-route-controls select,:where(body.math-studio).nl-route-controls select{background:#ffffff}
-:where(body.math-studio) .nl-main .nl-small,:where(body.math-studio).nl-main .nl-small{color:#606b7d}
-:where(body.math-studio) .nl-rules,:where(body.math-studio).nl-rules{border-top:1px solid #d6dde8}
-:where(body.math-studio) .nl-rules summary,:where(body.math-studio).nl-rules summary{color:#606b7d}
-:where(body.math-studio) .nl-rules ol,:where(body.math-studio).nl-rules ol{color:#606b7d}
-:where(body.math-studio) .nl-storage,:where(body.math-studio).nl-storage{border-top:1px solid #d6dde8;color:#606b7d}
-:where(body.math-studio) .nl-storage p,:where(body.math-studio).nl-storage p{color:#606b7d}
+:where(body.math-studio) .nl-main .nl-small,:where(body.math-studio).nl-main .nl-small{color:#536176}
+:where(body.math-studio) .nl-rules,:where(body.math-studio).nl-rules{border-top:1px solid #bdc8d8}
+:where(body.math-studio) .nl-rules summary,:where(body.math-studio).nl-rules summary{color:#536176}
+:where(body.math-studio) .nl-rules ol,:where(body.math-studio).nl-rules ol{color:#536176}
+:where(body.math-studio) .nl-storage,:where(body.math-studio).nl-storage{border-top:1px solid #bdc8d8;color:#536176}
+:where(body.math-studio) .nl-storage p,:where(body.math-studio).nl-storage p{color:#536176}
 :where(body.math-studio) .nl-storage-dot,:where(body.math-studio).nl-storage-dot{background:#e9edf6}
-:where(body.math-studio) .nl-section-heading,:where(body.math-studio).nl-section-heading{border-bottom:1px solid #d6dde8}
-:where(body.math-studio) .nl-section-heading>span,:where(body.math-studio).nl-section-heading>span{color:#606b7d}
-:where(body.math-studio) .nl-evidence-grid h3,:where(body.math-studio).nl-evidence-grid h3{color:#606b7d}
-:where(body.math-studio) .nl-evidence-grid p,:where(body.math-studio).nl-evidence-grid p{color:#606b7d}
-:where(body.math-studio) .nl-evidence>.nl-small,:where(body.math-studio).nl-evidence>.nl-small{border-left:2px solid #d6dde8}
-:where(body.math-studio) .nl-lesson-row,:where(body.math-studio).nl-lesson-row{border-bottom:1px solid #d6dde8}
-:where(body.math-studio) .nl-row-index,:where(body.math-studio).nl-row-index{color:#606b7d}
-:where(body.math-studio) .nl-row-topic,:where(body.math-studio).nl-row-topic{color:#606b7d}
-:where(body.math-studio) .nl-row-detail,:where(body.math-studio).nl-row-detail{color:#606b7d}
-:where(body.math-studio) .nl-lesson-row button,:where(body.math-studio).nl-lesson-row button{border-color:#d6dde8;background:#ffffff}
+:where(body.math-studio) .nl-section-heading,:where(body.math-studio).nl-section-heading{border-bottom:1px solid #bdc8d8}
+:where(body.math-studio) .nl-section-heading>span,:where(body.math-studio).nl-section-heading>span{color:#536176}
+:where(body.math-studio) .nl-evidence-grid h3,:where(body.math-studio).nl-evidence-grid h3{color:#536176}
+:where(body.math-studio) .nl-evidence-grid p,:where(body.math-studio).nl-evidence-grid p{color:#536176}
+:where(body.math-studio) .nl-evidence>.nl-small,:where(body.math-studio).nl-evidence>.nl-small{border-left:2px solid #bdc8d8}
+:where(body.math-studio) .nl-lesson-row,:where(body.math-studio).nl-lesson-row{border-bottom:1px solid #bdc8d8}
+:where(body.math-studio) .nl-row-index,:where(body.math-studio).nl-row-index{color:#536176}
+:where(body.math-studio) .nl-row-topic,:where(body.math-studio).nl-row-topic{color:#536176}
+:where(body.math-studio) .nl-row-detail,:where(body.math-studio).nl-row-detail{color:#536176}
+:where(body.math-studio) .nl-lesson-row button,:where(body.math-studio).nl-lesson-row button{border-color:#bdc8d8;background:#ffffff}
 :where(body.math-studio) .nl-lesson-row[data-complete=true] .nl-row-index,:where(body.math-studio).nl-lesson-row[data-complete=true] .nl-row-index{color:#087d70}
 :where(body.math-studio) .nl-lesson-row[data-current=true],:where(body.math-studio).nl-lesson-row[data-current=true]{border-left:2px solid #087d70;background:#e9edf6}
 :where(body.math-studio) .nl-lesson-row[data-current=true] .nl-row-title,:where(body.math-studio).nl-lesson-row[data-current=true] .nl-row-title{color:#087d70}
-:where(body.math-studio) .nl-data-tools,:where(body.math-studio).nl-data-tools{color:#606b7d}
-:where(body.math-studio) .nl-data-tools summary,:where(body.math-studio).nl-data-tools summary{color:#606b7d}
-:where(body.math-studio) .nl-data-actions button,:where(body.math-studio).nl-data-actions button,:where(body.math-studio) .nl-file-label,:where(body.math-studio).nl-file-label{border:1px solid #d6dde8;background:#ffffff;color:#606b7d}
+:where(body.math-studio) .nl-data-tools,:where(body.math-studio).nl-data-tools{color:#536176}
+:where(body.math-studio) .nl-data-tools summary,:where(body.math-studio).nl-data-tools summary{color:#536176}
+:where(body.math-studio) .nl-data-actions button,:where(body.math-studio).nl-data-actions button,:where(body.math-studio) .nl-file-label,:where(body.math-studio).nl-file-label{border:1px solid #bdc8d8;background:#ffffff;color:#536176}
 :where(body.math-studio) .nl-file-label:focus-within,:where(body.math-studio).nl-file-label:focus-within{outline:3px solid #4b43e8}
-:where(body.math-studio) .nl-main .nl-quiet,:where(body.math-studio).nl-main .nl-quiet{color:#606b7d}
+:where(body.math-studio) .nl-main .nl-quiet,:where(body.math-studio).nl-main .nl-quiet{color:#536176}
 :where(body.math-studio) .nl-case-grid article,:where(body.math-studio).nl-case-grid article{background:#ffffff}
-:where(body.math-studio) .nl-case-tag,:where(body.math-studio).nl-case-tag{color:#606b7d}
-:where(body.math-studio) .nl-case-grid p,:where(body.math-studio).nl-case-grid p{color:#606b7d}
-:where(body.math-studio) .nl-footer,:where(body.math-studio).nl-footer{color:#606b7d}
-:where(body.math-studio) .nl-warning,:where(body.math-studio).nl-warning{background:#e9edf6;border:1px solid #d6dde8;color:#9a5800}
-:where(body.math-studio) .nl-empty,:where(body.math-studio).nl-empty{color:#606b7d}
-@media(max-width:760px){:where(body.math-studio) .nl-evidence-grid>div+div,:where(body.math-studio).nl-evidence-grid>div+div{border-top:1px solid #d6dde8}}
-:where(body.math-studio) .nl-review-stamp,:where(body.math-studio).nl-review-stamp{color:#606b7d}
+:where(body.math-studio) .nl-case-tag,:where(body.math-studio).nl-case-tag{color:#536176}
+:where(body.math-studio) .nl-case-grid p,:where(body.math-studio).nl-case-grid p{color:#536176}
+:where(body.math-studio) .nl-footer,:where(body.math-studio).nl-footer{color:#536176}
+:where(body.math-studio) .nl-warning,:where(body.math-studio).nl-warning{background:#e9edf6;border:1px solid #bdc8d8;color:#9a5800}
+:where(body.math-studio) .nl-empty,:where(body.math-studio).nl-empty{color:#536176}
+@media(max-width:760px){:where(body.math-studio) .nl-evidence-grid>div+div,:where(body.math-studio).nl-evidence-grid>div+div{border-top:1px solid #bdc8d8}}
+:where(body.math-studio) .nl-review-stamp,:where(body.math-studio).nl-review-stamp{color:#536176}
 :where(body.math-studio) .nl-review-stamp time,:where(body.math-studio).nl-review-stamp time{color:#202734}
-:where(body.math-studio) .nl-task-meta,:where(body.math-studio).nl-task-meta{color:#606b7d}
-:where(body.math-studio) .nl-frontier,:where(body.math-studio).nl-frontier{border-top:1px solid #d6dde8}
-:where(body.math-studio) .nl-evidence-badge,:where(body.math-studio).nl-evidence-badge{color:#606b7d}
-:where(body.math-studio) .nl-frontier p,:where(body.math-studio).nl-frontier p{color:#606b7d}
-:where(body.math-studio) .nl-prerequisite,:where(body.math-studio).nl-prerequisite{color:#606b7d}
-:where(body.math-studio) .nl-prerequisite strong,:where(body.math-studio).nl-prerequisite strong{color:#606b7d}
-:where(body.math-studio) .nl-after-check,:where(body.math-studio).nl-after-check{color:#606b7d}
-:where(body.math-studio) .nl-route-details>summary,:where(body.math-studio).nl-route-details>summary{color:#606b7d}
-:where(body.math-studio) .nl-evidence-grid .nl-evidence-status,:where(body.math-studio).nl-evidence-grid .nl-evidence-status{color:#606b7d}
+:where(body.math-studio) .nl-task-meta,:where(body.math-studio).nl-task-meta{color:#536176}
+:where(body.math-studio) .nl-frontier,:where(body.math-studio).nl-frontier{border-top:1px solid #bdc8d8}
+:where(body.math-studio) .nl-evidence-badge,:where(body.math-studio).nl-evidence-badge{color:#536176}
+:where(body.math-studio) .nl-frontier p,:where(body.math-studio).nl-frontier p{color:#536176}
+:where(body.math-studio) .nl-prerequisite,:where(body.math-studio).nl-prerequisite{color:#536176}
+:where(body.math-studio) .nl-prerequisite strong,:where(body.math-studio).nl-prerequisite strong{color:#536176}
+:where(body.math-studio) .nl-after-check,:where(body.math-studio).nl-after-check{color:#536176}
+:where(body.math-studio) .nl-route-details>summary,:where(body.math-studio).nl-route-details>summary{color:#536176}
+:where(body.math-studio) .nl-evidence-grid .nl-evidence-status,:where(body.math-studio).nl-evidence-grid .nl-evidence-status{color:#536176}
 
 /* Literal palette compatibility: mobile-reading.css */
 @media screen and (max-width: 760px){body:where(.math-studio).lab-shell :is(.formula,.equation,.math,pre,.table-scroll,.table-wrap,.mr-table-viewport){scrollbar-color:#8999b3 #f2f5fa}
-body:where(.math-studio).lab-shell .mr-scroll[data-overflow=true]{border-right:2px solid #d6dde8}
-body:where(.math-studio).lab-shell .mr-flow-node{border:1px solid #d6dde8;border-left:3px solid var(--mr-color,#1d64b3);background:#ffffff}
+body:where(.math-studio).lab-shell .mr-scroll[data-overflow=true]{border-right:2px solid #bdc8d8}
+body:where(.math-studio).lab-shell .mr-flow-node{border:1px solid #bdc8d8;border-left:3px solid var(--mr-color,#1d64b3);background:#ffffff}
 body:where(.math-studio).lab-shell .mr-flow-node strong{color:var(--mr-color,#1d64b3)}
-body:where(.math-studio).lab-shell .mr-flow-branches{border-left:2px solid #d6dde8}
+body:where(.math-studio).lab-shell .mr-flow-branches{border-left:2px solid #bdc8d8}
 body:where(.math-studio).lab-shell .mr-flow-return{border-left:2px dashed #9a5800;color:#9a5800}
 body:where(.math-studio).lab-shell .mr-flow-lane span:last-child{color:#1d64b3}
 body:where(.math-studio).lab-shell .mr-original-diagram{background:#ffffff}}
 
 /* Literal palette compatibility: signal-design.css */
-@media screen{body:where(.math-studio).lab-shell{--lab-ground:#f2f5fa;--lab-paper:#ffffff;--lab-plot:#ffffff;--lab-ink:#202734;--lab-muted:#606b7d;--lab-line:#d6dde8;--lab-accent:#4b43e8;--lab-navy:#202734;--lab-soft:#e9edf6}
+@media screen{body:where(.math-studio).lab-shell{--lab-ground:#f2f5fa;--lab-paper:#ffffff;--lab-plot:#ffffff;--lab-ink:#202734;--lab-muted:#536176;--lab-line:#bdc8d8;--lab-accent:#4b43e8;--lab-navy:#202734;--lab-soft:#e9edf6}
 body:where(.math-studio).lab-shell :is(a,button,input,select,summary):focus-visible{outline:2px solid #4b43e8}
-body:where(.math-studio).lab-shell .lab-site-header.architecture-header{background:#ffffff;border-bottom:1px solid #d6dde8}
-body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{background:#e9edf6;border-color:#d6dde8;color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-header.architecture-header{background:#ffffff;border-bottom:1px solid #bdc8d8}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{background:#e9edf6;border-color:#bdc8d8;color:#536176}
 body:where(.math-studio).lab-shell .architecture-header .architecture-nav a:hover{background:#ffffff}
-body:where(.math-studio).lab-shell .signal-motion-toggle{color:#606b7d;border:1px solid #d6dde8}
-body:where(.math-studio).lab-shell .signal-motion-toggle:hover{color:#202734;border-color:#d6dde8}
-body:where(.math-studio).lab-shell .topic-action{background:#ffffff;border-color:#d6dde8;color:#202734}
+body:where(.math-studio).lab-shell .signal-motion-toggle{color:#536176;border:1px solid #bdc8d8}
+body:where(.math-studio).lab-shell .signal-motion-toggle:hover{color:#202734;border-color:#bdc8d8}
+body:where(.math-studio).lab-shell .topic-action{background:#ffffff;border-color:#bdc8d8;color:#202734}
 body:where(.math-studio).lab-shell .topic-action:hover{background:#e9edf6}
-body:where(.math-studio).lab-shell :is(.architecture-footer,.reading-footer){color:#606b7d;border-color:#d6dde8}
+body:where(.math-studio).lab-shell :is(.architecture-footer,.reading-footer){color:#536176;border-color:#bdc8d8}
 body:where(.math-studio).lab-shell :is(.formula,.equation,.math,pre,.table-scroll){scrollbar-color:#8999b3 #f2f5fa}
-body:where(.math-studio).page--knowledge .map-intro p{color:#606b7d}
-body:where(.math-studio).lab-shell .signal-hero{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell .signal-hero svg text{fill:#606b7d}
-body:where(.math-studio).lab-shell .signal-hero svg .signal-legend{fill:#606b7d}
-body:where(.math-studio).lab-shell .signal-hero svg .signal-formula{fill:#606b7d}
-body:where(.math-studio).page--knowledge .map-thread{border-top:1px solid #d6dde8;border-bottom:1px solid #d6dde8;color:#606b7d}
+body:where(.math-studio).page--knowledge .map-intro p{color:#536176}
+body:where(.math-studio).lab-shell .signal-hero{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell .signal-hero svg text{fill:#536176}
+body:where(.math-studio).lab-shell .signal-hero svg .signal-legend{fill:#536176}
+body:where(.math-studio).lab-shell .signal-hero svg .signal-formula{fill:#536176}
+body:where(.math-studio).page--knowledge .map-thread{border-top:1px solid #bdc8d8;border-bottom:1px solid #bdc8d8;color:#536176}
 body:where(.math-studio).page--knowledge .map-thread span:not(:last-child)::after{background:#e9edf6}
-body:where(.math-studio).page--knowledge a.topic-card{border:1px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).page--knowledge a.topic-card:hover{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-right:1px solid #d6dde8}
-body:where(.math-studio).page--knowledge .topic-card p{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#606b7d}
+body:where(.math-studio).page--knowledge a.topic-card{border:1px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).page--knowledge a.topic-card:hover{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-right:1px solid #bdc8d8}
+body:where(.math-studio).page--knowledge .topic-card p{color:#536176}
+body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#536176}
 body:where(.math-studio).page--knowledge .topic-state{color:#9a5800}
-body:where(.math-studio).page--knowledge .back-to-map{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border-color:#d6dde8}
-body:where(.math-studio).page--knowledge .topic-view-nav a[aria-current=page]{color:#606b7d;background:#e9edf6}
-body:where(.math-studio).page--knowledge .knowledge-body > article{border-color:#d6dde8}
-body:where(.math-studio).lab-shell .notebook :is(.worked-example,details){border-color:#d6dde8}
-body:where(.math-studio).lab-shell .reading-layout > .side-panel{border-color:#d6dde8}
+body:where(.math-studio).page--knowledge .back-to-map{color:#536176}
+body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border-color:#bdc8d8}
+body:where(.math-studio).page--knowledge .topic-view-nav a[aria-current=page]{color:#536176;background:#e9edf6}
+body:where(.math-studio).page--knowledge .knowledge-body > article{border-color:#bdc8d8}
+body:where(.math-studio).lab-shell .notebook :is(.worked-example,details){border-color:#bdc8d8}
+body:where(.math-studio).lab-shell .reading-layout > .side-panel{border-color:#bdc8d8}
 body:where(.math-studio).lab-shell.page--frequency .component{background:#ffffff}
-body:where(.math-studio).lab-shell:is(.page--kalman,.page--transforms) :is(.result,.check){border-left:2px solid #d6dde8;background:#ffffff}
-body:where(.math-studio).lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook .worked-example{border-left:2px solid #d6dde8}
+body:where(.math-studio).lab-shell:is(.page--kalman,.page--transforms) :is(.result,.check){border-left:2px solid #bdc8d8;background:#ffffff}
+body:where(.math-studio).lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook .worked-example{border-left:2px solid #bdc8d8}
 body:where(.math-studio).lab-shell.page--future .future-example{background:#ffffff}
 body:where(.math-studio).page--next-learning .nl-recommend{background:#ffffff}
-body:where(.math-studio).exploration-page .exploration-route{border-color:#d6dde8}
-body:where(.math-studio).exploration-page .project-card{border-color:#d6dde8}
-body:where(.math-studio).page--simulation .simulation-workspace{border-color:#d6dde8}
+body:where(.math-studio).exploration-page .exploration-route{border-color:#bdc8d8}
+body:where(.math-studio).exploration-page .project-card{border-color:#bdc8d8}
+body:where(.math-studio).page--simulation .simulation-workspace{border-color:#bdc8d8}
 body:where(.math-studio).page--simulation .simulation-scenarios a[aria-current=page]{background:#e9edf6}}
-@media screen and (max-width:840px){body:where(.math-studio).page--knowledge .topic-diagram{border-bottom:1px solid #d6dde8}}
-@media screen and (max-width:600px){body:where(.math-studio).page--knowledge .signal-mobile-caption{color:#606b7d}
-body:where(.math-studio).page--knowledge .topic-diagram{border-right:1px solid #d6dde8}}
+@media screen and (max-width:840px){body:where(.math-studio).page--knowledge .topic-diagram{border-bottom:1px solid #bdc8d8}}
+@media screen and (max-width:600px){body:where(.math-studio).page--knowledge .signal-mobile-caption{color:#536176}
+body:where(.math-studio).page--knowledge .topic-diagram{border-right:1px solid #bdc8d8}}
 
 /* Literal palette compatibility: question-helper.css */
-:where(body.math-studio) .qh-host,:where(body.math-studio).qh-host{--qh-ink:#202734;--qh-muted:#606b7d;--qh-line:#d6dde8;--qh-accent:#4b43e8}
+:where(body.math-studio) .qh-host,:where(body.math-studio).qh-host{--qh-ink:#202734;--qh-muted:#536176;--qh-line:#bdc8d8;--qh-accent:#4b43e8}
 :where(body.math-studio) .qh-host :is(button,a,input,textarea,select,summary):focus-visible,:where(body.math-studio).qh-host :is(button,a,input,textarea,select,summary):focus-visible{outline:3px solid #4b43e8!important}
-:where(body.math-studio) .qh-host .qh-launcher,:where(body.math-studio).qh-host .qh-launcher{border:1px solid #d6dde8;background:#ffffff;color:#202734;box-shadow:none}
+:where(body.math-studio) .qh-host .qh-launcher,:where(body.math-studio).qh-host .qh-launcher{border:1px solid #bdc8d8;background:#ffffff;color:#202734;box-shadow:none}
 :where(body.math-studio) .qh-host .qh-launcher:hover,:where(body.math-studio).qh-host .qh-launcher:hover{background:#e9edf6}
-:where(body.math-studio) .qh-host .qh-dialog,:where(body.math-studio).qh-host .qh-dialog{border:1px solid #d6dde8;background:#ffffff;color:#202734;box-shadow:none}
+:where(body.math-studio) .qh-host .qh-dialog,:where(body.math-studio).qh-host .qh-dialog{border:1px solid #bdc8d8;background:#ffffff;color:#202734;box-shadow:none}
 :where(body.math-studio) .qh-dialog::backdrop,:where(body.math-studio).qh-dialog::backdrop{background:#20273488}
 :where(body.math-studio) .qh-dialog[role=dialog][open],:where(body.math-studio).qh-dialog[role=dialog][open]{outline:100vmax solid #20273488}
-:where(body.math-studio) .qh-host .qh-head,:where(body.math-studio).qh-host .qh-head{border-bottom:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .qh-host .qh-eyebrow,:where(body.math-studio).qh-host .qh-eyebrow{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-head,:where(body.math-studio).qh-host .qh-head{border-bottom:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .qh-host .qh-eyebrow,:where(body.math-studio).qh-host .qh-eyebrow{color:#536176}
 :where(body.math-studio) .qh-host .qh-head h2,:where(body.math-studio).qh-host .qh-head h2{color:#202734}
-:where(body.math-studio) .qh-host .qh-close,:where(body.math-studio).qh-host .qh-close{border:1px solid #d6dde8;color:#606b7d}
+:where(body.math-studio) .qh-host .qh-close,:where(body.math-studio).qh-host .qh-close{border:1px solid #bdc8d8;color:#536176}
 :where(body.math-studio) .qh-host .qh-close:hover,:where(body.math-studio).qh-host .qh-close:hover{background:#ffffff}
-:where(body.math-studio) .qh-host .qh-description,:where(body.math-studio).qh-host .qh-description{color:#606b7d}
-:where(body.math-studio) .qh-host .qh-context,:where(body.math-studio).qh-host .qh-context{color:#606b7d;border-left:2px solid #087d70}
-:where(body.math-studio) .qh-label,:where(body.math-studio).qh-label{color:#606b7d}
-:where(body.math-studio) .qh-host textarea,:where(body.math-studio).qh-host textarea,:where(body.math-studio) .qh-host select,:where(body.math-studio).qh-host select{border:1px solid #d6dde8;color:#202734;background:#ffffff}
-:where(body.math-studio) .qh-host textarea::placeholder,:where(body.math-studio).qh-host textarea::placeholder{color:#606b7d}
-:where(body.math-studio) .qh-host .qh-selection-label,:where(body.math-studio).qh-host .qh-selection-label{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-description,:where(body.math-studio).qh-host .qh-description{color:#536176}
+:where(body.math-studio) .qh-host .qh-context,:where(body.math-studio).qh-host .qh-context{color:#536176;border-left:2px solid #087d70}
+:where(body.math-studio) .qh-label,:where(body.math-studio).qh-label{color:#536176}
+:where(body.math-studio) .qh-host textarea,:where(body.math-studio).qh-host textarea,:where(body.math-studio) .qh-host select,:where(body.math-studio).qh-host select{border:1px solid #bdc8d8;color:#202734;background:#ffffff}
+:where(body.math-studio) .qh-host textarea::placeholder,:where(body.math-studio).qh-host textarea::placeholder{color:#536176}
+:where(body.math-studio) .qh-host .qh-selection-label,:where(body.math-studio).qh-host .qh-selection-label{color:#536176}
 :where(body.math-studio) .qh-host .qh-selection-label input,:where(body.math-studio).qh-host .qh-selection-label input{accent-color:#087d70}
-:where(body.math-studio) .qh-host .qh-hint,:where(body.math-studio).qh-host .qh-hint{border-left:2px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .qh-hint-label,:where(body.math-studio).qh-hint-label{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-hint,:where(body.math-studio).qh-host .qh-hint{border-left:2px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .qh-hint-label,:where(body.math-studio).qh-hint-label{color:#536176}
 :where(body.math-studio) .qh-host .qh-hint h3,:where(body.math-studio).qh-host .qh-hint h3{color:#202734}
-:where(body.math-studio) .qh-host .qh-hint p,:where(body.math-studio).qh-host .qh-hint p{color:#606b7d}
-:where(body.math-studio) .qh-host .qh-hint a,:where(body.math-studio).qh-host .qh-hint a{color:#606b7d}
-:where(body.math-studio) .qh-host .qh-preview,:where(body.math-studio).qh-host .qh-preview{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-hint p,:where(body.math-studio).qh-host .qh-hint p{color:#536176}
+:where(body.math-studio) .qh-host .qh-hint a,:where(body.math-studio).qh-host .qh-hint a{color:#536176}
+:where(body.math-studio) .qh-host .qh-preview,:where(body.math-studio).qh-host .qh-preview{color:#536176}
 :where(body.math-studio) .qh-host .qh-copy,:where(body.math-studio).qh-host .qh-copy{border:1px solid #087d70;background:#e9edf6;color:#202734}
 :where(body.math-studio) .qh-host .qh-copy:hover,:where(body.math-studio).qh-host .qh-copy:hover{background:#e9edf6}
-:where(body.math-studio) .qh-host .qh-open,:where(body.math-studio).qh-host .qh-open{border:1px solid #d6dde8;background:#ffffff;color:#202734}
-:where(body.math-studio) .qh-host .qh-next,:where(body.math-studio).qh-host .qh-next{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-open,:where(body.math-studio).qh-host .qh-open{border:1px solid #bdc8d8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-next,:where(body.math-studio).qh-host .qh-next{color:#536176}
 :where(body.math-studio) .qh-host .qh-status,:where(body.math-studio).qh-host .qh-status{color:#087d70}
-:where(body.math-studio) .qh-host .qh-settings,:where(body.math-studio).qh-host .qh-settings{border:1px solid #d6dde8;background:#ffffff}
-:where(body.math-studio) .qh-host .qh-settings summary,:where(body.math-studio).qh-host .qh-settings summary{color:#606b7d}
-:where(body.math-studio) .qh-host .qh-chat-url,:where(body.math-studio).qh-host .qh-chat-url{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-settings,:where(body.math-studio).qh-host .qh-settings{border:1px solid #bdc8d8;background:#ffffff}
+:where(body.math-studio) .qh-host .qh-settings summary,:where(body.math-studio).qh-host .qh-settings summary{color:#536176}
+:where(body.math-studio) .qh-host .qh-chat-url,:where(body.math-studio).qh-host .qh-chat-url{border:1px solid #bdc8d8;background:#ffffff;color:#202734}
 :where(body.math-studio) .qh-host .qh-chat-url[aria-invalid=true],:where(body.math-studio).qh-host .qh-chat-url[aria-invalid=true]{border-color:#9a5800}
-:where(body.math-studio) .qh-host .qh-setting-actions button,:where(body.math-studio).qh-host .qh-setting-actions button,:where(body.math-studio) .qh-host .qh-copy-open,:where(body.math-studio).qh-host .qh-copy-open{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-setting-actions button,:where(body.math-studio).qh-host .qh-setting-actions button,:where(body.math-studio) .qh-host .qh-copy-open,:where(body.math-studio).qh-host .qh-copy-open{border:1px solid #bdc8d8;background:#ffffff;color:#202734}
 :where(body.math-studio) .qh-host .qh-copy-open,:where(body.math-studio).qh-host .qh-copy-open{border-color:#087d70;background:#e9edf6;color:#202734}
 :where(body.math-studio) .qh-host .qh-copy-open:hover,:where(body.math-studio).qh-host .qh-copy-open:hover{background:#e9edf6}
-:where(body.math-studio) .qh-host .qh-copy,:where(body.math-studio).qh-host .qh-copy{border-color:#d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-copy,:where(body.math-studio).qh-host .qh-copy{border-color:#bdc8d8;background:#ffffff;color:#202734}
 :where(body.math-studio) .qh-host .qh-copy:hover,:where(body.math-studio).qh-host .qh-copy:hover,:where(body.math-studio) .qh-host .qh-open:hover,:where(body.math-studio).qh-host .qh-open:hover,:where(body.math-studio) .qh-host .qh-setting-actions button:hover,:where(body.math-studio).qh-host .qh-setting-actions button:hover{background:#e9edf6}
 
 /* Inline stylesheet compatibility: motion.html */
 :where(body.math-studio) button:focus-visible,:where(body.math-studio) a:focus-visible,:where(body.math-studio) select:focus-visible,:where(body.math-studio) input:focus-visible{outline:3px solid #4b43e8}
-:where(body.math-studio) button:hover{background:#ffffff;border-color:#d6dde8}
+:where(body.math-studio) button:hover{background:#ffffff;border-color:#bdc8d8}
 :where(body.math-studio) select{background:#ffffff}
 :where(body.math-studio) .topbar,:where(body.math-studio).topbar{background:#ffffff}
 :where(body.math-studio) .offline:before,:where(body.math-studio).offline:before{background:#e9edf6}
 :where(body.math-studio) .lesson,:where(body.math-studio).lesson{background:#ffffff}
-:where(body.math-studio) .lesson span,:where(body.math-studio).lesson span{color:#606b7d}
+:where(body.math-studio) .lesson span,:where(body.math-studio).lesson span{color:#536176}
 :where(body.math-studio) .lesson.active,:where(body.math-studio).lesson.active{color:#202734}
 :where(body.math-studio) .lesson.active span,:where(body.math-studio).lesson.active span{color:#087d70}
-:where(body.math-studio) .chart-controls button.active,:where(body.math-studio).chart-controls button.active{border-color:#d6dde8}
+:where(body.math-studio) .chart-controls button.active,:where(body.math-studio).chart-controls button.active{border-color:#bdc8d8}
 :where(body.math-studio) .callout,:where(body.math-studio).callout{color:#202734}
 :where(body.math-studio) .callout.warning,:where(body.math-studio).callout.warning{background:#e9edf6;border-color:#9a5800;color:#9a5800}
-:where(body.math-studio) td{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) td{border-bottom:1px solid #bdc8d8}
 :where(body.math-studio) tr.focused td{background:#e9edf6}
 :where(body.math-studio) .badge,:where(body.math-studio).badge{background:#e9edf6}
 :where(body.math-studio) .badge.offline-badge,:where(body.math-studio).badge.offline-badge{background:#e9edf6;color:#9a5800}
 :where(body.math-studio) .formula,:where(body.math-studio).formula{background:#ffffff}
 :where(body.math-studio) .toast,:where(body.math-studio).toast{box-shadow:none}
 :where(body.math-studio) .path-row,:where(body.math-studio).path-row{background:#ffffff}
-:where(body.math-studio) .method-chip,:where(body.math-studio).method-chip{border:1px solid #d6dde8;background:#ffffff;color:#9a5800}
+:where(body.math-studio) .method-chip,:where(body.math-studio).method-chip{border:1px solid #bdc8d8;background:#ffffff;color:#9a5800}
 :where(body.math-studio) .startup-notice,:where(body.math-studio).startup-notice{background:#ffffff;border:1px solid #9a5800;color:#9a5800}
-:where(body.math-studio) .motion-site-nav,:where(body.math-studio).motion-site-nav{background:#e9edf6;border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .motion-site-nav,:where(body.math-studio).motion-site-nav{background:#e9edf6;border-bottom:1px solid #bdc8d8}
 :where(body.math-studio) .motion-site-nav a,:where(body.math-studio).motion-site-nav a{color:#087d70}
-:where(body.math-studio) .motion-integration-note,:where(body.math-studio).motion-integration-note{color:#606b7d}
+:where(body.math-studio) .motion-integration-note,:where(body.math-studio).motion-integration-note{color:#536176}
 
 /* Inline stylesheet compatibility: future-learning.html */
-body:where(.math-studio).page--future .control-check{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--future .control-check{border-left:3px solid #bdc8d8;background:#ffffff}
 body:where(.math-studio).page--future .control-figure-viewport{scrollbar-color:#8999b3 #f2f5fa}
 body:where(.math-studio).page--future .control-visual-key .action{color:#087d70}
 body:where(.math-studio).page--future .control-visual-key .disturbance{color:#9a5800}
-body:where(.math-studio).page--future .control-visual-key .measurement{color:#606b7d}
+body:where(.math-studio).page--future .control-visual-key .measurement{color:#536176}
 
 /* SVG palette: reference axes and distinct accessible traces. */
-body.math-studio svg [stroke="#080f18"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#080f18"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#080f18"]{fill:#202734}
 body.math-studio svg rect[fill="#080f18"]{fill:#ffffff}
-body.math-studio svg [stroke="#101c29"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#101c29"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#101c29"]{fill:#202734}
 body.math-studio svg rect[fill="#101c29"]{fill:#ffffff}
-body.math-studio svg [stroke="#131e2b"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#131e2b"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#131e2b"]{fill:#202734}
 body.math-studio svg rect[fill="#131e2b"]{fill:#ffffff}
-body.math-studio svg [stroke="#132d30"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#132d30"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#132d30"]{fill:#202734}
 body.math-studio svg rect[fill="#132d30"]{fill:#ffffff}
-body.math-studio svg [stroke="#176e78"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#176e78"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#176e78"]{fill:#1d64b3}
 body.math-studio svg rect[fill="#176e78"]{fill:#ffffff}
-body.math-studio svg [stroke="#203e58"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#203e58"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#203e58"]{fill:#202734}
 body.math-studio svg rect[fill="#203e58"]{fill:#ffffff}
-body.math-studio svg [stroke="#25384d"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#25384d"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#25384d"]{fill:#202734}
 body.math-studio svg rect[fill="#25384d"]{fill:#ffffff}
-body.math-studio svg [stroke="#2c3c50"]{stroke:#d6dde8}
+body.math-studio svg [stroke="#2c3c50"]{stroke:#bdc8d8}
 body.math-studio svg [fill="#2c3c50"]{fill:#202734}
 body.math-studio svg rect[fill="#2c3c50"]{fill:#ffffff}
 body.math-studio svg [stroke="#33495f"]{stroke:#8190aa}
 body.math-studio svg [fill="#33495f"]{fill:#202734}
 body.math-studio svg rect[fill="#33495f"]{fill:#ffffff}
-body.math-studio svg [stroke="#42566c"]{stroke:#d6dde8}
-body.math-studio svg [fill="#42566c"]{fill:#606b7d}
+body.math-studio svg [stroke="#42566c"]{stroke:#bdc8d8}
+body.math-studio svg [fill="#42566c"]{fill:#536176}
 body.math-studio svg [stroke="#6588aa"]{stroke:#1d64b3}
 body.math-studio svg [fill="#6588aa"]{fill:#1d64b3}
 body.math-studio svg [stroke="#65d6c2"]{stroke:#087d70}
@@ -1232,31 +1232,31 @@ body.math-studio svg [fill="#72b4ff"]{fill:#1d64b3}
 body.math-studio svg [stroke="#7bdacf"]{stroke:#087d70}
 body.math-studio svg [fill="#7bdacf"]{fill:#087d70}
 body.math-studio svg [stroke="#8294a9"]{stroke:#1d64b3}
-body.math-studio svg [fill="#8294a9"]{fill:#606b7d}
+body.math-studio svg [fill="#8294a9"]{fill:#536176}
 body.math-studio svg [stroke="#9ab0c7"]{stroke:#1d64b3}
-body.math-studio svg [fill="#9ab0c7"]{fill:#606b7d}
+body.math-studio svg [fill="#9ab0c7"]{fill:#536176}
 body.math-studio svg [stroke="#a5b5c7"]{stroke:#1d64b3}
-body.math-studio svg [fill="#a5b5c7"]{fill:#606b7d}
+body.math-studio svg [fill="#a5b5c7"]{fill:#536176}
 body.math-studio svg [stroke="#acc6ff"]{stroke:#1d64b3}
 body.math-studio svg [fill="#acc6ff"]{fill:#1d64b3}
 body.math-studio svg rect[fill="#acc6ff"]{fill:#e9edf6}
 body.math-studio svg [stroke="#adc2d5"]{stroke:#1d64b3}
-body.math-studio svg [fill="#adc2d5"]{fill:#606b7d}
+body.math-studio svg [fill="#adc2d5"]{fill:#536176}
 body.math-studio svg rect[fill="#adc2d5"]{fill:#e9edf6}
 body.math-studio svg [stroke="#b8c8d8"]{stroke:#1d64b3}
-body.math-studio svg [fill="#b8c8d8"]{fill:#606b7d}
+body.math-studio svg [fill="#b8c8d8"]{fill:#536176}
 body.math-studio svg rect[fill="#b8c8d8"]{fill:#e9edf6}
 body.math-studio svg [stroke="#c3b5ee"]{stroke:#8748a7}
-body.math-studio svg [fill="#c3b5ee"]{fill:#606b7d}
+body.math-studio svg [fill="#c3b5ee"]{fill:#536176}
 body.math-studio svg rect[fill="#c3b5ee"]{fill:#e9edf6}
 body.math-studio svg [stroke="#c6d8e8"]{stroke:#1d64b3}
-body.math-studio svg [fill="#c6d8e8"]{fill:#606b7d}
+body.math-studio svg [fill="#c6d8e8"]{fill:#536176}
 body.math-studio svg rect[fill="#c6d8e8"]{fill:#e9edf6}
 body.math-studio svg [stroke="#deebf5"]{stroke:#1d64b3}
 body.math-studio svg [fill="#deebf5"]{fill:#202734}
 body.math-studio svg rect[fill="#deebf5"]{fill:#e9edf6}
 body.math-studio svg [stroke="#dfafe8"]{stroke:#8748a7}
-body.math-studio svg [fill="#dfafe8"]{fill:#606b7d}
+body.math-studio svg [fill="#dfafe8"]{fill:#536176}
 body.math-studio svg rect[fill="#dfafe8"]{fill:#e9edf6}
 body.math-studio svg [stroke="#e3edf7"]{stroke:#1d64b3}
 body.math-studio svg [fill="#e3edf7"]{fill:#202734}
@@ -1268,12 +1268,12 @@ body.math-studio svg [fill="#f1c57a"]{fill:#9a5800}
 html:has(> body.math-studio) { background: #f2f5fa; color-scheme: light; }
 html.lab-embedded:has(> body.math-studio) { background: #ffffff; color-scheme: light; }
 body.math-studio.lab-shell {
-  --paper: #ffffff; --ground: #f2f5fa; --bg: #f2f5fa; --ink: #202734; --muted: #606b7d; --line: #d6dde8;
+  --paper: #ffffff; --ground: #f2f5fa; --bg: #f2f5fa; --ink: #202734; --muted: #536176; --line: #bdc8d8;
   --accent: #4b43e8; --accent-soft: #eeedff; --teal: #087d70; --teal-soft: #e7f3f0; --green: #087d70; --mint: #e7f3f0;
   --blue: #1d64b3; --purple: #8748a7; --gold: #9a5800; --amber: #9a5800; --red: #b74167; --amber-soft: #fff4df;
   --lab-ground: #f2f5fa; --lab-paper: #ffffff; --lab-plot: #ffffff; --lab-action: #4b43e8; --lab-ink: #202734;
-  --lab-muted: #606b7d; --lab-line: #d6dde8; --lab-accent: #4b43e8; --lab-soft: #eeedff; --lab-navy: #202734; --lab-amber: #9a5800;
-  --sim-ground: #ffffff; --sim-surface: #f2f5fa; --sim-line: #d6dde8; --sim-ink: #202734; --sim-muted: #606b7d; --sim-trace: #4b43e8;
+  --lab-muted: #536176; --lab-line: #bdc8d8; --lab-accent: #4b43e8; --lab-soft: #eeedff; --lab-navy: #202734; --lab-amber: #9a5800;
+  --sim-ground: #ffffff; --sim-surface: #f2f5fa; --sim-line: #bdc8d8; --sim-ink: #202734; --sim-muted: #536176; --sim-trace: #4b43e8;
   --radius: 5px; --shadow: none; background: #f2f5fa; color: #202734; font-family: var(--studio-sans); color-scheme: light;
 }
 body.math-studio.lab-shell ::selection { background: #dfddff; color: #29227c; }
@@ -1421,7 +1421,7 @@ body.math-studio.lab-shell :is(.result,.check,.coef-grid > div,.component,.twoco
 body.math-studio.lab-shell .facts section + section { color: var(--studio-ink); background: #fff4df; border-color: #dbc58c; }
 body.math-studio.lab-shell .mix div:first-child { background: #dbe8fa; color: #1d4c87; }
 body.math-studio.lab-shell .mix div:last-child { background: #f4dfb2; color: #795009; }
-body.math-studio.lab-shell .track { background: #d6dde8; }
+body.math-studio.lab-shell .track { background: #bdc8d8; }
 body.math-studio.lab-shell .track span { background: var(--studio-blue); }
 body.math-studio.lab-shell.page--motion :is(.side-panel,.lesson,.filter-option,.path-row,.badge) { background: var(--studio-white); color: var(--studio-ink); border-color: var(--studio-line); border-radius: 4px; }
 body.math-studio.lab-shell.page--motion :is(.lesson.active,.filter-option.chosen,.stepno,.badge.offline-badge) { background: #eeedff; color: var(--studio-blue); border-color: #b9b4f5; }
@@ -1520,3 +1520,100 @@ body.math-studio.lab-shell.page--knowledge .studio-flow-mobile { display: none; 
 body.math-studio.lab-shell.hardware-page .hw-target::before{color:#4B43E8;border-top-style:dashed}
 body.math-studio.lab-shell.page--frequency .legend label:last-child{color:#4B43E8}
 body.math-studio.lab-shell.page--motion .swatch.dashed{border-top-color:#202734}
+
+
+/* Reading hierarchy: cool ground, white reading surfaces, quiet inset work areas.
+   Boundaries follow chapters, independent projects and control groups, not every paragraph. */
+@media screen {
+ body.math-studio.lab-shell { --studio-reading: #344155; --studio-inset: #e9edf6; }
+ body.math-studio.lab-shell :is(.architecture-header .architecture-bar,.studio-index,.nl-heading,.nl-section-heading,.case-study) { border-color: #acb9cd; }
+ body.math-studio.lab-shell :is(.studio-topic-index,.nl-lesson-list) { background: var(--studio-white); }
+ body.math-studio.lab-shell .studio-topic { padding-inline: 16px; }
+ body.math-studio.lab-shell .studio-index-columns { padding-inline: 16px; }
+ body.math-studio.lab-shell .studio-topic-index > li:nth-child(even) { background: #f7f9fc; }
+ body.math-studio.lab-shell .studio-topic-index > li:hover { background: #ebeff7; }
+ body.math-studio.lab-shell .studio-bottom { margin-top: 30px; border-top: 1px solid var(--studio-line); }
+
+ /* One continuous notebook sheet; chapter rules carry the reading rhythm. */
+ body.math-studio.lab-shell .notebook { padding: 0 34px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
+ body.math-studio.lab-shell .notebook > section { padding-block: 38px; border-color: #acb9cd; }
+ body.math-studio.lab-shell .notebook > section > h2 { margin-bottom: 24px; }
+ body.math-studio.lab-shell .notebook :is(.worked-example,.figure) { background: #f7f9fc; }
+ body.math-studio.lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook .worked-example { border-left-color: var(--studio-blue); }
+ body.math-studio.lab-shell .notebook :is(.formula,.equation) { border-color: #bdc8d8; }
+ body.math-studio.lab-shell .notebook h3 { margin-top: 30px; }
+ body.math-studio.lab-shell .reading-layout > .side-panel { padding-right: 20px; }
+
+ /* Knowledge introductions stay open; concepts, examples and lessons have a clear edge. */
+ body.math-studio.lab-shell.page--knowledge .topic-view-nav { border-bottom: 1px solid #acb9cd; background: var(--studio-white); }
+ body.math-studio.lab-shell.page--knowledge .topic-view-nav a[aria-current=page] { color: var(--studio-blue); background: var(--studio-blue-wash); border-bottom-color: var(--studio-blue); font-weight: 650; }
+ body.math-studio.lab-shell.page--knowledge .knowledge-body > article { border-color: var(--studio-line); margin-block: 32px; }
+ body.math-studio.lab-shell.page--knowledge .knowledge-body > aside.topic-lead { padding: 20px 24px; border: 1px solid var(--studio-line); border-left: 3px solid var(--studio-blue); background: var(--studio-inset); border-radius: 0 4px 4px 0; }
+ body.math-studio.lab-shell.page--knowledge .knowledge-body > aside.topic-lead > :first-child { margin-top: 0; }
+ body.math-studio.lab-shell.page--knowledge .knowledge-body > aside.topic-lead > :last-child { margin-bottom: 0; }
+ body.math-studio.lab-shell.page--knowledge .concept-strip { padding: 22px 4px; border: 1px solid var(--studio-line); border-radius: 5px; background: var(--studio-white); }
+ body.math-studio.lab-shell.page--knowledge .concept-strip article { border-left: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell.page--knowledge .concept-strip article:first-child { border-left: 0; }
+ body.math-studio.lab-shell.page--knowledge :is(.future-module,.notebook-entry,.notebook-pending) { background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
+ body.math-studio.lab-shell.page--knowledge :is(.topic-lead > p,.concept-strip article p,.future-module p) { color: var(--studio-reading); }
+ body.math-studio.lab-shell.page--knowledge .learning-boundary { background: var(--studio-inset); border-left-color: var(--studio-blue); }
+ body.math-studio.lab-shell.page--knowledge .practical-case { padding: 18px 22px; }
+
+ /* Recommendation is the main task; route selection is a quieter, separate workspace. */
+ body.math-studio.lab-shell.page--next-learning .nl-workspace { gap: 32px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main .nl-recommend { padding: 28px 30px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main .nl-route-controls { padding: 22px !important; background: var(--studio-inset) !important; border: 1px solid var(--studio-line) !important; border-radius: 5px !important; }
+ body.math-studio.lab-shell.page--next-learning :is(.nl-evidence-grid,.nl-case-grid) { gap: 22px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-evidence-grid article,.nl-case-grid article) { padding: 22px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-evidence-grid article,.nl-case-grid article) h3 { margin-top: 0; }
+ body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-goal,.nl-evidence-grid p,.nl-case-grid p,.nl-row-detail) { color: var(--studio-reading); }
+ body.math-studio.lab-shell.page--next-learning .nl-lesson-row { padding-inline: 18px; }
+ body.math-studio.lab-shell.page--next-learning .nl-row-title { font-weight: 600; }
+
+ /* Independent projects have their own surface; source and method detail stays inset. */
+ body.math-studio.lab-shell .project-card { padding: 24px; border: 1px solid var(--studio-line); border-radius: 5px; background: var(--studio-white); }
+ body.math-studio.lab-shell .exploration-grid { gap: 28px; }
+ body.math-studio.lab-shell :is(.project-first,.project-verification) { padding: 12px 14px; }
+ body.math-studio.lab-shell .hw-section + .hw-section { margin-top: 44px; padding-top: 36px; border-top: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell :is(.project-summary,.project-application,.radar-guide > p,.case-block p,.case-study > p,.case-meta dd,.case-procedure li) { color: var(--studio-reading); }
+ body.math-studio.lab-shell .radar-guide { padding: 30px; border: 1px solid var(--studio-line); border-top: 2px solid #acb9cd; border-radius: 5px; background: var(--studio-white); }
+ body.math-studio.lab-shell .radar-case { border-width: 1px 0 0; border-radius: 0; padding: 24px 0; }
+ body.math-studio.lab-shell .case-study { margin-top: 60px; padding-top: 38px; }
+ body.math-studio.lab-shell .case-section { margin-block: 36px; }
+ body.math-studio.lab-shell .case-section > h3 { padding-bottom: 12px; border-bottom: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell .case-meta > div + div { border-top: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell .case-transfer { padding: 20px 24px; }
+
+ /* Controls are inset from the white plots; values and captions retain their own rhythm. */
+ body.math-studio.lab-shell :is(.plotpanel,.lab,.chart-panel,.metric-panel,.detail-panel,.hw-lab,.hw-chart,.ff-comparison,.if-plot,.learn-visual,.simulation-workspace) { border-color: var(--studio-line); }
+ body.math-studio.lab-shell :is(.hw-controls,.lab > .controls) { padding: 18px; background: var(--studio-inset); border: 1px solid var(--studio-line); border-radius: 4px; margin-block: 20px; }
+ body.math-studio.lab-shell .learn-visual .lv-control { padding: 14px 16px; background: var(--studio-inset); border: 1px solid var(--studio-line); border-radius: 4px; }
+ body.math-studio.lab-shell .simulation-controls { background: #f7f9fc; border-bottom: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell .plotpanel > .plothead { padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell.page--motion .chart-heading { padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell :is(.hw-caption,.ff-caption,.learn-visual figcaption) { padding-top: 12px; border-top: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell :is(.control label,.hw-controls label,.lv-control label) { color: var(--studio-reading); }
+}
+@media screen and (max-width: 850px) {
+ body.math-studio.lab-shell .notebook { padding-inline: 24px; }
+ body.math-studio.lab-shell.page--next-learning .nl-workspace { gap: 24px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main .nl-route-controls { padding: 20px !important; }
+}
+@media screen and (max-width: 640px) {
+ body.math-studio.lab-shell .studio-topic { padding-inline: 10px; }
+ body.math-studio.lab-shell .studio-topic-index { margin-inline: -4px; }
+ body.math-studio.lab-shell .notebook { padding-inline: 18px; }
+ body.math-studio.lab-shell .notebook > section { padding-block: 28px; }
+ body.math-studio.lab-shell .notebook > section > h2 { margin-bottom: 20px; }
+ body.math-studio.lab-shell.page--knowledge .concept-strip { padding: 18px; gap: 18px; }
+ body.math-studio.lab-shell.page--knowledge .concept-strip article { padding: 0; border-left: 0; }
+ body.math-studio.lab-shell.page--knowledge .concept-strip article + article { padding-top: 18px; border-top: 1px solid var(--studio-line); }
+ body.math-studio.lab-shell.page--knowledge .knowledge-body > aside.topic-lead { padding: 16px 18px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-recommend,.nl-evidence-grid article,.nl-case-grid article) { padding: 20px 18px; }
+ body.math-studio.lab-shell.page--next-learning .nl-lesson-row { padding-inline: 12px; }
+ body.math-studio.lab-shell :is(.project-card,.radar-guide) { padding: 20px 18px; }
+ body.math-studio.lab-shell .case-study { margin-top: 42px; padding-top: 28px; }
+ body.math-studio.lab-shell .case-transfer { padding: 16px 18px; }
+ body.math-studio.lab-shell :is(.hw-controls,.lab > .controls) { padding: 14px; gap: 16px; }
+ body.math-studio.lab-shell .learn-visual .lv-control { padding: 12px; }
+}

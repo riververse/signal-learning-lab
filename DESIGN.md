@@ -7,12 +7,16 @@ the source of truth. The approved visual direction is cool, geometric and typogr
 ## Visual system
 
 - Ground: `#f2f5fa`; plot/reading surfaces: `#ffffff`; graphite text: `#202734`.
-- Secondary text: `#606b7d`; quiet rules: `#d6dde8`; primary action: `#4b43e8`.
+- Secondary text: `#536176`; quiet rules: `#bdc8d8`; primary action: `#4b43e8`.
 - Data series: graphite truth/reference, teal `#087d70`, blue `#1d64b3`,
   ochre `#9a5800`, violet `#8748a7`, rose `#b74167`. Keep labels, legends,
   dash patterns and point shapes: color alone must not carry meaning.
 - Native sans-serif with CJK fallbacks; monospace for coordinates, symbols and code.
 - Generous whitespace, strong type hierarchy, thin rules, restrained radii.
+- Reading boundaries follow meaning: one continuous white notebook sheet with chapter
+  rules, distinct project/recommendation surfaces, and cool `#e9edf6` inset controls.
+  Long supporting prose uses `#344155`; reserve quieter text for metadata. Keep plot
+  areas white and separate controls/captions with spacing and fine rules, not heavy frames.
 - The overview owns the expressive waveform composition. Its full-width topic
   directory is a reading index, not a wall of identical cards.
 - Reading pages and instruments use the same cool surfaces and typographic system.
