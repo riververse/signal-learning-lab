@@ -1561,7 +1561,7 @@ body.math-studio.lab-shell.page--motion .swatch.dashed{border-top-color:#202734}
 
  /* Recommendation is the main task; route selection is a quieter, separate workspace. */
  body.math-studio.lab-shell.page--next-learning .nl-workspace { gap: 32px; }
- body.math-studio.lab-shell.page--next-learning .nl-main .nl-recommend { padding: 28px 30px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
+ body.math-studio.lab-shell.page--next-learning .nl-main section.nl-recommend { padding: 28px 30px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
  body.math-studio.lab-shell.page--next-learning .nl-main .nl-route-controls { padding: 22px !important; background: var(--studio-inset) !important; border: 1px solid var(--studio-line) !important; border-radius: 5px !important; }
  body.math-studio.lab-shell.page--next-learning :is(.nl-evidence-grid,.nl-case-grid) { gap: 22px; }
  body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-evidence-grid article,.nl-case-grid article) { padding: 22px; background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 5px; }
