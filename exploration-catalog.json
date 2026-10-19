@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-17",
+  "updated_at": "2026-10-19",
   "categories": {
     "radar": "民用雷达",
     "dsp": "DSP 基础",
@@ -29,7 +29,7 @@
       ],
       "algorithms": [
         "帧内偏差衡量较快运动，帧间快慢低通差衡量较慢运动。",
-        "时间平滑、噪声归一化和阈值组合；可用相位变化增强慢动作敏感度。"
+        "时间平滑、噪声归一化和阈值组合；旧版曾用相位变化增强慢动作敏感度，当前实现已移除这项 phase boost。"
       ],
       "hardware": "读源码无需硬件；实时采集需要兼容 A121 评估板、对应 server 与连接环境。",
       "maturity": "官方检测器，有算法推导、参数说明和 Python 实现；属于工程学习参考。本站未做硬件复现。",
@@ -43,6 +43,14 @@
         {
           "label": "Python 处理器",
           "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/src/acconeer/exptool/a121/algo/presence/_processors.py"
+        },
+        {
+          "label": "phase boost 移除提交（作者日期 2025-06-24）",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/commit/3c6646b75ddd834c15bcabb80e2f976c625de166"
+        },
+        {
+          "label": "变更记录：v7.17.3",
+          "url": "https://github.com/acconeer/acconeer-python-exploration/blob/master/CHANGELOG.md"
         }
       ],
       "license_links": [
@@ -66,8 +74,9 @@
         }
       ],
       "status": "待学习",
-      "last_verified": "2026-10-06",
-      "reproduction_status": "未在本站复现"
+      "last_verified": "2026-10-19",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "2026-10-19 勘误：官方说明正文仍提到相位增强，但变更记录 v7.17.3 与移除提交（作者日期 2025-06-24）已因不稳定移除 inter_phase_boost；当前处理器只在旧配置迁移类中保留该字段。阅读时把历史描述与当前可用参数分开。"
     },
     {
       "id": "a121-breathing",
@@ -343,15 +352,16 @@
       "prerequisites": [
         "采样率、频谱与滤波",
         "复数 IQ 的基本含义",
-        "进阶扩展：Python / C++"
+        "进阶扩展：Python / C++",
+        "阅读本次修复另需：OFDM、循环前缀、相关检测与 C++ 数组边界"
       ],
       "algorithms": [
         "滤波、FFT、重采样、调制解调、同步。",
         "信道模型、均衡与编码；可先使用现成模块，再读内部实现。"
       ],
-      "hardware": "官方支持不接 RF 硬件的仿真；真实收发需要兼容 SDR 和驱动。",
-      "maturity": "长期维护的 3.x 平台；本次 release 核实为 v3.10.12.0。4.0 为另一开发分支，不混用状态。",
-      "license": "主体采用 GPL v3；已核对核心 FIR 文件的 GPL-3.0-or-later 标注。外部模块、依赖、具体文件和文档分别检查许可。",
+      "hardware": "官方支持不接 RF 硬件的仿真；真实收发需要兼容 SDR 和驱动。 本次修复的回归测试需带 gr-dtv 的源码构建、Python 测试环境和官方测试录音；录音缺失且未启用 GR_ONLINE_TESTS 下载时可能跳过。本站未获取录音或运行这些测试。",
+      "maturity": "长期维护的 3.x 平台；本次 release 核实为 v3.10.12.0。4.0 为另一开发分支，不混用状态。 2026-10-19 补核实 main 上 PR #8124 的合并与回归测试；不据此认定 v3.10.12.0 已包含修复。",
+      "license": "主体采用 GPL v3；已核对核心 FIR 文件的 GPL-3.0-or-later 标注。外部模块、依赖、具体文件和文档分别检查许可。 本次 DVB-T 修复与新增测试标注 GPL-3.0-or-later；测试录音的独立再分发许可未核实，本站不转载录音。",
       "warning": "这些能力属于安装后的外部软件；本站没有嵌入 GNU Radio 或自动执行项目代码。",
       "official_links": [
         {
@@ -365,6 +375,14 @@
         {
           "label": "已核实版本",
           "url": "https://github.com/gnuradio/gnuradio/releases/tag/v3.10.12.0"
+        },
+        {
+          "label": "DVB-T 捕获越界修复与测试 PR #8124",
+          "url": "https://github.com/gnuradio/gnuradio/pull/8124"
+        },
+        {
+          "label": "真实录音回归的检查范围",
+          "url": "https://github.com/gnuradio/gnuradio/blob/5693b143d3f14a45283896a76a0cfe22f9cea69e/gr-dtv/python/dtv/qa_realsignal_online.py"
         }
       ],
       "license_links": [
@@ -388,15 +406,16 @@
         }
       ],
       "status": "待学习",
-      "last_verified": "2026-10-06",
-      "reproduction_status": "未在本站复现"
+      "last_verified": "2026-10-19",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "2026-10-08 合并至 main 的 PR #8124 修复 DVB-T OFDM 捕获在弱信号下的搜索越界；这是源码分支中的可靠性修复，未核实进入新的稳定版本。新增真实录音回归只检查流程运行且不崩溃，不证明误码率或同步精度改善。"
     },
     {
       "id": "px4-ekf2",
       "category": "estimation",
       "title": "一条真实修复，看懂顺序测量更新",
       "project": "PX4 EKF2 · 多轴观测顺序融合",
-      "kind": "开源工程实现 / 预发布修复",
+      "kind": "开源工程实现 / 预发布与主线修复",
       "application": "从导航估计器的故障、测试和修复，理解“更新一轴后，下一轴的新息为什么也要重算”。",
       "chain": [
         "预测状态与协方差",
@@ -412,10 +431,11 @@
       ],
       "algorithms": [
         "针对直接状态观测的顺序融合：每融合一轴，都按更新后的状态重新计算下一轴的新息与新息方差。",
-        "修复涉及 GNSS 速度、位置等观测；它连接估计公式、状态相关性与回归测试。"
+        "修复涉及 GNSS 速度、位置等观测；它连接估计公式、状态相关性与回归测试。",
+        "延迟姿态输出校正需保持坐标系一致；#29062 将校正保存于地球坐标系，再转换到当前机体系应用。"
       ],
-      "hardware": "先读公开源码和单元测试；二维线性 KF 可用桌面合成数据实验。完整 PX4 是飞控系统，不是可直接烧进 GD32 的单文件滤波库。",
-      "maturity": "PR #28273 于 2026-08-19 合并，并进入 2026-09-10 发布的 v1.18.0-rc1。RC 是供测试的预发布版本，不等同稳定生产固件。",
+      "hardware": "先读公开源码和单元测试；二维线性 KF 可用桌面合成数据实验。完整 PX4 是飞控系统，不是可直接烧进 GD32 的单文件滤波库。 新增输出预测器测试为桌面 C++ / GTest，需完整 PX4 开发依赖，不需要先飞行。",
+      "maturity": "PR #28273 于 2026-08-19 合并，并进入 2026-09-10 发布的 v1.18.0-rc1。RC 是供测试的预发布版本，不等同稳定生产固件。 另核实 #29062 于 2026-10-13 合并 main；该修复不能归入 9 月发布的 v1.18.0-rc1，也不表示已通过实飞验证。",
       "license": "PX4 主仓采用 BSD-3-Clause；实际复用时仍需核对所选文件及依赖许可。",
       "warning": "应先学完矩阵 KF 的测量更新，再读这个工程案例。未在本站或真实飞行器上复现该修复。",
       "official_links": [
@@ -426,6 +446,14 @@
         {
           "label": "1.18.0-rc1 预发布说明",
           "url": "https://github.com/PX4/PX4-Autopilot/releases/tag/v1.18.0-rc1"
+        },
+        {
+          "label": "延迟姿态校正坐标系 PR #29062",
+          "url": "https://github.com/PX4/PX4-Autopilot/pull/29062"
+        },
+        {
+          "label": "输出预测器回归测试",
+          "url": "https://github.com/PX4/PX4-Autopilot/blob/004f01471952e6c421f8b172d4b21fb30ee710d4/src/modules/ekf2/test/test_EKF_output_predictor.cpp"
         }
       ],
       "license_links": [
@@ -445,14 +473,15 @@
         }
       ],
       "status": "待学习",
-      "last_verified": "2026-10-09",
-      "reproduction_status": "未在本站复现"
+      "last_verified": "2026-10-19",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "2026-10-13 的 #29062 另修正延迟姿态输出校正的坐标系；它与原卡片的多轴顺序融合是两个不同环节。修复已合并 main，但尚未核实进入发布版。"
     },
     {
       "id": "radarsimpy",
       "category": "radar",
       "title": "给雷达处理链一份已知真值",
-      "project": "RadarSimPy 15.4.0 · 桌面雷达仿真",
+      "project": "RadarSimPy 15.5.0 · 桌面雷达仿真",
       "kind": "公开 Python 层 / 商业仿真核心",
       "application": "先用已知目标生成雷达数据，再检查距离 FFT、距离–多普勒与 CFAR；把处理结果和目标真值对照。",
       "chain": [
@@ -469,11 +498,12 @@
       ],
       "algorithms": [
         "15.4.0 新增接收 gate_delay，用于建模远距离 FMCW / stretch 雷达的接收时间窗。",
-        "支持由 glTF / GLB 动画驱动目标，适合进一步研究转轮、转子等微多普勒；先完成基础处理链。"
+        "支持由 glTF / GLB 动画驱动目标，适合进一步研究转轮、转子等微多普勒；先完成基础处理链。",
+        "15.5.0 修正多次反射回传的完整路径长度，并加入按几何真值核查距离 FFT 峰值的回归测试。"
       ],
-      "hardware": "Python / C++ 桌面仿真环境；不是 MCU 固件库，不能直接假定可部署到 GD32。运行条件和版本功能需按官方说明核对。",
-      "maturity": "官方 15.4.0 发布于 2026-09-13，有处理链文档与示例。本站仅整理资料，没有运行、安装或验证仿真结果。",
-      "license": "公开 RadarSimPy Python 仓标注 GPL-3.0；底层 RadarSimCpp 采用商业许可证，源代码另需许可。不能把整套引擎称为完全开源免费。",
+      "hardware": "README 要求桌面 Python ≥3.10、NumPy ≥2.0 与 SciPy；网格回归测试还需兼容网格库（如 trimesh）、pytest 和匹配的仿真核心。15.5.0 变更记录新增面向 Python 3.10–3.14、Ubuntu 22.04 / 24.04 / 26.04 的 ARM64 CPU / CUDA 包；GPU 路径另需兼容 NVIDIA GPU 与驱动。这不是 MCU 固件库，ARM64 Linux 支持不代表能部署到 GD32。",
+      "maturity": "官方 15.4.0 发布于 2026-09-13，有处理链文档与示例。本站仅整理资料，没有运行、安装或验证仿真结果。 本次核实 v15.5.0 Git 标签（2026-10-14；变更日志标注 2026-10-13）和公开回归测试，属于工程工具修复。",
+      "license": "公开 RadarSimPy Python 仓标注 GPL-3.0；底层 RadarSimCpp 采用商业许可证，源代码另需许可。不能把整套引擎称为完全开源免费。 GPL 文件的范围与预编译发行包需分开：包元数据另标 Proprietary，取得二进制不等于取得底层源码许可。",
       "warning": "许可证、二进制版本与功能限制要分别核实。仿真中的已知真值有助于检查算法，但不能代替真实传感器与现场验证。",
       "official_links": [
         {
@@ -487,6 +517,18 @@
         {
           "label": "接收时间窗与 stretch 处理",
           "url": "https://radarsimx.github.io/radarsimpy/user_guide/stretch_processing.html"
+        },
+        {
+          "label": "15.5.0 固定版本变更记录",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/CHANGELOG.md"
+        },
+        {
+          "label": "完整往返路径回归测试",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/tests/test_system_back_propagation.py"
+        },
+        {
+          "label": "15.5.0 环境与依赖",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/README.md"
         }
       ],
       "license_links": [
@@ -497,6 +539,14 @@
         {
           "label": "RadarSimCpp 核心许可",
           "url": "https://radarsimx.com/radarsimx/radarsimcpp/"
+        },
+        {
+          "label": "15.5.0 仓库 GPL 文件",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/LICENSE"
+        },
+        {
+          "label": "15.5.0 包元数据许可标记",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/697a0f96d54387607e21ff10000bfa1d7aaf8410/src/radarsimpy/__init__.py#L80-L84"
         }
       ],
       "learning_links": [
@@ -510,8 +560,9 @@
         }
       ],
       "status": "待学习",
-      "last_verified": "2026-10-09",
-      "reproduction_status": "未在本站复现"
+      "last_verified": "2026-10-19",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "15.5.0 修正 back_propagating=True 时的多次反射回传路径。先以目标几何检查应有的距离峰值，再看速度宣传；上游测试规格不是本站实测。保留下方 15.4.0 的接收窗与动画目标学习方向。"
     },
     {
       "id": "nxp-magnetic-calibration",
@@ -793,11 +844,15 @@
           "时间平滑 + 噪声归一化",
           "分数与阈值"
         ],
-        "note": "帧内变化对应较快动作；帧间快、慢一阶 IIR 输出之差突出较慢变化，可结合相位增强。重点读“变化量怎样变成存在分数”，不必先上 FFT。",
+        "note": "帧内变化对应较快动作；帧间快、慢一阶 IIR 输出之差突出较慢变化。旧版曾结合相位增强，官方说明正文仍有相关描述；2026-10-19 核对变更记录与处理器后确认 v7.17.3 已移除不稳定的 phase boost，不能把它当作当前可用参数。重点仍是读懂“变化量怎样变成存在分数”，不必先上 FFT。",
         "sources": [
           {
             "label": "官方存在检测说明",
             "url": "https://docs.acconeer.com/en/latest/detectors/a121/presence_detector.html"
+          },
+          {
+            "label": "phase boost 移除与实现差异",
+            "url": "https://github.com/acconeer/acconeer-python-exploration/commit/3c6646b75ddd834c15bcabb80e2f976c625de166"
           }
         ]
       },
@@ -1005,6 +1060,82 @@
         }
       ],
       "last_verified": "2026-10-17"
+    },
+    {
+      "id": "gnu-radio-dvbt-search-bounds",
+      "project_id": "gnu-radio",
+      "date_label": "PR #8124 于 2026-10-08 合并至 main；未对应新的稳定 release",
+      "title": "GNU Radio：失锁以后，搜索窗口仍要守住边界",
+      "stage": "成熟平台中的可靠性修复；非新同步算法",
+      "summary": "DVB-T OFDM 符号捕获找到循环前缀后，会缩小搜索范围进行跟踪。弱信号或噪声下，搜索上界可能超出内部缓冲区。修复先检查窄范围搜索是否越界；超出时跳过该步骤，转入已有的全范围重捕获路径。新增真实录音回归检查不再崩溃，没有误码率或捕获精度断言。",
+      "practice": "先画出“首次捕获 → 小范围跟踪 → 失败后全范围重捕获”的分支，再把搜索端点与缓冲区上界对齐。需先理解复数 IQ、OFDM 循环前缀与 C++ 数组边界；阅读和离线回放不需发射硬件。",
+      "sources": [
+        {
+          "label": "问题、合并状态与测试边界",
+          "url": "https://github.com/gnuradio/gnuradio/pull/8124"
+        },
+        {
+          "label": "已合并的边界检查",
+          "url": "https://github.com/gnuradio/gnuradio/commit/7a45079b1d42ba7b94b50f23c1414c8d2f334622"
+        },
+        {
+          "label": "真实录音回归的检查范围",
+          "url": "https://github.com/gnuradio/gnuradio/blob/5693b143d3f14a45283896a76a0cfe22f9cea69e/gr-dtv/python/dtv/qa_realsignal_online.py"
+        }
+      ],
+      "last_verified": "2026-10-19"
+    },
+    {
+      "id": "radarsimpy-155-round-trip",
+      "project_id": "radarsimpy",
+      "title": "RadarSimPy：多次反射后，距离仍要按完整往返路径算",
+      "date_label": "15.5.0 变更日志 2026-10-13 · Git 标签 2026-10-14",
+      "stage": "桌面仿真工程修复；公开接口与测试，核心另需许可",
+      "summary": "15.5.0 修复 back_propagating=True 时多次反射回波距离偏短的问题。公开回归测试构造雷达至 A 为 30 m、A 至 B 为 20 m 的路径：完整往返为 100 m，对应距离 50 m，旧实现却落在 40 m。测试把开启与关闭回传的基带相减，再检查距离 FFT 峰值。",
+      "practice": "先手算往返路径，再读目标坐标、频率轴与 50±2.5 m 断言；这是上游测试规格，本站未运行。该路径错误只涉及 back_propagating=True，但新版另有混合精度改动，不能据此声称整个版本输出不变。运行需匹配的桌面二进制、Python 环境及许可。",
+      "sources": [
+        {
+          "label": "15.5.0 固定版本变更记录",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/CHANGELOG.md"
+        },
+        {
+          "label": "完整往返路径的回归测试",
+          "url": "https://github.com/radarsimx/radarsimpy/blob/v15.5.0/tests/test_system_back_propagation.py"
+        },
+        {
+          "label": "15.5.0 版本提交",
+          "url": "https://github.com/radarsimx/radarsimpy/commit/697a0f96d54387607e21ff10000bfa1d7aaf8410"
+        },
+        {
+          "label": "核心许可说明",
+          "url": "https://radarsimx.com/radarsimx/radarsimcpp/"
+        }
+      ],
+      "last_verified": "2026-10-19"
+    },
+    {
+      "id": "px4-ekf2-output-frame",
+      "project_id": "px4-ekf2",
+      "title": "PX4 EKF2：延迟姿态的校正量，也有自己的坐标系",
+      "date_label": "PR #29062 合并 main：2026-10-13",
+      "stage": "已合并工程修复；未核实进入发布版，非实飞验证",
+      "summary": "输出预测器曾把延迟时刻机体系中的姿态校正，直接加到当前机体系；快速旋转时，两套坐标轴已经不同。修复把校正保存在地球坐标系，应用时再转到当前机体系，同时处理姿态重置。它修正的是姿态输出预测环节，不是此前的多轴观测顺序融合问题。",
+      "practice": "先分清延迟 EKF 状态与当前姿态输出，再读新增 GTest：250 Hz IMU、每 8 ms 更新、152 ms 延迟，覆盖三轴不同转速及航向重置。2°误差在 4 s 后小于 0.05°是测试断言，本站未复现。PR 明确尚未验证真实高速航向日志和多 EKF 实例；不能外推为通用转速阈值或实飞保证。",
+      "sources": [
+        {
+          "label": "修复原理、上游测试与未验证项",
+          "url": "https://github.com/PX4/PX4-Autopilot/pull/29062"
+        },
+        {
+          "label": "合并版本：输出预测器实现",
+          "url": "https://github.com/PX4/PX4-Autopilot/blob/004f01471952e6c421f8b172d4b21fb30ee710d4/src/modules/ekf2/EKF/output_predictor/output_predictor.cpp"
+        },
+        {
+          "label": "合并版本：输出预测器回归测试",
+          "url": "https://github.com/PX4/PX4-Autopilot/blob/004f01471952e6c421f8b172d4b21fb30ee710d4/src/modules/ekf2/test/test_EKF_output_predictor.cpp"
+        }
+      ],
+      "last_verified": "2026-10-19"
     }
   ]
 }
