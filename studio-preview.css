@@ -348,3 +348,89 @@ body.studio-preview.lab-shell.page--next-learning main.nl-main { max-width: 1392
   .studio-preview .studio-hero { padding: 25px 0; }
   .studio-preview .studio-topic { break-inside: avoid; }
 }
+
+/* Final control isolation: outrank the legacy shell's generic details/button skin. */
+body.studio-preview.lab-shell.page--next-learning .nl-main details {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+body.studio-preview.lab-shell.page--next-learning .nl-main details > summary {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+body.studio-preview.lab-shell.page--next-learning .nl-main details > summary:hover {
+  background: transparent;
+  color: var(--studio-blue);
+}
+body.studio-preview.lab-shell.page--next-learning .nl-main details > summary::marker {
+  color: var(--studio-blue);
+}
+body.studio-preview.lab-shell .qh-host {
+  color: var(--studio-ink);
+  --qh-ink: var(--studio-ink);
+  --qh-muted: var(--studio-muted);
+  --qh-line: var(--studio-line);
+  --qh-accent: var(--studio-blue);
+}
+body.studio-preview.lab-shell .qh-host .qh-launcher {
+  background: var(--studio-ink);
+  color: white;
+  border-color: var(--studio-ink);
+  border-radius: 7px;
+  box-shadow: none;
+}
+body.studio-preview.lab-shell .qh-host .qh-launcher:hover {
+  background: #3a4438;
+  color: white;
+  border-color: #3a4438;
+}
+body.studio-preview.lab-shell .qh-host .qh-dialog {
+  background: var(--studio-white);
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  box-shadow: 0 18px 70px #22282322;
+}
+body.studio-preview.lab-shell .qh-host .qh-dialog::backdrop { background: #22282388; backdrop-filter: none; }
+body.studio-preview.lab-shell .qh-host .qh-head { background: var(--studio-white); border-color: var(--studio-line); }
+body.studio-preview.lab-shell .qh-host :is(.qh-head h2,.qh-hint h3,.qh-label) { color: var(--studio-ink); }
+body.studio-preview.lab-shell .qh-host :is(.qh-description,.qh-context,.qh-eyebrow,.qh-selection-label,.qh-next,.qh-status,.qh-hint-label,.qh-hint p) { color: var(--studio-muted); }
+body.studio-preview.lab-shell .qh-host .qh-hint { background: #ecefe7; border-color: #a5b098; }
+body.studio-preview.lab-shell .qh-host .qh-hint a { color: var(--studio-blue); }
+body.studio-preview.lab-shell .qh-host details,
+body.studio-preview.lab-shell .qh-host details > summary {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  box-shadow: none;
+}
+body.studio-preview.lab-shell .qh-host details > summary:hover { color: var(--studio-blue); background: transparent; }
+body.studio-preview.lab-shell .qh-host .qh-settings { background: var(--studio-paper); border-color: var(--studio-line); }
+body.studio-preview.lab-shell .qh-host :is(textarea,select,.qh-chat-url) { background: var(--studio-paper); color: var(--studio-ink); border-color: #b9c2af; }
+body.studio-preview.lab-shell .qh-host textarea::placeholder { color: var(--studio-muted); }
+body.studio-preview.lab-shell .qh-host .qh-selection-label input { accent-color: var(--studio-blue); }
+body.studio-preview.lab-shell .qh-host :is(.qh-close,.qh-setting-actions button,.qh-copy,.qh-open) {
+  background: var(--studio-white);
+  color: var(--studio-ink);
+  border-color: #b9c2af;
+  box-shadow: none;
+}
+body.studio-preview.lab-shell .qh-host :is(.qh-close,.qh-setting-actions button,.qh-copy,.qh-open):hover {
+  background: #ecefe7;
+  color: var(--studio-ink);
+  border-color: #929c85;
+}
+body.studio-preview.lab-shell .qh-host .qh-copy-open {
+  background: var(--studio-blue);
+  color: white;
+  border-color: var(--studio-blue);
+  box-shadow: none;
+}
+body.studio-preview.lab-shell .qh-host .qh-copy-open:hover { background: #1938c0; color: white; border-color: #1938c0; }
+body.studio-preview.lab-shell .qh-host .qh-chat-url[aria-invalid=true] { border-color: #9b3b22; }
+body.studio-preview.lab-shell .qh-host :is(button,a,input,textarea,select,summary):focus-visible { outline-color: var(--studio-blue) !important; }
