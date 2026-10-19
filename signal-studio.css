@@ -1,0 +1,1509 @@
+/* Approved cool mathematical studio; load after all legacy styles. */
+/* RIVER mathematical studio preview. Isolated from the published site; load last on preview pages. */
+body.math-studio {
+  --studio-paper: #f2f5fa;
+  --studio-white: #ffffff;
+  --studio-ink: #202734;
+  --studio-muted: #606b7d;
+  --studio-line: #d6dde8;
+  --studio-blue: #4b43e8;
+  --studio-blue-wash: #eeedff;
+  --studio-math: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+  --studio-serif: var(--studio-sans);
+  --studio-sans: 'Avenir Next', 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
+  --lab-ground: var(--studio-paper); --lab-paper: var(--studio-white); --lab-ink: var(--studio-ink); --lab-muted: var(--studio-muted); --lab-line: var(--studio-line); --lab-accent: var(--studio-blue); --lab-soft: var(--studio-blue-wash);
+  margin: 0; background: var(--studio-paper); color: var(--studio-ink); color-scheme: light;
+  font-family: var(--studio-sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+}
+.math-studio *, .math-studio *::before, .math-studio *::after { box-sizing: border-box; }
+.math-studio [hidden] { display: none !important; }
+.math-studio ::selection { background: #dfddff; color: #29227c; }
+.math-studio a { color: inherit; text-underline-offset: 5px; }
+.math-studio button, .math-studio select, .math-studio input, .math-studio textarea { font: inherit; }
+.math-studio :is(a,button,select,input,textarea,summary):focus-visible { outline: 3px solid var(--studio-blue); outline-offset: 5px; }
+.math-studio .studio-hero :is(h1,h2,h3,p,figure) { margin: 0; }
+.math-studio :is(h1,h2,h3) { color: var(--studio-ink); }
+.math-studio p { line-height: 1.8; }
+.math-studio :is(.studio-main,.nl-main) svg { display: block; max-width: 100%; }
+.math-studio .studio-skip { position: absolute; top: -90px; left: 20px; z-index: 100; padding: 10px 18px; background: var(--studio-blue); color: white; }
+.math-studio .studio-skip:focus { top: 12px; }
+.math-studio .studio-header { display: block; width: 100%; margin: 0; padding: 0; background: var(--studio-paper); border: 0; }
+.math-studio .studio-bar { max-width: 1392px; min-height: 102px; padding: 0 44px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--studio-line); }
+.math-studio .studio-brand { display: inline-flex; align-items: center; gap: 12px; color: var(--studio-ink); text-decoration: none; white-space: nowrap; }
+.math-studio .studio-mark { width: 36px; height: 36px; flex: 0 0 auto; color: var(--studio-blue); }
+.math-studio .studio-brand-word { display: block; font-size: 23px; line-height: 1; font-weight: 800; letter-spacing: -.055em; }
+.math-studio .studio-brand-sub { display: block; margin-top: 6px; font-size: 10px; line-height: 1; letter-spacing: .045em; color: var(--studio-muted); }
+.math-studio .math-studio-label { font-size: 11px; line-height: 1; padding: 5px 8px; margin-left: 8px; border: 1px solid var(--studio-line); border-radius: 3px; color: var(--studio-muted); font-weight: 400; }
+.math-studio .studio-nav { display: flex; align-items: stretch; gap: 38px; }
+.math-studio .studio-nav a { position: relative; display: inline-flex; align-items: center; min-height: 48px; padding: 6px 0; color: var(--studio-muted); font-size: 14px; text-decoration: none; white-space: nowrap; }
+.math-studio .studio-nav a:hover { color: var(--studio-blue); }
+.math-studio .studio-nav a[aria-current=page] { color: var(--studio-ink); font-weight: 700; }
+.math-studio .studio-nav a[aria-current=page]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--studio-blue); }
+.math-studio .studio-main { width: 100%; max-width: 1392px; margin: auto; padding: 0 44px 40px; }
+.math-studio .studio-hero { display: grid; grid-template-columns: .84fr 1.16fr; align-items: center; gap: 42px; padding: 74px 0 68px; }
+.math-studio .studio-hero-copy { min-width: 0; }
+.math-studio .studio-current { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; font-size: 13px; color: var(--studio-muted); }
+.math-studio .studio-current span { color: var(--studio-blue); font-weight: 600; }
+.math-studio .studio-current::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--studio-blue); }
+.math-studio .studio-hero h1 { margin: 0; font-size: clamp(38px,4.4vw,63px); line-height: 1.24; letter-spacing: -.065em; font-weight: 650; }
+.math-studio .studio-hero-copy > p:not(.studio-current) { max-width: 26em; margin-top: 24px; color: var(--studio-muted); font-size: 15px; line-height: 1.95; }
+.math-studio .studio-hero-actions { margin-top: 30px; display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
+.math-studio .studio-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 49px; gap: 24px; padding: 11px 23px; background: var(--studio-blue); color: white; font-size: 14px; font-weight: 600; border: 1px solid var(--studio-blue); border-radius: 5px; text-decoration: none; }
+.math-studio .studio-primary:hover { background: #3530bd; border-color: #3530bd; }
+.math-studio .studio-primary svg { width: 17px; height: 17px; }
+.math-studio .studio-text-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: var(--studio-ink); text-decoration: underline; text-decoration-color: #9daac1; }
+.math-studio .studio-text-link:hover { color: var(--studio-blue); text-decoration-color: var(--studio-blue); }
+.math-studio .studio-figure { min-width: 0; margin-top: 17px; }
+.math-studio .studio-figure-meta { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 18px; color: var(--studio-muted); font-size: 11px; }
+.math-studio .studio-figure-meta span:first-child { color: var(--studio-ink); font-size: 13px; }
+.math-studio .studio-flow { width: 100%; height: auto; overflow: visible; }
+.math-studio .studio-flow-mobile { display: none; }
+.math-studio .studio-flow text { font-family: var(--studio-sans); fill: var(--studio-ink); }
+.math-studio .studio-flow .s-axis { fill: none; stroke: #d1d9e7; stroke-width: 1; }
+.math-studio .studio-flow .s-tick { font-size: 12px; fill: #606b7d; }
+.math-studio .studio-flow .s-label { font-size: 14px; fill: #4f5a70; }
+.math-studio .studio-flow .s-label-main { font-size: 18px; font-weight: 600; }
+.math-studio .studio-flow .s-label-formula { font-family: var(--studio-math); font-size: 20px; font-style: italic; }
+.math-studio .studio-flow .s-trace { fill: none; stroke: var(--studio-ink); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.math-studio .studio-flow .s-blue { stroke: var(--studio-blue); stroke-width: 2.8; }
+.math-studio .studio-flow .s-reference { stroke: #8190aa; stroke-width: 1.5; stroke-dasharray: 4 5; }
+.math-studio .studio-flow .s-arrow { fill: none; stroke: #8190aa; stroke-width: 1.5; }
+.math-studio .studio-flow .s-arrow-blue { stroke: var(--studio-blue); }
+.math-studio .studio-flow .s-accent-text { fill: var(--studio-blue); }
+.math-studio .studio-flow .s-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: studio-trace-draw 1.8s ease-out .25s forwards; }
+.math-studio .studio-figure figcaption { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--studio-line); color: var(--studio-muted); font-size: 11px; line-height: 1.8; max-width: 56em; }
+.math-studio .studio-figure figcaption strong { color: var(--studio-ink); font-weight: 500; }
+.math-studio .studio-reading-line { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; border-top: 1px solid var(--studio-line); border-bottom: 1px solid var(--studio-line); padding: 22px 0 24px; }
+.math-studio .studio-reading-step { display: flex; align-items: flex-start; gap: 16px; min-width: 0; }
+.math-studio .studio-reading-step > span { font-family: var(--studio-serif); font-size: 28px; line-height: 1.2; color: #606b7d; }
+.math-studio .studio-reading-step strong { display: block; font-size: 14px; font-weight: 600; }
+.math-studio .studio-reading-step p { margin-top: 3px; color: var(--studio-muted); font-size: 12px; }
+.math-studio .studio-index { padding-top: 62px; }
+.math-studio .studio-section-head { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 26px; }
+.math-studio .studio-section-title { display: flex; gap: 14px; align-items: baseline; }
+.math-studio .studio-section-title h2 { font-size: 33px; line-height: 1.3; font-weight: 650; letter-spacing: -.035em; }
+.math-studio .studio-section-title span { font-size: 12px; color: var(--studio-muted); }
+.math-studio .studio-section-head p { margin-top: 10px; color: var(--studio-muted); font-size: 13px; }
+.math-studio .studio-status-note { white-space: nowrap; color: var(--studio-muted); font-size: 12px; margin-bottom: 2px; }
+.math-studio .studio-topic-index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+.math-studio .studio-topic-index > li { min-width: 0; }
+.math-studio .studio-topic { display: grid; grid-template-columns: 25px minmax(0,1fr) 134px 16px; align-items: center; column-gap: 16px; min-height: 145px; padding: 20px 0; border-top: 1px solid var(--studio-line); text-decoration: none; }
+.math-studio .studio-topic-index > li:nth-last-child(-n+2) .studio-topic { border-bottom: 1px solid var(--studio-line); }
+.math-studio .studio-topic-no { align-self: start; padding-top: 6px; color: var(--studio-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.math-studio .studio-topic h3 { font-size: 20px; font-weight: 600; line-height: 1.45; letter-spacing: -.03em; }
+.math-studio .studio-topic p { margin-top: 7px; color: var(--studio-muted); font-size: 12px; line-height: 1.65; }
+.math-studio .studio-topic-status { display: block; margin-top: 10px; color: var(--studio-muted); font-size: 11px; }
+.math-studio .studio-topic-plot { width: 134px; height: 70px; }
+.math-studio .studio-topic-plot .mini-axis { fill: none; stroke: #d1d9e7; stroke-width: 1; }
+.math-studio .studio-topic-plot .mini-trace { fill: none; stroke: var(--studio-ink); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.math-studio .studio-topic-plot .mini-accent { stroke: var(--studio-blue); }
+.math-studio .studio-topic-plot .mini-dot { fill: var(--studio-blue); }
+.math-studio .studio-topic-plot .mini-soft { stroke: #a8b5ce; }
+.math-studio .studio-topic-arrow { width: 16px; height: 16px; color: #6b7b96; }
+.math-studio .studio-topic:hover h3, .math-studio .studio-topic:hover .studio-topic-arrow { color: var(--studio-blue); }
+.math-studio .studio-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 51px 0 43px; }
+.math-studio .studio-bottom-link { position: relative; display: block; padding-right: 52px; text-decoration: none; }
+.math-studio .studio-bottom-link h2 { font-size: 22px; font-weight: 600; letter-spacing: -.025em; }
+.math-studio .studio-bottom-link p { margin-top: 9px; font-size: 13px; color: var(--studio-muted); }
+.math-studio .studio-bottom-link > svg { position: absolute; right: 0; top: 8px; width: 24px; height: 24px; color: var(--studio-blue); }
+.math-studio .studio-bottom-link:hover h2 { color: var(--studio-blue); }
+.math-studio .studio-footer { display: flex; justify-content: space-between; gap: 24px; padding: 22px 0 0; border-top: 1px solid var(--studio-line); color: var(--studio-muted); font-size: 11px; margin: 0; }
+.math-studio .studio-footer a { color: var(--studio-muted); }
+@keyframes studio-trace-draw { to { stroke-dashoffset: 0; } }
+
+/* Next-learning preview: an open reading workspace, rather than stacked dark panels. */
+body.math-studio.lab-shell.page--next-learning main.nl-main { max-width: 1392px; margin: 0 auto; padding: 48px 44px 74px; --nl-blue: var(--studio-blue); --nl-dim: var(--studio-muted); }
+.math-studio.page--next-learning .nl-main :is(h1,h2,h3) { color: var(--studio-ink); }
+.math-studio.page--next-learning .nl-main a { color: var(--studio-blue); }
+.math-studio.page--next-learning .nl-heading { align-items: flex-end; margin-bottom: 38px; padding-bottom: 30px; border-bottom: 1px solid var(--studio-line); }
+.math-studio.page--next-learning .nl-heading h1 { margin: 0 0 15px; color: var(--studio-ink); font-size: clamp(34px,3.6vw,49px); font-weight: 650; line-height: 1.25; letter-spacing: -.05em; }
+.math-studio.page--next-learning .nl-kicker { margin-bottom: 14px; font-size: 12px; color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-lead { color: var(--studio-muted); font-size: 14px; line-height: 1.8; }
+.math-studio.page--next-learning .nl-back { color: var(--studio-muted); font-size: 12px; }
+.math-studio.page--next-learning .nl-workspace { display: grid; grid-template-columns: minmax(0,1fr) 290px; gap: 72px; align-items: start; }
+.math-studio.page--next-learning .nl-recommend { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.math-studio.page--next-learning .nl-recommend-top { justify-content: flex-start; gap: 15px; margin-bottom: 21px; }
+.math-studio.page--next-learning .nl-chip { padding: 3px 10px; border: 0; border-radius: 3px; background: var(--studio-blue-wash); color: var(--studio-blue); font-size: 12px; font-weight: 600; }
+.math-studio.page--next-learning .nl-state-label { font-size: 12px; color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-recommend h2 { margin-bottom: 16px; max-width: 25em; font-size: clamp(27px,2.6vw,36px); line-height: 1.5; font-weight: 600; letter-spacing: -.035em; }
+.math-studio.page--next-learning .nl-goal { color: var(--studio-muted); font-size: 15px; line-height: 1.95; }
+.math-studio.page--next-learning .nl-check { margin: 27px 0 24px; padding: 20px 24px; border: 0; border-left: 3px solid var(--studio-blue); border-radius: 0 4px 4px 0; background: #e9edf6; }
+.math-studio.page--next-learning .nl-check h3 { margin-bottom: 8px; font-size: 13px; color: var(--studio-ink); font-weight: 650; }
+.math-studio.page--next-learning .nl-check p { margin: 0; font-size: 15px; color: var(--studio-ink); line-height: 1.9; }
+.math-studio.page--next-learning .nl-why { color: var(--studio-muted); font-size: 13px; line-height: 1.85; }
+.math-studio.page--next-learning .nl-material-note { margin-top: 12px; color: var(--studio-muted); font-size: 12px; }
+.math-studio.page--next-learning .nl-actions { margin: 27px 0 22px; gap: 12px; }
+.math-studio.page--next-learning .nl-actions a { padding: 11px 21px; min-height: 47px; border-radius: 5px; font-size: 13px; font-weight: 600; }
+.math-studio.page--next-learning .nl-actions .nl-primary { background: var(--studio-blue); color: white; border: 1px solid var(--studio-blue); }
+.math-studio.page--next-learning .nl-actions .nl-primary:hover { background: #3530bd; border-color: #3530bd; }
+.math-studio.page--next-learning .nl-actions .nl-secondary { background: transparent; color: var(--studio-ink); border: 1px solid #b7c2d4; }
+.math-studio.page--next-learning .nl-actions .nl-secondary:hover { border-color: var(--studio-blue); color: var(--studio-blue); }
+.math-studio.page--next-learning .nl-completion { border-color: var(--studio-line); gap: 16px; padding-top: 20px; }
+.math-studio.page--next-learning .nl-completion #nl-complete { border: 1px solid var(--studio-line); border-radius: 5px; background: var(--studio-white); color: var(--studio-ink); padding: 10px 15px; font-size: 12px; }
+.math-studio.page--next-learning .nl-completion #nl-complete:hover { border-color: #8999b3; }
+.math-studio.page--next-learning .nl-text-button { color: var(--studio-muted); font-size: 12px; background: transparent; border: 0; }
+.math-studio.page--next-learning .nl-status { margin-top: 14px; min-height: 1.5em; color: var(--studio-blue); font-size: 12px; }
+.math-studio.page--next-learning .nl-route-controls { padding: 0 0 0 28px !important; border-left: 1px solid var(--studio-line) !important; border-radius: 0 !important; background: transparent !important; }
+.math-studio.page--next-learning .nl-route-controls h2 { margin: 0 0 19px; font-size: 18px; font-weight: 600; }
+.math-studio.page--next-learning .nl-route-controls label { color: var(--studio-muted); font-size: 12px; }
+.math-studio.page--next-learning .nl-route-controls select { padding: 11px 12px; margin: 7px 0 10px; min-height: 46px; background: var(--studio-white); border: 1px solid #b7c2d4; border-radius: 4px; color: var(--studio-ink); font-size: 12px; width: 100%; }
+.math-studio.page--next-learning .nl-small { color: var(--studio-muted); font-size: 12px; line-height: 1.9; }
+.math-studio.page--next-learning .nl-rules { border-color: var(--studio-line); padding-top: 18px; margin-top: 22px; }
+.math-studio.page--next-learning :is(.nl-rules,.nl-data-tools) summary { color: var(--studio-ink); font-size: 12px; }
+.math-studio.page--next-learning .nl-rules ol { padding-left: 20px; font-size: 12px; color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-rules li { margin: 8px 0; }
+.math-studio.page--next-learning .nl-storage { border-color: var(--studio-line); color: var(--studio-ink); padding-top: 20px; margin-top: 20px; font-size: 12px; }
+.math-studio.page--next-learning .nl-storage p { color: var(--studio-muted); font-size: 11px; line-height: 1.9; }
+.math-studio.page--next-learning .nl-storage-dot { width: 6px; height: 6px; background: #7b8aa5; }
+.math-studio.page--next-learning :is(.nl-evidence,.nl-plan,.nl-cases) { margin-top: 57px; }
+.math-studio.page--next-learning .nl-section-heading { border-color: var(--studio-line); padding-bottom: 18px; margin-bottom: 24px; gap: 24px; }
+.math-studio.page--next-learning .nl-section-heading h2 { color: var(--studio-ink); font-size: 25px; line-height: 1.45; font-weight: 600; letter-spacing: -.035em; }
+.math-studio.page--next-learning .nl-section-heading > span { color: var(--studio-muted); font-size: 11px; white-space: normal; }
+.math-studio.page--next-learning .nl-section-heading .nl-small { margin-top: 8px; }
+.math-studio.page--next-learning .nl-evidence-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 42px; }
+.math-studio.page--next-learning .nl-evidence-grid h3 { font-size: 17px; color: var(--studio-ink); font-weight: 600; }
+.math-studio.page--next-learning .nl-evidence-grid p { color: var(--studio-muted); font-size: 13px; line-height: 1.95; }
+.math-studio.page--next-learning .nl-evidence-grid a { font-size: 12px; }
+.math-studio.page--next-learning .nl-evidence > .nl-small { border-color: #a3afc5; color: var(--studio-muted); margin-top: 27px; }
+.math-studio.page--next-learning .nl-lesson-list { border-top: 0; }
+.math-studio.page--next-learning .nl-lesson-row { padding: 20px 6px; grid-template-columns: 82px minmax(0,1fr) auto; gap: 20px; border-color: var(--studio-line); }
+.math-studio.page--next-learning .nl-row-index { font-size: 11px; color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-row-topic { color: var(--studio-muted); font-size: 11px; }
+.math-studio.page--next-learning .nl-row-title { color: var(--studio-ink); font-size: 15px; font-weight: 500; }
+.math-studio.page--next-learning .nl-row-detail { margin-top: 6px; color: var(--studio-muted); font-size: 12px; line-height: 1.8; }
+.math-studio.page--next-learning .nl-lesson-row button { border: 1px solid #b7c2d4; border-radius: 4px; background: transparent; color: var(--studio-ink); font-size: 11px; padding: 7px 13px; }
+.math-studio.page--next-learning .nl-lesson-row button:hover { color: var(--studio-blue); border-color: var(--studio-blue); background: transparent; }
+.math-studio.page--next-learning .nl-lesson-row[data-current=true] { background: var(--studio-blue-wash); border-left: 3px solid var(--studio-blue); padding-left: 17px; }
+.math-studio.page--next-learning .nl-lesson-row[data-current=true] .nl-row-title { color: var(--studio-blue); }
+.math-studio.page--next-learning .nl-lesson-row[data-complete=true] .nl-row-index { color: #3f4c75; }
+.math-studio.page--next-learning .nl-data-tools { margin-top: 25px; color: var(--studio-muted); font-size: 12px; }
+.math-studio.page--next-learning .nl-data-tools > p { margin: 10px 0 15px; }
+.math-studio.page--next-learning .nl-data-actions button, .math-studio.page--next-learning .nl-file-label { border: 1px solid #b7c2d4; border-radius: 4px; background: transparent; color: var(--studio-ink); font-size: 12px; padding: 9px 14px; }
+.math-studio.page--next-learning .nl-data-actions button:hover, .math-studio.page--next-learning .nl-file-label:hover { border-color: var(--studio-blue); }
+.math-studio.page--next-learning .nl-quiet { color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-case-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 42px; }
+.math-studio.page--next-learning .nl-case-grid article { background: transparent; border: 0; border-radius: 0; padding: 0; box-shadow: none; }
+.math-studio.page--next-learning .nl-case-tag { margin-bottom: 12px; color: var(--studio-muted); font-size: 11px; }
+.math-studio.page--next-learning .nl-case-grid h3 { margin-bottom: 12px; font-size: 20px; font-weight: 600; line-height: 1.5; }
+.math-studio.page--next-learning .nl-case-grid p { color: var(--studio-muted); font-size: 13px; line-height: 1.9; }
+.math-studio.page--next-learning .nl-case-grid a { font-size: 12px; }
+.math-studio.page--next-learning .nl-footer { margin-top: 42px; padding: 23px 0 0; border-top: 1px solid var(--studio-line); color: var(--studio-muted); font-size: 11px; }
+.math-studio.page--next-learning .nl-warning { padding: 15px 18px; margin-bottom: 20px; color: #424f68; background: #e9edf6; border: 1px solid var(--studio-line); border-radius: 4px; }
+.math-studio.page--next-learning .nl-empty { color: var(--studio-muted); }
+.math-studio.page--next-learning .nl-skip { background: var(--studio-blue); color: white; }
+.math-studio.page--next-learning .nl-main :is(a,button,input,select,summary):focus-visible, .math-studio.page--next-learning .nl-file-label:focus-within { outline-color: var(--studio-blue); }
+.math-studio.page--next-learning .nl-main button:disabled { opacity: .5; cursor: not-allowed; }
+/* Evidence additions in the refreshed companion template. */
+.math-studio.page--next-learning .nl-review-stamp { color: var(--studio-muted); gap: 5px; font-size: 11px; }
+.math-studio.page--next-learning .nl-review-stamp time { color: var(--studio-ink); font-size: 12px; }
+.math-studio.page--next-learning .nl-review-stamp .nl-back { color: var(--studio-blue); font-size: 11px; }
+.math-studio.page--next-learning .nl-task-meta { color: var(--studio-muted); font-size: 11px; letter-spacing: 0; margin: 0 0 8px; }
+.math-studio.page--next-learning .nl-frontier { border-color: var(--studio-line); margin-top: 22px; padding-top: 18px; }
+.math-studio.page--next-learning .nl-evidence-badge { color: #505c75; font-size: 11px; font-weight: 600; }
+.math-studio.page--next-learning .nl-frontier p { margin-top: 7px; color: var(--studio-muted); font-size: 13px; line-height: 1.9; }
+.math-studio.page--next-learning .nl-prerequisite { color: var(--studio-muted); font-size: 12px; gap: 12px; grid-template-columns: 78px minmax(0,1fr); margin-top: 15px; }
+.math-studio.page--next-learning .nl-prerequisite strong { color: var(--studio-ink); font-weight: 600; }
+.math-studio.page--next-learning .nl-after-check { color: var(--studio-muted); font-size: 11px; margin-top: 14px; }
+.math-studio.page--next-learning .nl-track-links { gap: 8px; margin: 15px 0 18px; font-size: 12px; }
+.math-studio.page--next-learning .nl-track-links a { min-height: 30px; }
+.math-studio.page--next-learning .nl-route-details > summary { color: var(--studio-ink); font-size: 13px; min-height: 48px; }
+.math-studio.page--next-learning .nl-route-details > summary::before { color: var(--studio-blue); font-size: 21px; font-weight: 400; }
+.math-studio.page--next-learning .nl-route-details[open] > summary { margin-bottom: 15px; }
+.math-studio.page--next-learning .nl-evidence-grid article { padding: 0; border: 0; background: transparent; border-radius: 0; }
+.math-studio.page--next-learning .nl-evidence-grid .nl-evidence-status { color: #505c75; font-size: 11px; }
+.math-studio.page--next-learning .nl-evidence-grid :is(ul,dl) { color: var(--studio-muted); font-size: 12px; line-height: 1.9; }
+.math-studio.page--next-learning .nl-evidence-grid :is(.nl-evidence-check,.nl-evidence-frontier) { color: var(--studio-muted); font-size: 12px; }
+
+/* Optional helper, if retained by the companion preview page. */
+.math-studio .qh-launcher { background: var(--studio-ink); color: white; border-color: var(--studio-ink); box-shadow: none; border-radius: 7px; }
+.math-studio .qh-dialog { background: var(--studio-white); color: var(--studio-ink); border-color: var(--studio-line); box-shadow: 0 18px 70px #20273422; }
+.math-studio .qh-head, .math-studio .qh-settings, .math-studio .qh-actions { background: transparent; border-color: var(--studio-line); }
+.math-studio :is(.qh-label,.qh-description,.qh-context,.qh-hint,.qh-hint-label,.qh-selection-label,.qh-status,.qh-eyebrow) { color: var(--studio-muted); }
+.math-studio :is(.qh-question,.qh-preview,.qh-chat-url) { background: var(--studio-paper); color: var(--studio-ink); border-color: #b7c2d4; }
+.math-studio :is(.qh-copy,.qh-copy-open,.qh-open) { background: var(--studio-blue); color: white; border-color: var(--studio-blue); }
+.math-studio :is(.qh-close,.qh-header-action) { color: var(--studio-ink); background: transparent; border-color: var(--studio-line); }
+
+/* Keep helper content readable if the existing question dialog is opened. */
+.math-studio .qh-host { --qh-ink: var(--studio-ink); --qh-muted: var(--studio-muted); --qh-line: var(--studio-line); --qh-accent: var(--studio-blue); font-family: var(--studio-sans); }
+.math-studio .qh-host .qh-head { background: var(--studio-white); }
+.math-studio .qh-host .qh-head h2, .math-studio .qh-host .qh-hint h3 { color: var(--studio-ink); }
+.math-studio .qh-host .qh-hint { border-color: #a3afc5; background: #e9edf6; }
+.math-studio .qh-host .qh-hint p { color: var(--studio-muted); }
+.math-studio .qh-host .qh-hint a { color: var(--studio-blue); }
+.math-studio .qh-host :is(textarea,select,input[type=url]) { background: var(--studio-paper); border-color: #b7c2d4; color: var(--studio-ink); }
+.math-studio .qh-host textarea::placeholder { color: var(--studio-muted); }
+.math-studio .qh-host .qh-launcher:hover { background: #384357; }
+.math-studio .qh-host .qh-close:hover { background: #e9edf6; }
+.math-studio .qh-host .qh-context { border-color: var(--studio-blue); }
+.math-studio .qh-host :is(button,a,input,textarea,select,summary):focus-visible { outline-color: var(--studio-blue) !important; }
+
+@media (min-width: 1600px) { .math-studio .studio-hero { padding-top: 90px; padding-bottom: 84px; } }
+@media (max-width: 1150px) {
+  .math-studio .studio-bar, .math-studio .studio-main { padding-left: 30px; padding-right: 30px; }
+  .math-studio .studio-hero { gap: 26px; grid-template-columns: .9fr 1.1fr; padding-top: 55px; }
+  .math-studio .studio-hero h1 { font-size: 45px; }
+  .math-studio .studio-topic-index { column-gap: 34px; }
+  .math-studio .studio-topic { grid-template-columns: 23px minmax(0,1fr) 100px 12px; column-gap: 10px; }
+  .math-studio .studio-topic-plot { width: 100px; }
+  .math-studio .studio-topic h3 { font-size: 18px; }
+  body.math-studio.lab-shell.page--next-learning main.nl-main { padding-left: 30px; padding-right: 30px; }
+  .math-studio.page--next-learning .nl-workspace { gap: 38px; grid-template-columns: minmax(0,1fr) 265px; }
+  .math-studio.page--next-learning .nl-evidence-grid, .math-studio.page--next-learning .nl-case-grid { gap: 26px; }
+}
+@media (max-width: 850px) {
+  .math-studio .studio-bar { min-height: 94px; }
+  .math-studio .studio-nav { gap: 24px; }
+  .math-studio .studio-hero { grid-template-columns: 1fr; gap: 32px; padding: 44px 0 38px; }
+  .math-studio .studio-hero h1 { font-size: 52px; }
+  .math-studio .studio-hero-copy > p:not(.studio-current) { max-width: 37em; margin-top: 20px; }
+  .math-studio .studio-hero h1 br { display: none; }
+  .math-studio .studio-hero-actions { margin-top: 23px; }
+  .math-studio .studio-figure { margin: 0; }
+  .math-studio .studio-flow-desktop { max-width: 680px; margin: auto; }
+  .math-studio .studio-topic { grid-template-columns: 23px minmax(0,1fr) 14px; }
+  .math-studio .studio-topic-plot { display: none; }
+  .math-studio .studio-index { padding-top: 42px; }
+  .math-studio .studio-reading-line { gap: 22px; }
+  .math-studio .studio-reading-step { gap: 10px; }
+  .math-studio .studio-reading-step > span { font-size: 24px; }
+  .math-studio .studio-reading-step p { font-size: 11px; }
+  .math-studio.page--next-learning .nl-workspace { grid-template-columns: 1fr; gap: 36px; }
+  .math-studio.page--next-learning .nl-route-controls { border-left: 0 !important; border-top: 1px solid var(--studio-line) !important; padding: 24px 0 0 !important; }
+  .math-studio.page--next-learning .nl-evidence-grid, .math-studio.page--next-learning .nl-case-grid { grid-template-columns: 1fr; gap: 26px; }
+  .math-studio.page--next-learning .nl-evidence-grid > div + div { border-color: var(--studio-line); padding-top: 23px; }
+  .math-studio.page--next-learning .nl-evidence-grid article + article { border-top: 1px solid var(--studio-line); padding-top: 24px; }
+  .math-studio.page--next-learning .nl-case-grid article + article { padding-top: 24px; border-top: 1px solid var(--studio-line); }
+}
+@media (max-width: 600px) {
+  .math-studio .studio-bar { flex-wrap: wrap; gap: 15px; padding: 23px 20px 0; }
+  .math-studio .studio-brand-word { font-size: 21px; }
+  .math-studio .studio-mark { width: 32px; height: 32px; }
+  .math-studio .math-studio-label { font-size: 10px; }
+  .math-studio .studio-nav { justify-content: space-between; width: 100%; gap: 12px; }
+  .math-studio .studio-nav a { min-height: 43px; font-size: 13px; }
+  .math-studio .studio-main { padding: 0 20px 25px; }
+  .math-studio .studio-hero { padding-top: 35px; gap: 32px; }
+  .math-studio .studio-current { font-size: 12px; gap: 9px; margin-bottom: 19px; }
+  .math-studio .studio-hero h1 { font-size: clamp(34px,9vw,48px); letter-spacing: -.06em; }
+  .math-studio .studio-hero h1 br { display: block; }
+  .math-studio .studio-hero-copy > p:not(.studio-current) { font-size: 14px; margin-top: 18px; }
+  .math-studio .studio-hero-actions { gap: 19px; }
+  .math-studio .studio-primary { font-size: 13px; padding: 10px 18px; min-height: 47px; gap: 17px; }
+  .math-studio .studio-text-link { font-size: 12px; }
+  .math-studio .studio-flow-desktop { display: none; }
+  .math-studio .studio-flow-mobile { display: block; width: 100%; max-width: 360px; margin: auto; }
+  .math-studio .studio-figure-meta { padding-bottom: 12px; font-size: 10px; align-items: baseline; gap: 10px; }
+  .math-studio .studio-figure-meta span:first-child { font-size: 12px; }
+  .math-studio .studio-figure figcaption { margin-top: 12px; font-size: 11px; }
+  .math-studio .studio-reading-line { grid-template-columns: 1fr; gap: 19px; padding: 25px 0; }
+  .math-studio .studio-reading-step { gap: 15px; }
+  .math-studio .studio-reading-step > span { min-width: 23px; }
+  .math-studio .studio-reading-step p { font-size: 12px; }
+  .math-studio .studio-section-head { display: block; margin-bottom: 22px; }
+  .math-studio .studio-section-title h2 { font-size: 29px; }
+  .math-studio .studio-section-title span { font-size: 11px; }
+  .math-studio .studio-section-head p { font-size: 12px; }
+  .math-studio .studio-status-note { display: block; margin-top: 13px; font-size: 11px; }
+  .math-studio .studio-topic-index { grid-template-columns: 1fr; }
+  .math-studio .studio-topic { grid-template-columns: 22px minmax(0,1fr) 84px 12px; gap: 9px; min-height: 130px; padding: 20px 0; }
+  .math-studio .studio-topic h3 { font-size: 17px; }
+  .math-studio .studio-topic p { font-size: 11px; }
+  .math-studio .studio-topic-status { font-size: 10px; margin-top: 9px; }
+  .math-studio .studio-topic-plot { display: block; width: 84px; }
+  .math-studio .studio-topic-index > li:nth-last-child(2) .studio-topic { border-bottom: 0; }
+  .math-studio .studio-bottom { grid-template-columns: 1fr; gap: 30px; padding: 36px 0; }
+  .math-studio .studio-bottom-link h2 { font-size: 20px; }
+  .math-studio .studio-bottom-link p { font-size: 12px; }
+  .math-studio .studio-footer { flex-direction: column; gap: 9px; font-size: 10px; }
+  body.math-studio.lab-shell.page--next-learning main.nl-main { padding: 30px 20px 55px; }
+  .math-studio.page--next-learning .nl-prerequisite { grid-template-columns: 1fr; gap: 3px; }
+  .math-studio.page--next-learning .nl-heading { margin-bottom: 28px; padding-bottom: 23px; }
+  .math-studio.page--next-learning .nl-heading h1 { font-size: 34px; }
+  .math-studio.page--next-learning .nl-heading .nl-back { margin-top: 15px; }
+  .math-studio.page--next-learning .nl-recommend h2 { font-size: 26px; }
+  .math-studio.page--next-learning .nl-goal { font-size: 14px; }
+  .math-studio.page--next-learning .nl-check { margin: 23px 0; padding: 16px 18px; }
+  .math-studio.page--next-learning .nl-check p { font-size: 14px; }
+  .math-studio.page--next-learning .nl-actions a { width: 100%; }
+  .math-studio.page--next-learning .nl-completion { flex-direction: column; align-items: stretch; gap: 9px; }
+  .math-studio.page--next-learning :is(.nl-evidence,.nl-plan,.nl-cases) { margin-top: 39px; }
+  .math-studio.page--next-learning .nl-section-heading { align-items: start; flex-wrap: wrap; gap: 10px; }
+  .math-studio.page--next-learning .nl-section-heading h2 { font-size: 23px; }
+  .math-studio.page--next-learning .nl-lesson-row { grid-template-columns: minmax(0,1fr) auto; gap: 7px 13px; padding: 17px 2px; }
+  .math-studio.page--next-learning .nl-row-index { grid-column: 1/-1; }
+  .math-studio.page--next-learning .nl-row-topic { display: block; }
+  .math-studio.page--next-learning .nl-row-title { font-size: 14px; }
+  .math-studio.page--next-learning .nl-row-detail { font-size: 11px; }
+  .math-studio.page--next-learning .nl-lesson-row button { grid-column: 2; grid-row: 2; padding: 7px 9px; }
+  .math-studio.page--next-learning .nl-lesson-row[data-current=true] { padding-left: 12px; padding-right: 10px; }
+  .math-studio.page--next-learning .nl-data-actions { flex-direction: column; align-items: stretch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .math-studio *, .math-studio *::before, .math-studio *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .math-studio .studio-flow .s-draw { stroke-dashoffset: 0; }
+}
+@media print {
+  body.math-studio { background: white; color: black; }
+  .math-studio .studio-nav, .math-studio .studio-hero-actions, .math-studio .math-studio-label { display: none; }
+  .math-studio .studio-main { max-width: none; padding: 0; }
+  .math-studio .studio-flow .s-draw { animation: none; stroke-dashoffset: 0; }
+  .math-studio .studio-hero { padding: 25px 0; }
+  .math-studio .studio-topic { break-inside: avoid; }
+}
+
+/* Final control isolation: outrank the legacy shell's generic details/button skin. */
+body.math-studio.lab-shell.page--next-learning .nl-main details {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+body.math-studio.lab-shell.page--next-learning .nl-main details > summary {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+body.math-studio.lab-shell.page--next-learning .nl-main details > summary:hover {
+  background: transparent;
+  color: var(--studio-blue);
+}
+body.math-studio.lab-shell.page--next-learning .nl-main details > summary::marker {
+  color: var(--studio-blue);
+}
+body.math-studio.lab-shell .qh-host {
+  color: var(--studio-ink);
+  --qh-ink: var(--studio-ink);
+  --qh-muted: var(--studio-muted);
+  --qh-line: var(--studio-line);
+  --qh-accent: var(--studio-blue);
+}
+body.math-studio.lab-shell .qh-host .qh-launcher {
+  background: var(--studio-ink);
+  color: white;
+  border-color: var(--studio-ink);
+  border-radius: 7px;
+  box-shadow: none;
+}
+body.math-studio.lab-shell .qh-host .qh-launcher:hover {
+  background: #384357;
+  color: white;
+  border-color: #384357;
+}
+body.math-studio.lab-shell .qh-host .qh-dialog {
+  background: var(--studio-white);
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  box-shadow: 0 18px 70px #20273422;
+}
+body.math-studio.lab-shell .qh-host .qh-dialog::backdrop { background: #20273488; backdrop-filter: none; }
+body.math-studio.lab-shell .qh-host .qh-head { background: var(--studio-white); border-color: var(--studio-line); }
+body.math-studio.lab-shell .qh-host :is(.qh-head h2,.qh-hint h3,.qh-label) { color: var(--studio-ink); }
+body.math-studio.lab-shell .qh-host :is(.qh-description,.qh-context,.qh-eyebrow,.qh-selection-label,.qh-next,.qh-status,.qh-hint-label,.qh-hint p) { color: var(--studio-muted); }
+body.math-studio.lab-shell .qh-host .qh-hint { background: #e9edf6; border-color: #a3afc5; }
+body.math-studio.lab-shell .qh-host .qh-hint a { color: var(--studio-blue); }
+body.math-studio.lab-shell .qh-host details,
+body.math-studio.lab-shell .qh-host details > summary {
+  background: transparent;
+  color: var(--studio-ink);
+  border-color: var(--studio-line);
+  box-shadow: none;
+}
+body.math-studio.lab-shell .qh-host details > summary:hover { color: var(--studio-blue); background: transparent; }
+body.math-studio.lab-shell .qh-host .qh-settings { background: var(--studio-paper); border-color: var(--studio-line); }
+body.math-studio.lab-shell .qh-host :is(textarea,select,.qh-chat-url) { background: var(--studio-paper); color: var(--studio-ink); border-color: #b7c2d4; }
+body.math-studio.lab-shell .qh-host textarea::placeholder { color: var(--studio-muted); }
+body.math-studio.lab-shell .qh-host .qh-selection-label input { accent-color: var(--studio-blue); }
+body.math-studio.lab-shell .qh-host :is(.qh-close,.qh-setting-actions button,.qh-copy,.qh-open) {
+  background: var(--studio-white);
+  color: var(--studio-ink);
+  border-color: #b7c2d4;
+  box-shadow: none;
+}
+body.math-studio.lab-shell .qh-host :is(.qh-close,.qh-setting-actions button,.qh-copy,.qh-open):hover {
+  background: #e9edf6;
+  color: var(--studio-ink);
+  border-color: #8999b3;
+}
+body.math-studio.lab-shell .qh-host .qh-copy-open {
+  background: var(--studio-blue);
+  color: white;
+  border-color: var(--studio-blue);
+  box-shadow: none;
+}
+body.math-studio.lab-shell .qh-host .qh-copy-open:hover { background: #3530bd; color: white; border-color: #3530bd; }
+body.math-studio.lab-shell .qh-host .qh-chat-url[aria-invalid=true] { border-color: #9b3b22; }
+body.math-studio.lab-shell .qh-host :is(button,a,input,textarea,select,summary):focus-visible { outline-color: var(--studio-blue) !important; }
+
+/* Mathematical workspace: plotted regions, process connections, aligned subject index. */
+.math-studio .studio-bar { min-height: 98px; border-bottom-color: var(--studio-line); }
+.math-studio .studio-brand-word { letter-spacing: -.035em; }
+.math-studio .math-studio-label { border-color: #c8d0df; border-radius: 2px; }
+.math-studio .studio-nav { gap: 8px; }
+.math-studio .studio-nav a { min-height: 43px; padding: 8px 15px; border-radius: 4px; }
+.math-studio .studio-nav a[aria-current=page] { color: var(--studio-blue); background: var(--studio-blue-wash); }
+.math-studio .studio-nav a[aria-current=page]::after { display: none; }
+.math-studio .studio-current::before { width: 6px; height: 6px; border-radius: 0; }
+.math-studio .studio-hero { grid-template-columns: .83fr 1.17fr; gap: 38px; }
+.math-studio .studio-figure { padding: 23px 25px 18px; background: var(--studio-white); border: 1px solid var(--studio-line); border-left: 3px solid var(--studio-blue); border-radius: 0; margin-top: 0; }
+.math-studio .studio-figure-meta { padding-bottom: 23px; }
+.math-studio .studio-flow .s-grid { fill: none; stroke: #e5eaf2; stroke-width: 1; }
+.math-studio .studio-flow .s-reference { stroke: #8190aa; }
+.math-studio .studio-figure figcaption { padding-top: 14px; border-top-color: #e1e6ef; }
+.math-studio .studio-primary { border-radius: 3px; }
+.math-studio .studio-reading-line { border: 0; padding: 4px 0 32px; gap: 36px; }
+.math-studio .studio-reading-step { position: relative; display: block; }
+.math-studio .studio-reading-step > span { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 33px; height: 33px; padding: 0; border: 1px solid #aab6d0; border-radius: 2px; background: var(--studio-white); color: var(--studio-blue); font-family: var(--studio-sans); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; }
+.math-studio .studio-reading-step:not(:last-child)::after { content: ''; position: absolute; top: 16px; left: 33px; right: -36px; border-top: 1px solid #b7c4db; }
+.math-studio .studio-reading-step > div { margin-top: 14px; }
+.math-studio .studio-reading-step strong { font-size: 14px; }
+.math-studio .studio-reading-step p { font-size: 12px; }
+.math-studio .studio-index { border-top: 1px solid var(--studio-line); padding-top: 42px; }
+.math-studio .studio-section-title h2 { font-size: 31px; }
+.math-studio .studio-index-columns, .math-studio .studio-topic { display: grid; grid-template-columns: 36px minmax(180px,1.2fr) minmax(240px,1.6fr) 150px minmax(170px,1fr) 16px; column-gap: 24px; }
+.math-studio .studio-index-columns { align-items: center; color: var(--studio-muted); font-size: 11px; padding: 0 0 14px; }
+.math-studio .studio-topic-index { display: block; }
+.math-studio .studio-topic { min-height: 104px; padding: 16px 0; }
+.math-studio .studio-topic-no { padding: 0; align-self: center; font-size: 12px; }
+.math-studio .studio-topic h3 { font-size: 19px; line-height: 1.5; }
+.math-studio .studio-topic p { margin: 0; font-size: 12px; line-height: 1.75; }
+.math-studio .studio-topic-plot { display: block; width: 140px; height: 70px; }
+.math-studio .studio-topic-status { margin: 0; font-size: 11px; line-height: 1.75; }
+.math-studio .studio-topic-index > li:nth-last-child(-n+2) .studio-topic { border-bottom: 0; }
+.math-studio .studio-topic-index > li:last-child .studio-topic { border-bottom: 1px solid var(--studio-line); }
+.math-studio .studio-topic:hover { background: #ebeff7; }
+.math-studio .studio-bottom { gap: 60px; }
+.math-studio .studio-bottom-link + .studio-bottom-link { padding-left: 30px; border-left: 1px solid var(--studio-line); }
+.math-studio.page--next-learning .nl-chip { border-radius: 2px; }
+.math-studio.page--next-learning .nl-check { background: #e9edf6; border-radius: 0; }
+.math-studio.page--next-learning .nl-route-controls { border-left-color: #cbd4e3 !important; }
+.math-studio.page--next-learning .nl-heading { border-bottom-color: #cbd4e3; }
+.math-studio.page--next-learning .nl-lesson-row[data-current=true] { background: #eeedff; }
+@media (max-width: 1150px) {
+  .math-studio .studio-hero { gap: 27px; }
+  .math-studio .studio-figure { padding: 20px 18px 17px; }
+  .math-studio .studio-index-columns, .math-studio .studio-topic { grid-template-columns: 30px minmax(160px,1.2fr) minmax(200px,1.5fr) 120px minmax(150px,1fr) 14px; column-gap: 18px; }
+  .math-studio .studio-topic-plot { width: 118px; }
+}
+@media (max-width: 1000px) {
+  .math-studio .studio-index-columns { display: none; }
+  .math-studio .studio-topic { grid-template-columns: 30px minmax(170px,1fr) minmax(190px,1.3fr) 110px 14px; gap: 5px 15px; min-height: 112px; }
+  .math-studio .studio-topic-no { grid-column: 1; grid-row: 1 / span 2; }
+  .math-studio .studio-topic-title { grid-column: 2; grid-row: 1; }
+  .math-studio .studio-topic-summary { grid-column: 3; grid-row: 1; }
+  .math-studio .studio-topic-plot { grid-column: 4; grid-row: 1 / span 2; width: 110px; }
+  .math-studio .studio-topic-status { grid-column: 2 / span 2; grid-row: 2; }
+  .math-studio .studio-topic-arrow { grid-column: 5; grid-row: 1 / span 2; }
+}
+@media (max-width: 850px) {
+  .math-studio .studio-hero { grid-template-columns: 1fr; }
+  .math-studio .studio-nav { gap: 2px; }
+  .math-studio .studio-nav a { padding: 8px 11px; }
+  .math-studio .studio-figure { padding: 22px; }
+  .math-studio .studio-topic { grid-template-columns: 25px minmax(150px,1fr) minmax(170px,1.3fr) 92px 14px; gap: 5px 12px; }
+  .math-studio .studio-topic-plot { width: 92px; }
+  .math-studio .studio-topic h3 { font-size: 17px; }
+  .math-studio .studio-topic p { font-size: 11px; }
+  .math-studio .studio-bottom { gap: 32px; }
+  .math-studio .studio-bottom-link + .studio-bottom-link { padding-left: 20px; }
+}
+@media (max-width: 700px) {
+  .math-studio .studio-topic { grid-template-columns: 24px minmax(0,1fr) 100px 14px; gap: 5px 12px; min-height: 126px; }
+  .math-studio .studio-topic-no { grid-row: 1 / span 3; align-self: start; padding-top: 4px; }
+  .math-studio .studio-topic-title { grid-column: 2; grid-row: 1; }
+  .math-studio .studio-topic-summary { grid-column: 2; grid-row: 2; }
+  .math-studio .studio-topic-status { grid-column: 2; grid-row: 3; margin-top: 4px; }
+  .math-studio .studio-topic-plot { grid-column: 3; grid-row: 1 / span 3; width: 100px; }
+  .math-studio .studio-topic-arrow { grid-column: 4; grid-row: 1 / span 3; }
+}
+@media (max-width: 600px) {
+  .math-studio .studio-bar { padding-bottom: 10px; }
+  .math-studio .studio-nav { gap: 4px; }
+  .math-studio .studio-nav a { min-height: 40px; padding: 7px 10px; font-size: 12px; }
+  .math-studio .studio-hero { padding-top: 33px; gap: 30px; }
+  .math-studio .studio-figure { padding: 17px 15px 15px; border-left-width: 2px; }
+  .math-studio .studio-figure-meta { padding-bottom: 17px; flex-wrap: wrap; gap: 4px; }
+  .math-studio .studio-figure-meta span:first-child { flex-basis: 100%; }
+  .math-studio .studio-reading-line { grid-template-columns: 1fr; gap: 24px; padding-top: 4px; padding-bottom: 36px; }
+  .math-studio .studio-reading-step { display: grid; grid-template-columns: 33px minmax(0,1fr); gap: 15px; }
+  .math-studio .studio-reading-step > div { margin-top: 1px; }
+  .math-studio .studio-reading-step:not(:last-child)::after { top: 33px; bottom: -24px; left: 16px; right: auto; width: 1px; border-top: 0; border-left: 1px solid #b7c4db; }
+  .math-studio .studio-index { padding-top: 33px; }
+  .math-studio .studio-topic { grid-template-columns: 20px minmax(0,1fr) 78px 12px; gap: 5px 9px; min-height: 135px; }
+  .math-studio .studio-topic-plot { width: 78px; }
+  .math-studio .studio-topic h3 { font-size: 17px; }
+  .math-studio .studio-topic-status { font-size: 10px; }
+  .math-studio .studio-bottom-link + .studio-bottom-link { padding-left: 0; padding-top: 27px; border-left: 0; border-top: 1px solid var(--studio-line); }
+}
+
+
+/* Production palette compatibility. Layout and interactions remain in their original files. */
+/* Literal palette compatibility: style.css */
+:where(body.math-studio) header{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .brand,:where(body.math-studio).brand{color:#087d70}
+:where(body.math-studio) .tag,:where(body.math-studio).tag,:where(body.math-studio) .hint,:where(body.math-studio).hint,:where(body.math-studio) footer{color:#606b7d}
+:where(body.math-studio) .intro,:where(body.math-studio).intro{color:#606b7d}
+:where(body.math-studio) .plotpanel,:where(body.math-studio).plotpanel,:where(body.math-studio) aside,:where(body.math-studio) article{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) button,:where(body.math-studio) select{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) button:hover{background:#e9edf6}
+:where(body.math-studio) button:focus-visible,:where(body.math-studio) input:focus-visible,:where(body.math-studio) select:focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) .control output,:where(body.math-studio).control output{color:#202734}
+:where(body.math-studio) input[type=range]{accent-color:#087d70}
+:where(body.math-studio) .metric small,:where(body.math-studio).metric small{color:#606b7d}
+:where(body.math-studio) article b{color:#1d64b3}
+:where(body.math-studio) .formula,:where(body.math-studio).formula{color:#202734}
+:where(body.math-studio) .iir,:where(body.math-studio).iir{color:#087d70}
+:where(body.math-studio) .fir,:where(body.math-studio).fir{color:#1d64b3}
+:where(body.math-studio) .kalman,:where(body.math-studio).kalman{color:#9a5800}
+:where(body.math-studio) .notice,:where(body.math-studio).notice{border-left:3px solid #9a5800;background:#ffffff;color:#606b7d}
+:where(body.math-studio) pre{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) footer{border-top:1px solid #d6dde8}
+:where(body.math-studio) .guide .formula,:where(body.math-studio).guide .formula{background:#ffffff}
+:where(body.math-studio) .guide a,:where(body.math-studio).guide a,:where(body.math-studio) .reading-links a,:where(body.math-studio).reading-links a{color:#1d64b3}
+:where(body.math-studio) .curve-toggle,:where(body.math-studio).curve-toggle{border:1px solid #d6dde8}
+:where(body.math-studio) .curve-toggle:focus-within,:where(body.math-studio).curve-toggle:focus-within{outline:2px solid #4b43e8}
+
+/* Literal palette compatibility: notes.css */
+:where(body.math-studio) a:focus-visible,:where(body.math-studio) button:focus-visible,:where(body.math-studio) summary:focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) ::selection{background:#e9edf6}
+body:where(.math-studio).kalman-notes{--accent:#4b43e8;--accent-soft:#e9edf6}
+:where(body.math-studio) .skip-link,:where(body.math-studio).skip-link{background:#ffffff}
+:where(body.math-studio) .toc a:hover,:where(body.math-studio).toc a:hover{background:#ffffff}
+:where(body.math-studio) .toc-index,:where(body.math-studio).toc-index{color:#606b7d}
+:where(body.math-studio) .notebook,:where(body.math-studio).notebook{box-shadow:none}
+:where(body.math-studio) .frontier-box,:where(body.math-studio).frontier-box{border:1px solid #d6dde8}
+:where(body.math-studio) .note,:where(body.math-studio).note,:where(body.math-studio) .warning,:where(body.math-studio).warning,:where(body.math-studio) .next-checkpoint,:where(body.math-studio).next-checkpoint{border-left:3px solid #d6dde8;background:#e9edf6;color:#202734}
+:where(body.math-studio) .warning,:where(body.math-studio).warning{border-left-color:#9a5800;color:#9a5800}
+:where(body.math-studio) .formula,:where(body.math-studio).formula,:where(body.math-studio) .equation,:where(body.math-studio).equation{background:#ffffff;border:1px solid #d6dde8;color:#1d64b3}
+:where(body.math-studio) .kalman-notes .formula,:where(body.math-studio).kalman-notes .formula,:where(body.math-studio) .kalman-notes .equation,:where(body.math-studio).kalman-notes .equation{background:#ffffff;border-color:#d6dde8;color:#202734}
+:where(body.math-studio) code{background:#ffffff}
+:where(body.math-studio) pre{background:#ffffff}
+:where(body.math-studio) .worked-example,:where(body.math-studio).worked-example{background:#ffffff}
+:where(body.math-studio) .worked-example .formula,:where(body.math-studio).worked-example .formula{background:#ffffff}
+:where(body.math-studio) .notebook details,:where(body.math-studio).notebook details{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) th{background:#ffffff;color:#202734}
+:where(body.math-studio) tbody tr:nth-child(even){background:#ffffff}
+:where(body.math-studio) .status-label,:where(body.math-studio).status-label{background:#e9edf6;color:#606b7d}
+:where(body.math-studio) .status-label.pending,:where(body.math-studio).status-label.pending{background:#e9edf6;color:#9a5800}
+:where(body.math-studio) .figure,:where(body.math-studio).figure{background:#ffffff}
+:where(body.math-studio) .learning-route>li::before,:where(body.math-studio).learning-route>li::before{border:1px solid #d6dde8}
+
+/* Literal palette compatibility: future-learning.css */
+body:where(.math-studio).page--future .future-status{border:1px solid #d6dde8;background:#e9edf6}
+body:where(.math-studio).page--future .future-boundary{border-left:3px solid #d6dde8;color:#606b7d}
+body:where(.math-studio).page--future .future-context{border-left:2px solid #d6dde8}
+body:where(.math-studio).page--future .equation{border:1px solid #d6dde8}
+body:where(.math-studio).page--future .future-example{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--future .future-detail summary{color:#606b7d}
+body:where(.math-studio).page--future .note{border-left:3px solid #d6dde8}
+body:where(.math-studio).page--future .future-flow span:not(:last-child)::after{color:#606b7d}
+
+/* Literal palette compatibility: lab-shell.css */
+body:where(.math-studio).lab-shell ::selection{background:#e9edf6;color:#202734}
+body:where(.math-studio).lab-shell :is(a, button, input, select, summary):focus-visible{outline:3px solid #4b43e8}
+body:where(.math-studio).lab-shell .lab-site-mark{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-brand-divider{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-nav-group + .lab-nav-group{border-left:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .lab-nav-label{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-nav-links a{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-nav-links a:hover{background:#ffffff}
+body:where(.math-studio).lab-shell .lab-nav-links a[aria-current=page]{background:#e9edf6}
+body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)){border-color:#d6dde8;color:#202734}
+body:where(.math-studio).lab-shell:not(.page--motion) :where(button:not(.lab-nav-toggle):not(.print-button)):hover{background:#e9edf6;border-color:#d6dde8}
+body:where(.math-studio).lab-shell:not(.page--motion) .answers button,body:where(.math-studio).lab-shell:not(.page--motion) .check button{background:#ffffff}
+body:where(.math-studio).lab-shell:not(.page--motion) .answers button:hover,body:where(.math-studio).lab-shell:not(.page--motion) .check button:hover{border-color:#d6dde8}
+body:where(.math-studio).lab-shell:not(.page--motion) select{border-color:#d6dde8}
+body:where(.math-studio).lab-shell:not(.page--motion) :is(.equation,.math,.formula){background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).lab-shell:not(.page--motion) :is(.note,.notice){border-left-color:#d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell:not(.page--motion) details{background:#ffffff}
+body:where(.math-studio).lab-shell:not(.page--motion) :is(.result,.check,.coef-grid>div,.component,.twocol article){background:#ffffff}
+body:where(.math-studio).lab-shell:not(.page--motion) pre{background:#ffffff}
+body:where(.math-studio).page--index .page-shortcut a{border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--index .curve-toggle{border:1px solid #d6dde8;color:#606b7d;background:#ffffff}
+body:where(.math-studio).page--index .metric span{color:#606b7d}
+body:where(.math-studio).page--index .control label{color:#606b7d}
+body:where(.math-studio).page--index .guide .formula{background:#ffffff}
+body:where(.math-studio).page--index .iir{color:#087d70}
+body:where(.math-studio).page--index .fir{color:#1d64b3}
+body:where(.math-studio).page--index .kalman{color:#9a5800}
+body:where(.math-studio).page--index .cards article{border-top:2px solid #d6dde8}
+body:where(.math-studio).page--index .cards article + article{border-left:1px solid #d6dde8}
+body:where(.math-studio).page--index .notice{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--kalman .facts section{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--kalman .facts section + section{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--kalman .mix div:first-child{background:#e9edf6}
+body:where(.math-studio).page--kalman .mix div:last-child{background:#e9edf6}
+body:where(.math-studio).page--transforms main > nav[role=tablist] button[aria-selected=false]{background:#e9edf6;color:#606b7d;border-color:#d6dde8}
+body:where(.math-studio).page--frequency .modes button[aria-pressed=false]{background:#e9edf6;color:#606b7d;border-color:#d6dde8}
+body:where(.math-studio).page--frequency .track{background:#e9edf6}
+body:where(.math-studio).page--engineering .modes a{border:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .toc a[aria-current=location]{background:#e9edf6}
+body:where(.math-studio).lab-shell .toc a:hover{background:#ffffff}
+body:where(.math-studio).lab-shell .notebook .frontier-box{border-color:#d6dde8}
+body:where(.math-studio).lab-shell .notebook .worked-example{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .notebook :is(.formula,.equation){background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .notebook .warning{background:#e9edf6;color:#9a5800}
+body:where(.math-studio).lab-shell .notebook .next-checkpoint{color:#606b7d}
+body:where(.math-studio).lab-shell .notebook th{background:#ffffff;color:#606b7d}
+body:where(.math-studio).lab-shell .notebook tbody tr:nth-child(even){background:#ffffff}
+body:where(.math-studio).lab-shell .notebook .status-label{background:#e9edf6;color:#606b7d}
+body:where(.math-studio).lab-shell .notebook .status-label.pending{background:#e9edf6;color:#9a5800}
+body:where(.math-studio).page--motion .hero .eyebrow{color:#606b7d}
+body:where(.math-studio).page--motion .hero-stats{border-left:1px solid #d6dde8}
+body:where(.math-studio).page--motion .side-panel{border-top:3px solid #d6dde8}
+body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#d6dde8}
+body:where(.math-studio).page--motion .lesson.active span{color:#606b7d}
+body:where(.math-studio).page--motion button:hover{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--motion .chart-controls button.active{border-color:#d6dde8}
+body:where(.math-studio).page--motion .stepno{background:#ffffff}
+body:where(.math-studio).page--motion .filter-option.chosen{background:#e9edf6}
+body:where(.math-studio).page--motion .callout{color:#606b7d;background:#ffffff}
+body:where(.math-studio).page--motion .callout.warning{color:#9a5800;background:#e9edf6;border-color:#9a5800}
+body:where(.math-studio).page--motion .formula{color:#606b7d;background:#ffffff}
+body:where(.math-studio).page--motion tr.focused td{background:#e9edf6}
+body:where(.math-studio).page--motion td{border-color:#d6dde8}
+body:where(.math-studio).page--motion .badge{background:#e9edf6;color:#606b7d}
+body:where(.math-studio).page--motion .badge.offline-badge{background:#e9edf6;color:#9a5800}
+body:where(.math-studio).page--motion .path-row{background:#ffffff}
+body:where(.math-studio).page--motion .source-meta{color:#9a5800}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary:hover,body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[open] > summary{background:#ffffff}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[data-current-topic=true] > summary{background:#e9edf6}
+body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links{box-shadow:none}
+body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links a:hover{background:#ffffff}
+body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links a[aria-current=page]{background:#e9edf6}
+@media (max-width: 1120px){body:where(.math-studio).lab-shell .lab-nav-links a{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-nav-links a[aria-current=page]{border-color:#d6dde8;background:#e9edf6}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic > summary{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell .lab-site-header .lab-nav-topic[data-current-topic=true] > summary{border-color:#d6dde8;background:#e9edf6}}
+@media screen{body:where(.math-studio).lab-shell :is(.figure,code){background:#ffffff;color:#606b7d}
+body:where(.math-studio).lab-shell .toc-index{color:#606b7d}
+body:where(.math-studio).lab-shell .learning-route>li::before{border-color:#d6dde8}
+body:where(.math-studio).page--frequency .legend label:first-child{color:#606b7d}
+body:where(.math-studio).page--frequency .legend label:last-child{color:#1d64b3}
+body:where(.math-studio).page--motion button,body:where(.math-studio).page--motion select{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--motion button.primary{border-color:#d6dde8;color:#202734}
+body:where(.math-studio).page--motion .lesson{background:#ffffff}
+body:where(.math-studio).page--motion .lesson.active{background:#e9edf6;border-color:#d6dde8;color:#202734}
+body:where(.math-studio).page--motion .lesson span{color:#606b7d}
+body:where(.math-studio).page--motion .method-chip{background:#ffffff;border-color:#d6dde8;color:#9a5800}
+body:where(.math-studio).page--motion .startup-notice{background:#ffffff;border-color:#d6dde8;color:#9a5800}
+body:where(.math-studio).page--motion .toast{background:#ffffff;color:#202734;border:1px solid #d6dde8}
+body:where(.math-studio).page--motion .positive{color:#087d70}
+body:where(.math-studio).page--motion .negative{color:#b74167}
+body:where(.math-studio).page--motion .swatch.dashed{border-top-color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-header{border-top-color:#d6dde8}
+body:where(.math-studio).lab-shell .lab-site-brand{color:#606b7d}
+body:where(.math-studio).lab-shell .lab-site-mark{background:#ffffff}
+body:where(.math-studio).lab-shell .lab-site-header .lab-topic-links{box-shadow:none}}
+
+/* Literal palette compatibility: architecture.css */
+body:where(.math-studio).lab-shell .lab-site-header.architecture-header{border-top:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a{color:#606b7d}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a:hover{color:#202734;background:#ffffff}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{color:#087d70;background:#e9edf6;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .site-skip{background:#ffffff;color:#202734}
+body:where(.math-studio).lab-shell .topic-action{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+body:where(.math-studio).lab-shell .topic-action:hover{background:#e9edf6}
+body:where(.math-studio).lab-shell .legacy-topic-context{color:#606b7d}
+
+/* Literal palette compatibility: knowledge.css */
+body:where(.math-studio).page--knowledge .map-intro p{color:#606b7d}
+body:where(.math-studio).page--knowledge .map-thread{color:#606b7d}
+body:where(.math-studio).page--knowledge .map-thread span:not(:last-child)::after{background:#e9edf6}
+body:where(.math-studio).page--knowledge a.topic-card{color:#202734;border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge a.topic-card:hover{border-color:#d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .diagram-blue{stroke:#1d64b3}
+body:where(.math-studio).page--knowledge .diagram-amber{stroke:#9a5800}
+body:where(.math-studio).page--knowledge .diagram-link{stroke:#1d64b3}
+body:where(.math-studio).page--knowledge .topic-card p{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-state{color:#9a5800;border-top:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .topic-card--transforms .topic-state,body:where(.math-studio).page--knowledge .topic-card--iir-fir .topic-state,body:where(.math-studio).page--knowledge .topic-card--kalman .topic-state{color:#606b7d}
+body:where(.math-studio).page--knowledge .map-frontier{border-left:3px solid #d6dde8}
+body:where(.math-studio).page--knowledge .map-frontier p{color:#606b7d}
+body:where(.math-studio).page--knowledge .map-archive{border-top:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .topic-heading p{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-view-nav{border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .topic-view-nav a{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-view-nav a[aria-current=page]{color:#087d70;border-bottom-color:#087d70}
+body:where(.math-studio).page--knowledge .knowledge-body > article{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .knowledge-body .source-context{color:#606b7d}
+body:where(.math-studio).page--knowledge .concept-strip article{border-left:2px solid #d6dde8}
+body:where(.math-studio).page--knowledge .concept-strip article p{color:#606b7d}
+body:where(.math-studio).page--knowledge .learning-boundary{background:#ffffff;border-left:3px solid #d6dde8}
+body:where(.math-studio).page--knowledge .learning-boundary h3{color:#9a5800}
+body:where(.math-studio).page--knowledge .notebook-entry{background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .notebook-pending .topic-state{color:#9a5800}
+body:where(.math-studio).page--knowledge .pll-flow span{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .practical-case{border-left:3px solid #087d70}
+
+/* Literal palette compatibility: knowledge-lessons.css */
+body:where(.math-studio).page--knowledge .control-check{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .control-figure-viewport{scrollbar-color:#8999b3 #f2f5fa}
+body:where(.math-studio).page--knowledge .control-visual-key .action{color:#087d70}
+body:where(.math-studio).page--knowledge .control-visual-key .disturbance{color:#9a5800}
+body:where(.math-studio).page--knowledge .control-visual-key .measurement{color:#606b7d}
+
+/* Literal palette compatibility: filter-families.css */
+body:where(.math-studio).page--knowledge .ff-comparison{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge .ff-comparison .ff-caption{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-controls label{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-controls select{color:#202734;background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-controls select:focus-visible,body:where(.math-studio).page--knowledge #topic-filter-families summary:focus-visible{outline:2px solid #4b43e8}
+body:where(.math-studio).page--knowledge .ff-legend{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-legend span::before{border-top:3px solid #087d70}
+body:where(.math-studio).page--knowledge .ff-legend .ff-cheby::before{border-color:#9a5800}
+body:where(.math-studio).page--knowledge .ff-plot-heading{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-plot{border-left:1px solid #d6dde8;border-bottom:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-plot path[data-ff-curve]{stroke:#087d70}
+body:where(.math-studio).page--knowledge .ff-plot path[data-ff-curve=cheby1]{stroke:#9a5800}
+body:where(.math-studio).page--knowledge .ff-gridline{stroke:#d6dde8}
+body:where(.math-studio).page--knowledge .ff-reference{stroke:#1d64b3}
+body:where(.math-studio).page--knowledge .ff-ylabels{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-xlabels{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-axis-title{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-summary{border-top:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-parameters dt{color:#202734}
+body:where(.math-studio).page--knowledge .ff-parameters dd{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-detail{background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .ff-detail summary{color:#606b7d}
+body:where(.math-studio).page--knowledge .ff-detail .formula{background:#ffffff}
+body:where(.math-studio).page--knowledge .ff-source-list{color:#606b7d}
+
+/* Literal palette compatibility: notes-iir-fir.css */
+:where(body.math-studio) .page--notes-iir-fir .if-controls :is(select,button),:where(body.math-studio).page--notes-iir-fir .if-controls :is(select,button){border:1px solid #d6dde8}
+:where(body.math-studio) .page--notes-iir-fir .if-meter,:where(body.math-studio).page--notes-iir-fir .if-meter{background:#ffffff}
+
+/* Literal palette compatibility: hardware-filters.css */
+:where(body.math-studio) .hardware-page,:where(body.math-studio).hardware-page{color:#202734;background:#ffffff}
+:where(body.math-studio) .hw-main a,:where(body.math-studio).hw-main a{color:#087d70}
+:where(body.math-studio) .hw-status,:where(body.math-studio).hw-status{color:#9a5800}
+:where(body.math-studio) .hw-lede,:where(body.math-studio).hw-lede{color:#606b7d}
+:where(body.math-studio) .hw-hero-diagram,:where(body.math-studio).hw-hero-diagram{color:#087d70;background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .hw-hero-diagram figcaption,:where(body.math-studio).hw-hero-diagram figcaption,:where(body.math-studio) .hw-caption,:where(body.math-studio).hw-caption,:where(body.math-studio) .hw-chart figcaption,:where(body.math-studio).hw-chart figcaption{color:#606b7d}
+:where(body.math-studio) .hw-jumps,:where(body.math-studio).hw-jumps{border-block:1px solid #d6dde8}
+:where(body.math-studio) .hw-index,:where(body.math-studio).hw-index{color:#087d70;border-top:2px solid #087d70}
+:where(body.math-studio) .hw-section-title p,:where(body.math-studio).hw-section-title p{color:#606b7d}
+:where(body.math-studio) .hw-taxonomy,:where(body.math-studio).hw-taxonomy{border:1px solid #d6dde8}
+:where(body.math-studio) .hw-taxonomy>div,:where(body.math-studio).hw-taxonomy>div{background:#ffffff}
+:where(body.math-studio) .hw-taxonomy>div:nth-child(odd),:where(body.math-studio).hw-taxonomy>div:nth-child(odd){border-right:1px solid #d6dde8}
+:where(body.math-studio) .hw-taxonomy>div:nth-child(-n+2),:where(body.math-studio).hw-taxonomy>div:nth-child(-n+2){border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .hw-taxonomy dt,:where(body.math-studio).hw-taxonomy dt{color:#606b7d}
+:where(body.math-studio) .hw-taxonomy p,:where(body.math-studio).hw-taxonomy p{color:#606b7d}
+:where(body.math-studio) .hw-note,:where(body.math-studio).hw-note{background:#ffffff;border-left:3px solid #087d70}
+:where(body.math-studio) .hw-chain,:where(body.math-studio).hw-chain{border:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain li,:where(body.math-studio).hw-chain li{background:#ffffff}
+:where(body.math-studio) .hw-chain li:not(:nth-child(3n)),:where(body.math-studio).hw-chain li:not(:nth-child(3n)){border-right:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain li:nth-child(-n+3),:where(body.math-studio).hw-chain li:nth-child(-n+3){border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain strong:before,:where(body.math-studio).hw-chain strong:before{color:#087d70}
+:where(body.math-studio) .hw-chain span,:where(body.math-studio).hw-chain span{color:#606b7d}
+:where(body.math-studio) .hw-pair article,:where(body.math-studio).hw-pair article{border-top:1px solid #d6dde8}
+:where(body.math-studio) .hw-pair p,:where(body.math-studio).hw-pair p{color:#606b7d}
+:where(body.math-studio) .hw-detail,:where(body.math-studio).hw-detail{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .hw-detail summary::marker,:where(body.math-studio).hw-detail summary::marker{color:#087d70}
+:where(body.math-studio) .hw-detail p,:where(body.math-studio).hw-detail p{color:#606b7d}
+:where(body.math-studio) .hw-detail pre,:where(body.math-studio).hw-detail pre{background:#ffffff}
+:where(body.math-studio) .hw-lab,:where(body.math-studio).hw-lab{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .hw-model,:where(body.math-studio).hw-model{color:#606b7d}
+:where(body.math-studio) .hw-controls label,:where(body.math-studio).hw-controls label{color:#606b7d}
+:where(body.math-studio) .hw-controls select,:where(body.math-studio).hw-controls select{color:#202734;background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .hw-button,:where(body.math-studio).hw-button{color:#202734;background:#e9edf6;border:1px solid #087d70}
+:where(body.math-studio) .hw-reset,:where(body.math-studio).hw-reset{color:#606b7d;border-color:#d6dde8}
+:where(body.math-studio) .hw-main :focus-visible,:where(body.math-studio).hw-main :focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) .hw-metrics,:where(body.math-studio).hw-metrics{border-block:1px solid #d6dde8}
+:where(body.math-studio) .hw-metrics span,:where(body.math-studio).hw-metrics span{color:#606b7d}
+:where(body.math-studio) .hw-chart svg,:where(body.math-studio).hw-chart svg{background:#ffffff}
+:where(body.math-studio) .hw-chart svg text,:where(body.math-studio).hw-chart svg text{fill:#606b7d}
+:where(body.math-studio) .hw-legend,:where(body.math-studio).hw-legend{color:#606b7d}
+:where(body.math-studio) .hw-target:before,:where(body.math-studio).hw-target:before{color:#087d70}
+:where(body.math-studio) .hw-actual:before,:where(body.math-studio).hw-actual:before{color:#9a5800}
+:where(body.math-studio) .hw-result,:where(body.math-studio).hw-result{border-left:3px solid #9a5800;color:#606b7d}
+:where(body.math-studio) .hw-formula,:where(body.math-studio).hw-formula{color:#087d70;background:#ffffff}
+:where(body.math-studio) .hw-state,:where(body.math-studio).hw-state{border:1px solid #d6dde8}
+:where(body.math-studio) .hw-state span,:where(body.math-studio).hw-state span{color:#606b7d}
+:where(body.math-studio) .hw-state.is-active,:where(body.math-studio).hw-state.is-active{border-color:#087d70;background:#e9edf6}
+:where(body.math-studio) .hw-step-controls output,:where(body.math-studio).hw-step-controls output{color:#606b7d}
+:where(body.math-studio) .hw-implementation-note,:where(body.math-studio).hw-implementation-note{color:#606b7d}
+:where(body.math-studio) .hw-implementations article,:where(body.math-studio).hw-implementations article{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .hw-implementations p,:where(body.math-studio).hw-implementations p,:where(body.math-studio) .hw-implementations li,:where(body.math-studio).hw-implementations li{color:#606b7d}
+:where(body.math-studio) .hw-implementations .hw-choice,:where(body.math-studio).hw-implementations .hw-choice{color:#087d70}
+:where(body.math-studio) .hw-scenarios article,:where(body.math-studio).hw-scenarios article{border-top:2px solid #d6dde8}
+:where(body.math-studio) .hw-scenarios p,:where(body.math-studio).hw-scenarios p{color:#606b7d}
+:where(body.math-studio) .hw-budget dl>div,:where(body.math-studio).hw-budget dl>div{border-top:1px solid #d6dde8}
+:where(body.math-studio) .hw-budget dt,:where(body.math-studio).hw-budget dt{color:#087d70}
+:where(body.math-studio) .hw-budget dd,:where(body.math-studio).hw-budget dd{color:#606b7d}
+:where(body.math-studio) .hw-check,:where(body.math-studio).hw-check{border-color:#d6dde8}
+:where(body.math-studio) .hw-sources,:where(body.math-studio).hw-sources{border-top:1px solid #d6dde8}
+:where(body.math-studio) .hw-sources p,:where(body.math-studio).hw-sources p,:where(body.math-studio) .hw-sources li,:where(body.math-studio).hw-sources li{color:#606b7d}
+@media(max-width:840px){:where(body.math-studio) .hw-chain li:nth-child(odd),:where(body.math-studio).hw-chain li:nth-child(odd){border-right:1px solid #d6dde8}
+:where(body.math-studio) .hw-chain li:nth-child(-n+4),:where(body.math-studio).hw-chain li:nth-child(-n+4){border-bottom:1px solid #d6dde8}}
+@media(max-width:560px){:where(body.math-studio) .hw-taxonomy>div:not(:last-child),:where(body.math-studio).hw-taxonomy>div:not(:last-child){border-bottom:1px solid #d6dde8}}
+
+/* Literal palette compatibility: engineering-cases.css */
+:where(body.math-studio) .engineering-cases-page,:where(body.math-studio).engineering-cases-page{background:#ffffff;color:#202734}
+:where(body.math-studio) .cases-back,:where(body.math-studio).cases-back{color:#606b7d}
+:where(body.math-studio) .case-kicker,:where(body.math-studio).case-kicker{color:#087d70}
+:where(body.math-studio) .cases-intro p,:where(body.math-studio).cases-intro p,:where(body.math-studio) .case-study p,:where(body.math-studio).case-study p,:where(body.math-studio) .cases-evidence p,:where(body.math-studio).cases-evidence p{color:#606b7d}
+:where(body.math-studio) .cases-intro .cases-lede,:where(body.math-studio).cases-intro .cases-lede{color:#202734}
+:where(body.math-studio) .case-index-card,:where(body.math-studio).case-index-card{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .case-index-card span,:where(body.math-studio).case-index-card span{color:#087d70}
+:where(body.math-studio) .case-index-card strong,:where(body.math-studio).case-index-card strong{color:#202734}
+:where(body.math-studio) .case-index-card small,:where(body.math-studio).case-index-card small{color:#606b7d}
+:where(body.math-studio) .case-index-card:hover,:where(body.math-studio).case-index-card:hover{border-color:#087d70}
+:where(body.math-studio) .cases-evidence,:where(body.math-studio).cases-evidence{border-left:3px solid #9a5800;background:#ffffff}
+:where(body.math-studio) .case-study,:where(body.math-studio).case-study{border-top:1px solid #d6dde8}
+:where(body.math-studio) .case-heading .case-kicker,:where(body.math-studio).case-heading .case-kicker{color:#087d70}
+:where(body.math-studio) .case-kicker span,:where(body.math-studio).case-kicker span{border:1px solid #d6dde8}
+:where(body.math-studio) .case-meta,:where(body.math-studio).case-meta{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .case-meta dt,:where(body.math-studio).case-meta dt{color:#1d64b3}
+:where(body.math-studio) .case-meta dd,:where(body.math-studio).case-meta dd{color:#606b7d}
+:where(body.math-studio) .case-section h3,:where(body.math-studio).case-section h3,:where(body.math-studio) .case-transfer h3,:where(body.math-studio).case-transfer h3,:where(body.math-studio) .case-sources h3,:where(body.math-studio).case-sources h3{color:#202734}
+:where(body.math-studio) .case-block h4,:where(body.math-studio).case-block h4{color:#202734}
+:where(body.math-studio) .case-citations a,:where(body.math-studio).case-citations a{color:#087d70}
+:where(body.math-studio) .case-procedure,:where(body.math-studio).case-procedure{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .case-procedure .case-boundary,:where(body.math-studio).case-procedure .case-boundary{color:#9a5800}
+:where(body.math-studio) .case-procedure li,:where(body.math-studio).case-procedure li{color:#606b7d}
+:where(body.math-studio) .case-transfer,:where(body.math-studio).case-transfer{border-left:3px solid #087d70}
+:where(body.math-studio) .case-sources a,:where(body.math-studio).case-sources a{color:#1d64b3}
+:where(body.math-studio) .case-sources li span,:where(body.math-studio).case-sources li span{color:#606b7d}
+:where(body.math-studio) .case-footer,:where(body.math-studio).case-footer{color:#606b7d;border-top:1px solid #d6dde8}
+:where(body.math-studio) .case-footer a,:where(body.math-studio).case-footer a{color:#087d70}
+:where(body.math-studio) .engineering-cases-page a:focus-visible,:where(body.math-studio).engineering-cases-page a:focus-visible{outline:2px solid #4b43e8}
+:where(body.math-studio) .engineering-cases-page .case-chain,:where(body.math-studio).engineering-cases-page .case-chain{background:#ffffff;border-left:2px solid #d6dde8}
+:where(body.math-studio) .engineering-cases-page .case-chain li,:where(body.math-studio).engineering-cases-page .case-chain li{color:#606b7d}
+:where(body.math-studio) .engineering-cases-page .case-chain li+li:before,:where(body.math-studio).engineering-cases-page .case-chain li+li:before{color:#606b7d}
+:where(body.math-studio) .engineering-cases-page .case-transfer .project-links a,:where(body.math-studio).engineering-cases-page .case-transfer .project-links a{color:#1d64b3}
+
+/* Literal palette compatibility: exploration.css */
+body:where(.math-studio).exploration-page .exploration-state{border-bottom:1px solid #d6dde8}
+body:where(.math-studio).exploration-page .exploration-route{border-left:2px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-filter,body:where(.math-studio).exploration-page .exploration-reset{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-filter[aria-pressed=true]{background:#e9edf6;color:#087d70;border-color:#1d64b3}
+body:where(.math-studio).exploration-page .exploration-search input{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-search input::placeholder{color:#606b7d}
+body:where(.math-studio).exploration-page .project-meta{color:#1d64b3}
+body:where(.math-studio).exploration-page .project-chain{border-left:2px solid #d6dde8}
+body:where(.math-studio).exploration-page .project-chain li{color:#606b7d}
+body:where(.math-studio).exploration-page .project-chain li+li::before{color:#606b7d}
+body:where(.math-studio).exploration-page .project-warning{color:#9a5800}
+body:where(.math-studio).exploration-page .project-details summary{color:#606b7d}
+body:where(.math-studio).exploration-page .project-facts dt{color:#1d64b3}
+body:where(.math-studio).exploration-page .project-facts dd{color:#606b7d}
+body:where(.math-studio).exploration-page .radar-jump{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page .radar-guide{border-top:2px solid #1d64b3}
+body:where(.math-studio).exploration-page .radar-map li+li::before{color:#606b7d}
+body:where(.math-studio).exploration-page .radar-map svg{stroke:#087d70}
+body:where(.math-studio).exploration-page .radar-roles>div{border-left:2px solid #d6dde8}
+body:where(.math-studio).exploration-page .radar-roles dt{color:#1d64b3}
+body:where(.math-studio).exploration-page .radar-caution{background:#ffffff}
+body:where(.math-studio).exploration-page .radar-caution h3{color:#9a5800}
+body:where(.math-studio).exploration-page .radar-caution p{color:#606b7d}
+body:where(.math-studio).exploration-page p.radar-architecture{color:#1d64b3}
+body:where(.math-studio).exploration-page .radar-process li{background:#ffffff;border:1px solid #d6dde8;color:#606b7d}
+body:where(.math-studio).exploration-page .radar-process li+li::before{color:#606b7d}
+body:where(.math-studio).exploration-page .radar-start{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).exploration-page p.radar-boundary{border-top:1px solid #d6dde8;color:#606b7d}
+
+/* Literal palette compatibility: simulation.css */
+body:where(.math-studio).page--simulation{--sim-ground:#f2f5fa;--sim-surface:#ffffff;--sim-line:#d6dde8;--sim-ink:#202734;--sim-muted:#606b7d;--sim-trace:#4b43e8}
+body:where(.math-studio).page--simulation .simulation-scenarios{background:#ffffff}
+body:where(.math-studio).page--simulation .simulation-scenarios a:hover{background:#ffffff}
+body:where(.math-studio).page--simulation .simulation-scenarios a[aria-current="page"]{background:#e9edf6;color:#202734}
+body:where(.math-studio).page--simulation .simulation-algorithm select{background:#ffffff;border:1px solid #d6dde8}
+body:where(.math-studio).page--simulation .simulation-classics>a{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--simulation .simulation-classics>a:hover,body:where(.math-studio).page--simulation .simulation-classics>a[aria-current="true"]{background:#e9edf6;border-color:#087d70}
+body:where(.math-studio).page--simulation .simulation-selection-note{color:#9a5800;background:#ffffff}
+body:where(.math-studio).page--simulation .simulation-status{background:#e9edf6}
+body:where(.math-studio).page--simulation .simulation-status[data-error="true"]{background:#e9edf6;color:#9a5800}
+body:where(.math-studio).page--simulation .simulation-status button{border:1px solid #d6dde8}
+body:where(.math-studio).page--simulation .simulation-noscript{color:#9a5800}
+body:where(.math-studio).page--simulation :is(a,button,select,summary):focus-visible{outline:3px solid #4b43e8}
+
+/* Literal palette compatibility: frequency.css */
+:where(body.math-studio) .modes button[aria-pressed=false],:where(body.math-studio).modes button[aria-pressed=false]{color:#1d64b3;background:#e9edf6;border-color:#d6dde8}
+:where(body.math-studio) .legend label:first-child,:where(body.math-studio).legend label:first-child{color:#606b7d}
+:where(body.math-studio) .legend label:last-child,:where(body.math-studio).legend label:last-child{color:#1d64b3}
+:where(body.math-studio) .component,:where(body.math-studio).component{background:#ffffff}
+:where(body.math-studio) .component strong,:where(body.math-studio).component strong{color:#1d64b3}
+:where(body.math-studio) .track,:where(body.math-studio).track{background:#e9edf6}
+:where(body.math-studio) .track span,:where(body.math-studio).track span{background:#e9edf6}
+:where(body.math-studio) a{color:#1d64b3}
+:where(body.math-studio) .twocol article,:where(body.math-studio).twocol article{background:#ffffff}
+
+/* Literal palette compatibility: kalman.css */
+:where(body.math-studio) header{border-bottom:1px solid #d6dde8;color:#1d64b3}
+:where(body.math-studio) header span{color:#606b7d}
+:where(body.math-studio) .lead,:where(body.math-studio).lead{color:#606b7d}
+:where(body.math-studio) .facts section,:where(body.math-studio).facts section{background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .facts section+section,:where(body.math-studio).facts section+section{background:#e9edf6;border-color:#9a5800}
+:where(body.math-studio) .facts p,:where(body.math-studio).facts p{color:#606b7d}
+:where(body.math-studio) .lab,:where(body.math-studio).lab{border:1px solid #d6dde8}
+:where(body.math-studio) .step,:where(body.math-studio).step{color:#606b7d}
+:where(body.math-studio) output{color:#1d64b3}
+:where(body.math-studio) input{accent-color:#1d64b3}
+:where(body.math-studio) .ends,:where(body.math-studio).ends{color:#606b7d}
+:where(body.math-studio) .mix div:first-child,:where(body.math-studio).mix div:first-child{background:#e9edf6}
+:where(body.math-studio) .mix div:last-child,:where(body.math-studio).mix div:last-child{background:#e9edf6}
+:where(body.math-studio) .result,:where(body.math-studio).result{background:#ffffff}
+:where(body.math-studio) .result p,:where(body.math-studio).result p{color:#606b7d}
+:where(body.math-studio) .note,:where(body.math-studio).note{color:#606b7d;border-left:3px solid #d6dde8}
+:where(body.math-studio) details{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .variance strong,:where(body.math-studio).variance strong{color:#1d64b3}
+:where(body.math-studio) .variance small,:where(body.math-studio).variance small{color:#606b7d}
+:where(body.math-studio) button{background:#e9edf6;border:1px solid #d6dde8}
+:where(body.math-studio) button:hover{background:#e9edf6}
+:where(body.math-studio) button:focus-visible,:where(body.math-studio) summary:focus-visible,:where(body.math-studio) input:focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) .equation,:where(body.math-studio).equation,:where(body.math-studio) .math,:where(body.math-studio).math{background:#ffffff}
+:where(body.math-studio) .answers button,:where(body.math-studio).answers button{color:#202734;background:#ffffff;border-color:#d6dde8}
+:where(body.math-studio) .answers button:hover,:where(body.math-studio).answers button:hover{background:#e9edf6}
+:where(body.math-studio) footer{color:#606b7d}
+:where(body.math-studio) footer a{color:#1d64b3}
+
+/* Literal palette compatibility: transforms.css */
+:where(body.math-studio) nav{background:#ffffff}
+:where(body.math-studio) nav button{background:#e9edf6;color:#1d64b3;border-color:#d6dde8}
+:where(body.math-studio) nav button[aria-selected=true]{background:#e9edf6;border-color:#d6dde8}
+:where(body.math-studio) nav button:hover{background:#e9edf6}
+:where(body.math-studio) a{color:#1d64b3}
+:where(body.math-studio) .coef-grid>div,:where(body.math-studio).coef-grid>div{background:#ffffff}
+:where(body.math-studio) .coef-grid small,:where(body.math-studio).coef-grid small{color:#606b7d}
+:where(body.math-studio) .check,:where(body.math-studio).check{background:#ffffff}
+:where(body.math-studio) .check button,:where(body.math-studio).check button{color:#1d64b3;border-color:#d6dde8}
+:where(body.math-studio) .check button:hover,:where(body.math-studio).check button:hover{background:#e9edf6}
+
+/* Literal palette compatibility: engineering.css */
+:where(body.math-studio) select{border:1px solid #d6dde8;color:#202734}
+:where(body.math-studio) select:focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) .modes a,:where(body.math-studio).modes a{background:#e9edf6}
+:where(body.math-studio) pre{background:#ffffff}
+
+/* Literal palette compatibility: learning-visuals.css */
+body:where(.math-studio).lab-shell .learn-visual{background:#ffffff;border:1px solid #d6dde8;color:#202734}
+body:where(.math-studio).lab-shell .learn-visual > h3{color:#202734}
+body:where(.math-studio).lab-shell .learn-visual figcaption{color:#606b7d}
+body:where(.math-studio).lab-shell .learn-visual .lv-scroll{scrollbar-color:#8999b3 #f2f5fa}
+body:where(.math-studio).lab-shell .learn-visual .lv-scroll:focus-visible{outline:3px solid #4b43e8}
+body:where(.math-studio).lab-shell .learn-visual .lv-scroll-hint{color:#606b7d}
+body:where(.math-studio).lab-shell .learn-visual .lv-control{border-bottom:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .learn-visual label{color:#202734}
+body:where(.math-studio).lab-shell .learn-visual output{color:#087d70}
+body:where(.math-studio).lab-shell .learn-visual input[type=range]{accent-color:#087d70}
+body:where(.math-studio).lab-shell .learn-visual .lv-control p{color:#606b7d}
+body:where(.math-studio).lab-shell .learn-visual .lv-readout{color:#202734;border-top:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .notebook .lv-derivation > summary{color:#606b7d}
+body:where(.math-studio).lab-shell .lv-overview{border-left:2px solid #087d70}
+
+/* Literal palette compatibility: next-learning.css */
+:where(body.math-studio) .nl-main,:where(body.math-studio).nl-main{--nl-blue:#1d64b3;--nl-dim:#606b7d}
+:where(body.math-studio) .nl-main :is(a,button,input,select,summary):focus-visible,:where(body.math-studio).nl-main :is(a,button,input,select,summary):focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) .nl-skip,:where(body.math-studio).nl-skip{background:#ffffff}
+:where(body.math-studio) .nl-kicker,:where(body.math-studio).nl-kicker{color:#606b7d}
+:where(body.math-studio) .nl-lead,:where(body.math-studio).nl-lead{color:#606b7d}
+:where(body.math-studio) .nl-recommend,:where(body.math-studio).nl-recommend{border:1px solid #d6dde8;border-top:3px solid #087d70;background:#ffffff}
+:where(body.math-studio) .nl-chip,:where(body.math-studio).nl-chip{color:#087d70;background:#ffffff;border:1px solid #d6dde8}
+:where(body.math-studio) .nl-state-label,:where(body.math-studio).nl-state-label{color:#606b7d}
+:where(body.math-studio) .nl-goal,:where(body.math-studio).nl-goal{color:#606b7d}
+:where(body.math-studio) .nl-check,:where(body.math-studio).nl-check{border-left:2px solid #1d64b3;background:#ffffff}
+:where(body.math-studio) .nl-check h3,:where(body.math-studio).nl-check h3{color:#1d64b3}
+:where(body.math-studio) .nl-main .nl-why,:where(body.math-studio).nl-main .nl-why{color:#606b7d}
+:where(body.math-studio) .nl-main .nl-material-note,:where(body.math-studio).nl-main .nl-material-note{color:#606b7d}
+:where(body.math-studio) .nl-actions .nl-primary,:where(body.math-studio).nl-actions .nl-primary{background:#e9edf6;color:#202734;border:1px solid #087d70}
+:where(body.math-studio) .nl-actions .nl-primary:hover,:where(body.math-studio).nl-actions .nl-primary:hover{background:#e9edf6}
+:where(body.math-studio) .nl-actions .nl-secondary,:where(body.math-studio).nl-actions .nl-secondary{color:#202734;border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .nl-completion,:where(body.math-studio).nl-completion{border-top:1px solid #d6dde8}
+:where(body.math-studio) .nl-completion #nl-complete,:where(body.math-studio).nl-completion #nl-complete{background:#ffffff;border-color:#d6dde8;color:#606b7d}
+:where(body.math-studio) .nl-main .nl-text-button,:where(body.math-studio).nl-main .nl-text-button{color:#606b7d}
+:where(body.math-studio) .nl-status,:where(body.math-studio).nl-status{color:#087d70}
+:where(body.math-studio) .nl-route-controls label,:where(body.math-studio).nl-route-controls label{color:#606b7d}
+:where(body.math-studio) .nl-route-controls select,:where(body.math-studio).nl-route-controls select{background:#ffffff}
+:where(body.math-studio) .nl-main .nl-small,:where(body.math-studio).nl-main .nl-small{color:#606b7d}
+:where(body.math-studio) .nl-rules,:where(body.math-studio).nl-rules{border-top:1px solid #d6dde8}
+:where(body.math-studio) .nl-rules summary,:where(body.math-studio).nl-rules summary{color:#606b7d}
+:where(body.math-studio) .nl-rules ol,:where(body.math-studio).nl-rules ol{color:#606b7d}
+:where(body.math-studio) .nl-storage,:where(body.math-studio).nl-storage{border-top:1px solid #d6dde8;color:#606b7d}
+:where(body.math-studio) .nl-storage p,:where(body.math-studio).nl-storage p{color:#606b7d}
+:where(body.math-studio) .nl-storage-dot,:where(body.math-studio).nl-storage-dot{background:#e9edf6}
+:where(body.math-studio) .nl-section-heading,:where(body.math-studio).nl-section-heading{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .nl-section-heading>span,:where(body.math-studio).nl-section-heading>span{color:#606b7d}
+:where(body.math-studio) .nl-evidence-grid h3,:where(body.math-studio).nl-evidence-grid h3{color:#606b7d}
+:where(body.math-studio) .nl-evidence-grid p,:where(body.math-studio).nl-evidence-grid p{color:#606b7d}
+:where(body.math-studio) .nl-evidence>.nl-small,:where(body.math-studio).nl-evidence>.nl-small{border-left:2px solid #d6dde8}
+:where(body.math-studio) .nl-lesson-row,:where(body.math-studio).nl-lesson-row{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .nl-row-index,:where(body.math-studio).nl-row-index{color:#606b7d}
+:where(body.math-studio) .nl-row-topic,:where(body.math-studio).nl-row-topic{color:#606b7d}
+:where(body.math-studio) .nl-row-detail,:where(body.math-studio).nl-row-detail{color:#606b7d}
+:where(body.math-studio) .nl-lesson-row button,:where(body.math-studio).nl-lesson-row button{border-color:#d6dde8;background:#ffffff}
+:where(body.math-studio) .nl-lesson-row[data-complete=true] .nl-row-index,:where(body.math-studio).nl-lesson-row[data-complete=true] .nl-row-index{color:#087d70}
+:where(body.math-studio) .nl-lesson-row[data-current=true],:where(body.math-studio).nl-lesson-row[data-current=true]{border-left:2px solid #087d70;background:#e9edf6}
+:where(body.math-studio) .nl-lesson-row[data-current=true] .nl-row-title,:where(body.math-studio).nl-lesson-row[data-current=true] .nl-row-title{color:#087d70}
+:where(body.math-studio) .nl-data-tools,:where(body.math-studio).nl-data-tools{color:#606b7d}
+:where(body.math-studio) .nl-data-tools summary,:where(body.math-studio).nl-data-tools summary{color:#606b7d}
+:where(body.math-studio) .nl-data-actions button,:where(body.math-studio).nl-data-actions button,:where(body.math-studio) .nl-file-label,:where(body.math-studio).nl-file-label{border:1px solid #d6dde8;background:#ffffff;color:#606b7d}
+:where(body.math-studio) .nl-file-label:focus-within,:where(body.math-studio).nl-file-label:focus-within{outline:3px solid #4b43e8}
+:where(body.math-studio) .nl-main .nl-quiet,:where(body.math-studio).nl-main .nl-quiet{color:#606b7d}
+:where(body.math-studio) .nl-case-grid article,:where(body.math-studio).nl-case-grid article{background:#ffffff}
+:where(body.math-studio) .nl-case-tag,:where(body.math-studio).nl-case-tag{color:#606b7d}
+:where(body.math-studio) .nl-case-grid p,:where(body.math-studio).nl-case-grid p{color:#606b7d}
+:where(body.math-studio) .nl-footer,:where(body.math-studio).nl-footer{color:#606b7d}
+:where(body.math-studio) .nl-warning,:where(body.math-studio).nl-warning{background:#e9edf6;border:1px solid #d6dde8;color:#9a5800}
+:where(body.math-studio) .nl-empty,:where(body.math-studio).nl-empty{color:#606b7d}
+@media(max-width:760px){:where(body.math-studio) .nl-evidence-grid>div+div,:where(body.math-studio).nl-evidence-grid>div+div{border-top:1px solid #d6dde8}}
+:where(body.math-studio) .nl-review-stamp,:where(body.math-studio).nl-review-stamp{color:#606b7d}
+:where(body.math-studio) .nl-review-stamp time,:where(body.math-studio).nl-review-stamp time{color:#202734}
+:where(body.math-studio) .nl-task-meta,:where(body.math-studio).nl-task-meta{color:#606b7d}
+:where(body.math-studio) .nl-frontier,:where(body.math-studio).nl-frontier{border-top:1px solid #d6dde8}
+:where(body.math-studio) .nl-evidence-badge,:where(body.math-studio).nl-evidence-badge{color:#606b7d}
+:where(body.math-studio) .nl-frontier p,:where(body.math-studio).nl-frontier p{color:#606b7d}
+:where(body.math-studio) .nl-prerequisite,:where(body.math-studio).nl-prerequisite{color:#606b7d}
+:where(body.math-studio) .nl-prerequisite strong,:where(body.math-studio).nl-prerequisite strong{color:#606b7d}
+:where(body.math-studio) .nl-after-check,:where(body.math-studio).nl-after-check{color:#606b7d}
+:where(body.math-studio) .nl-route-details>summary,:where(body.math-studio).nl-route-details>summary{color:#606b7d}
+:where(body.math-studio) .nl-evidence-grid .nl-evidence-status,:where(body.math-studio).nl-evidence-grid .nl-evidence-status{color:#606b7d}
+
+/* Literal palette compatibility: mobile-reading.css */
+@media screen and (max-width: 760px){body:where(.math-studio).lab-shell :is(.formula,.equation,.math,pre,.table-scroll,.table-wrap,.mr-table-viewport){scrollbar-color:#8999b3 #f2f5fa}
+body:where(.math-studio).lab-shell .mr-scroll[data-overflow=true]{border-right:2px solid #d6dde8}
+body:where(.math-studio).lab-shell .mr-flow-node{border:1px solid #d6dde8;border-left:3px solid var(--mr-color,#1d64b3);background:#ffffff}
+body:where(.math-studio).lab-shell .mr-flow-node strong{color:var(--mr-color,#1d64b3)}
+body:where(.math-studio).lab-shell .mr-flow-branches{border-left:2px solid #d6dde8}
+body:where(.math-studio).lab-shell .mr-flow-return{border-left:2px dashed #9a5800;color:#9a5800}
+body:where(.math-studio).lab-shell .mr-flow-lane span:last-child{color:#1d64b3}
+body:where(.math-studio).lab-shell .mr-original-diagram{background:#ffffff}}
+
+/* Literal palette compatibility: signal-design.css */
+@media screen{body:where(.math-studio).lab-shell{--lab-ground:#f2f5fa;--lab-paper:#ffffff;--lab-plot:#ffffff;--lab-ink:#202734;--lab-muted:#606b7d;--lab-line:#d6dde8;--lab-accent:#4b43e8;--lab-navy:#202734;--lab-soft:#e9edf6}
+body:where(.math-studio).lab-shell :is(a,button,input,select,summary):focus-visible{outline:2px solid #4b43e8}
+body:where(.math-studio).lab-shell .lab-site-header.architecture-header{background:#ffffff;border-bottom:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a[aria-current=page]{background:#e9edf6;border-color:#d6dde8;color:#606b7d}
+body:where(.math-studio).lab-shell .architecture-header .architecture-nav a:hover{background:#ffffff}
+body:where(.math-studio).lab-shell .signal-motion-toggle{color:#606b7d;border:1px solid #d6dde8}
+body:where(.math-studio).lab-shell .signal-motion-toggle:hover{color:#202734;border-color:#d6dde8}
+body:where(.math-studio).lab-shell .topic-action{background:#ffffff;border-color:#d6dde8;color:#202734}
+body:where(.math-studio).lab-shell .topic-action:hover{background:#e9edf6}
+body:where(.math-studio).lab-shell :is(.architecture-footer,.reading-footer){color:#606b7d;border-color:#d6dde8}
+body:where(.math-studio).lab-shell :is(.formula,.equation,.math,pre,.table-scroll){scrollbar-color:#8999b3 #f2f5fa}
+body:where(.math-studio).page--knowledge .map-intro p{color:#606b7d}
+body:where(.math-studio).lab-shell .signal-hero{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell .signal-hero svg text{fill:#606b7d}
+body:where(.math-studio).lab-shell .signal-hero svg .signal-legend{fill:#606b7d}
+body:where(.math-studio).lab-shell .signal-hero svg .signal-formula{fill:#606b7d}
+body:where(.math-studio).page--knowledge .map-thread{border-top:1px solid #d6dde8;border-bottom:1px solid #d6dde8;color:#606b7d}
+body:where(.math-studio).page--knowledge .map-thread span:not(:last-child)::after{background:#e9edf6}
+body:where(.math-studio).page--knowledge a.topic-card{border:1px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--knowledge a.topic-card:hover{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--knowledge .topic-diagram{background:#ffffff;border-right:1px solid #d6dde8}
+body:where(.math-studio).page--knowledge .topic-card p{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-card .topic-terms{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-state{color:#9a5800}
+body:where(.math-studio).page--knowledge .back-to-map{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-heading-diagram{background:#ffffff;border-color:#d6dde8}
+body:where(.math-studio).page--knowledge .topic-view-nav a[aria-current=page]{color:#606b7d;background:#e9edf6}
+body:where(.math-studio).page--knowledge .knowledge-body > article{border-color:#d6dde8}
+body:where(.math-studio).lab-shell .notebook :is(.worked-example,details){border-color:#d6dde8}
+body:where(.math-studio).lab-shell .reading-layout > .side-panel{border-color:#d6dde8}
+body:where(.math-studio).lab-shell.page--frequency .component{background:#ffffff}
+body:where(.math-studio).lab-shell:is(.page--kalman,.page--transforms) :is(.result,.check){border-left:2px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).lab-shell:is(.filter-notes,.kalman-notes,.transforms-notes) .notebook .worked-example{border-left:2px solid #d6dde8}
+body:where(.math-studio).lab-shell.page--future .future-example{background:#ffffff}
+body:where(.math-studio).page--next-learning .nl-recommend{background:#ffffff}
+body:where(.math-studio).exploration-page .exploration-route{border-color:#d6dde8}
+body:where(.math-studio).exploration-page .project-card{border-color:#d6dde8}
+body:where(.math-studio).page--simulation .simulation-workspace{border-color:#d6dde8}
+body:where(.math-studio).page--simulation .simulation-scenarios a[aria-current=page]{background:#e9edf6}}
+@media screen and (max-width:840px){body:where(.math-studio).page--knowledge .topic-diagram{border-bottom:1px solid #d6dde8}}
+@media screen and (max-width:600px){body:where(.math-studio).page--knowledge .signal-mobile-caption{color:#606b7d}
+body:where(.math-studio).page--knowledge .topic-diagram{border-right:1px solid #d6dde8}}
+
+/* Literal palette compatibility: question-helper.css */
+:where(body.math-studio) .qh-host,:where(body.math-studio).qh-host{--qh-ink:#202734;--qh-muted:#606b7d;--qh-line:#d6dde8;--qh-accent:#4b43e8}
+:where(body.math-studio) .qh-host :is(button,a,input,textarea,select,summary):focus-visible,:where(body.math-studio).qh-host :is(button,a,input,textarea,select,summary):focus-visible{outline:3px solid #4b43e8!important}
+:where(body.math-studio) .qh-host .qh-launcher,:where(body.math-studio).qh-host .qh-launcher{border:1px solid #d6dde8;background:#ffffff;color:#202734;box-shadow:none}
+:where(body.math-studio) .qh-host .qh-launcher:hover,:where(body.math-studio).qh-host .qh-launcher:hover{background:#e9edf6}
+:where(body.math-studio) .qh-host .qh-dialog,:where(body.math-studio).qh-host .qh-dialog{border:1px solid #d6dde8;background:#ffffff;color:#202734;box-shadow:none}
+:where(body.math-studio) .qh-dialog::backdrop,:where(body.math-studio).qh-dialog::backdrop{background:#20273488}
+:where(body.math-studio) .qh-dialog[role=dialog][open],:where(body.math-studio).qh-dialog[role=dialog][open]{outline:100vmax solid #20273488}
+:where(body.math-studio) .qh-host .qh-head,:where(body.math-studio).qh-host .qh-head{border-bottom:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .qh-host .qh-eyebrow,:where(body.math-studio).qh-host .qh-eyebrow{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-head h2,:where(body.math-studio).qh-host .qh-head h2{color:#202734}
+:where(body.math-studio) .qh-host .qh-close,:where(body.math-studio).qh-host .qh-close{border:1px solid #d6dde8;color:#606b7d}
+:where(body.math-studio) .qh-host .qh-close:hover,:where(body.math-studio).qh-host .qh-close:hover{background:#ffffff}
+:where(body.math-studio) .qh-host .qh-description,:where(body.math-studio).qh-host .qh-description{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-context,:where(body.math-studio).qh-host .qh-context{color:#606b7d;border-left:2px solid #087d70}
+:where(body.math-studio) .qh-label,:where(body.math-studio).qh-label{color:#606b7d}
+:where(body.math-studio) .qh-host textarea,:where(body.math-studio).qh-host textarea,:where(body.math-studio) .qh-host select,:where(body.math-studio).qh-host select{border:1px solid #d6dde8;color:#202734;background:#ffffff}
+:where(body.math-studio) .qh-host textarea::placeholder,:where(body.math-studio).qh-host textarea::placeholder{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-selection-label,:where(body.math-studio).qh-host .qh-selection-label{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-selection-label input,:where(body.math-studio).qh-host .qh-selection-label input{accent-color:#087d70}
+:where(body.math-studio) .qh-host .qh-hint,:where(body.math-studio).qh-host .qh-hint{border-left:2px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .qh-hint-label,:where(body.math-studio).qh-hint-label{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-hint h3,:where(body.math-studio).qh-host .qh-hint h3{color:#202734}
+:where(body.math-studio) .qh-host .qh-hint p,:where(body.math-studio).qh-host .qh-hint p{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-hint a,:where(body.math-studio).qh-host .qh-hint a{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-preview,:where(body.math-studio).qh-host .qh-preview{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-copy,:where(body.math-studio).qh-host .qh-copy{border:1px solid #087d70;background:#e9edf6;color:#202734}
+:where(body.math-studio) .qh-host .qh-copy:hover,:where(body.math-studio).qh-host .qh-copy:hover{background:#e9edf6}
+:where(body.math-studio) .qh-host .qh-open,:where(body.math-studio).qh-host .qh-open{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-next,:where(body.math-studio).qh-host .qh-next{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-status,:where(body.math-studio).qh-host .qh-status{color:#087d70}
+:where(body.math-studio) .qh-host .qh-settings,:where(body.math-studio).qh-host .qh-settings{border:1px solid #d6dde8;background:#ffffff}
+:where(body.math-studio) .qh-host .qh-settings summary,:where(body.math-studio).qh-host .qh-settings summary{color:#606b7d}
+:where(body.math-studio) .qh-host .qh-chat-url,:where(body.math-studio).qh-host .qh-chat-url{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-chat-url[aria-invalid=true],:where(body.math-studio).qh-host .qh-chat-url[aria-invalid=true]{border-color:#9a5800}
+:where(body.math-studio) .qh-host .qh-setting-actions button,:where(body.math-studio).qh-host .qh-setting-actions button,:where(body.math-studio) .qh-host .qh-copy-open,:where(body.math-studio).qh-host .qh-copy-open{border:1px solid #d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-copy-open,:where(body.math-studio).qh-host .qh-copy-open{border-color:#087d70;background:#e9edf6;color:#202734}
+:where(body.math-studio) .qh-host .qh-copy-open:hover,:where(body.math-studio).qh-host .qh-copy-open:hover{background:#e9edf6}
+:where(body.math-studio) .qh-host .qh-copy,:where(body.math-studio).qh-host .qh-copy{border-color:#d6dde8;background:#ffffff;color:#202734}
+:where(body.math-studio) .qh-host .qh-copy:hover,:where(body.math-studio).qh-host .qh-copy:hover,:where(body.math-studio) .qh-host .qh-open:hover,:where(body.math-studio).qh-host .qh-open:hover,:where(body.math-studio) .qh-host .qh-setting-actions button:hover,:where(body.math-studio).qh-host .qh-setting-actions button:hover{background:#e9edf6}
+
+/* Inline stylesheet compatibility: motion.html */
+:where(body.math-studio) button:focus-visible,:where(body.math-studio) a:focus-visible,:where(body.math-studio) select:focus-visible,:where(body.math-studio) input:focus-visible{outline:3px solid #4b43e8}
+:where(body.math-studio) button:hover{background:#ffffff;border-color:#d6dde8}
+:where(body.math-studio) select{background:#ffffff}
+:where(body.math-studio) .topbar,:where(body.math-studio).topbar{background:#ffffff}
+:where(body.math-studio) .offline:before,:where(body.math-studio).offline:before{background:#e9edf6}
+:where(body.math-studio) .lesson,:where(body.math-studio).lesson{background:#ffffff}
+:where(body.math-studio) .lesson span,:where(body.math-studio).lesson span{color:#606b7d}
+:where(body.math-studio) .lesson.active,:where(body.math-studio).lesson.active{color:#202734}
+:where(body.math-studio) .lesson.active span,:where(body.math-studio).lesson.active span{color:#087d70}
+:where(body.math-studio) .chart-controls button.active,:where(body.math-studio).chart-controls button.active{border-color:#d6dde8}
+:where(body.math-studio) .callout,:where(body.math-studio).callout{color:#202734}
+:where(body.math-studio) .callout.warning,:where(body.math-studio).callout.warning{background:#e9edf6;border-color:#9a5800;color:#9a5800}
+:where(body.math-studio) td{border-bottom:1px solid #d6dde8}
+:where(body.math-studio) tr.focused td{background:#e9edf6}
+:where(body.math-studio) .badge,:where(body.math-studio).badge{background:#e9edf6}
+:where(body.math-studio) .badge.offline-badge,:where(body.math-studio).badge.offline-badge{background:#e9edf6;color:#9a5800}
+:where(body.math-studio) .formula,:where(body.math-studio).formula{background:#ffffff}
+:where(body.math-studio) .toast,:where(body.math-studio).toast{box-shadow:none}
+:where(body.math-studio) .path-row,:where(body.math-studio).path-row{background:#ffffff}
+:where(body.math-studio) .method-chip,:where(body.math-studio).method-chip{border:1px solid #d6dde8;background:#ffffff;color:#9a5800}
+:where(body.math-studio) .startup-notice,:where(body.math-studio).startup-notice{background:#ffffff;border:1px solid #9a5800;color:#9a5800}
+:where(body.math-studio) .motion-site-nav,:where(body.math-studio).motion-site-nav{background:#e9edf6;border-bottom:1px solid #d6dde8}
+:where(body.math-studio) .motion-site-nav a,:where(body.math-studio).motion-site-nav a{color:#087d70}
+:where(body.math-studio) .motion-integration-note,:where(body.math-studio).motion-integration-note{color:#606b7d}
+
+/* Inline stylesheet compatibility: future-learning.html */
+body:where(.math-studio).page--future .control-check{border-left:3px solid #d6dde8;background:#ffffff}
+body:where(.math-studio).page--future .control-figure-viewport{scrollbar-color:#8999b3 #f2f5fa}
+body:where(.math-studio).page--future .control-visual-key .action{color:#087d70}
+body:where(.math-studio).page--future .control-visual-key .disturbance{color:#9a5800}
+body:where(.math-studio).page--future .control-visual-key .measurement{color:#606b7d}
+
+/* SVG palette: reference axes and distinct accessible traces. */
+body.math-studio svg [stroke="#080f18"]{stroke:#d6dde8}
+body.math-studio svg [fill="#080f18"]{fill:#202734}
+body.math-studio svg rect[fill="#080f18"]{fill:#ffffff}
+body.math-studio svg [stroke="#101c29"]{stroke:#d6dde8}
+body.math-studio svg [fill="#101c29"]{fill:#202734}
+body.math-studio svg rect[fill="#101c29"]{fill:#ffffff}
+body.math-studio svg [stroke="#131e2b"]{stroke:#d6dde8}
+body.math-studio svg [fill="#131e2b"]{fill:#202734}
+body.math-studio svg rect[fill="#131e2b"]{fill:#ffffff}
+body.math-studio svg [stroke="#132d30"]{stroke:#d6dde8}
+body.math-studio svg [fill="#132d30"]{fill:#202734}
+body.math-studio svg rect[fill="#132d30"]{fill:#ffffff}
+body.math-studio svg [stroke="#176e78"]{stroke:#d6dde8}
+body.math-studio svg [fill="#176e78"]{fill:#1d64b3}
+body.math-studio svg rect[fill="#176e78"]{fill:#ffffff}
+body.math-studio svg [stroke="#203e58"]{stroke:#d6dde8}
+body.math-studio svg [fill="#203e58"]{fill:#202734}
+body.math-studio svg rect[fill="#203e58"]{fill:#ffffff}
+body.math-studio svg [stroke="#25384d"]{stroke:#d6dde8}
+body.math-studio svg [fill="#25384d"]{fill:#202734}
+body.math-studio svg rect[fill="#25384d"]{fill:#ffffff}
+body.math-studio svg [stroke="#2c3c50"]{stroke:#d6dde8}
+body.math-studio svg [fill="#2c3c50"]{fill:#202734}
+body.math-studio svg rect[fill="#2c3c50"]{fill:#ffffff}
+body.math-studio svg [stroke="#33495f"]{stroke:#8190aa}
+body.math-studio svg [fill="#33495f"]{fill:#202734}
+body.math-studio svg rect[fill="#33495f"]{fill:#ffffff}
+body.math-studio svg [stroke="#42566c"]{stroke:#d6dde8}
+body.math-studio svg [fill="#42566c"]{fill:#606b7d}
+body.math-studio svg [stroke="#6588aa"]{stroke:#1d64b3}
+body.math-studio svg [fill="#6588aa"]{fill:#1d64b3}
+body.math-studio svg [stroke="#65d6c2"]{stroke:#087d70}
+body.math-studio svg [fill="#65d6c2"]{fill:#087d70}
+body.math-studio svg [stroke="#72b4ff"]{stroke:#1d64b3}
+body.math-studio svg [fill="#72b4ff"]{fill:#1d64b3}
+body.math-studio svg [stroke="#7bdacf"]{stroke:#087d70}
+body.math-studio svg [fill="#7bdacf"]{fill:#087d70}
+body.math-studio svg [stroke="#8294a9"]{stroke:#1d64b3}
+body.math-studio svg [fill="#8294a9"]{fill:#606b7d}
+body.math-studio svg [stroke="#9ab0c7"]{stroke:#1d64b3}
+body.math-studio svg [fill="#9ab0c7"]{fill:#606b7d}
+body.math-studio svg [stroke="#a5b5c7"]{stroke:#1d64b3}
+body.math-studio svg [fill="#a5b5c7"]{fill:#606b7d}
+body.math-studio svg [stroke="#acc6ff"]{stroke:#1d64b3}
+body.math-studio svg [fill="#acc6ff"]{fill:#1d64b3}
+body.math-studio svg rect[fill="#acc6ff"]{fill:#e9edf6}
+body.math-studio svg [stroke="#adc2d5"]{stroke:#1d64b3}
+body.math-studio svg [fill="#adc2d5"]{fill:#606b7d}
+body.math-studio svg rect[fill="#adc2d5"]{fill:#e9edf6}
+body.math-studio svg [stroke="#b8c8d8"]{stroke:#1d64b3}
+body.math-studio svg [fill="#b8c8d8"]{fill:#606b7d}
+body.math-studio svg rect[fill="#b8c8d8"]{fill:#e9edf6}
+body.math-studio svg [stroke="#c3b5ee"]{stroke:#8748a7}
+body.math-studio svg [fill="#c3b5ee"]{fill:#606b7d}
+body.math-studio svg rect[fill="#c3b5ee"]{fill:#e9edf6}
+body.math-studio svg [stroke="#c6d8e8"]{stroke:#1d64b3}
+body.math-studio svg [fill="#c6d8e8"]{fill:#606b7d}
+body.math-studio svg rect[fill="#c6d8e8"]{fill:#e9edf6}
+body.math-studio svg [stroke="#deebf5"]{stroke:#1d64b3}
+body.math-studio svg [fill="#deebf5"]{fill:#202734}
+body.math-studio svg rect[fill="#deebf5"]{fill:#e9edf6}
+body.math-studio svg [stroke="#dfafe8"]{stroke:#8748a7}
+body.math-studio svg [fill="#dfafe8"]{fill:#606b7d}
+body.math-studio svg rect[fill="#dfafe8"]{fill:#e9edf6}
+body.math-studio svg [stroke="#e3edf7"]{stroke:#1d64b3}
+body.math-studio svg [fill="#e3edf7"]{fill:#202734}
+body.math-studio svg rect[fill="#e3edf7"]{fill:#e9edf6}
+body.math-studio svg [stroke="#f1c57a"]{stroke:#9a5800}
+body.math-studio svg [fill="#f1c57a"]{fill:#9a5800}
+
+/* Production foundations. Variables are reset on the opted-in body, never other sites. */
+html:has(> body.math-studio) { background: #f2f5fa; color-scheme: light; }
+html.lab-embedded:has(> body.math-studio) { background: #ffffff; color-scheme: light; }
+body.math-studio.lab-shell {
+  --paper: #ffffff; --ground: #f2f5fa; --bg: #f2f5fa; --ink: #202734; --muted: #606b7d; --line: #d6dde8;
+  --accent: #4b43e8; --accent-soft: #eeedff; --teal: #087d70; --teal-soft: #e7f3f0; --green: #087d70; --mint: #e7f3f0;
+  --blue: #1d64b3; --purple: #8748a7; --gold: #9a5800; --amber: #9a5800; --red: #b74167; --amber-soft: #fff4df;
+  --lab-ground: #f2f5fa; --lab-paper: #ffffff; --lab-plot: #ffffff; --lab-action: #4b43e8; --lab-ink: #202734;
+  --lab-muted: #606b7d; --lab-line: #d6dde8; --lab-accent: #4b43e8; --lab-soft: #eeedff; --lab-navy: #202734; --lab-amber: #9a5800;
+  --sim-ground: #ffffff; --sim-surface: #f2f5fa; --sim-line: #d6dde8; --sim-ink: #202734; --sim-muted: #606b7d; --sim-trace: #4b43e8;
+  --radius: 5px; --shadow: none; background: #f2f5fa; color: #202734; font-family: var(--studio-sans); color-scheme: light;
+}
+body.math-studio.lab-shell ::selection { background: #dfddff; color: #29227c; }
+body.math-studio.lab-shell :is(h1,h2,h3,h4,h5,strong) { color: var(--studio-ink); }
+body.math-studio.lab-shell :is(button,select,textarea) { color: var(--studio-ink); background: var(--studio-white); border-color: #b7c2d4; border-radius: 4px; box-shadow: none; }
+body.math-studio.lab-shell input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]) { color: var(--studio-ink); background: var(--studio-white); border-color: #b7c2d4; }
+body.math-studio.lab-shell :is(input,textarea)::placeholder { color: var(--studio-muted); opacity: 1; }
+body.math-studio.lab-shell button:hover { background: #e9edf6; color: var(--studio-ink); border-color: #8999b3; }
+body.math-studio.lab-shell :is(button:disabled,select:disabled,input:disabled) { cursor: not-allowed; opacity: .55; }
+body.math-studio.lab-shell input[type=range], body.math-studio.lab-shell input[type=checkbox], body.math-studio.lab-shell input[type=radio] { accent-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(a,button,input,select,textarea,summary):focus-visible { outline: 3px solid var(--studio-blue); outline-offset: 4px; }
+body.math-studio.lab-shell :is(.mr-scroll,.table-scroll,.lv-scroll):focus-visible { outline-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(details,summary) { color: var(--studio-ink); background: transparent; border-color: var(--studio-line); box-shadow: none; }
+body.math-studio.lab-shell summary::marker { color: var(--studio-blue); }
+body.math-studio.lab-shell details > summary:hover { color: var(--studio-blue); background: #eeedff; }
+body.math-studio.lab-shell :is(.formula,.equation,.math,pre,code) { background: #e9edf6; color: var(--studio-ink); border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell :is(.formula,.equation,.math) { font-family: var(--studio-math),var(--studio-sans); }
+body.math-studio.lab-shell pre code { background: transparent; color: inherit; }
+body.math-studio.lab-shell :is(th,td) { border-color: var(--studio-line); }
+body.math-studio.lab-shell th { background: #e9edf6; color: var(--studio-ink); }
+body.math-studio.lab-shell tbody tr:nth-child(even) { background: #f7f9fc; }
+body.math-studio.lab-shell :is(.hint,.source,.source-note,.source-list,.reading-links,.note,.page-meta,.tag,.micro,.small) { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.note,.notice,.callout,.frontier-box,.next-checkpoint,.hw-note,.future-example) { background: #e9edf6; color: var(--studio-ink); border-color: #a3afc5; border-left-color: var(--studio-blue); border-radius: 0 4px 4px 0; box-shadow: none; }
+body.math-studio.lab-shell :is(.warning,.callout.warning,.radar-caution,.project-warning) { background: #fff4df; color: #795009; border-color: #dbc58c; border-left-color: #9a5800; }
+body.math-studio.lab-shell :is(.warning,.callout.warning,.radar-caution,.project-warning) :is(p,li,strong) { color: inherit; }
+body.math-studio.lab-shell :is(.site-skip,.future-skip,.skip-link) { background: var(--studio-blue); color: #ffffff; border-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.topic-action,.hw-button) { color: var(--studio-blue); border-color: #b9b4f5; background: #eeedff; border-radius: 4px; }
+body.math-studio.lab-shell :is(.topic-action,.hw-button):hover { background: #e2e0ff; color: #3530bd; }
+body.math-studio.lab-shell :is(.iir,.legend .iir) { color: #087d70; }
+body.math-studio.lab-shell :is(.fir,.legend .fir) { color: #1d64b3; }
+body.math-studio.lab-shell :is(.kalman,.legend .kalman) { color: #9a5800; }
+body.math-studio.lab-shell .curve-toggle { color: var(--studio-ink); background: white; border-color: var(--studio-line); }
+body.math-studio.lab-shell .curve-toggle input { accent-color: var(--c,var(--studio-blue)); }
+body.math-studio.lab-shell .legend { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.metric strong,.control output,.variance strong,.if-readout strong,.hw-metrics strong) { color: var(--studio-ink); }
+body.math-studio.lab-shell :is(.metric span,.metric small,.control label,.variance small,.ends) { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.lab,.plotpanel,.panel,.chart-panel,.metric-panel,.detail-panel,.hw-lab,.hw-chart,.ff-comparison,.if-plot,.learn-visual) { background: var(--studio-white); border-color: var(--studio-line); border-radius: 5px; box-shadow: none; }
+body.math-studio.lab-shell :is(.chart-wrap,.plotpanel canvas,.lab canvas,.simulation-frame-shell,.simulation-frame-shell iframe) { background: #ffffff; }
+body.math-studio.lab-shell :is(.learn-visual,.hw-chart,.ff-comparison) { border-left: 2px solid #b9b4f5; }
+body.math-studio.lab-shell :is(.learn-visual h3,.lv-readout,.lv-control label) { color: var(--studio-ink); }
+body.math-studio.lab-shell :is(.learn-visual figcaption,.lv-control p,.lv-scroll-hint,.hw-caption,.ff-caption) { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.learn-visual output,.lv-overview) { color: var(--studio-blue); border-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.mr-table-viewport,.table-scroll,.lv-scroll,.mr-scroll,pre) { scrollbar-color: #8999b3 #f2f5fa; }
+body.math-studio svg :is(text,tspan)[fill="#fff"], body.math-studio svg :is(text,tspan)[fill="#ffffff"], body.math-studio svg :is(text,tspan)[fill="white"] { fill: var(--studio-ink); }
+
+/* Shared header retains the architecture hooks used by every generator. */
+body.math-studio.lab-shell .lab-site-header.architecture-header { border: 0; background: var(--studio-paper); position: relative; }
+body.math-studio.lab-shell .architecture-header .architecture-bar { display: flex; max-width: 1392px; min-height: 98px; margin: auto; padding: 0 44px; gap: 24px; border-bottom: 1px solid var(--studio-line); align-items: center; justify-content: space-between; }
+body.math-studio.lab-shell .architecture-header .lab-site-brand { margin: 0; padding: 0; gap: 12px; font-size: 15px; color: var(--studio-ink); }
+body.math-studio.lab-shell .architecture-header .lab-site-brand > span { color: inherit; }
+body.math-studio.lab-shell .architecture-header .studio-brand-word { font-size: 23px; line-height: 1; color: var(--studio-ink); font-weight: 800; }
+body.math-studio.lab-shell .architecture-header .studio-brand-sub { display: block; font-size: 10px; line-height: 1; margin-top: 6px; color: var(--studio-muted); font-weight: 400; }
+body.math-studio.lab-shell .architecture-header :is(.studio-mark,.lab-site-mark) { width: 36px; height: 36px; border: 0; border-radius: 0; background: transparent; color: var(--studio-blue); }
+body.math-studio.lab-shell .architecture-header .architecture-nav { display: flex; gap: 8px; align-items: center; padding: 0; border: 0; background: transparent; margin-left: auto; }
+body.math-studio.lab-shell .architecture-header .architecture-nav a { min-height: 43px; padding: 8px 15px; font-size: 14px; font-weight: 500; border: 0; border-radius: 4px; color: var(--studio-muted); background: transparent; }
+body.math-studio.lab-shell .architecture-header .architecture-nav a:hover { color: var(--studio-blue); background: #eeedff; }
+body.math-studio.lab-shell .architecture-header .architecture-nav a[aria-current=page] { color: var(--studio-blue); background: #eeedff; font-weight: 700; }
+body.math-studio.lab-shell .architecture-header .architecture-nav a::after { display: none; }
+body.math-studio.lab-shell .architecture-header :is(.signal-motion-toggle,.qh-header-action .qh-launcher) { color: var(--studio-muted); background: transparent; border: 1px solid var(--studio-line); border-radius: 4px; font-size: 11px; }
+body.math-studio.lab-shell .architecture-header :is(.signal-motion-toggle,.qh-header-action .qh-launcher):hover { color: var(--studio-blue); border-color: #a49cef; background: #eeedff; }
+
+/* The promoted homepage owns its composition; the knowledge panels keep their reading flow. */
+body.math-studio.lab-shell.page--knowledge main.knowledge-main.studio-main { max-width: 1392px; width: 100%; margin: auto; padding: 0 44px 40px; }
+body.math-studio.lab-shell.page--knowledge .knowledge-overview { margin: 0; padding: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-hero { border: 0; background: transparent; }
+body.math-studio.lab-shell.page--knowledge .studio-hero h1 { font-size: clamp(38px,4.4vw,63px); line-height: 1.24; font-weight: 650; letter-spacing: -.065em; margin: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-hero p { margin-top: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-hero-copy > p:not(.studio-current) { margin-top: 24px; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-topic-index { padding-left: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-topic-index > li { margin: 0; padding: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-topic h3 { margin: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-topic p { margin: 0; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-current { margin-bottom: 24px; }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-primary { color: #ffffff; background: var(--studio-blue); }
+body.math-studio.lab-shell.page--knowledge .studio-main .studio-primary:hover { background: #3530bd; }
+body.math-studio.lab-shell.page--knowledge :is(.map-frontier,.learning-boundary) { color: var(--studio-muted); border-color: #a3afc5; background: transparent; }
+body.math-studio.lab-shell.page--knowledge :is(.map-frontier,.learning-boundary) :is(p,strong,h2) { color: var(--studio-ink); }
+body.math-studio.lab-shell.page--knowledge .map-archive { border-color: var(--studio-line); background: transparent; color: var(--studio-muted); }
+body.math-studio.lab-shell.page--knowledge .map-archive summary { color: var(--studio-ink); background: transparent; }
+body.math-studio.lab-shell.page--knowledge .topic-view-nav { margin: 36px 0 22px; border-color: var(--studio-line); }
+body.math-studio.lab-shell.page--knowledge .topic-heading { border-color: var(--studio-line); }
+body.math-studio.lab-shell.page--knowledge .topic-heading-diagram { background: var(--studio-white); border: 1px solid var(--studio-line); border-radius: 0; }
+body.math-studio.lab-shell.page--knowledge :is(.knowledge-body,.future-module) { background: transparent; color: var(--studio-ink); }
+body.math-studio.lab-shell.page--knowledge :is(.topic-lead,.topic-terms,.source-context,.learning-boundary,.concept-strip) { color: var(--studio-muted); }
+body.math-studio.lab-shell.page--knowledge :is(.practical-case,.notebook-entry,.notebook-pending) { background: #e9edf6; border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell.page--knowledge .diagram-blue { stroke: #1d64b3; }
+body.math-studio.lab-shell.page--knowledge .diagram-amber { stroke: #9a5800; }
+body.math-studio.lab-shell.page--knowledge .diagram-link { stroke: #8999b3; }
+
+/* Notebook reading surfaces: preserve chapter spacing, remove the old outer dark card. */
+body.math-studio.lab-shell .reading-layout { max-width: 1320px; gap: 54px; grid-template-columns: 220px minmax(0,1fr); padding-top: 42px; }
+body.math-studio.lab-shell .reading-layout > .side-panel { border-right: 1px solid var(--studio-line); border-top: 0; background: transparent; color: var(--studio-muted); border-radius: 0; }
+body.math-studio.lab-shell .reading-main { max-width: 850px; }
+body.math-studio.lab-shell .notebook { padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+body.math-studio.lab-shell .notebook > section { padding: 36px 0; border-color: var(--studio-line); }
+body.math-studio.lab-shell .notebook .worked-example { padding: 5px 24px 22px; border: 1px solid var(--studio-line); border-left: 3px solid var(--studio-blue); border-radius: 0; background: var(--studio-white); }
+body.math-studio.lab-shell .notebook :is(.formula,.equation) { background: #e9edf6; color: var(--studio-ink); border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell .notebook .worked-example .formula { background: #f2f5fa; }
+body.math-studio.lab-shell .notebook :is(details,.figure) { background: var(--studio-white); border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell .notebook summary { color: var(--studio-ink); }
+body.math-studio.lab-shell .notebook summary:hover { color: var(--studio-blue); background: #eeedff; }
+body.math-studio.lab-shell .notebook :is(.status-label,.status-label.pending) { color: #505c75; background: #e9edf6; }
+body.math-studio.lab-shell .notebook .warning { background: #fff4df; color: #795009; }
+body.math-studio.lab-shell .notebook .next-checkpoint { background: #eeedff; color: var(--studio-ink); }
+body.math-studio.lab-shell .notebook :is(th,tbody tr:nth-child(even)) { background: #e9edf6; color: var(--studio-ink); }
+body.math-studio.lab-shell .toc a { color: var(--studio-muted); }
+body.math-studio.lab-shell .toc a:hover, body.math-studio.lab-shell .toc a[aria-current=location] { color: var(--studio-blue); background: #eeedff; border-left-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.mobile-toc,.if-impulse,.if-compare,.if-controls,.if-gains > div) { background: var(--studio-white); color: var(--studio-ink); border-color: var(--studio-line); }
+
+/* Case studies and exploration use open sections with explicit metadata and plot surfaces. */
+body.math-studio.lab-shell :is(.cases-main,.hw-main) { padding-top: 42px; }
+body.math-studio.lab-shell :is(.case-index-card,.case-meta,.case-procedure,.hw-hero-diagram,.hw-taxonomy,.hw-choice,.hw-state,.hw-implementations article) { background: var(--studio-white); border-color: var(--studio-line); border-radius: 4px; box-shadow: none; }
+body.math-studio.lab-shell :is(.case-study p,.cases-intro p,.case-meta dd,.case-procedure li,.case-sources li span,.hw-lede,.hw-section-title p,.hw-taxonomy p) { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.cases-evidence,.case-chain,.case-transfer,.hw-chain,.hw-next) { background: #e9edf6; border-color: var(--studio-line); border-left-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.case-kicker,.hw-index,.case-meta dt) { color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.case-index-card strong,.case-section h3,.case-block h4,.case-chain li,.hw-state-row strong) { color: var(--studio-ink); }
+body.math-studio.lab-shell :is(.hw-status,.case-boundary,.hw-start,.hw-status,.hw-model) { color: #505c75; }
+body.math-studio.lab-shell .hw-taxonomy > div { background: var(--studio-white); border-color: var(--studio-line); }
+body.math-studio.lab-shell .hw-controls { background: #f2f5fa; color: var(--studio-ink); }
+body.math-studio.lab-shell .exploration-main { max-width: 1320px; padding-top: 42px; }
+body.math-studio.lab-shell .exploration-route { background: #e9edf6; border-left-color: var(--studio-blue); }
+body.math-studio.lab-shell :is(.project-card,.radar-case,.radar-guide) { background: transparent; border-color: var(--studio-line); border-radius: 0; box-shadow: none; }
+body.math-studio.lab-shell .project-card { padding: 25px 0; border-width: 1px 0 0; }
+body.math-studio.lab-shell .exploration-grid { gap: 28px 40px; }
+body.math-studio.lab-shell :is(.project-chain,.project-first,.project-verification,.radar-boundary,.radar-process,.radar-roles) { background: #e9edf6; border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell :is(.project-name,.project-application,.project-details summary,.radar-guide-heading h2,.radar-case h3) { color: var(--studio-ink); }
+body.math-studio.lab-shell :is(.exploration-state,.project-state,.project-meta,.project-facts,.radar-start) { color: var(--studio-muted); }
+body.math-studio.lab-shell .exploration-filter[aria-pressed=true] { background: #eeedff; color: var(--studio-blue); border-color: #b9b4f5; }
+body.math-studio.lab-shell :is(.project-links a,.radar-jump a,.case-sources a,.cases-back,.hw-main a) { color: var(--studio-blue); }
+
+/* Simulation host and legacy experiment controls, including same-origin iframe documents. */
+body.math-studio.lab-shell .simulation-workspace { border-color: var(--studio-line); background: white; border-radius: 5px; }
+body.math-studio.lab-shell .simulation-scenarios { background: #e9edf6; border-color: var(--studio-line); }
+body.math-studio.lab-shell .simulation-scenarios a { color: var(--studio-muted); background: transparent; border-color: var(--studio-line); }
+body.math-studio.lab-shell .simulation-scenarios a:hover { background: #eeedff; }
+body.math-studio.lab-shell .simulation-scenarios a[aria-current=page] { color: var(--studio-blue); background: #eeedff; border-bottom-color: var(--studio-blue); }
+body.math-studio.lab-shell .simulation-scenarios strong { color: inherit; }
+body.math-studio.lab-shell :is(.simulation-selection-note,.simulation-status,.simulation-source-footnote) { color: var(--studio-muted); }
+body.math-studio.lab-shell :is(.simulation-controls,.simulation-community,.simulation-classics,.simulation-source-grid article) { background: var(--studio-white); border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell :is(.modes button[aria-pressed=true],.modes button.active,[role=tablist] button[aria-selected=true],.chart-controls button.active,.hw-scenarios button.is-active) { color: var(--studio-blue); background: #eeedff; border-color: #b9b4f5; }
+body.math-studio.lab-shell :is(.modes button[aria-pressed=false],[role=tablist] button[aria-selected=false]) { color: var(--studio-muted); background: var(--studio-white); border-color: var(--studio-line); }
+body.math-studio.lab-shell :is(.answers button,.check button) { color: var(--studio-ink); background: var(--studio-white); border-color: var(--studio-line); }
+body.math-studio.lab-shell :is(.answers button,.check button):hover { color: var(--studio-blue); background: #eeedff; border-color: #b9b4f5; }
+body.math-studio.lab-shell :is(.result,.check,.coef-grid > div,.component,.twocol article,.facts section) { color: var(--studio-ink); background: #e9edf6; border-color: var(--studio-line); }
+body.math-studio.lab-shell .facts section + section { color: var(--studio-ink); background: #fff4df; border-color: #dbc58c; }
+body.math-studio.lab-shell .mix div:first-child { background: #dbe8fa; color: #1d4c87; }
+body.math-studio.lab-shell .mix div:last-child { background: #f4dfb2; color: #795009; }
+body.math-studio.lab-shell .track { background: #d6dde8; }
+body.math-studio.lab-shell .track span { background: var(--studio-blue); }
+body.math-studio.lab-shell.page--motion :is(.side-panel,.lesson,.filter-option,.path-row,.badge) { background: var(--studio-white); color: var(--studio-ink); border-color: var(--studio-line); border-radius: 4px; }
+body.math-studio.lab-shell.page--motion :is(.lesson.active,.filter-option.chosen,.stepno,.badge.offline-badge) { background: #eeedff; color: var(--studio-blue); border-color: #b9b4f5; }
+body.math-studio.lab-shell.page--motion .lesson.active span { color: var(--studio-muted); }
+body.math-studio.lab-shell.page--motion .topnav button { background: transparent; color: var(--studio-muted); }
+body.math-studio.lab-shell.page--motion .topnav button.active { background: transparent; color: var(--studio-blue); border-color: var(--studio-blue); }
+body.math-studio.lab-shell.page--motion .formula { background: #e9edf6; color: var(--studio-ink); }
+body.math-studio.lab-shell.page--motion :is(.chart-readout,.section-head,.subtitle,.source-meta,.detail-text,.metric-sub,.method-content) { color: var(--studio-muted); }
+body.math-studio.lab-shell.page--motion .toast { background: var(--studio-ink); color: white; }
+body.math-studio.lab-shell.page--motion .method-chip { background: #fff4df; color: #795009; border-color: #dbc58c; }
+body.math-studio.lab-shell.page--motion tr.focused td { background: #eeedff; color: var(--studio-ink); }
+html.lab-embedded body.math-studio.lab-shell { background: #ffffff; }
+html.lab-embedded body.math-studio.lab-shell > main { background: #ffffff; }
+
+/* Keep production additions from restyling the approved next-learning and helper controls. */
+body.math-studio.lab-shell.page--next-learning .nl-main { color: var(--studio-ink); }
+body.math-studio.lab-shell.page--next-learning .nl-main :is(.nl-recommend,.nl-route-controls,.nl-case-grid article,.nl-evidence-grid article) { background: transparent; border-radius: 0; }
+body.math-studio.lab-shell.page--next-learning .nl-main .nl-check { background: #e9edf6; border-left-color: var(--studio-blue); }
+body.math-studio.lab-shell.page--next-learning .nl-main .nl-actions .nl-primary { background: var(--studio-blue); color: white; border-color: var(--studio-blue); }
+body.math-studio.lab-shell.page--next-learning .nl-main .nl-actions .nl-primary:hover { background: #3530bd; }
+body.math-studio.lab-shell .qh-host .qh-launcher { background: var(--studio-ink); color: white; border-color: var(--studio-ink); }
+body.math-studio.lab-shell .qh-host .qh-launcher:hover { background: #384357; color: white; }
+body.math-studio.lab-shell .qh-host .qh-dialog { background: white; color: var(--studio-ink); border-color: var(--studio-line); }
+body.math-studio.lab-shell .qh-host :is(.qh-preview,.qh-settings) { background: #f2f5fa; color: var(--studio-ink); border-color: var(--studio-line); }
+body.math-studio.lab-shell .qh-host details > summary { color: var(--studio-ink); background: transparent; }
+body.math-studio.lab-shell .qh-host .qh-copy-open { background: var(--studio-blue); color: white; border-color: var(--studio-blue); }
+body.math-studio.lab-shell .qh-host .qh-copy-open:hover { background: #3530bd; color: white; }
+body.math-studio.lab-shell .qh-host :is(a,button,input,textarea,select,summary):focus-visible { outline-color: var(--studio-blue) !important; }
+
+@media (max-width: 1150px) {
+ body.math-studio.lab-shell .architecture-header .architecture-bar { padding-inline: 30px; gap: 16px; flex-wrap: wrap; }
+ body.math-studio.lab-shell .architecture-header .architecture-nav a { padding-inline: 11px; }
+ body.math-studio.lab-shell.page--knowledge main.knowledge-main.studio-main { padding-inline: 30px; }
+ body.math-studio.lab-shell .reading-layout { gap: 35px; grid-template-columns: 200px minmax(0,1fr); }
+}
+@media (max-width: 850px) {
+ body.math-studio.lab-shell .architecture-header .architecture-bar { display: flex; min-height: 92px; padding: 20px 20px 12px; flex-wrap: wrap; gap: 13px; }
+ body.math-studio.lab-shell .architecture-header .lab-site-brand { min-height: 36px; margin: 0; }
+ body.math-studio.lab-shell .architecture-header .architecture-nav { order: 5; width: 100%; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 5px; }
+ body.math-studio.lab-shell .architecture-header .architecture-nav a { min-height: 42px; padding: 8px 5px; font-size: 13px; }
+ body.math-studio.lab-shell .architecture-header .signal-motion-toggle { margin-left: auto; }
+ body.math-studio.lab-shell .architecture-header .architecture-bar.has-question-action { grid-template-columns: none; }
+ body.math-studio.lab-shell .architecture-header .qh-header-action { display: block; width: 42px; height: 42px; }
+ body.math-studio.lab-shell .reading-layout { display: block; padding: 30px 20px 0; }
+ body.math-studio.lab-shell .reading-layout > .side-panel { display: none; }
+ body.math-studio.lab-shell .reading-main { max-width: 760px; margin: auto; }
+ body.math-studio.lab-shell .exploration-grid { gap: 25px; }
+}
+@media (max-width: 600px) {
+ body.math-studio.lab-shell.page--knowledge main.knowledge-main.studio-main { padding: 0 20px 30px; }
+ body.math-studio.lab-shell.page--knowledge .studio-hero h1 { font-size: clamp(34px,9vw,48px); }
+ body.math-studio.lab-shell.page--knowledge .studio-hero-copy > p:not(.studio-current) { margin-top: 18px; }
+ body.math-studio.lab-shell.page--knowledge .studio-main .studio-current { margin-bottom: 19px; }
+ body.math-studio.lab-shell .architecture-header .architecture-bar { padding-inline: 20px; }
+ body.math-studio.lab-shell .architecture-header .architecture-nav a { font-size: 12px; }
+ body.math-studio.lab-shell .architecture-header .studio-brand-word { font-size: 21px; }
+ body.math-studio.lab-shell .architecture-header :is(.studio-mark,.lab-site-mark) { width: 32px; height: 32px; }
+ body.math-studio.lab-shell .notebook .worked-example { padding: 3px 16px 17px; }
+ body.math-studio.lab-shell .notebook > section { padding: 27px 0; }
+ body.math-studio.lab-shell :is(.cases-main,.hw-main,.exploration-main) { padding-top: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ body.math-studio.lab-shell *, body.math-studio.lab-shell *::before, body.math-studio.lab-shell *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+ body.math-studio.lab-shell .s-draw { stroke-dashoffset: 0; }
+}
+@media print {
+ html:has(> body.math-studio), body.math-studio.lab-shell { background: #fff; color: #111; }
+ body.math-studio.lab-shell :is(.architecture-header,.qh-host,.signal-motion-toggle,.legacy-topic-context) { display: none !important; }
+ body.math-studio.lab-shell :is(.notebook,.worked-example,.future-example,.case-study,.case-procedure,.case-meta,.hw-chart,.learn-visual) { background: #fff; box-shadow: none; border-color: #bbb; }
+ body.math-studio.lab-shell :is(.reading-layout,.knowledge-main,.cases-main,.hw-main,.nl-main,.exploration-main) { max-width: none; padding: 0; }
+ body.math-studio.lab-shell .notebook { border: 0; }
+ body.math-studio.lab-shell .notebook > section { padding-block: 18px; }
+ body.math-studio.lab-shell .notebook :is(.formula,.equation) { background: #f5f5f5; color: #111; }
+}
+
+/* Explicit modal dimming preserves the page behind the native or fallback dialog. */
+body.math-studio.lab-shell .qh-host .qh-dialog::backdrop { background: #20273488; backdrop-filter: none; }
+body.math-studio.lab-shell .qh-host .qh-dialog[role=dialog][open] { outline: 100vmax solid #20273488; }
+body.math-studio.lab-shell .control-figure-viewport { scrollbar-color: #8999b3 #f2f5fa; }
+
+/* Homepage-only spacing, leaving preserved knowledge lessons untouched. */
+body.math-studio.lab-shell .studio-section-title h2, body.math-studio.lab-shell .studio-bottom-link h2 { margin: 0; }
+body.math-studio.lab-shell .studio-reading-step p { margin: 3px 0 0; }
+body.math-studio.lab-shell .studio-section-head p { margin: 10px 0 0; }
+body.math-studio.lab-shell .studio-bottom-link p { margin: 9px 0 0; }

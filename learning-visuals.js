@@ -2,7 +2,7 @@
    No learning-status or persistence writes; all figures have a complete static fallback. */
 (() => {
   'use strict';
-  const B = '#72b4ff', A = '#f1c57a', T = '#65d6c2', M = '#adc2d5', I = '#e3edf7', GRID = '#33495f';
+  const B = '#4B43E8', A = '#9A5800', T = '#087D70', M = '#606B7D', I = '#202734', GRID = '#DEE4ED';
   const clean = n => Math.abs(n) < 0.0000001 ? 0 : n;
   function phaseValues(degrees) {
     const radians = degrees * Math.PI / 180;
@@ -32,7 +32,7 @@
     });
     [90,95,100,105,110,115,120].forEach(p => { body += line(x(p),249,x(p),255) + txt(x(p),277,p,M,13,'middle'); });
     body += line(x(88),249,x(121),249) + txt(591,308,'压力 / kPa',M,14,'end');
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 328" role="img" aria-labelledby="lv-uncertainty-title lv-uncertainty-desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif"><title id="lv-uncertainty-title">预测、测量与更新的中心和标准差</title><desc id="lv-uncertainty-desc">预测100千帕，方差16；测量110千帕，方差${r}。更新后${mean.toFixed(2)}千帕，方差${variance.toFixed(3)}。每条横线表示中心加减一个标准差，不是真值保证区间。</desc><rect width="620" height="328" fill="#101c29"/>${body}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 328" role="img" aria-labelledby="lv-uncertainty-title lv-uncertainty-desc" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif"><title id="lv-uncertainty-title">预测、测量与更新的中心和标准差</title><desc id="lv-uncertainty-desc">预测100千帕，方差16；测量110千帕，方差${r}。更新后${mean.toFixed(2)}千帕，方差${variance.toFixed(3)}。每条横线表示中心加减一个标准差，不是真值保证区间。</desc><rect width="620" height="328" fill="#FFFFFF"/>${body}</svg>`;
   }
   const phaseInput = document.getElementById('lv-phase');
   if (phaseInput) {

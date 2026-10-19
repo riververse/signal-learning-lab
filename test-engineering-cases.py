@@ -2,6 +2,12 @@
 """Offline content/build checks. Optional --baseline DIR verifies preservation.
 
 These checks do not run vendor code, access hardware or claim browser visual QA.
+
+2026-10-19 theme migration: the final stylesheet is signal-studio.css, the
+shared navigation also has studio-nav, and the hardware entry is a studio-topic
+link. Resource ordering, navigation destinations/current state, and the hardware
+destination remain asserted. The optional historical --baseline checks retain
+their original case-release contract; the theme release uses qa/audit-rollout.py.
 """
 from pathlib import Path
 from html.parser import HTMLParser
@@ -78,7 +84,7 @@ class CasesTest(unittest.TestCase):
                 if u.fragment:self.assertIn(unquote(u.fragment),Doc(dest.read_text()).ids,href)
     def test_09_new_resources_exist(self):
         for s in self.doc.scripts+self.doc.styles:self.assertTrue((ROOT/urlsplit(s).path).is_file(),s)
-        self.assertEqual(self.doc.styles[-1].split('?')[0],'signal-design.css')
+        self.assertEqual(self.doc.styles[-1].split('?')[0],'signal-studio.css')
         self.assertIn('question-helper.js?v=20261017-cases-r2',self.doc.scripts)
     def test_09b_components_have_scoped_layout(self):
         css=read('engineering-cases.css')
@@ -86,7 +92,7 @@ class CasesTest(unittest.TestCase):
         self.assertIn('.engineering-cases-page .case-transfer .project-links{display:flex;flex-wrap:wrap',css)
         self.assertIn('max-width:700px',css)
     def test_10_existing_navigation(self):
-        nav=re.search(r'<nav class="architecture-nav".*?</nav>',self.html,re.S).group()
+        nav=re.search(r'<nav\b[^>]*\bclass="[^"]*\barchitecture-nav\b[^"]*"[^>]*>.*?</nav>',self.html,re.S).group()
         links=Doc(nav).links
         self.assertEqual(links,['knowledge.html','simulation.html','next-learning.html','exploration.html'])
         self.assertEqual(nav.count('aria-current="page"'),1)
@@ -128,7 +134,8 @@ class CasesTest(unittest.TestCase):
         self.assertEqual((ROOT/'index.html').read_bytes(),(ROOT/'knowledge.html').read_bytes())
         for c in self.cases[:3]:self.assertIn('engineering-cases.html#'+c['id'],read('index.html'))
         for c in self.cases:self.assertIn('#'+c['id'],self.doc.links)
-        self.assertIn('topic-card--hardware',read('index.html'))
+        hardware=[a for tag,a in Doc(read('index.html')).tags if tag=='a' and a.get('href')=='hardware-filters.html' and 'studio-topic' in a.get('class','').split()]
+        self.assertEqual(len(hardware),1,'The homepage subject index must retain the hardware topic entry')
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_18_all_unrelated_files_preserved(self):
         changed={'engineering-cases.json','engineering-cases.html','build-engineering-cases.py','test-engineering-cases.py'}

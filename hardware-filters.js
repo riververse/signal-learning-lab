@@ -13,10 +13,10 @@ function el(tag,attrs,text){const n=doc.createElementNS(NS,tag);Object.entries(a
 function canvas(svg,height,title,desc){const width=Math.max(280,Math.round(svg.getBoundingClientRect().width)||840);svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.replaceChildren(el('title',{id:svg.id+'-title'},title),el('desc',{id:svg.id+'-desc'},desc));return width;}
 const analogControl=byId('analog-filter'),digitalControl=byId('digital-filter'),aliasChart=byId('alias-chart');
 function drawAlias(){const fc=Number(analogControl.value)||0,kind=digitalControl.value,r=calculate(fc,kind),w=canvas(aliasChart,260,'采样后的输出对比',`采样率 1000 samples/s。960 Hz 干扰重合到 40 Hz。有效幅度 ${r.targetAmp.toFixed(3)}，干扰幅度 ${r.noiseAmp.toFixed(3)}，两者比值 ${(r.ratio*100).toFixed(2)}%。`);const x=n=>47+n/50*(w-66),y=v=>125-v/1.8*88;
-[-1.5,0,1.5].forEach(v=>{aliasChart.append(el('line',{x1:47,y1:y(v),x2:w-19,y2:y(v),stroke:'#23394b'}),el('text',{x:38,y:y(v)+4,'text-anchor':'end'},v.toFixed(1)));});
-[0,10,20,30,40,50].forEach(n=>{aliasChart.append(el('line',{x1:x(n),y1:37,x2:x(n),y2:213,stroke:'#162a3a'}),el('text',{x:x(n),y:234,'text-anchor':'middle'},n));});
+[-1.5,0,1.5].forEach(v=>{aliasChart.append(el('line',{x1:47,y1:y(v),x2:w-19,y2:y(v),stroke:'#DEE4ED'}),el('text',{x:38,y:y(v)+4,'text-anchor':'end'},v.toFixed(1)));});
+[0,10,20,30,40,50].forEach(n=>{aliasChart.append(el('line',{x1:x(n),y1:37,x2:x(n),y2:213,stroke:'#EDF0F6'}),el('text',{x:x(n),y:234,'text-anchor':'middle'},n));});
 aliasChart.append(el('text',{x:12,y:19,class:'hw-axis-label'},'归一化幅度'),el('text',{x:w-18,y:253,'text-anchor':'end',class:'hw-axis-label'},'时间 / ms'));
-[['desired','#7ddbd1','5 4'],['actual','#e5c080',null]].forEach(([key,color,dash])=>{const attrs={d:r.samples.map((s,i)=>(i?'L':'M')+x(s.n).toFixed(2)+' '+y(s[key]).toFixed(2)).join(' '),fill:'none',stroke:color,'stroke-width':2};if(dash)attrs['stroke-dasharray']=dash;aliasChart.append(el('path',attrs));r.samples.forEach(s=>aliasChart.append(el('circle',{cx:x(s.n),cy:y(s[key]),r:key==='actual'?2.3:1.8,fill:color})));});
+[['desired','#4B43E8','5 4'],['actual','#9A5800',null]].forEach(([key,color,dash])=>{const attrs={d:r.samples.map((s,i)=>(i?'L':'M')+x(s.n).toFixed(2)+' '+y(s[key]).toFixed(2)).join(' '),fill:'none',stroke:color,'stroke-width':2};if(dash)attrs['stroke-dasharray']=dash;aliasChart.append(el('path',attrs));r.samples.forEach(s=>aliasChart.append(el('circle',{cx:x(s.n),cy:y(s[key]),r:key==='actual'?2.3:1.8,fill:color})));});
 byId('alias-metrics').innerHTML=`<div><span>960 Hz 混叠后</span><strong>40 Hz</strong></div><div><span>干扰 / 有效幅度</span><strong>${(r.ratio*100).toFixed(2)}%</strong></div><div><span>有效信号剩余幅度</span><strong>${r.targetAmp.toFixed(3)}</strong></div>`;
 const post=kind==='none'?'此时尚未加数字滤波。':kind==='fir'?'8 点平均把两者一起衰减；线性相位群延迟为 3.5 ms。':'一阶 IIR 把两者一起衰减；其群延迟随频率变化，不能用一个固定时间概括。';
 byId('alias-result').textContent=(fc?`ADC 前 RC 先把干扰/有效幅度比从 60% 降到 ${(r.ratio*100).toFixed(2)}%，仍有残余。`:'缺少模拟限带：960 Hz 已折叠到有效信号的 40 Hz，干扰/有效幅度比仍为 60%。')+post+' 数字低通无法只去掉这个已重合的干扰分量。';
@@ -29,8 +29,8 @@ stepButton.disabled=step>=11;stepButton.textContent=step>=11?'已计算 12 拍':
 byId('implementation-note').textContent=fpga?(kind==='fir'?'FPGA：寄存器 / RAM 保存历史样本，数字乘加逻辑求加权和。可并行或复用 MAC；这张图不限定硬件资源数量。':'FPGA：寄存器保存上一拍输出，数字乘加逻辑算出新输出后写回。反馈状态与时序需要配合设计。'):(kind==='fir'?'MCU：数组 / 环形缓冲保存历史样本，CPU 执行乘加指令。换成 FPGA，理想方程和这一拍的输出保持相同。':'MCU：变量保存上一拍输出，CPU 做乘法、加法并更新变量。换成 FPGA，理想方程和这一拍的输出保持相同。');
 state.setAttribute('aria-label',(fpga?'数字寄存器或存储器':'软件变量或数组')+'中的状态');
 const w=canvas(impulseChart,230,'一拍输入留下的影响',step<0?'尚未计算。':`已计算到第 ${step} 拍，${kind.toUpperCase()} 输出为 ${value.toFixed(6)}。`),x=n=>47+n/11*(w-66),y=v=>180-v/.3*132;
-[0,.1,.2,.3].forEach(v=>impulseChart.append(el('line',{x1:47,y1:y(v),x2:w-19,y2:y(v),stroke:'#23394b'}),el('text',{x:38,y:y(v)+4,'text-anchor':'end'},v.toFixed(1))));
-for(let n=0;n<12;n++){impulseChart.append(el('text',{x:x(n),y:204,'text-anchor':'middle'},n));if(n<=step){const v=impulse(kind,n);impulseChart.append(el('line',{x1:x(n),y1:y(0),x2:x(n),y2:y(v),stroke:n===step?'#e5c080':'#7ddbd1','stroke-width':3}),el('circle',{cx:x(n),cy:y(v),r:n===step?4.5:3,fill:n===step?'#e5c080':'#7ddbd1'}));}}
+[0,.1,.2,.3].forEach(v=>impulseChart.append(el('line',{x1:47,y1:y(v),x2:w-19,y2:y(v),stroke:'#DEE4ED'}),el('text',{x:38,y:y(v)+4,'text-anchor':'end'},v.toFixed(1))));
+for(let n=0;n<12;n++){impulseChart.append(el('text',{x:x(n),y:204,'text-anchor':'middle'},n));if(n<=step){const v=impulse(kind,n);impulseChart.append(el('line',{x1:x(n),y1:y(0),x2:x(n),y2:y(v),stroke:n===step?'#9A5800':'#4B43E8','stroke-width':3}),el('circle',{cx:x(n),cy:y(v),r:n===step?4.5:3,fill:n===step?'#9A5800':'#4B43E8'}));}}
 impulseChart.append(el('text',{x:12,y:20,class:'hw-axis-label'},'输出幅度'),el('text',{x:w-18,y:223,'text-anchor':'end',class:'hw-axis-label'},'采样编号 n'));
 }
 [analogControl,digitalControl,kindControl,implementation,byId('alias-reset'),stepButton,byId('impulse-reset')].forEach(c=>c.disabled=false);

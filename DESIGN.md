@@ -1,43 +1,61 @@
-# RIVER signal studio
+# RIVER mathematical studio
 
-The interface is a precise, quiet frame for learning signals. Existing explanations,
-learning boundaries, personal progress and numerical experiments are the source of truth.
-
-## References and interpretation
-
-The surface hierarchy in [Linear's design analysis](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md)
-and the measured typography and spacing in [IBM's design analysis](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/ibm/DESIGN.md)
-informed this refinement. These are principles, not copies of those brands. RIVER retains
-its dark instrument palette, Chinese reading experience and existing data-series colors.
+The interface is a clean coordinate space for learning signals. Lesson content,
+learning evidence, local self-reported progress and numerical experiments remain
+the source of truth. The approved visual direction is cool, geometric and typographic.
 
 ## Visual system
 
-- Ground: `#0a1119`; reading surface: `#111e2b`; instrument well: `#080f17`.
-- Primary text: `#e6f0f5`; secondary text: `#a9bac9`; rules: `#2b4052`.
-- Signal/action: `#7ddbd1`; secondary trace: `#8fbfff`; caution/secondary component: `#e5c080`.
-- A native sans-serif stack with CJK fallbacks; monospace only for symbols and code.
-- A 4px spacing rhythm, 1280px learning-map container, 8–12px panel radii.
-- The overview owns the expressive signal composition. Reading pages remain quiet.
-- Two-column subject index on desktop, single-column compact cards on phones.
-- Preserve the four primary destinations and all status labels. A visible page is not evidence of mastery.
+- Ground: `#f2f5fa`; plot/reading surfaces: `#ffffff`; graphite text: `#202734`.
+- Secondary text: `#606b7d`; quiet rules: `#d6dde8`; primary action: `#4b43e8`.
+- Data series: graphite truth/reference, teal `#087d70`, blue `#1d64b3`,
+  ochre `#9a5800`, violet `#8748a7`, rose `#b74167`. Keep labels, legends,
+  dash patterns and point shapes: color alone must not carry meaning.
+- Native sans-serif with CJK fallbacks; monospace for coordinates, symbols and code.
+- Generous whitespace, strong type hierarchy, thin rules, restrained radii.
+- The overview owns the expressive waveform composition. Its full-width topic
+  directory is a reading index, not a wall of identical cards.
+- Reading pages and instruments use the same cool surfaces and typographic system.
+  No paper texture, warm editorial palette, glow field or decorative particle cloud.
+- Preserve all four primary destinations and evidence/status labels. Opening a page
+  or seeing an explanation does not establish mastery.
 
 ## Motion contract
 
 `signal-motion.js` adds illustrative packets to curated signal-flow paths. It never
 changes experiment traces or storage. Probability densities and response plots stay
-static. The overview's two frequency components are a schematic, not measured data.
+static. The overview's frequency components are schematic, not measured data.
 
-One shared, capped 30 fps scheduler updates pre-created SVG circles using cached geometry.
-Offscreen figures, hidden topic panels and background documents do not animate. Reduced
-motion, print and the visible pause control are respected. No random clouds, blur filters,
-3D tilt, pointer chasing, layout animation, dependencies or network requests.
+One shared, capped 30 fps scheduler updates pre-created SVG circles using cached
+geometry. Offscreen figures, hidden topic panels and background documents do not
+animate. Reduced motion, print and the visible pause control are respected. No
+pointer chasing, layout animation, random clouds, dependencies or network requests.
+Preserve SVG source attributes used as motion selectors; theme them through CSS.
 
 ## Maintenance
 
-Load `signal-design.css` last, after page-specific CSS, and `signal-motion.js` with `defer`.
-`build-exploration.py` retains these includes. Keep `index.html` and `knowledge.html`
-identical. Never place presentation code in learning-progress or simulation engines.
+Production pages carry the `math-studio` body class and load `signal-studio.css`
+last, after legacy page-specific styles and `signal-design.css`. Legacy styles stay
+available for compatibility; the final scoped stylesheet owns the visual identity.
+Use `color-scheme: light`. Every embedded simulator receives the same theme.
 
-Before a release, compare lesson text, links, IDs, data attributes and all unchanged
-engine assets against the base commit. Check mobile overflow, keyboard navigation,
-Back/Forward, hidden topic views, pause/reduced motion, and simulator iframe switching.
+Keep `index.html` and `knowledge.html` identical. Keep the shared header class
+`lab-site-header architecture-header` for generator extraction. Changes to generated
+pages must be accompanied by their source/template changes. Rebuild with:
+
+```
+python build-exploration.py
+python build-engineering-cases.py
+python build-next-learning.py
+```
+
+The preview URLs remain a design reference; production navigation uses actual routes.
+Learning updates follow `README-learning.md`. Do not put visual logic in the learning
+progress or simulation-routing engines and do not rewrite manual progress on updates.
+
+Before a release, compare nonvisual lesson content, links, IDs, data attributes,
+calculations and state/security logic against the base. Run numerical, learning,
+question-helper, generator, simulation-history and motion-lifecycle regressions.
+Check every production page and knowledge reading view at desktop and narrow widths,
+including diagrams, keyboard focus, disclosures, Back/Forward, deep links, reduced
+motion, pause controls and all three simulator iframe engines.

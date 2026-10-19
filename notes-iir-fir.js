@@ -22,7 +22,7 @@
   const controls = document.getElementById('impulse-controls');
   const plots = ['input', 'fir', 'iir'].map(name => document.getElementById('impulse-' + name));
   const ns = 'http://www.w3.org/2000/svg';
-  const colors = ['#b8c8d8', '#7bdacf', '#f1c57a'];
+  const colors = ['#606B7D', '#4B43E8', '#9A5800'];
   const format = value => value !== 0 && Math.abs(value) < 0.000001 ? value.toExponential(3) : Number(value.toFixed(6)).toString();
   function element(tag, attributes, text) {
     const node = document.createElementNS(ns, tag);
@@ -40,7 +40,7 @@
     const g = element('g', { class: 'if-chart-content' });
     [0, 4, 8].forEach(value => {
       const y = bottom - (bottom - top) * value / 8;
-      g.appendChild(element('line', { x1: left, y1: y, x2: right, y2: y, stroke: '#2c3c50' }));
+      g.appendChild(element('line', { x1: left, y1: y, x2: right, y2: y, stroke: '#DEE4ED' }));
       g.appendChild(element('text', { x: left - 8, y: y + 4, 'text-anchor': 'end' }, value));
     });
     values.forEach((value, n) => {

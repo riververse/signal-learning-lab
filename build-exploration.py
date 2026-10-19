@@ -143,14 +143,14 @@ def build():
     buttons+=''.join(f'<button class="exploration-filter" type="button" data-category-filter="{text(k)}" aria-pressed="false">{text(v)}</button>' for k,v in categories.items())
     html=f'''<!doctype html>
 <html lang="zh-CN"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
 <title>探索 · RIVER 信号实验室</title>
 <meta name="description" content="从民用雷达到开源 DSP：带先修知识、算法链路、硬件边界与许可来源的信号处理项目导读。">
 <link rel="icon" type="image/png" href="favicon-rgb-8b14e515.png">
 <link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2"><link rel="stylesheet" href="architecture.css?v=20261006-exploration"><link rel="stylesheet" href="exploration.css?v=20261006-radar-guide1">
 <script src="architecture.js?v=20261006" defer></script><script src="exploration.js?v=20261006" defer></script>
 <link rel="stylesheet" href="question-helper.css?v=20261016r3"><script src="question-helper.js?v=20261016r3" defer></script>
-<link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261016r2" defer></script></head><body class="lab-shell exploration-page"><a class="site-skip" href="#main">跳到探索内容</a>
+<link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261019.4" defer></script><link rel="stylesheet" href="signal-studio.css?v=20261019.4"></head><body class="lab-shell exploration-page math-studio"><a class="site-skip" href="#main">跳到探索内容</a>
 {header}
 <main id="main" class="exploration-main">
 <section class="exploration-intro" aria-labelledby="exploration-title"><div><span class="exploration-state">未来学习方向 · 尚待动手验证</span><h1 id="exploration-title">从波形，到真实项目。</h1><p>把感兴趣的方向整理成能开始的一步：它解决什么问题，用到什么算法，需要先学什么，再去哪里读实现。</p><p>收录民用雷达、开源 DSP 与企业工程案例。除实现代码，也读应用笔记、参考设计、厂商测试和技术答复；本站实验帮助理解原理，外部工程仍需在各自环境中验证。</p></div>

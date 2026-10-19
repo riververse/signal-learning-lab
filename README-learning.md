@@ -166,3 +166,12 @@ clicks, in-flight import races, profile isolation, generated fallback consistenc
 escaping and deterministic regeneration. DOM tests use a minimal contract harness;
 they do not replace browser rendering, accessibility, responsive layout or real
 multi-tab/storage testing. Those visual/browser checks remain a separate release step.
+
+## Presentation contract
+
+The formal page uses the approved cool mathematical theme: retain `math-studio` on
+its body and the final `signal-studio.css` include when editing the template.
+Profile updates must rebuild both formal and preview outputs without changing the
+local progress storage key or marking explanations as independently mastered.
+The formal homepage and navigation always link to `next-learning.html`; preview
+routes remain isolated design references. See `DESIGN.md` for full-site conventions.

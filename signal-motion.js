@@ -42,29 +42,29 @@
     const svg=make('svg',{viewBox:'0 0 480 248',role:'img','aria-hidden':'true'});
     figure.append(svg);
     const caption=document.createElement('figcaption'); caption.className='signal-mobile-caption'; caption.textContent='连续波形与采样 → 频率分量'; figure.append(caption); intro.append(figure);
-    const grid=make('g',{stroke:'#253d4e','stroke-width':0.7,opacity:0.75}); svg.append(grid);
-    for(let x=24;x<=456;x+=24) line(grid,`M${x} 48V215`,'#253d4e',0.6);
-    for(let y=59;y<=215;y+=26) line(grid,`M24 ${y}H456`,'#253d4e',0.6);
+    const grid=make('g',{stroke:'#DEE4ED','stroke-width':0.7,opacity:0.75}); svg.append(grid);
+    for(let x=24;x<=456;x+=24) line(grid,`M${x} 48V215`,'#DEE4ED',0.6);
+    for(let y=59;y<=215;y+=26) line(grid,`M24 ${y}H456`,'#DEE4ED',0.6);
     text(svg,24,28,'一段信号，两种视角','signal-legend');
     text(svg,24,232,'连续波形 / 等间隔采样'); text(svg,315,232,'频率分量 / 示意');
     text(svg,24,53,'x(t)  →  x[n]','signal-formula'); text(svg,315,53,'|X[k]|','signal-formula');
-    line(svg,'M24 134H259M315 203H456','#4b667a',1);
+    line(svg,'M24 134H259M315 203H456','#A8B3C4',1);
     const wave = x => 130-35*Math.sin((x-24)/226*Math.PI*4)-15*Math.sin((x-24)/226*Math.PI*10);
     const d=Array.from({length:227},(_,i)=>`${i?'L':'M'}${24+i} ${wave(24+i).toFixed(2)}`).join(' ');
-    const wavePath=line(svg,d,'#7ddbd1',2);
+    const wavePath=line(svg,d,'#087D70',2);
     for(let x=24;x<=250;x+=14) {
-      line(svg,`M${x} 134V${wave(x)}`,'#7ddbd1',1,{opacity:0.18});
-      svg.append(make('circle',{cx:x,cy:wave(x),r:2.1,fill:'#7ddbd1'}));
+      line(svg,`M${x} 134V${wave(x)}`,'#087D70',1,{opacity:0.18});
+      svg.append(make('circle',{cx:x,cy:wave(x),r:2.1,fill:'#087D70'}));
     }
-    const bridge=line(svg,'M271 130H296','#8ca9bf',1.4);
-    line(svg,'M290 124L296 130 290 136','#8ca9bf',1.4);
+    const bridge=line(svg,'M271 130H296','#606B7D',1.4);
+    line(svg,'M290 124L296 130 290 136','#606B7D',1.4);
     const spectrum=make('g'); svg.append(spectrum);
-    const a=line(spectrum,'M347 203V91','#8fbfff',4);
-    const b=line(spectrum,'M413 203V155','#e5c080',4);
-    line(spectrum,'M341 91H353M407 155H419','#d8e8f3',1.6);
+    const a=line(spectrum,'M347 203V91','#4B43E8',4);
+    const b=line(spectrum,'M413 203V155','#9A5800',4);
+    line(spectrum,'M341 91H353M407 155H419','#202734',1.6);
     text(svg,341,219,'f₁');text(svg,407,219,'f₂');
     text(svg,332,77,'A₁');text(svg,398,143,'A₂');
-    traceModel(svg,[{path:wavePath,color:'#e4fff9',count:3},{path:bridge,color:'#b5d8ff',count:1}],0.065);
+    traceModel(svg,[{path:wavePath,color:'#064E47',count:3},{path:bridge,color:'#4B43E8',count:1}],0.065);
   }
 
   // Trace only the existing illustrations, never SVG figures in lessons or live plots.
@@ -88,7 +88,7 @@
       svg.append(guides);
       paths=routes[topic].map(d=>line(guides,d,'none'));
     }
-    const definitions=paths.map((path,i)=>({path,color:i===1?'#f4d394':'#b9f6e8',count:2}));
+    const definitions=paths.map((path,i)=>({path,color:i===1?'#9A5800':'#087D70',count:2}));
     if(definitions.length) traceModel(svg,definitions,0.075);
   });
   if (!models.length) return;
