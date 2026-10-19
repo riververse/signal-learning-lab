@@ -1507,3 +1507,11 @@ body.math-studio.lab-shell .studio-section-title h2, body.math-studio.lab-shell 
 body.math-studio.lab-shell .studio-reading-step p { margin: 3px 0 0; }
 body.math-studio.lab-shell .studio-section-head p { margin: 10px 0 0; }
 body.math-studio.lab-shell .studio-bottom-link p { margin: 9px 0 0; }
+
+/* Responsive hero variants must outrank the shared SVG display rule. */
+body.math-studio.lab-shell.page--knowledge .studio-flow-desktop { display: block; }
+body.math-studio.lab-shell.page--knowledge .studio-flow-mobile { display: none; }
+@media (max-width: 600px) {
+ body.math-studio.lab-shell.page--knowledge .studio-flow-desktop { display: none; }
+ body.math-studio.lab-shell.page--knowledge .studio-flow-mobile { display: block; }
+}
