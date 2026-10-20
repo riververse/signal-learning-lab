@@ -6,8 +6,8 @@ These checks do not run vendor code, access hardware or claim browser visual QA.
 2026-10-19 theme migration: the final stylesheet is river-experiments.css, the
 shared navigation also has studio-nav, and the hardware entry is a studio-topic
 link. Resource ordering, navigation destinations/current state, and the hardware
-destination remain asserted. The optional historical --baseline checks retain
-their original case-release contract; the theme release uses qa/audit-rollout.py.
+destination remain asserted. The --baseline checks preserve the prior five
+cases and unrelated files, allowing only this append-only case release's files.
 """
 from pathlib import Path
 from html.parser import HTMLParser
@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_five_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),5);self.assertEqual(len({x['vendor'] for x in self.cases}),4)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision'])
+    def test_01_six_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),6);self.assertEqual(len({x['vendor'] for x in self.cases}),5)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -86,7 +86,7 @@ class CasesTest(unittest.TestCase):
         for s in self.doc.scripts+self.doc.styles:self.assertTrue((ROOT/urlsplit(s).path).is_file(),s)
         self.assertEqual(self.doc.styles[-1].split('?')[0],'river-experiments.css')
         self.assertEqual([x.split('?')[0] for x in self.doc.styles[-3:]],['river-design.css','river-reading.css','river-experiments.css'])
-        self.assertIn('question-helper.js?v=20261017-cases-r2',self.doc.scripts)
+        self.assertIn('question-helper.js?v=20261020-cic-r1',self.doc.scripts)
     def test_09b_components_have_scoped_layout(self):
         css=read('engineering-cases.css')
         self.assertIn('.engineering-cases-page .case-chain{display:flex;flex-wrap:wrap',css)
@@ -139,7 +139,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(len(hardware),1,'The homepage subject index must retain the hardware topic entry')
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_18_all_unrelated_files_preserved(self):
-        changed={'engineering-cases.json','engineering-cases.html','build-engineering-cases.py','test-engineering-cases.py'}
+        changed={'engineering-cases.json','engineering-cases.html','build-engineering-cases.py','test-engineering-cases.py','question-helper.js','test-question-helper.cjs'}
         for p in BASE.iterdir():
             if p.is_file() and p.name not in changed:self.assertEqual(p.read_bytes(),(ROOT/p.name).read_bytes(),p.name)
         self.assertEqual(len(list(BASE.glob('*.html'))),len(list(ROOT.glob('*.html'))))
@@ -151,7 +151,11 @@ class CasesTest(unittest.TestCase):
         guard="    if(file==='engineering-cases.html')return '';\n"
         helper=read('question-helper.js')
         self.assertEqual(helper.count(guard),1)
-        self.assertEqual(helper,(BASE/'question-helper.js').read_text())
+        # Only one data row is added. All existing glossary rows, routing, DOM,
+        # storage and prompt behavior remain byte-for-byte unchanged.
+        added=[line for line in helper.splitlines(keepends=True) if "keys:['cic'" in line]
+        self.assertEqual(len(added),1)
+        self.assertEqual(helper.replace(added[0],''),(BASE/'question-helper.js').read_text())
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_19_existing_lesson_html_byte_preserved(self):
         for name in ['index.html','knowledge.html']:
@@ -171,7 +175,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 5 个案例',self.html)
+        self.assertIn('工程阅读 / 6 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -293,4 +297,155 @@ class CasesTest(unittest.TestCase):
     def test_32_biquad_keeps_general_question_context(self):
         script="const a=require('node:assert/strict'),h=require('./question-helper.js');a.equal(h.inferTopic('/engineering-cases.html','','#arm-biquad-state-precision',''),'');a.equal(h.inferTopic('/engineering-cases.html','?topic=iir-fir','#arm-biquad-state-precision',''),'iir-fir');"
         subprocess.run(['node','-e',script],cwd=ROOT,check=True,capture_output=True)
+    def test_33_cic_evidence_scope_and_source_contract(self):
+        c=next(c for c in self.cases if c['id']=='amd-cic-decimation-contract')
+        content=json.dumps(c,ensure_ascii=False)
+        for token in ['PG140','2026-07-22','2026-10-20','25 位','48 kSPS','6 kSPS','218.75 µs','150 位','162000','0.8726587924','0.007350932944','0.8423605','38.510 dB','未下载、编译或执行','无本站或独立第三方板卡实测','End User License','未接受协议','不是厂商规格']:
+            self.assertIn(token,content)
+        self.assertEqual(c['status'],'待学习')
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
+        self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-20')
+    @staticmethod
+    def own_cic_coefficients():
+        # Original finite convolution, no AMD model/HDL/code or copied coefficients.
+        coefficients=[1]
+        for _ in range(3):
+            next_coefficients=[0]*(len(coefficients)+7)
+            for i,value in enumerate(coefficients):
+                for j in range(8):next_coefficients[i+j]+=value
+            coefficients=next_coefficients
+        return coefficients
+    @classmethod
+    def own_cic_fir(cls,samples):
+        h=cls.own_cic_coefficients()
+        # Exactly n=7,15,23,...; zero before input; no appended tail samples.
+        return [sum(h[k]*samples[n-k] for k in range(min(len(h),n+1))) for n in range(7,len(samples),8)]
+    @staticmethod
+    def own_cic(samples,bits=None,saturate=False,state=None):
+        # Original accepted-sample recurrence: N=3, R=8, M=1. No IP pipeline,
+        # bit pruning or AXI buffering. Explicit modulo avoids undefined overflow.
+        state=state or {'integrators':[0]*3,'comb':[0]*3,'count':0,'range_events':0}
+        integrators=state['integrators'][:];comb=state['comb'][:]
+        count=state['count'];range_events=state['range_events'];output=[]
+        def cast(value):
+            nonlocal range_events
+            if bits is None:return value
+            half=1<<(bits-1)
+            if not -half<=value<half:range_events+=1
+            return max(-half,min(half-1,value)) if saturate else (value+half)%(2*half)-half
+        for sample in samples:
+            value=sample
+            for stage in range(3):
+                integrators[stage]=cast(integrators[stage]+value)
+                value=integrators[stage]
+            count+=1
+            if count==8:
+                count=0
+                for stage in range(3):
+                    previous_input=value
+                    value=cast(value-comb[stage]);comb[stage]=previous_input
+                output.append(value)
+        return output,{'integrators':integrators,'comb':comb,'count':count,'range_events':range_events}
+    @staticmethod
+    def own_cic_magnitude(frequency):
+        if frequency==0:return 1.
+        return abs(math.sin(math.pi*frequency*8/48000)/(8*math.sin(math.pi*frequency/48000)))**3
+    def test_34_cic_finite_response_and_budget(self):
+        h=self.own_cic_coefficients()
+        self.assertEqual(h,[1,3,6,10,15,21,28,36,42,46,48,48,46,42,36,28,21,15,10,6,3,1])
+        self.assertEqual(len(h),22);self.assertEqual(h,h[::-1]);self.assertEqual(sum(h),512)
+        self.assertEqual(16+math.ceil(math.log2(sum(h))),25)
+        self.assertEqual((len(h)-1)/2/48000*1e6,218.75)
+        self.assertEqual(48000/8,6000)
+        self.assertEqual((3+3)*25,150)
+        self.assertEqual(3*48000+3*6000,162000)
+        for value in [-32768,32767]:
+            peak=value*sum(h)
+            self.assertGreaterEqual(peak,-2**24);self.assertLessEqual(peak,2**24-1)
+    def test_35_cic_frequency_and_alias_budget_reject_candidate(self):
+        h=self.own_cic_coefficients()
+        for frequency in [0,500,1000,3000,5000,5500,6000,12000,18000,24000]:
+            from_fir=abs(sum(value*cmath.exp(-2j*math.pi*frequency*k/48000) for k,value in enumerate(h)))/512
+            self.assertAlmostEqual(from_fir,self.own_cic_magnitude(frequency),13)
+        desired=self.own_cic_magnitude(1000);interference=self.own_cic_magnitude(5000)
+        self.assertAlmostEqual(desired,.872658792443122,14)
+        self.assertAlmostEqual(interference,.007350932944101025,15)
+        self.assertAlmostEqual(20*math.log10(desired),-1.183110624749309,12)
+        self.assertAlmostEqual(20*math.log10(interference),-42.67315077814558,12)
+        self.assertAlmostEqual(100*interference/desired,.8423604973395307,13)
+        self.assertAlmostEqual(20*math.log10(100*interference/desired/.01),38.50995984660373,11)
+        self.assertLess(20*math.log10(desired),-.5)
+        self.assertGreater(100*interference/desired,.01)
+        self.assertEqual(abs((5000+3000)%6000-3000),1000)
+        # Direct filtered tones, then decimate: both appear at the same 1 kHz
+        # output bin. Separate contributions; no unsupported phase summation.
+        for frequency,amplitude in [(1000,1),(5000,100)]:
+            samples=[amplitude*math.cos(2*math.pi*frequency*n/48000) for n in range(768)]
+            output=[v/512 for v in self.own_cic_fir(samples)][6:]
+            self.assertEqual(len(output),90)  # 15 complete output cycles, transient excluded.
+            measured=2/len(output)*abs(sum(value*cmath.exp(-2j*math.pi*1000*m/6000) for m,value in enumerate(output)))
+            self.assertAlmostEqual(measured,amplitude*self.own_cic_magnitude(frequency),11)
+    def test_36_cic_full_width_modulo_matches_independent_fir(self):
+        import random
+        rng=random.Random(20261020)
+        streams=[[32767]*128,[-32768]*128,[0]*128,
+                 [rng.randrange(-32768,32768) for _ in range(4096)]]
+        streams += [[0]*phase+[32767]+[0]*(127-phase) for phase in range(8)]
+        for samples in streams:
+            expected=self.own_cic_fir(samples)
+            unbounded,_=self.own_cic(samples)
+            actual,state=self.own_cic(samples,bits=25)
+            self.assertEqual(actual,expected);self.assertEqual(unbounded,expected)
+            self.assertEqual(len(actual),len(samples)//8)
+            self.assertEqual(state['count'],len(samples)%8)
+        _,state=self.own_cic([32767]*128,bits=25)
+        self.assertGreater(state['range_events'],0,'Must exercise actual modulo boundaries')
+    def test_37_cic_saturation_and_insufficient_width_are_failures(self):
+        samples=[32767]*128;reference=self.own_cic_fir(samples)
+        self.assertEqual(reference[:3],[3932040,14941752,16776704])
+        self.assertEqual(reference[2:],[16776704]*14)
+        narrowed,_=self.own_cic(samples,bits=24)
+        saturated,_=self.own_cic(samples,bits=25,saturate=True)
+        self.assertNotEqual(narrowed,reference);self.assertEqual(narrowed[2:],[-512]*14)
+        self.assertNotEqual(saturated,reference);self.assertEqual(saturated[-4:],[0]*4)
+        negative,_=self.own_cic([-32768]*128,bits=25)
+        self.assertEqual(negative[2:],[-16777216]*14)
+    def test_38_cic_block_phase_is_part_of_state(self):
+        samples=[(i*997)%65536-32768 for i in range(128)]
+        expected,final=self.own_cic(samples,bits=25)
+        state=None;actual=[];offset=0
+        for size in [1,7,13,2,37,68]:
+            part,state=self.own_cic(samples[offset:offset+size],bits=25,state=state)
+            actual.extend(part);offset+=size
+        self.assertEqual(offset,len(samples));self.assertEqual(actual,expected);self.assertEqual(state,final)
+        state=None;wrong=[];offset=0
+        for size in [1,7,13,2,37,68]:
+            if state:state['count']=0  # Negative case: keep values but lose decimation phase.
+            part,state=self.own_cic(samples[offset:offset+size],bits=25,state=state)
+            wrong.extend(part);offset+=size
+        self.assertNotEqual(wrong,expected)
+        for length in range(33):
+            output,state=self.own_cic(samples[:length],bits=25)
+            self.assertEqual(len(output),length//8);self.assertEqual(state['count'],length%8)
+    def test_39_cic_wait_cycles_do_not_create_samples(self):
+        samples=[(i*937)%5000-2500 for i in range(137)]
+        # Synthetic channel trace, not AMD AXI simulation: idle, held payload,
+        # then one acceptance per sample. Count only valid AND ready.
+        cycles=[]
+        for index,sample in enumerate(samples):
+            cycles.append((False,True,0))
+            cycles.extend([(True,False,sample)]*(index%3))
+            cycles.append((True,True,sample))
+        accepted=[sample for valid,ready,sample in cycles if valid and ready]
+        wrongly_repeated=[sample for valid,ready,sample in cycles if valid]
+        self.assertEqual(accepted,samples)
+        reference=self.own_cic(samples,bits=25)
+        self.assertEqual(self.own_cic(accepted,bits=25),reference)
+        self.assertNotEqual(self.own_cic(wrongly_repeated,bits=25)[0],reference[0])
+    def test_40_cic_host_validation_remains_exact(self):
+        self.renderer.url('https://docs.amd.com/r/en-US/pg140-cic-compiler/CIC-Decimator',True)
+        for value in ['https://docs.amd.com.evil.example/a','https://docs.amd.com@evil.example/a','http://docs.amd.com/a','https://docs.amd.com:443/a','https://download.amd.com/a']:
+            with self.assertRaises(ValueError):self.renderer.url(value,True)
 if __name__=='__main__':unittest.main(verbosity=2)

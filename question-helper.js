@@ -16,6 +16,7 @@
     {topic:'iir-fir',keys:['硬件滤波','硬件实现','模拟滤波','抗混叠','fmac','dfsdm','fpga','定点'],title:'先分清采样前后，再选择执行方式',text:'模拟 RC / 运放处理连续电压；MCU 软件、FMAC 与 FPGA 处理数字样本。FIR / IIR 与硬件 / 软件不是同一种分类；数字后处理不能普遍恢复已经混叠的信息。外设能力、位宽与延迟须按具体器件核对。',href:'hardware-filters.html'},
     {topic:'kalman',keys:['卡尔曼','kalman','协方差','增益','残差','新息','方差'],title:'残差大小和增益不是同一个量',text:'当前线性模型的增益由预测不确定性和测量不确定性决定。新息是测量与预测的差；读数跳变可以增大修正量，但不会直接改写这一轮的增益公式。',href:'notes-kalman.html#kalman-next'},
     {topic:'spectrum',keys:['fft','dft','频谱','采样','混叠','泄漏','窗函数'],title:'先把采样条件说完整',text:'频率轴需要采样率 fs 和样本数 N：fk = kfs/N。有限观察长度、窗函数和幅值归一化都会影响读谱；非零频点不自动证明存在独立的物理振动源。',href:'future-learning.html#spectral-analysis'},
+    {topic:'spectrum',keys:['cic','抽取','梳状','降采样','decimation'],title:'抽取前，先查哪些频带会折回来',text:'CIC 的零点不能替整段阻带作保证；先写清输入/输出采样率、目标频带和最强干扰，再检查通带下垂、增益、位宽及有效样本计数。已经折到同一输出频率的两路来源，普通后级滤波无法再分开。',href:'engineering-cases.html#amd-cic-decimation-contract'},
     {topic:'transfer',keys:['传递函数','拉普拉斯','z变换','z 变换','极点','零点','h(s)','h(z)'],title:'先说明连续还是离散、初始条件是什么',text:'传递函数把输入与输出的关系放进变换域。读公式时先确认系统假设、零初始条件与时间尺度，再把极点和实际响应联系起来。',href:'future-learning.html#transfer-functions'},
     {topic:'control',keys:['控制','闭环','反馈','pid','超调','稳态','阻尼'],title:'稳、准、快需要分别检查',text:'反馈把测量和目标比较，再通过控制器影响对象。增益变大不保证所有指标都更好；需要一起观察稳定性、稳态误差、响应时间和超调。',href:'future-learning.html#automatic-control'},
     {topic:'pll',keys:['pll','锁相','nco','鉴相','正交','atan2','相位展开'],title:'先确认单路还是正交双路输入',text:'数字 PLL 用相位误差调整内部参考。真实输入类型会改变鉴相方式；环路带宽影响噪声与动态跟踪的折中，相位展开也不能保证恢复已丢失的整周期。',href:'knowledge.html?topic=pll'}
