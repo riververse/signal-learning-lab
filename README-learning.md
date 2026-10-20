@@ -169,8 +169,9 @@ multi-tab/storage testing. Those visual/browser checks remain a separate release
 
 ## Presentation contract
 
-The formal page uses the approved cool mathematical theme: retain `math-studio` on
-its body and the final `signal-studio.css` include when editing the template.
+The formal page uses the approved signal-first design: retain `math-studio` and
+`river-v2` on its body, then load `river-design.css`, `river-reading.css`, and
+`river-experiments.css` last, in that order, when editing the template.
 Profile updates must rebuild both formal and preview outputs without changing the
 local progress storage key or marking explanations as independently mastered.
 The formal homepage and navigation always link to `next-learning.html`; preview

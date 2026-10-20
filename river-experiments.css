@@ -725,3 +725,82 @@
     scroll-behavior:auto!important; transition:none!important; animation:none!important;
   }
 }
+
+/* Live screenshot refinement, 2026-10-19.
+   Remove the inherited white strips inside the pale experiment, and bring the
+   running signal above secondary instructions without removing any controls. */
+@media screen {
+  body.river-v2.lab-shell.page--simulation .simulation-classics {
+    background:transparent; border-radius:0;
+  }
+  html.lab-embedded body.river-v2.math-studio.lab-shell>main {
+    background:var(--river-bg,#f4f6fa);
+  }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel {
+    display:flex; flex-direction:column;
+  }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.plothead { order:0; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.legend { order:1; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>canvas { order:2; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.hint:nth-of-type(2) { order:3; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.metrics { order:4; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.hint:nth-of-type(1) { order:5; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.hint:nth-of-type(3) { order:6; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.hint {
+    font-size:13px; line-height:1.85; margin:12px 0 0;
+  }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.metrics { margin-top:24px; margin-bottom:12px; }
+
+  /* Native input semantics, keyboard behavior and focus rings remain unchanged. */
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range] {
+    appearance:none; -webkit-appearance:none; background:transparent; border:0; border-radius:0;
+    padding:0; box-shadow:none;
+  }
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range]::-webkit-slider-runnable-track {
+    height:4px; background:#c8d3e3; border:0; border-radius:4px; box-shadow:none;
+  }
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range]::-webkit-slider-thumb {
+    appearance:none; -webkit-appearance:none; width:18px; height:18px; margin-top:-7px;
+    border:2px solid var(--river-violet,#6c4fce); border-radius:50%; background:#fff; box-shadow:none;
+  }
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range]::-moz-range-track {
+    height:4px; background:#c8d3e3; border:0; border-radius:4px; box-shadow:none;
+  }
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range]::-moz-range-progress {
+    height:4px; background:var(--river-violet,#6c4fce); border:0; border-radius:4px;
+  }
+  body.river-v2.lab-shell:is(.page--index,.page--motion,.page--frequency,.page--kalman,.page--transforms,.page--engineering,.hardware-page) input[type=range]::-moz-range-thumb {
+    width:16px; height:16px; border:2px solid var(--river-violet,#6c4fce); border-radius:50%; background:#fff; box-shadow:none;
+  }
+}
+@media screen and (min-width:761px) {
+  body.river-v2.lab-shell.page--simulation>main { padding-top:24px; }
+  body.river-v2.lab-shell.page--simulation .simulation-intro { margin-top:0; margin-bottom:24px; }
+  body.river-v2.lab-shell.page--simulation .simulation-intro h1 { margin-bottom:14px; }
+  body.river-v2.lab-shell.page--simulation .simulation-scenarios { padding:0 24px; gap:12px; }
+  body.river-v2.lab-shell.page--simulation .simulation-scenarios a {
+    min-height:64px; padding:10px 12px; gap:12px;
+  }
+  body.river-v2.lab-shell.page--simulation .scenario-glyph {
+    min-width:32px; width:44px; font-size:17px; letter-spacing:-.16em;
+  }
+  body.river-v2.lab-shell.page--simulation .simulation-scenarios strong { font-size:17px; }
+  body.river-v2.lab-shell.page--simulation .simulation-scenarios small { font-size:12px; margin-top:1px; }
+  body.river-v2.lab-shell.page--simulation .simulation-controls {
+    padding:12px 28px 8px; gap:10px 22px;
+  }
+  body.river-v2.lab-shell.page--simulation .simulation-algorithm select { min-height:44px; padding-block:8px; }
+  body.river-v2.lab-shell.page--simulation #simulation-scenario-note { font-size:13px; line-height:1.75; }
+  body.river-v2.lab-shell.page--simulation .simulation-classics { padding:0 28px 10px; gap:6px; }
+  body.river-v2.lab-shell.page--simulation .simulation-classics>a { min-height:34px; padding:5px 12px; font-size:13px; }
+  body.river-v2.lab-shell.page--simulation .simulation-classics>small { font-size:12px; }
+  html.lab-embedded body.river-v2.lab-shell>main { padding-top:12px!important; }
+  html.lab-embedded body.river-v2.lab-shell .embedded-lab-jumps { margin-bottom:6px; gap:6px 22px; font-size:12px; }
+  html.lab-embedded body.river-v2.lab-shell .embedded-lab-jumps a { min-height:28px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel { padding-top:8px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.plothead { margin-bottom:8px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .plotpanel>.legend { margin:4px 0 10px; gap:6px 14px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .curve-toggle { min-height:36px; padding-block:4px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .workspace>aside { padding-top:8px; }
+  html.lab-embedded body.river-v2.lab-shell.page--index .workspace>aside h2 { margin-bottom:18px; }
+}
