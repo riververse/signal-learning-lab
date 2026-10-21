@@ -16,7 +16,7 @@ function match(actual,pattern,label){assert.match(actual,pattern,label);checks++
 const oldIds=['fourier-amplitude','fourier-overview','kalman-14','filters-impulse','filters-coefficients','filters-specification','sampling','spectrum-axis','spectrum-window','transfer-first-order','transfer-z','control-feedback','control-poles','pll-input','pll-loop','kalman-15','kalman-16'];
 const stamp='2026-10-07T10:12:13.456Z';
 const newer='2099-10-18T01:02:03.000Z'; // Deliberately later than runtime-created self-report fixtures.
-const first='filters-frequency-delay', second='filters-design-families';
+const first='sampling-position-report', second='filters-frequency-delay';
 const lesson=id=>api.lessons.find(item=>item.id===id);
 
 class Element {
@@ -59,10 +59,15 @@ function mount(options={}){
 }
 
 async function main(){
+  eq(profile.evidence[first].status,'pending','New independent question remains unverified');
+  eq(profile.evidence[first].observedAt,'2026-10-21','Substantive question date is explicit');
+  match(lesson(first).frontier,/不是傅里叶或卡尔曼课程的新进度/,'Sources remain distinct');
+  eq([0,1,2].map(i=>i*.004*750),[0,3,6],'Synthetic position arithmetic');
+  eq(1/.004,250,'Spatial increment condition is not asserted as tracking speed');
   eq(api.key,'river.learning.progress.v1','Storage key is unchanged');
   eq(api.emptyState(),{version:1,preferredTopic:'auto',completed:{}},'v1 shape is unchanged');
   eq(api.lessons.slice(0,17).map(x=>x.id),oldIds,'All original IDs and their base order remain');
-  eq(api.lessons.length,20,'Exactly three targeted steps added');
+  eq(api.lessons.length,21,'Preserve 20 prior steps and append one targeted step');
   eq(api.profile,profile,'Embedded data matches the curated JSON');
   ok(Object.isFrozen(api.profile)&&Object.isFrozen(api.lessons)&&Object.isFrozen(api.lessons[0]),'Profile and lessons cannot be mutated in place');
   eq(Object.values(profile.evidence).filter(x=>x.status==='independent-correct').length,0,'This review introduces no unsupported independent-correct evidence');
@@ -77,7 +82,7 @@ async function main(){
   eq(oldMount.writes.length,0,'Initialization never rewrites old localStorage');
   eq(oldMount.store.get(api.key),JSON.stringify(allOld),'Original stored bytes are untouched');
   const state=api.emptyState();const before=clone(state);let recommendation=api.recommend(state);
-  eq(recommendation.lesson.id,first,'Default recommendation targets latest filter question');
+  eq(recommendation.lesson.id,first,'Default recommendation targets the recent independent sampling question');
   eq(state,before,'Recommendations do not mark anything complete');
   for(const field of ['reason','prerequisiteText','frontier','verificationQuestion','evidenceStatus','evidenceLabel','evidenceSummary','estimatedMinutes','afterCheck','reviewedAt'])ok(recommendation[field],field+' is exposed');
   eq(recommendation.isPrerequisite,false,'Current filter question does not force stale prerequisites');
@@ -85,13 +90,13 @@ async function main(){
   eq(api.recommend(state,'kalman').lesson.id,'kalman-14','Kalman stays at lesson 14 verification');
   eq(api.recommend(state,'bogus').lesson.id,first,'Unknown direction falls back to current preference');
   state.preferredTopic='kalman';eq(api.recommend(state).lesson.id,'kalman-14','Saved direction is respected');
-  eq(api.recommend(state,'iir-fir').lesson.id,first,'Explicit direction takes precedence');
+  eq(api.recommend(state,'iir-fir').lesson.id,second,'Explicit direction takes precedence');
   state.preferredTopic='auto';state.completed[first]=stamp;
-  eq(api.recommend(state).lesson.id,second,'Completion advances to design-family relationship');
-  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
+  eq(api.recommend(state).lesson.id,second,'Completion returns to the older filter question');
+  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,'filters-design-families','Filter family question remains'); state.completed['filters-design-families']=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
   delete state.completed[first];eq(api.recommend(state).lesson.id,first,'Undo restores missing prerequisite');
   eq(state.completed[second],stamp,'Undo preserves descendant completion history');
-  ok(!api.prerequisitesDone(lesson(second),state),'Undone prerequisite blocks dependent completion');
+  delete state.completed[second];ok(!api.prerequisitesDone(lesson('filters-design-families'),state),'Undone filter prerequisite blocks dependent completion');
   const all=api.emptyState();api.lessons.forEach(x=>all.completed[x.id]=stamp);
   eq(api.recommend(all),null,'Finite list terminates');
   for(const topic of ['auto',...Object.keys(api.topics)])eq(api.recommend(all,topic),null,'Completed '+topic+' ends cleanly');
@@ -104,7 +109,7 @@ async function main(){
   const explained=clone(profile);explained.evidence[first].status='explained';eq(api.createModel(explained).recommend(api.emptyState()).lesson.id,first,'Explanation alone never satisfies a step');
   const deeper=clone(profile);deeper.evidence['fourier-overview']={status:'independent-correct',summary:'Synthetic test evidence only.'};
   const deeperApi=api.createModel(deeper);eq(deeperApi.recommend(api.emptyState(),'spectrum').lesson.id,'sampling','Verified prerequisite does not force earlier unrelated tasks');
-  const dependency=clone(profile);dependency.preferredPriority=[second,first];eq(api.createModel(dependency).recommend(api.emptyState()).isPrerequisite,true,'Priority still obeys explicit minimal prerequisite');
+  const dependency=clone(profile);dependency.preferredPriority=['filters-design-families',second,first];eq(api.createModel(dependency).recommend(api.emptyState()).isPrerequisite,true,'Priority still obeys explicit minimal prerequisite');
 
   const malformed=[null,[],{}, {version:2,preferredTopic:'auto',completed:{}},{version:1,preferredTopic:'unknown',completed:{}},{version:1,preferredTopic:'auto',completed:[]},{version:1,preferredTopic:'auto',completed:{},extra:true}];
   for(const value of malformed)throws(()=>api.validateState(value),'Malformed state rejected');
@@ -132,8 +137,8 @@ async function main(){
   eq(fresh.node('nl-lesson-title').textContent,lesson(first).title,'Live title uses current recommendation');
   eq(fresh.node('nl-evidence-status').textContent,'待独立作答','Live status distinguishes pending evidence');
   eq(fresh.node('nl-check-text').textContent,lesson(first).check,'Live check uses profile data');
-  eq(fresh.model.getCurrentTopic(),'iir-fir','Existing question-helper topic API remains current');
-  eq(fresh.model.setCompleted(second,true),false,'UI blocks dependency completion');
+  eq(fresh.model.getCurrentTopic(),'control','Existing question-helper topic API remains current');
+  eq(fresh.model.setCompleted('filters-design-families',true),false,'UI blocks dependency completion');
   eq(fresh.model.setCompleted('__proto__',true),false,'UI rejects prototype key');
   await fresh.node('nl-complete').fire('click');
   eq(fresh.model.getRecommendation().lesson.id,second,'Explicit completion advances live card');
@@ -178,10 +183,10 @@ async function main(){
     for(const name of ['next-learning.html','preview-next-learning.html']){const html=fs.readFileSync(path.join(directory,name),'utf8');ok(html.includes(lesson(first).title),'Fallback title agrees with live default');ok(html.includes(lesson(first).check),'Fallback check agrees with live default');ok(html.includes('待独立作答'),'Fallback evidence status agrees with live default');ok(!html.includes('{{'),'All fallback tokens resolved');}
     fs.appendFileSync(path.join(directory,'next-learning.html'),'stale');ok(run('--check').status!==0,'Check mode detects stale output');
     const future=clone(profile);future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
-    const unsafe=clone(profile);unsafe.lessonAdditions[0].title='</script><img src=x onerror="alert(1)"> & "';unsafe.topicSummaries[0].summary='<script>alert(2)</script>';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));eq(run().status,0,'Ordinary text with HTML characters is safely escaped');const escaped=fs.readFileSync(path.join(directory,'next-learning.html'),'utf8');ok(escaped.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'HTML markup in text is escaped');ok(!escaped.includes('<script>alert(2)</script>'),'Evidence text cannot inject executable markup');ok(!fs.readFileSync(path.join(directory,'learning-progress.js'),'utf8').includes('</script>'),'Embedded JSON is safe if script is inlined');
+    const unsafe=clone(profile);unsafe.lessonAdditions.find(x=>x.id===first).title='</script><img src=x onerror="alert(1)"> & "';unsafe.topicSummaries[0].summary='<script>alert(2)</script>';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));eq(run().status,0,'Ordinary text with HTML characters is safely escaped');const escaped=fs.readFileSync(path.join(directory,'next-learning.html'),'utf8');ok(escaped.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'HTML markup in text is escaped');ok(!escaped.includes('<script>alert(2)</script>'),'Evidence text cannot inject executable markup');ok(!fs.readFileSync(path.join(directory,'learning-progress.js'),'utf8').includes('</script>'),'Embedded JSON is safe if script is inlined');
     const safeOutputs=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));unsafe.lessonAdditions[0].href='javascript:alert(1)';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));ok(run().status!==0,'Unsafe profile link fails generation');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),safeOutputs,'Invalid profile does not partially overwrite outputs');
     fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(profile));fs.appendFileSync(path.join(directory,'next-learning.template.html'),'{{UNKNOWN_TOKEN}}');ok(run().status!==0,'Unknown tokens fail instead of leaking into generated UI');
   }finally{fs.rmSync(directory,{recursive:true,force:true});}
-  console.log(JSON.stringify({status:'PASS',checks,scope:'20-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
+  console.log(JSON.stringify({status:'PASS',checks,scope:'21-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

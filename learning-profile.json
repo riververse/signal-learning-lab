@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
-  "version": "2026-10-19.1",
-  "reviewedAt": "2026-10-19",
-  "reviewLabel": "2026-10-19 · 北京时间",
-  "evidenceNote": "依据已复核的学习对话整理。看过讲解、提出问题和观察到现象，都不等于独立答对；本页不读取私人聊天，也不自动判分。",
+  "version": "2026-10-21.1",
+  "reviewedAt": "2026-10-21",
+  "reviewLabel": "2026-10-21 · 北京时间",
+  "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
+    "sampling-position-report",
     "filters-frequency-delay",
     "filters-design-families",
     "fourier-bin-check",
@@ -73,6 +74,21 @@
       "experiment": "simulation.html?scenario=frequency",
       "material": "笔记有这道检查及自查答案；先独立计算，再展开答案。相关仿真用于观察频率，不代替本题手算。",
       "estimatedMinutes": "10–15 分钟"
+    },
+    {
+      "id": "sampling-position-report",
+      "topic": "control",
+      "title": "位置报得准，就代表每一毫米都记录了吗？",
+      "prerequisites": [],
+      "prerequisiteText": "只需会用位移 = 速度 × 时间，并统一 mm、s 与 ms。",
+      "goal": "先分清采样、位置更新、位移门槛与日志发送，再判断逐毫米记录和最大跟踪速度。",
+      "check": "合成条件：每 4 ms 得到一个独立绝对位置，匀速 750 mm/s；相对上次输出变化至少 1 mm 才报告。写出前三个位置，解释 250 mm/s 的含义，以及 0、3、6 mm 能否证明逐毫米实测。",
+      "why": "近期单独提出的问题集中在时间更新和位移触发的关系；先补清这层，再讨论吞吐优化，避免用日志间距直接推断速度上限。",
+      "frontier": "来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。时间更新、位移门槛与速度上限的区别仍待独立验证。",
+      "href": "next-learning.html#sampling-position",
+      "experiment": "next-learning.html#sampling-position-check",
+      "material": "本页提供合成位置序列练习与折叠自查；不是任何实际软件的运行结论。先独立作答，后展开答案。",
+      "estimatedMinutes": "5–10 分钟"
     }
   ],
   "lessonOverrides": {
@@ -118,12 +134,26 @@
     "kalman-15": {
       "status": "pending",
       "summary": "测量更新目前是下一讲预告，不按已讲解或已掌握处理。"
+    },
+    "sampling-position-report": {
+      "status": "pending",
+      "observedAt": "2026-10-21",
+      "summary": "独立提问线：采样与解算更新、按位移报告和最大可测速度的关系仍待确认；不据观察到中间与最终位置推断逐毫米记录已验证。"
     }
   },
   "topicSummaries": [
     {
+      "topic": "control",
+      "title": "采样与位置记录 · 当前疑问",
+      "status": "pending",
+      "frontier": "先辨认每个数是什么时刻、哪一步产生的。",
+      "summary": "来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。",
+      "check": "下一次验证：用合成序列解释位置正确与逐毫米记录的区别。",
+      "href": "next-learning.html#sampling-position"
+    },
+    {
       "topic": "iir-fir",
-      "title": "IIR / FIR · 当前主线",
+      "title": "IIR / FIR · 轻量复习备选",
       "status": "pending",
       "frontier": "从看到滞后，走到解释抵消与幅度。",
       "summary": "最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。",
@@ -149,5 +179,5 @@
       "href": "notes-kalman.html#kalman-frontier"
     }
   ],
-  "latestLearningAt": "2026-10-14"
+  "latestLearningAt": "2026-10-21"
 }
