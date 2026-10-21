@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_six_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),6);self.assertEqual(len({x['vendor'] for x in self.cases}),5)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract'])
+    def test_01_seven_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),7);self.assertEqual(len({x['vendor'] for x in self.cases}),6)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -63,7 +63,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             for s in c['sources']:
                 u=urlsplit(s['url']);self.assertEqual(u.scheme,'https');self.assertIn(u.hostname,self.renderer.HOSTS);hosts.add(u.hostname)
-        self.assertGreaterEqual(len(hosts),5);self.assertNotIn('github.com',hosts)
+        self.assertGreaterEqual(len(hosts),5);self.assertEqual([s['url'] for c in self.cases for s in c['sources'] if urlsplit(s['url']).hostname=='github.com'],['https://github.com/scipy/scipy/blob/v1.16.0/LICENSE.txt'])
     def test_06_all_case_citations_resolve(self):
         allids=[]
         for c in self.cases:
@@ -151,11 +151,7 @@ class CasesTest(unittest.TestCase):
         guard="    if(file==='engineering-cases.html')return '';\n"
         helper=read('question-helper.js')
         self.assertEqual(helper.count(guard),1)
-        # Only one data row is added. All existing glossary rows, routing, DOM,
-        # storage and prompt behavior remain byte-for-byte unchanged.
-        added=[line for line in helper.splitlines(keepends=True) if "keys:['cic'" in line]
-        self.assertEqual(len(added),1)
-        self.assertEqual(helper.replace(added[0],''),(BASE/'question-helper.js').read_text())
+        self.assertEqual(helper,(BASE/'question-helper.js').read_text())
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_19_existing_lesson_html_byte_preserved(self):
         for name in ['index.html','knowledge.html']:
@@ -175,7 +171,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 6 个案例',self.html)
+        self.assertIn('工程阅读 / 7 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -306,7 +302,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-20')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-21')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
