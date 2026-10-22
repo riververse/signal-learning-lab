@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 from datetime import date
 import json,re
 ROOT=Path(__file__).resolve().parent
-HOSTS={'www.nxp.com','mcuxpresso.nxp.com','community.nxp.com','www.analog.com','wiki.analog.com','www.ti.com','software-dl.ti.com','arm-software.github.io','www.keil.arm.com','docs.amd.com','download.ni.com','www.ni.com','helpfiles.keysight.com','docs.scipy.org','github.com'}
+HOSTS={'www.nxp.com','mcuxpresso.nxp.com','community.nxp.com','www.analog.com','wiki.analog.com','www.ti.com','software-dl.ti.com','arm-software.github.io','www.keil.arm.com','docs.amd.com','download.ni.com','www.ni.com','helpfiles.keysight.com','docs.scipy.org','github.com','docs.px4.io','api.github.com'}
 PAGES={'knowledge.html','simulation.html','hardware-filters.html','notes-iir-fir.html','engineering-cases.html','exploration.html'}
 def txt(s):
     if not isinstance(s,str):raise ValueError('Text required')
@@ -20,7 +20,7 @@ def url(s,external=False):
     u=urlsplit(s)
     if external:
         if u.scheme!='https' or u.hostname not in HOSTS or u.username or u.password or u.port is not None:raise ValueError('Invalid source URL')
-        if u.hostname=='github.com' and s!='https://github.com/scipy/scipy/blob/v1.16.0/LICENSE.txt':raise ValueError('Unapproved repository source')
+        if u.hostname in {'github.com','docs.px4.io','api.github.com'} and s not in {'https://github.com/PX4/PX4-Autopilot/blob/30e763b6780061d70a14894e3e8b06e6a656f9b8/src/modules/ekf2/EKF/ekf.h#L1182-L1221', 'https://github.com/scipy/scipy/blob/v1.16.0/LICENSE.txt', 'https://github.com/PX4/PX4-Autopilot/releases/tag/v1.15.0', 'https://github.com/PX4/PX4-Autopilot/blob/30e763b6780061d70a14894e3e8b06e6a656f9b8/src/modules/ekf2/EKF/ekf_helper.cpp#L369-L499', 'https://docs.px4.io/v1.15/en/advanced_config/tuning_the_ecl_ekf.html', 'https://api.github.com/repos/PX4/PX4-Autopilot/releases/tags/v1.15.0', 'https://github.com/PX4/PX4-Autopilot/blob/30e763b6780061d70a14894e3e8b06e6a656f9b8/LICENSE', 'https://docs.px4.io/v1.15/en/contribute/licenses.html'}:raise ValueError('Unapproved versioned source')
     elif u.scheme or u.netloc or u.path not in PAGES or '\\' in s:raise ValueError('Invalid learning URL')
     return txt(s)
 def link(x,external=False):
@@ -59,11 +59,11 @@ def build():
     jump=''.join('<a class="case-index-card" href="#'+txt(c['id'])+'"><span>'+str(i).zfill(2)+' / '+txt(c['vendor'])+'</span><strong>'+txt(c['catalog_title'])+'</strong><small>'+txt(c['chain'][0])+' → '+txt(c['chain'][-1])+'</small></a>' for i,c in enumerate(cases,1))
     html=f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
-<title>企业工程案例 · RIVER 信号实验室</title><meta name="description" content="从磁校准、振动采集、超声液位到定点 FFT、IIR 移植、CIC 抽取与噪声密度归一化：沿真实约束、工程选择、测试条件与证据边界学习信号处理。">
+<title>企业工程案例 · RIVER 信号实验室</title><meta name="description" content="从磁校准、振动采集、超声液位到定点 FFT、IIR 移植、CIC 抽取、噪声密度归一化与创新门控：沿真实约束、工程选择、测试条件与证据边界学习信号处理。">
 <link rel="icon" type="image/png" href="favicon-rgb-8b14e515.png"><link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2"><link rel="stylesheet" href="architecture.css?v=20261006-exploration"><link rel="stylesheet" href="exploration.css?v=20261006-radar-guide1"><link rel="stylesheet" href="engineering-cases.css?v=20261017">
 <script src="architecture.js?v=20261006" defer></script><link rel="stylesheet" href="question-helper.css?v=20261016r3"><script src="question-helper.js?v=20261020-cic-r1" defer></script><link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261019.4" defer></script>
 <link rel="stylesheet" href="signal-studio.css?v=20261019.8"><link rel="stylesheet" href="river-design.css?v=20261020-river2"><link rel="stylesheet" href="river-reading.css?v=20261020-river2"><link rel="stylesheet" href="river-experiments.css?v=20261020-river2"></head><body class="lab-shell engineering-cases-page math-studio river-v2"><a class="site-skip" href="#main">跳到案例正文</a>{header}
-<main class="cases-main" id="main"><a class="cases-back" href="exploration.html">返回探索</a><section class="cases-intro" aria-labelledby="cases-title"><p class="case-kicker">工程阅读 / {len(cases)} 个案例 · 待学习</p><h1 id="cases-title">公式到了现场，要多回答哪些问题？</h1><p class="cases-lede">从公开的企业技术资料里，追踪约束、选择和验证。读的是一条信号链如何成立，不只是一份代码仓库。</p><p>这里选取校准与融合、振动采集、超声测量、定点频谱处理、IIR 系数与状态移植、CIC 多速率抽取及窗函数 / PSD 归一化等不同问题。它们是工程阅读参考，不代表最新器件推荐、供应商排名或量产效果保证。所有案例均未本站实物复现。</p></section>
+<main class="cases-main" id="main"><a class="cases-back" href="exploration.html">返回探索</a><section class="cases-intro" aria-labelledby="cases-title"><p class="case-kicker">工程阅读 / {len(cases)} 个案例 · 待学习</p><h1 id="cases-title">公式到了现场，要多回答哪些问题？</h1><p class="cases-lede">从公开的企业技术资料里，追踪约束、选择和验证。读的是一条信号链如何成立，不只是一份代码仓库。</p><p>这里选取校准与融合、振动采集、超声测量、定点频谱处理、IIR 系数与状态移植、CIC 多速率抽取、窗函数 / PSD 归一化及观测门控等不同问题。它们是工程阅读参考，不代表最新器件推荐、供应商排名或量产效果保证。所有案例均未本站实物复现。</p></section>
 <nav class="case-index" aria-label="案例目录">{jump}</nav>
 <aside class="cases-evidence"><h2>先认清证据，再看数字</h2><p>“厂商实测”只覆盖原报告的硬件和条件；“实现文档”说明代码怎样组织，不自动证明性能；“本站计算”只复算公开数值或明确写出的理想模型；“拟议复现”仍是待做步骤。本页未引入独立第三方实物测试，也没有运行外部候选代码。</p><p>发布日期、版本和本次核验日期分开记录。链接中的原始文件才是检查细节的入口；遇到口径、日期或资料可读性差异会保留说明。</p></aside>
 {''.join(render(c,i) for i,c in enumerate(cases,1))}
