@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_eight_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),8);self.assertEqual(len({x['vendor'] for x in self.cases}),7)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract'])
+    def test_01_nine_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),9);self.assertEqual(len({x['vendor'] for x in self.cases}),8)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -171,7 +171,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 8 个案例',self.html)
+        self.assertIn('工程阅读 / 9 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -302,7 +302,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-22')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-23')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -455,4 +455,14 @@ class CasesTest(unittest.TestCase):
             for bad in [f'https://{host}.evil.example/a',f'https://{host}@evil.example/a',f'http://{host}/a',f'https://{host}:443/a',f'https://{host}/unreviewed']:
                 with self.assertRaises(ValueError):self.renderer.url(bad,True)
         with self.assertRaises(ValueError):self.renderer.url('https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE',True)
+    def test_42_allan_original_model_and_content_contract(self):
+        c=next(c for c in self.cases if c['id']=='nxp-allan-averaging-contract')
+        text=json.dumps(c,ensure_ascii=False)
+        for token in ['AN5087','2015-02','2008-07-01','K−2m+1','K+1','1.095445115','0.495 s','没有由公开曲线','未实现置信区间','不是白噪声']:
+            self.assertIn(token,text)
+        subprocess.run([sys.executable,str(ROOT/'test-allan-model.py')],check=True,capture_output=True)
+        for host in ['nvlpubs.nist.gov','www.nist.gov']:
+            for bad in [f'https://{host}.evil.example/a',f'https://{host}@evil.example/a',f'http://{host}/a',f'https://{host}:443/a']:
+                with self.assertRaises(ValueError):self.renderer.url(bad,True)
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
 if __name__=='__main__':unittest.main(verbosity=2)
