@@ -333,7 +333,7 @@
     catch(error) { storageOK=false; startupNote='原有本机记录无法读取。当前先用空白记录；可以尝试导入备份。'; }
     var queryTopic=new URLSearchParams(win.location.search).get('topic');
     if (/next-learning\.html$/.test(win.location.pathname) && isTopic(queryTopic)) state.preferredTopic=queryTopic;
-    var page=doc.getElementById('nl-lesson-list');
+    var page=doc.getElementById('nl-lesson-list'), home=doc.getElementById('rh-title');
     var liveRecommendation=null, lastCompletionClick=0, importSequence=0;
     function copyState() { return validateState(JSON.parse(JSON.stringify(state))); }
     function notify() { doc.dispatchEvent(new win.CustomEvent('river:progress',{detail:{state:copyState()}})); }
@@ -346,7 +346,19 @@
     function put(id,value) { var el=doc.getElementById(id); if(el) el.textContent=value; }
     function link(id,href,label) { var el=doc.getElementById(id); if(el){el.href=href;if(label)el.textContent=label;} }
     function el(tag,className,text) { var node=doc.createElement(tag); if(className)node.className=className; if(text!==undefined)node.textContent=text; return node; }
+    function renderHome() {
+      if(!home)return;
+      var result=recommend(state), lesson=result&&result.lesson;
+      put('rh-title',lesson?lesson.title:'这一段暂无待完成步骤');
+      put('rh-goal',lesson?lesson.goal:'本机清单已覆盖，不表示全部知识已经掌握；可以换一道题检查理解。');
+      put('rh-reason',result?'为什么先学：'+result.reason:'可在接着学中换方向，或撤回仍需复习的自报完成记录。');
+      put('rh-check',result?'小目标：'+result.verificationQuestion:'小目标：换一个输入或参数，独立解释结果，检查能否迁移。');
+      put('rh-evidence',result?result.evidenceLabel+' · '+result.estimatedMinutes+' · 一次独立检查':'本机自报与历史证据分开');
+      put('rh-storage',storageOK?'推荐参考本机方向和自报记录；打开页面不会自动完成。':'本机记录无法读取，当前推荐可能未同步；原记录未覆盖。');
+      link('rh-link',lesson?lesson.href:'next-learning.html',lesson?'开始这一步 ↗':'选择下一步 ↗');
+    }
     function render(message) {
+      renderHome();
       if(!page) return;
       liveRecommendation=recommend(state);
       var total=Object.keys(state.completed).length;
@@ -407,6 +419,14 @@
     }
     API.getState=copyState; API.getRecommendation=function(){return recommend(state);};API.setCompleted=setCompleted;
     API.getCurrentTopic=function(){return page&&liveRecommendation?liveRecommendation.lesson.topic:state.preferredTopic;};
+    win.addEventListener('storage',function(event){if(event.key!==KEY&&event.key!==null)return;if(event.storageArea&&event.storageArea!==win.localStorage)return;try{var incoming=event.newValue?validateState(JSON.parse(event.newValue)):emptyState();state=incoming;importSequence++;storageOK=true;render('已读取此浏览器另一标签页更新的打卡。');notify();}catch(error){put('nl-status','另一标签页的记录无法读取，当前显示保持不变。');put('rh-storage','另一标签页的记录无法读取，当前推荐保持不变；原记录未覆盖。');}});
+    // Back/forward cache can restore an old homepage without rerunning scripts.
+    if(home)win.addEventListener('pageshow',function(){
+      try{var current=win.localStorage.getItem(KEY);state=current?validateState(JSON.parse(current)):emptyState();storageOK=true;}
+      catch(error){storageOK=false;}
+      renderHome();
+    });
+    renderHome();
     if(!page)return;
     ['nl-complete','nl-topic-select','nl-export','nl-import','nl-reset'].forEach(function(id){doc.getElementById(id).disabled=false;});
     doc.getElementById('nl-complete').addEventListener('click',function(event){var now=Date.now();if(event.detail>1||now-lastCompletionClick<450)return;lastCompletionClick=now;if(liveRecommendation)setCompleted(liveRecommendation.lesson.id,true);if(!liveRecommendation)doc.getElementById('nl-topic-select').focus();});
@@ -428,7 +448,7 @@
       finally{input.value='';}
     });
     doc.getElementById('nl-reset').addEventListener('click',function(){if(!win.confirm('清空此浏览器的全部学习打卡和方向选择？历史讲解记录不会改变。需要保留时请先导出备份。'))return;state=emptyState();save();render('本机打卡已清空，回到当前整理记录的推荐。');put('nl-data-status','已清空本机打卡。');});
-    win.addEventListener('storage',function(event){if(event.key!==KEY&&event.key!==null)return;if(event.storageArea&&event.storageArea!==win.localStorage)return;try{var incoming=event.newValue?validateState(JSON.parse(event.newValue)):emptyState();state=incoming;importSequence++;storageOK=true;render('已读取此浏览器另一标签页更新的打卡。');notify();}catch(error){put('nl-status','另一标签页的记录无法读取，当前显示保持不变。');}});
+
     if(!initialized){initialized=true;render(startupNote);}
   };
     return API;

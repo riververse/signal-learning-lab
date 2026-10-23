@@ -41,12 +41,12 @@ class Element {
 }
 function mount(options={}){
   const model=api.createModel(options.profile||profile);
-  const template=fs.readFileSync(path.join(__dirname,options.preview?'preview-next-learning.template.html':'next-learning.template.html'),'utf8');
+  const template=fs.readFileSync(path.join(__dirname,options.home?'index.html':options.preview?'preview-next-learning.template.html':'next-learning.template.html'),'utf8');
   const elements=new Map();const document={events:[],getElementById(id){return elements.get(id)||null;},createElement(tag){return new Element(tag,document);},dispatchEvent(event){this.events.push(event);}};
   document.body=new Element('body',document);
   if(!options.noPage)for(const [,id] of template.matchAll(/\bid="([^"]+)"/g)){const node=new Element('div',document);node.id=id;elements.set(id,node);}
   const store=new Map(options.saved===undefined?[]:[[api.key,options.saved]]), writes=[];
-  const win={document,location:{search:options.search||'',pathname:options.pathname||(options.preview?'/preview-next-learning.html':'/next-learning.html')},events:{},exported:[],confirmValue:true,
+  const win={document,location:{search:options.search||'',pathname:options.pathname||(options.home?'/index.html':options.preview?'/preview-next-learning.html':'/next-learning.html')},events:{},exported:[],confirmValue:true,
     localStorage:{getItem(key){if(options.readError)throw Error('blocked');return store.get(key)||null;},setItem(key,value){if(options.writeError)throw Error('quota');writes.push([key,value]);store.set(key,value);}},
     addEventListener(type,callback){(this.events[type]??=[]).push(callback);},
     emit(type,event){for(const callback of this.events[type]||[])callback(event);},
@@ -173,20 +173,61 @@ async function main(){
   let resolveOld,resolveNew;const race=mount();const oldImport=race.import({},{text:()=>new Promise(resolve=>resolveOld=resolve)});const newImport=race.import({},{text:()=>new Promise(resolve=>resolveNew=resolve)});resolveNew(JSON.stringify(importedState));await newImport;resolveOld(JSON.stringify(api.emptyState()));await oldImport;eq(race.model.getState(),importedState,'A delayed older import cannot replace newer choice');
   let resolvePending;const interrupted=race.import({},{text:()=>new Promise(resolve=>resolvePending=resolve)});await race.node('nl-reset').fire('click');resolvePending(JSON.stringify(importedState));await interrupted;eq(race.model.getState(),api.emptyState(),'Reset cancels an in-flight import');
 
+  const home=mount({home:true});
+  eq(home.node('rh-title').textContent,lesson(first).title,'Homepage uses the same current recommendation');
+  eq(home.node('rh-link').href,lesson(first).href,'Homepage entry uses its current deep link');
+  eq(home.node('rh-check').textContent,'小目标：'+lesson(first).check,'Homepage goal is independently verifiable');
+  match(home.node('rh-evidence').textContent,/待独立作答/,'Homepage does not claim mastery');
+  eq(home.writes.length,0,'Opening homepage never writes manual state');
+  const chosen={version:1,preferredTopic:'kalman',completed:{'kalman-14':stamp}};
+  const chosenHome=mount({home:true,saved:JSON.stringify(chosen)});
+  eq(chosenHome.node('rh-title').textContent,lesson('kalman-15').title,'Homepage respects stored direction and self-report');
+  eq(chosenHome.store.get(api.key),JSON.stringify(chosen),'Stored timestamps and preference are byte-preserved');
+  eq(chosenHome.writes.length,0,'Home rendering does not rewrite existing progress');
+  chosenHome.win.emit('storage',{key:api.key,newValue:JSON.stringify(api.emptyState()),storageArea:chosenHome.win.localStorage});
+  eq(chosenHome.node('rh-title').textContent,lesson(first).title,'Home responds to cross-tab reset');
+  chosenHome.win.emit('storage',{key:api.key,newValue:JSON.stringify(chosen),storageArea:chosenHome.win.localStorage});
+  eq(chosenHome.node('rh-title').textContent,lesson('kalman-15').title,'Home responds to cross-tab completion');
+  chosenHome.win.emit('storage',{key:api.key,newValue:'{broken'});
+  eq(chosenHome.node('rh-title').textContent,lesson('kalman-15').title,'Malformed cross-tab state keeps home recommendation');
+  chosenHome.store.set(api.key,JSON.stringify(api.emptyState()));
+  chosenHome.win.emit('pageshow',{persisted:true});
+  eq(chosenHome.node('rh-title').textContent,lesson(first).title,'Back-forward cache restores current home recommendation');
+  chosenHome.store.set(api.key,JSON.stringify(chosen));
+  chosenHome.win.emit('pageshow',{persisted:true});
+  eq(chosenHome.node('rh-link').href,lesson('kalman-15').href,'Repeated Back reads current selection rather than stale link');
+  eq(chosenHome.writes.length,0,'Storage and pageshow refreshes never write');
+  const badHome=mount({home:true,saved:'{invalid'});
+  eq(badHome.store.get(api.key),'{invalid','Homepage leaves corrupt local record recoverable');
+  match(badHome.node('rh-storage').textContent,/无法读取/,'Homepage discloses unreadable state');
+  const blockedHome=mount({home:true,readError:true});
+  eq(blockedHome.node('rh-title').textContent,lesson(first).title,'Blocked storage uses curated fallback');
+  eq(blockedHome.writes.length,0,'Blocked storage never triggers reset');
+  const doneHome=mount({home:true,saved:JSON.stringify(all)});
+  match(doneHome.node('rh-title').textContent,/暂无待完成/,'Home shows bounded completion, not mastery');
+  eq(doneHome.node('rh-link').href,'next-learning.html','Completed home still has a valid next-action entry');
+  const homeHTML=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');
+  match(homeHTML,/轻量复习备选/,'Old filter diagram is explicitly a review alternative');
+  match(homeHTML,/notes-iir-fir.html#filter-average/,'Existing filter review remains reachable');
+
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'river-learning-tests-'));
   try{
-    for(const file of ['learning-profile.json','learning-progress.js','next-learning.template.html','preview-next-learning.template.html'])fs.copyFileSync(path.join(__dirname,file),path.join(directory,file));
+    for(const file of ['learning-profile.json','learning-progress.js','next-learning.template.html','preview-next-learning.template.html','index.html'])fs.copyFileSync(path.join(__dirname,file),path.join(directory,file));
     const run=(...args)=>spawnSync('python',[path.join(__dirname,'build-next-learning.py'),'--directory',directory,...args],{encoding:'utf8'});
     let result=run();eq(result.status,0,'Offline generator succeeds: '+result.stderr);
-    const generated=['learning-progress.js','next-learning.html','preview-next-learning.html'];const firstBuild=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
+    const generated=['learning-progress.js','next-learning.html','preview-next-learning.html','index.html'];const firstBuild=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
     result=run();eq(result.status,0,'Second generation succeeds');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),firstBuild,'Generation is byte-for-byte deterministic');eq(run('--check').status,0,'Check mode confirms generated files');
     for(const name of ['next-learning.html','preview-next-learning.html']){const html=fs.readFileSync(path.join(directory,name),'utf8');ok(html.includes(lesson(first).title),'Fallback title agrees with live default');ok(html.includes(lesson(first).check),'Fallback check agrees with live default');ok(html.includes('待独立作答'),'Fallback evidence status agrees with live default');ok(!html.includes('{{'),'All fallback tokens resolved');}
+    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">位置报得准/,'No-script homepage fallback matches recommendation');
     fs.appendFileSync(path.join(directory,'next-learning.html'),'stale');ok(run('--check').status!==0,'Check mode detects stale output');
     const future=clone(profile);future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
+    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">第 14 讲/,'Homepage fallback follows future curated priority');
     const unsafe=clone(profile);unsafe.lessonAdditions.find(x=>x.id===first).title='</script><img src=x onerror="alert(1)"> & "';unsafe.topicSummaries[0].summary='<script>alert(2)</script>';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));eq(run().status,0,'Ordinary text with HTML characters is safely escaped');const escaped=fs.readFileSync(path.join(directory,'next-learning.html'),'utf8');ok(escaped.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'HTML markup in text is escaped');ok(!escaped.includes('<script>alert(2)</script>'),'Evidence text cannot inject executable markup');ok(!fs.readFileSync(path.join(directory,'learning-progress.js'),'utf8').includes('</script>'),'Embedded JSON is safe if script is inlined');
+    const escapedHome=fs.readFileSync(path.join(directory,'index.html'),'utf8');ok(escapedHome.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'Homepage fallback escapes unsafe text');ok(!escapedHome.includes('</script><img src=x'),'Homepage title cannot inject markup');
     const safeOutputs=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));unsafe.lessonAdditions[0].href='javascript:alert(1)';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));ok(run().status!==0,'Unsafe profile link fails generation');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),safeOutputs,'Invalid profile does not partially overwrite outputs');
+    const savedHome=fs.readFileSync(path.join(directory,'index.html'),'utf8');fs.writeFileSync(path.join(directory,'index.html'),savedHome.replace('<!-- END GENERATED HOME RECOMMENDATION -->',''));ok(run().status!==0,'Missing homepage marker fails safely');fs.writeFileSync(path.join(directory,'index.html'),savedHome);
     fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(profile));fs.appendFileSync(path.join(directory,'next-learning.template.html'),'{{UNKNOWN_TOKEN}}');ok(run().status!==0,'Unknown tokens fail instead of leaking into generated UI');
   }finally{fs.rmSync(directory,{recursive:true,force:true});}
-  console.log(JSON.stringify({status:'PASS',checks,scope:'21-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
+  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage same-model recommendations, storage and back/forward refresh; 21-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

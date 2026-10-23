@@ -13,6 +13,18 @@ BEGIN = "  // BEGIN GENERATED LEARNING PROFILE"
 END = "  // END GENERATED LEARNING PROFILE"
 TEMPLATES = ("next-learning", "preview-next-learning")
 
+HOME_BEGIN = "<!-- BEGIN GENERATED HOME RECOMMENDATION -->"
+HOME_END = "<!-- END GENERATED HOME RECOMMENDATION -->"
+HOME_TEMPLATE = """<p class="label">接着上次的问题</p>
+<p id="rh-evidence" class="river-feature-context">{{PRIMARY_EVIDENCE_STATUS}} · {{PRIMARY_META}}</p>
+<h2 id="rh-title">{{PRIMARY_TITLE}}</h2>
+<p id="rh-goal">{{PRIMARY_GOAL}}</p>
+<a id="rh-link" class="text-link" href="{{PRIMARY_HREF}}">开始这一步 ↗</a>
+<p id="rh-reason" class="river-feature-context">为什么先学：{{PRIMARY_WHY}}</p>
+<p id="rh-check" class="river-feature-context">小目标：{{PRIMARY_CHECK}}</p>
+<p id="rh-storage" class="river-feature-context">启用脚本后会参考本机方向和自报记录；当前显示默认学习问题。</p>
+<a class="river-secondary-link" href="next-learning.html">查看下一步与本机学习记录</a>"""
+
 
 def unique_object(pairs):
     result = {}
@@ -119,6 +131,17 @@ def build(directory, check=False):
         outputs[directory / (basename + ".html")] = rendered
     if not found:
         raise ValueError("No next-learning template found; no outputs written.")
+    home_path = directory / "index.html"
+    if home_path.exists():
+        home = home_path.read_text(encoding="utf-8")
+        if home.count(HOME_BEGIN) != 1 or home.count(HOME_END) != 1:
+            raise ValueError("Expected exactly one homepage recommendation marker pair.")
+        start, end = home.index(HOME_BEGIN), home.index(HOME_END)
+        if start >= end:
+            raise ValueError("Homepage recommendation markers are out of order.")
+        content = re.sub(r"\{\{([A-Z_]+)\}\}", lambda match: replacements[match.group(1)], HOME_TEMPLATE)
+        outputs[home_path] = home[:start] + HOME_BEGIN + "\n" + content + "\n" + home[end:]
+
     changed = [path for path, content in outputs.items() if not path.exists() or path.read_text(encoding="utf-8") != content]
     if check:
         if changed:
