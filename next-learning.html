@@ -10,14 +10,14 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="lab-shell.css">
 <link rel="stylesheet" href="mobile-reading.css">
-<link rel="stylesheet" href="next-learning.css?v=2026-10-21.1">
+<link rel="stylesheet" href="next-learning.css?v=2026-10-26.1">
 <link rel="stylesheet" href="question-helper.css?v=20261016r3">
-<script src="learning-progress.js?v=2026-10-21.1" defer></script>
+<script src="learning-progress.js?v=2026-10-26.1" defer></script>
 <script src="question-helper.js?v=20261016r3" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
 <link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261019.4" defer></script><link rel="stylesheet" href="signal-studio.css?v=20261019.8"><link rel="stylesheet" href="river-design.css?v=20261020-river2"><link rel="stylesheet" href="river-reading.css?v=20261020-river2"><link rel="stylesheet" href="river-experiments.css?v=20261020-river2"></head>
-<body class="lab-shell page--next-learning math-studio river-v2" data-learning-topic="control">
+<body class="lab-shell page--next-learning math-studio river-v2" data-learning-topic="pll">
 <header class="lab-site-header architecture-header"><div class="architecture-bar studio-bar">
 <a class="lab-site-brand studio-brand" href="index.html" aria-label="RIVER 信号学习实验室首页"><svg class="studio-mark" viewBox="0 0 30 30" aria-hidden="true"><path d="M1 17 6 8 12 25 18 2 24 19 29 11" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><span class="studio-brand-word">RIVER</span><span class="studio-brand-sub">信号学习实验室</span></span></a>
 <nav class="architecture-nav studio-nav" aria-label="主要导航"><a href="knowledge.html">知识图谱</a><a href="simulation.html">交互实验</a><a href="next-learning.html" aria-current="page">接着学</a><a href="exploration.html">探索</a></nav>
@@ -26,18 +26,18 @@
 <main class="nl-main" id="next-main" tabindex="-1">
  <section class="nl-heading" aria-labelledby="next-title">
   <div><p class="nl-kicker">从最近的问题接着学</p><h1 id="next-title">今天，先弄清这一件事。</h1><p class="nl-lead">根据课程进度与单独提出的算法疑问安排下一步。先独立验证，再继续往前。</p></div>
-  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-10-21">2026-10-21 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
+  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-10-26">2026-10-26 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
  </section>
  <noscript><p class="nl-warning">当前浏览器未启用 JavaScript，不能保存打卡或切换推荐。下面仍显示最新整理的推荐与验证题；本机打卡需要启用 JavaScript。</p></noscript>
  <div class="nl-workspace">
   <section class="nl-recommend" aria-labelledby="nl-lesson-title">
-   <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">自动控制</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
-   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">位置报得准，就代表每一毫米都记录了吗？</h2>
-   <p class="nl-goal" id="nl-goal">先分清采样、位置更新、位移门槛与日志发送，再判断逐毫米记录和最大跟踪速度。</p>
-   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。时间更新、位移门槛与速度上限的区别仍待独立验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">合成条件：每 4 ms 得到一个独立绝对位置，匀速 750 mm/s；相对上次输出变化至少 1 mm 才报告。写出前三个位置，解释 250 mm/s 的含义，以及 0、3、6 mm 能否证明逐毫米实测。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：近期单独提出的问题集中在时间更新和位移触发的关系；先补清这层，再讨论吞吐优化，避免用日志间距直接推断速度上限。</p>
-   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">只需会用位移 = 速度 × 时间，并统一 mm、s 与 ms。</span></p><p class="nl-material-note" id="nl-material-note">本页提供合成位置序列练习与折叠自查；不是任何实际软件的运行结论。先独立作答，后展开答案。</p>
-   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#sampling-position">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#sampling-position-check">打开相关实验</a></div>
+   <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">数字 PLL</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
+   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">换一组坐标，sin / cos 的角色会变吗？</h2>
+   <p class="nl-goal" id="nl-goal">先归一化两路读数，再把局部角换回同一个参考角。</p>
+   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。相关概念已有讲解，归一化与参考转换仍待独立验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">某路最小值 1、最大值 5、当前值 4.6 V，归一化后记作 v；另一路 u = 0.6。求中心、半幅、v 与 atan2(v,u)，再用 (u′,v′)=(v,−u) 算局部角并换回统一参考。</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：近期单独提出的问题已转到归一化与相邻组的 sin/cos 角色；先验证参考角和符号，避免把编号当成固定身份。</p>
+   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">先分清中心、半幅与峰峰值；本题明确给定理想正交关系，不按通道编号猜测。</span></p><p class="nl-material-note" id="nl-material-note">本页提供理想合成例子与折叠自查；不推断任何实际通道的相位、极性或编号映射。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#quadrature-reference">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#quadrature-reference-check">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕这一步的目标，先检查前置理解，再用一个小例子让我独立作答。">带着这一步提问</button></div>
    <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：平均为什么会让正弦变小，甚至消失？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
   </section>
@@ -51,12 +51,21 @@
   </aside>
  </div>
  <section class="nl-evidence" aria-labelledby="nl-evidence-title">
-  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-10-21">2026-10-21 · 北京时间</time></span></div>
-  <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 当前疑问</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
+  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-10-26">2026-10-26 · 北京时间</time></span></div>
+  <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>正交坐标与参考角 · 当前检查</h3><p class="nl-evidence-frontier">先归一化，再统一参考；编号不决定 sin/cos。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关概念讲解过，独立归一化、符号与坐标转换尚未验证。</p><p class="nl-evidence-check">下一次验证：同一个点换一组坐标后，能否还原同一个参考角？</p><a href="next-learning.html#quadrature-reference">回看相关材料</a></article>
+<article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 保留复习</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR · 轻量复习备选</h3><p class="nl-evidence-frontier">从看到滞后，走到解释抵消与幅度。</p><p>最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。</p><p class="nl-evidence-check">下一次验证：4 点平均为何会抵消 1、0、−1、0？</p><a href="notes-iir-fir.html#filter-boundaries">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>傅里叶 · 并行检查</h3><p class="nl-evidence-frontier">已讲解 DFT 频点与 FFT；最新频点题待答。</p><p>保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。</p><p class="nl-evidence-check">下一次验证：观察时长、Δf 与 k 怎样一起变化？</p><a href="notes-transforms.html#fourier-frontier">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>卡尔曼 · 预测之后</h3><p class="nl-evidence-frontier">第 14 讲已讲解，第 15 讲为预告。</p><p>已讲到预测状态 [100.2, 20] 与协方差 [[4.02, 1], [1, 104]]；尚无新增独立答对证据。</p><p class="nl-evidence-check">下一次验证：独立重算 FPFᵀ + Q，再接测量更新。</p><a href="notes-kalman.html#kalman-frontier">回看相关材料</a></article></div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>
+ </section>
+ <section class="nl-plan" id="quadrature-reference" aria-labelledby="quadrature-reference-title">
+  <div class="nl-section-heading"><div><h2 id="quadrature-reference-title">换的是参考坐标，不是信号本身</h2><p class="nl-small">独立学习线 · 已有相关讲解，独立计算待验证。不计入傅里叶或卡尔曼课程的新进度。</p></div></div>
+  <p><strong>先限定条件：</strong>下面是原创的理想正弦例子。已校准偏置、幅度和极性，两路确实相差四分之一周期；不能仅凭通道相邻或编号，就断定实际信号正交。各路的极值应来自覆盖完整周期的稳定数据。</p>
+  <ol><li><strong>先移中心，再除半幅。</strong>中心 b = (最大值 + 最小值)/2；半幅 A = (最大值 − 最小值)/2；归一化值 z = (读数 − b)/A，要求 A &gt; 0。峰峰值是 2A，不是 A；原读数、b、A 同单位，z 无量纲。</li><li><strong>先定义统一参考。</strong>令 u = cos θ、v = sin θ，则 θ = atan2(v,u)，即先传正弦分量，再传余弦分量。这里 u、v 是约定的坐标角色，不是固定的通道编号。</li><li><strong>换组后补回参考偏移。</strong>本题另外定义 u′ = v、v′ = −u，于是 α = atan2(v′,u′) = θ − 90°（模 360°）；换回统一参考为 θ = α + 90°（模 360°）。这只验证本题给定的转换，不证明真实的下一对通道一定等于 (v,−u)。</li></ol>
+  <h3 id="quadrature-reference-check">同一个点，用两组坐标各算一次</h3><p>某路最小值 1 V、最大值 5 V、当前值 4.6 V，归一化后记作 v；另一路已校准为 u = 0.6。先独立求中心、半幅与 v，再求 θ。随后用 (u′,v′) = (v,−u) 求 α，并换回统一参考。两次结果应表示同一个点。</p>
+  <details><summary>展开自查：为什么两个角不同，却没有矛盾？</summary><p>b = 3 V，A = 2 V，峰峰值 = 4 V；v = (4.6 − 3)/2 = 0.8。此时 u² + v² = 1，θ = atan2(0.8,0.6) ≈ 53.13°。</p><p>新坐标为 (u′,v′) = (0.8,−0.6)，所以 α ≈ −36.87°。加回 90° 得到 θ ≈ 53.13°。角度不同来自坐标参考不同，不是被测对象瞬间移动了。</p><p>编程语言的 atan2 通常返回弧度，转成角度要乘 180/π；全程也可统一使用弧度，把 90° 写成 π/2。实际应用还需确认通道相位差、极性、同步性与校准；简单去偏置和除半幅不能修复非正交误差。单圈角也不自动包含跨过的整圈数。</p></details>
+  <p><strong>小目标：</strong>不用答案，解释为什么不能把“编号较小”固定当 cos，并算出两组结果换回同一参考后相等。若尚不能算通，先只做中心与半幅；打开页面或展开答案不表示掌握。</p><p><a href="#sampling-position">轻量复习备选：位置正确与逐毫米记录有什么区别？</a> · <a href="#next-main">返回当前学习安排</a></p>
  </section>
  <section class="nl-plan" id="sampling-position" aria-labelledby="sampling-position-title">
   <div class="nl-section-heading"><div><h2 id="sampling-position-title">先把四种节奏分开</h2><p class="nl-small">独立学习线 · 待验证。以下是原创合成例子，不对应任何实际设备或软件。</p></div></div>
@@ -82,4 +91,5 @@
 </main>
 </body>
 </html>
+
 

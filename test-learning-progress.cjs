@@ -16,7 +16,7 @@ function match(actual,pattern,label){assert.match(actual,pattern,label);checks++
 const oldIds=['fourier-amplitude','fourier-overview','kalman-14','filters-impulse','filters-coefficients','filters-specification','sampling','spectrum-axis','spectrum-window','transfer-first-order','transfer-z','control-feedback','control-poles','pll-input','pll-loop','kalman-15','kalman-16'];
 const stamp='2026-10-07T10:12:13.456Z';
 const newer='2099-10-18T01:02:03.000Z'; // Deliberately later than runtime-created self-report fixtures.
-const first='sampling-position-report', second='filters-frequency-delay';
+const first='quadrature-reference-check', second='filters-frequency-delay';
 const lesson=id=>api.lessons.find(item=>item.id===id);
 
 class Element {
@@ -60,14 +60,21 @@ function mount(options={}){
 
 async function main(){
   eq(profile.evidence[first].status,'pending','New independent question remains unverified');
-  eq(profile.evidence[first].observedAt,'2026-10-21','Substantive question date is explicit');
+  eq(profile.evidence[first].observedAt,'2026-10-25','Substantive question date is explicit');
   match(lesson(first).frontier,/不是傅里叶或卡尔曼课程的新进度/,'Sources remain distinct');
   eq([0,1,2].map(i=>i*.004*750),[0,3,6],'Synthetic position arithmetic');
   eq(1/.004,250,'Spatial increment condition is not asserted as tracking speed');
+  eq(lesson('sampling-position-report').href,'next-learning.html#sampling-position','Prior independent question and stable deep link retained');
+  eq(profile.evidence['sampling-position-report'].observedAt,'2026-10-21','Prior evidence date is not churned');
+  eq((1+5)/2,3,'Synthetic center');
+  eq((5-1)/2,2,'Synthetic half amplitude');
+  ok(Math.abs((4.6-3)/2-.8)<1e-12,'Normalization is dimensionless');
+  const theta=Math.atan2(.8,.6), alpha=Math.atan2(-.6,.8);
+  ok(Math.abs(alpha+Math.PI/2-theta)<1e-12,'Local reference converts to same angle');
   eq(api.key,'river.learning.progress.v1','Storage key is unchanged');
   eq(api.emptyState(),{version:1,preferredTopic:'auto',completed:{}},'v1 shape is unchanged');
   eq(api.lessons.slice(0,17).map(x=>x.id),oldIds,'All original IDs and their base order remain');
-  eq(api.lessons.length,21,'Preserve 20 prior steps and append one targeted step');
+  eq(api.lessons.length,22,'Preserve 21 prior steps and append one targeted step');
   eq(api.profile,profile,'Embedded data matches the curated JSON');
   ok(Object.isFrozen(api.profile)&&Object.isFrozen(api.lessons)&&Object.isFrozen(api.lessons[0]),'Profile and lessons cannot be mutated in place');
   eq(Object.values(profile.evidence).filter(x=>x.status==='independent-correct').length,0,'This review introduces no unsupported independent-correct evidence');
@@ -82,7 +89,7 @@ async function main(){
   eq(oldMount.writes.length,0,'Initialization never rewrites old localStorage');
   eq(oldMount.store.get(api.key),JSON.stringify(allOld),'Original stored bytes are untouched');
   const state=api.emptyState();const before=clone(state);let recommendation=api.recommend(state);
-  eq(recommendation.lesson.id,first,'Default recommendation targets the recent independent sampling question');
+  eq(recommendation.lesson.id,first,'Default recommendation targets the recent independent coordinate question');
   eq(state,before,'Recommendations do not mark anything complete');
   for(const field of ['reason','prerequisiteText','frontier','verificationQuestion','evidenceStatus','evidenceLabel','evidenceSummary','estimatedMinutes','afterCheck','reviewedAt'])ok(recommendation[field],field+' is exposed');
   eq(recommendation.isPrerequisite,false,'Current filter question does not force stale prerequisites');
@@ -137,7 +144,7 @@ async function main(){
   eq(fresh.node('nl-lesson-title').textContent,lesson(first).title,'Live title uses current recommendation');
   eq(fresh.node('nl-evidence-status').textContent,'待独立作答','Live status distinguishes pending evidence');
   eq(fresh.node('nl-check-text').textContent,lesson(first).check,'Live check uses profile data');
-  eq(fresh.model.getCurrentTopic(),'control','Existing question-helper topic API remains current');
+  eq(fresh.model.getCurrentTopic(),'pll','Existing question-helper topic API remains current');
   eq(fresh.model.setCompleted('filters-design-families',true),false,'UI blocks dependency completion');
   eq(fresh.model.setCompleted('__proto__',true),false,'UI rejects prototype key');
   await fresh.node('nl-complete').fire('click');
@@ -218,7 +225,7 @@ async function main(){
     const generated=['learning-progress.js','next-learning.html','preview-next-learning.html','index.html'];const firstBuild=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
     result=run();eq(result.status,0,'Second generation succeeds');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),firstBuild,'Generation is byte-for-byte deterministic');eq(run('--check').status,0,'Check mode confirms generated files');
     for(const name of ['next-learning.html','preview-next-learning.html']){const html=fs.readFileSync(path.join(directory,name),'utf8');ok(html.includes(lesson(first).title),'Fallback title agrees with live default');ok(html.includes(lesson(first).check),'Fallback check agrees with live default');ok(html.includes('待独立作答'),'Fallback evidence status agrees with live default');ok(!html.includes('{{'),'All fallback tokens resolved');}
-    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">位置报得准/,'No-script homepage fallback matches recommendation');
+    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">换一组坐标/,'No-script homepage fallback matches recommendation');
     fs.appendFileSync(path.join(directory,'next-learning.html'),'stale');ok(run('--check').status!==0,'Check mode detects stale output');
     const future=clone(profile);future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
     match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">第 14 讲/,'Homepage fallback follows future curated priority');
@@ -228,6 +235,7 @@ async function main(){
     const savedHome=fs.readFileSync(path.join(directory,'index.html'),'utf8');fs.writeFileSync(path.join(directory,'index.html'),savedHome.replace('<!-- END GENERATED HOME RECOMMENDATION -->',''));ok(run().status!==0,'Missing homepage marker fails safely');fs.writeFileSync(path.join(directory,'index.html'),savedHome);
     fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(profile));fs.appendFileSync(path.join(directory,'next-learning.template.html'),'{{UNKNOWN_TOKEN}}');ok(run().status!==0,'Unknown tokens fail instead of leaking into generated UI');
   }finally{fs.rmSync(directory,{recursive:true,force:true});}
-  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage same-model recommendations, storage and back/forward refresh; 21-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
+  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage same-model recommendations, storage and back/forward refresh; 22-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
+

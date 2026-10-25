@@ -34,16 +34,17 @@
   // BEGIN GENERATED LEARNING PROFILE
   var PROFILE = {
   "schemaVersion": 1,
-  "version": "2026-10-21.1",
-  "reviewedAt": "2026-10-21",
-  "reviewLabel": "2026-10-21 · 北京时间",
+  "version": "2026-10-26.1",
+  "reviewedAt": "2026-10-26",
+  "reviewLabel": "2026-10-26 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
-    "sampling-position-report",
+    "quadrature-reference-check",
     "filters-frequency-delay",
     "filters-design-families",
     "fourier-bin-check",
     "kalman-14",
+    "sampling-position-report",
     "fourier-amplitude",
     "fourier-overview",
     "filters-impulse",
@@ -123,6 +124,21 @@
       "experiment": "next-learning.html#sampling-position-check",
       "material": "本页提供合成位置序列练习与折叠自查；不是任何实际软件的运行结论。先独立作答，后展开答案。",
       "estimatedMinutes": "5–10 分钟"
+    },
+    {
+      "id": "quadrature-reference-check",
+      "topic": "pll",
+      "title": "换一组坐标，sin / cos 的角色会变吗？",
+      "prerequisites": [],
+      "prerequisiteText": "先分清中心、半幅与峰峰值；本题明确给定理想正交关系，不按通道编号猜测。",
+      "goal": "先归一化两路读数，再把局部角换回同一个参考角。",
+      "check": "某路最小值 1、最大值 5、当前值 4.6 V，归一化后记作 v；另一路 u = 0.6。求中心、半幅、v 与 atan2(v,u)，再用 (u′,v′)=(v,−u) 算局部角并换回统一参考。",
+      "why": "近期单独提出的问题已转到归一化与相邻组的 sin/cos 角色；先验证参考角和符号，避免把编号当成固定身份。",
+      "frontier": "来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。相关概念已有讲解，归一化与参考转换仍待独立验证。",
+      "href": "next-learning.html#quadrature-reference",
+      "experiment": "next-learning.html#quadrature-reference-check",
+      "material": "本页提供理想合成例子与折叠自查；不推断任何实际通道的相位、极性或编号映射。",
+      "estimatedMinutes": "5–10 分钟"
     }
   ],
   "lessonOverrides": {
@@ -173,12 +189,26 @@
       "status": "pending",
       "observedAt": "2026-10-21",
       "summary": "独立提问线：采样与解算更新、按位移报告和最大可测速度的关系仍待确认；不据观察到中间与最终位置推断逐毫米记录已验证。"
+    },
+    "quadrature-reference-check": {
+      "status": "pending",
+      "observedAt": "2026-10-25",
+      "summary": "独立提问线：中心与半幅、归一化、局部与统一参考下的 sin/cos 角色已有讲解；尚未确认独立算对或真实通道映射。"
     }
   },
   "topicSummaries": [
     {
+      "topic": "pll",
+      "title": "正交坐标与参考角 · 当前检查",
+      "status": "pending",
+      "frontier": "先归一化，再统一参考；编号不决定 sin/cos。",
+      "summary": "来自另行提出的算法问题，不计入两段课程的新进度。相关概念讲解过，独立归一化、符号与坐标转换尚未验证。",
+      "check": "下一次验证：同一个点换一组坐标后，能否还原同一个参考角？",
+      "href": "next-learning.html#quadrature-reference"
+    },
+    {
       "topic": "control",
-      "title": "采样与位置记录 · 当前疑问",
+      "title": "采样与位置记录 · 保留复习",
       "status": "pending",
       "frontier": "先辨认每个数是什么时刻、哪一步产生的。",
       "summary": "来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。",
@@ -213,7 +243,7 @@
       "href": "notes-kalman.html#kalman-frontier"
     }
   ],
-  "latestLearningAt": "2026-10-21"
+  "latestLearningAt": "2026-10-25"
 };
   // END GENERATED LEARNING PROFILE
   var EVIDENCE_LABELS = {'explained':'已讲解 · 待独立验证', 'independent-correct':'有独立答对证据', 'pending':'待独立作答'};
@@ -455,3 +485,4 @@
   }
   return createModel(PROFILE);
 }));
+
