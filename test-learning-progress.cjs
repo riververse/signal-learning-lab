@@ -214,6 +214,8 @@ async function main(){
   match(doneHome.node('rh-title').textContent,/暂无待完成/,'Home shows bounded completion, not mastery');
   eq(doneHome.node('rh-link').href,'next-learning.html','Completed home still has a valid next-action entry');
   const homeHTML=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');
+  ok(homeHTML.includes('从正交坐标自检开始'),'Homepage boundary follows current independent question');
+  ok(!homeHTML.includes('近期独立学习疑问：采样'),'Old frontier retained as review, not current headline');
   match(homeHTML,/轻量复习备选/,'Old filter diagram is explicitly a review alternative');
   match(homeHTML,/notes-iir-fir.html#filter-average/,'Existing filter review remains reachable');
 
