@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_ten_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),10);self.assertEqual(len({x['vendor'] for x in self.cases}),8)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget'])
+    def test_01_eleven_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),11);self.assertEqual(len({x['vendor'] for x in self.cases}),8)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -185,7 +185,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 10 个案例',self.html)
+        self.assertIn('工程阅读 / 11 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -316,7 +316,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-24')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-25')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -485,5 +485,17 @@ class CasesTest(unittest.TestCase):
         for token in ['2021-10','2008-10','460.726600','76.9897','8.0986','不是时钟时间序列','尚未实现','不是整机实测']:
             self.assertIn(token,text)
         subprocess.run([sys.executable,str(ROOT/'test-jitter-model.py')],check=True,capture_output=True)
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+    def test_44_angle_interpolation_scope_and_model(self):
+        c=next(c for c in self.cases if c['id']=='ti-sincos-angle-interpolation')
+        text=json.dumps(c,ensure_ascii=False)
+        for token in ['TIDUA05B','2015-06','2025-03','SPRA496','1998-12','ADA4571','参数已自动估准','3.191994278','2.066862239','0.43','实物阶段尚未执行','包内许可此次未审计']:
+            self.assertIn(token,text)
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-angle-model.py')],text=True))
+        self.assertEqual(result['samples'],4096)
+        self.assertEqual(result['invalid_cases_rejected'],6)
+        self.assertAlmostEqual(result['raw_max_error_deg'],3.191994278,8)
+        self.assertAlmostEqual(result['raw_rms_error_deg'],2.066862239,8)
+        self.assertLess(result['corrected_max_error_rad'],2e-15)
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
 if __name__=='__main__':unittest.main(verbosity=2)
