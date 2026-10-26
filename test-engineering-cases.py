@@ -160,12 +160,12 @@ class CasesTest(unittest.TestCase):
         self.assertAlmostEqual(1491.5/2000,.74575,12)
         self.assertGreater(abs(sum(map(abs,e))/len(e)-.38875038),.2)
     def test_17_existing_home_and_knowledge_content(self):
-        # Pin current main 6be3e7dd: homepage recommendation was already updated before this case.
+        # Pin reviewed lesson-15 boundary summaries; recommendation blocks remain unchanged.
         # Pin BOTH approved blocks: any unreviewed edit inside the whitelist must still fail.
         expected = {'index.html': 'c52388ff8247368e3bda932e5e8c9133525ebcf25932305f9d7e49c9cf959438', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
         # Current main also has different home context text; pin complete bytes rather
         # than pretending these two independently maintained pages remain aliases.
-        page_hashes = {'index.html': '6b49507dc4a625d1cce1bf81c1a22d15aac8adf864693b8cd09902df796dc1a5', 'knowledge.html': 'a6557b12665127c81250588597787074b08c5898d030a87990ff639833adb3f6'}
+        page_hashes = {'index.html': '62968d98594a80da47705b539f0c6749f5422d5698a895f073d9d5040c1819a9', 'knowledge.html': '0d6ff00ee762ff06da5d8a1b7e3037e01b37dcf41862bacde01fe14b1d2b5574'}
         for name, version in [('index.html','2026-10-26.1'),('knowledge.html','2026-10-21.1')]:
             source=read(name)
             matches=list(re.finditer(r'<section class="featured wrap" id="continue">.*?</section>',source,re.S))
