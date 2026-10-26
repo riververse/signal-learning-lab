@@ -98,13 +98,41 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(links,['knowledge.html','simulation.html','next-learning.html','exploration.html'])
         self.assertEqual(nav.count('aria-current="page"'),1)
     def test_11_catalog_schema_and_required_fields(self):
-        self.assertEqual(self.catalog['schema_version'],1);self.assertEqual(len(self.catalog['projects']),11)
+        self.assertEqual(self.catalog['schema_version'],1);self.assertEqual(len(self.catalog['projects']),12)
+        self.assertEqual([p['id'] for p in self.catalog['projects']],['a121-presence','a121-breathing','ti-people-tracking','cmsis-dsp','liquid-dsp','gnu-radio','px4-ekf2','radarsimpy','nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','w1700k-sdr-stream-integrity'])
         required=set(self.catalog['projects'][0])
         # Keep the original catalog entries; later reading cases live in the page index.
         for c in self.cases[:3]:
             p=next(p for p in self.catalog['projects'] if p['id']==c['id'])
             self.assertTrue(required<=set(p));self.assertEqual(p['status'],'待学习');self.assertEqual(p['reproduction_status'],'未在本站复现')
             self.assertEqual(p['learning_links'][0]['url'],'engineering-cases.html#'+c['id'])
+    def test_11a_new_sdr_scope_and_arithmetic(self):
+        p=self.catalog['projects'][-1]
+        self.assertEqual(p['id'],'w1700k-sdr-stream-integrity')
+        self.assertEqual(p['status'],'待学习');self.assertEqual(p['reproduction_status'],'未在本站复现')
+        self.assertEqual(p['last_verified'],'2026-10-26')
+        content=json.dumps(p,ensure_ascii=False)
+        for token in ['10.24 Gbit/s','9.6 Gbit/s','640/2','混叠','24 小时','dBFS','GPL-2.0-only','129','未在本站复现']:
+            self.assertIn(token,content)
+        for source in p['official_links']+p['license_links']:
+            self.assertIn('/0b0413e4309f0c083702fa4eb2d1c2bca4532163/',source['url'])
+            self.assertEqual(urlsplit(source['url']).hostname,'github.com')
+        # Independent arithmetic, not a replay, project execution or network benchmark.
+        self.assertEqual(320_000_000*32/1e9,10.24)
+        self.assertEqual(320_000_000*(32+28)/2/1e9,9.6)
+        self.assertEqual(7*32,8*28)
+        self.assertEqual((129-1)//2,64)
+        self.assertEqual(len({u['id'] for u in self.catalog['recent_updates']}),len(self.catalog['recent_updates']))
+        note=self.catalog['recent_updates'][-1]
+        self.assertEqual(note['project_id'],p['id'])
+        self.assertIn('非正式 release',note['date_label'])
+    def test_11b_exploration_escape_and_filter(self):
+        p=dict(self.catalog['projects'][-1]);p['title']='<img src=x onerror="bad"> & "'
+        rendered=self.explore.render_card(p,self.catalog['categories'])
+        self.assertIn('&lt;img src=x onerror=&quot;bad&quot;&gt;',rendered)
+        self.assertNotIn('<img src=x',rendered)
+        script="const a=require('node:assert/strict'),f=require('./exploration.js');a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'dsp',' w1700k fft '),true);a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'radar','w1700k'),false);a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'all','missing'),false);"
+        subprocess.run(['node','-e',script],cwd=ROOT,check=True,capture_output=True)
     def test_12_deterministic_builds(self):
         for script,output in [('build-engineering-cases.py','engineering-cases.html'),('build-exploration.py','exploration.html')]:
             before=(ROOT/output).read_bytes();subprocess.run([sys.executable,str(ROOT/script)],check=True,capture_output=True);self.assertEqual(before,(ROOT/output).read_bytes())

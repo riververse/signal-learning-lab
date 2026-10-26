@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-19",
+  "updated_at": "2026-10-26",
   "categories": {
     "radar": "民用雷达",
     "dsp": "DSP 基础",
@@ -776,6 +776,81 @@
       "reproduction_status": "未在本站复现",
       "last_verified": "2026-10-17",
       "latest_note": "2026-10-17 整理为工程案例；该日期不是原始资料发布日期。"
+    },
+    {
+      "id": "w1700k-sdr-stream-integrity",
+      "category": "dsp",
+      "title": "频谱之前，先确认样本没有悄悄断掉",
+      "project": "W1700K SDR · 宽带接收与连续数据链",
+      "kind": "近期公开的工程研究原型",
+      "application": "把宽带复数 IQ 从采集端送到主机频谱图：学习有效位数、封装带宽、缓冲覆盖和缺失样本怎样限制“看起来流畅”的 FFT。",
+      "chain": [
+        "14 位 I/Q",
+        "打包 / 缺口标记",
+        "可选 FIR 校正",
+        "加窗 FFT / 瀑布"
+      ],
+      "first_step": "先不刷机，只画出数据链并算吞吐：320 Msps 指每秒 3.2 亿对 IQ；每对两个 16 位容器，纯样本载荷是 10.24 Gbit/s。一半块压为 28 位/对后平均 30 位/对，得到 9.6 Gbit/s，仍未计协议开销。",
+      "prerequisites": [
+        "采样率、复数 IQ 与字节/比特换算",
+        "FFT、加窗、抽取与混叠",
+        "进阶：DMA 环形缓冲、UDP 和生产者/消费者"
+      ],
+      "algorithms": [
+        "公开实现将 I、Q 各 14 位符号扩展为 int16；紧凑格式每 7 个 32 位字还原 8 对 IQ。有效位数不等于容器大小，更不等于测量精度。",
+        "主机为丢失或覆盖的样本块打标签；频谱消费者跳过带缺口或控制事件的 FFT 块，复制后再检查覆盖。先检查样本连续性，不把补零悄悄当成真实连续信号。",
+        "可选 flatten 是补偿抽取链幅频下垂的 129 抽头 FIR，需要前后各 64 个样本；保持样本索引不代表零实时延迟。它也不能撤销已经发生的混叠。"
+      ],
+      "hardware": "源码阅读与上述算例不需硬件。作者实现面向 Gemtek W1700K HW 1.x / W1700K2 HW 2.1（MT7996 + AN7581），真实流需 10GbE 与 x86 Linux 主机；主机组件使用 C++17、FFTW3 等。不是普通 MCU 或任意 Wi-Fi 路由器通用方案。",
+      "maturity": "仓库创建于 2026-10-11；本卡固定核读提交 0b0413e（2026-10-13），没有正式 GitHub release。作者提供端到端演示、公开数据链实现及合成 UDP 解包/缺口测试；吞吐与硬件表现属于作者自述，不是本站或第三方独立实测。路线图仍待完成 24 小时流、全新机器构建及部分 NAND 型号验证。",
+      "license": "分组件许可，不能统称全项目 MIT：主机/UI/项目固件等为 MIT；Linux 模块及其客户端、内核补丁为 GPL-2.0-only；U-Boot 补丁为 GPL-2.0+；UAPI 头带 Linux-syscall-note；mt76 派生文件为 BSD-3-Clause-Clear。FFTW 等依赖另审。",
+      "warning": "特殊 640/2 模式直接隔样取值，作者明确 160–320 MHz 偏移信号会折叠；频响平坦不等于抗混叠。dBFS 到 dBm 标定仍待做，不能当校准频谱仪。安装会替换原系统并有硬件风险，本卡只提供原理阅读，不提供刷机或网络权限变更步骤。",
+      "official_links": [
+        {
+          "label": "固定版本：项目与环境",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/README.md"
+        },
+        {
+          "label": "数据流与采样率口径",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/architecture.md"
+        },
+        {
+          "label": "解包与丢失标签测试",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/tests/test_stream.py"
+        },
+        {
+          "label": "FFT 前后的块完整性检查",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/spectrum/src/spectrum.cpp"
+        },
+        {
+          "label": "FIR 上下文与延迟边界",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/stream/src/flatten.h"
+        },
+        {
+          "label": "尚未完成的验证与标定",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/roadmap.md"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "分组件许可清单",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/LICENSE"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先学频谱与采样",
+          "url": "knowledge.html?topic=spectrum"
+        },
+        {
+          "label": "复习 FIR / IIR",
+          "url": "notes-iir-fir.html"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-10-26",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "学习小目标：独立算出 10.24 与 9.6 Gbit/s，解释为何后者不能保证 10GbE 零丢包；再指出“丢块、补零、跳过 FFT”会怎样改变频谱解释。本站仅核读公开文档和实现，没有下载或运行该项目。"
     }
   ],
   "radar_guide": {
@@ -1136,6 +1211,30 @@
         }
       ],
       "last_verified": "2026-10-19"
+    },
+    {
+      "id": "w1700k-sdr-sample-contract",
+      "project_id": "w1700k-sdr-stream-integrity",
+      "date_label": "仓库公开创建 2026-10-11 · 核读提交 2026-10-13；非正式 release",
+      "title": "新接收原型：宽带之外，先看数据有没有完整抵达",
+      "stage": "新公开工程原型；作者演示与测试源码，本站未复现",
+      "summary": "W1700K SDR 公开从特定路由器的 IQ 采集，到打包、环形缓冲、缺口标签与主机 FFT 的数据链。值得读的不是“便宜替代仪器”，而是频谱消费者如何拒绝缺失或被覆盖的采样块，以及位数、速率和传输开销如何共同约束链路。",
+      "practice": "先做纯纸面吞吐练习，再沿解包 → 共享环形区 → FFT 块检查阅读。640/2 隔样模式有混叠，flatten 校正不是抗混叠保证；长期流验证和绝对功率标定尚未完成。无需安装、刷机或购买硬件。",
+      "sources": [
+        {
+          "label": "固定版本架构与数据流",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/architecture.md"
+        },
+        {
+          "label": "FFT 输入完整性检查",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/spectrum/src/spectrum.cpp"
+        },
+        {
+          "label": "未完成验证清单",
+          "url": "https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/roadmap.md"
+        }
+      ],
+      "last_verified": "2026-10-26"
     }
   ]
 }

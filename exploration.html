@@ -19,7 +19,7 @@
 <div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
 <section class="radar-guide" id="recent-updates" aria-labelledby="recent-updates-title">
-<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-10-19">2026-10-19</time> 核验</span>
+<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-10-26">2026-10-26</time> 核验</span>
 <h2 id="recent-updates-title">从新发布与真实修复里，找下一步。</h2>
 <p>这次挑选与滤波、状态估计和雷达学习有关的具体变化。发布日期与本次核验日期分别标注；这是基于官方来源的学习推荐，不是按 Stars 或热度排名。保留原有方向，新条目仍待动手验证。</p></div>
 <div class="radar-cases"><article class="radar-case" id="cmsis-dsp-118-notes">
@@ -76,10 +76,16 @@
 <p><strong>从这里开始：</strong>先分清延迟 EKF 状态与当前姿态输出，再读新增 GTest：250 Hz IMU、每 8 ms 更新、152 ms 延迟，覆盖三轴不同转速及航向重置。2°误差在 4 s 后小于 0.05°是测试断言，本站未复现。PR 明确尚未验证真实高速航向日志和多 EKF 实例；不能外推为通用转速阈值或实飞保证。</p>
 <div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/PX4/PX4-Autopilot/pull/29062" rel="noopener noreferrer">修复原理、上游测试与未验证项</a><a href="https://github.com/PX4/PX4-Autopilot/blob/004f01471952e6c421f8b172d4b21fb30ee710d4/src/modules/ekf2/EKF/output_predictor/output_predictor.cpp" rel="noopener noreferrer">合并版本：输出预测器实现</a><a href="https://github.com/PX4/PX4-Autopilot/blob/004f01471952e6c421f8b172d4b21fb30ee710d4/src/modules/ekf2/test/test_EKF_output_predictor.cpp" rel="noopener noreferrer">合并版本：输出预测器回归测试</a><a href="exploration.html?category=estimation#px4-ekf2">查看项目、先修与许可</a></div>
 <p class="project-verification">来源核验 <time datetime="2026-10-19">2026-10-19</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="w1700k-sdr-sample-contract">
+<p class="radar-architecture">仓库公开创建 2026-10-11 · 核读提交 2026-10-13；非正式 release</p><h3>新接收原型：宽带之外，先看数据有没有完整抵达</h3>
+<p><strong>新公开工程原型；作者演示与测试源码，本站未复现</strong></p><p>W1700K SDR 公开从特定路由器的 IQ 采集，到打包、环形缓冲、缺口标签与主机 FFT 的数据链。值得读的不是“便宜替代仪器”，而是频谱消费者如何拒绝缺失或被覆盖的采样块，以及位数、速率和传输开销如何共同约束链路。</p>
+<p><strong>从这里开始：</strong>先做纯纸面吞吐练习，再沿解包 → 共享环形区 → FFT 块检查阅读。640/2 隔样模式有混叠，flatten 校正不是抗混叠保证；长期流验证和绝对功率标定尚未完成。无需安装、刷机或购买硬件。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/architecture.md" rel="noopener noreferrer">固定版本架构与数据流</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/spectrum/src/spectrum.cpp" rel="noopener noreferrer">FFT 输入完整性检查</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/roadmap.md" rel="noopener noreferrer">未完成验证清单</a><a href="exploration.html?category=dsp#w1700k-sdr-stream-integrity">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-10-26">2026-10-26</time> · 待学习 · 未在本站复现</p>
 </article></div>
 </section>
 <section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类"><button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button><button class="exploration-filter" type="button" data-category-filter="radar" aria-pressed="false">民用雷达</button><button class="exploration-filter" type="button" data-category-filter="dsp" aria-pressed="false">DSP 基础</button><button class="exploration-filter" type="button" data-category-filter="estimation" aria-pressed="false">状态估计</button></div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
-<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 11 个学习方向</p>
+<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 12 个学习方向</p>
 <noscript><p>所有项目均可直接阅读；开启 JavaScript 后可按分类和关键词筛选。</p></noscript>
 <div class="exploration-empty" id="exploration-empty" hidden><p>没有匹配的方向。试试更短的关键词，或清除筛选。</p><button type="button" class="exploration-reset" id="exploration-reset">清除筛选</button></div>
 <div class="exploration-grid" id="exploration-projects"><article class="project-card" id="a121-presence" data-category="radar" aria-labelledby="a121-presence-title">
@@ -235,6 +241,20 @@
 <p class="project-warning">待学习 · 未本站实物复现。来源中的数值只适用于其测试条件；拟议清单不是完成记录。</p>
 <div class="project-links" aria-label="外部官方来源"><a href="https://www.ti.com/tool/TIDA-00322" rel="noopener noreferrer">TIDA-00322 官方设计页：环境、日期与文件入口</a><a href="https://www.ti.com/lit/pdf/TIDU616" rel="noopener noreferrer">TIDU616：第 1–2 页硬件，第 6 页条件与结果</a><a href="https://www.ti.com/lit/pdf/TIDU617" rel="noopener noreferrer">TIDU617 Rev. A：接收链、发射与温度测量</a></div>
 </details><p class="project-verification">来源核验 <time datetime="2026-10-17">2026-10-17</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="w1700k-sdr-stream-integrity" data-category="dsp" aria-labelledby="w1700k-sdr-stream-integrity-title">
+<div class="project-meta"><span>DSP 基础 / 近期公开的工程研究原型</span><span class="project-state">待学习</span></div>
+<h2 id="w1700k-sdr-stream-integrity-title">频谱之前，先确认样本没有悄悄断掉</h2><p class="project-name">W1700K SDR · 宽带接收与连续数据链</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>14 位 I/Q</li><li>打包 / 缺口标记</li><li>可选 FIR 校正</li><li>加窗 FFT / 瀑布</li></ol>
+<p class="project-application">把宽带复数 IQ 从采集端送到主机频谱图：学习有效位数、封装带宽、缓冲覆盖和缺失样本怎样限制“看起来流畅”的 FFT。</p>
+<p class="project-first"><strong>起步：</strong>先不刷机，只画出数据链并算吞吐：320 Msps 指每秒 3.2 亿对 IQ；每对两个 16 位容器，纯样本载荷是 10.24 Gbit/s。一半块压为 28 位/对后平均 30 位/对，得到 9.6 Gbit/s，仍未计协议开销。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=spectrum">先学频谱与采样</a><a href="notes-iir-fir.html">复习 FIR / IIR</a></div>
+<p class="project-warning"><strong>近期补充：</strong>学习小目标：独立算出 10.24 与 9.6 Gbit/s，解释为何后者不能保证 10GbE 零丢包；再指出“丢块、补零、跳过 FFT”会怎样改变频谱解释。本站仅核读公开文档和实现，没有下载或运行该项目。</p>
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>采样率、复数 IQ 与字节/比特换算</li><li>FFT、加窗、抽取与混叠</li><li>进阶：DMA 环形缓冲、UDP 和生产者/消费者</li></ul></dd><dt>关键算法</dt><dd><ul><li>公开实现将 I、Q 各 14 位符号扩展为 int16；紧凑格式每 7 个 32 位字还原 8 对 IQ。有效位数不等于容器大小，更不等于测量精度。</li><li>主机为丢失或覆盖的样本块打标签；频谱消费者跳过带缺口或控制事件的 FFT 块，复制后再检查覆盖。先检查样本连续性，不把补零悄悄当成真实连续信号。</li><li>可选 flatten 是补偿抽取链幅频下垂的 129 抽头 FIR，需要前后各 64 个样本；保持样本索引不代表零实时延迟。它也不能撤销已经发生的混叠。</li></ul></dd><dt>硬件与环境</dt><dd>源码阅读与上述算例不需硬件。作者实现面向 Gemtek W1700K HW 1.x / W1700K2 HW 2.1（MT7996 + AN7581），真实流需 10GbE 与 x86 Linux 主机；主机组件使用 C++17、FFTW3 等。不是普通 MCU 或任意 Wi-Fi 路由器通用方案。</dd><dt>成熟度与复现边界</dt><dd>仓库创建于 2026-10-11；本卡固定核读提交 0b0413e（2026-10-13），没有正式 GitHub release。作者提供端到端演示、公开数据链实现及合成 UDP 解包/缺口测试；吞吐与硬件表现属于作者自述，不是本站或第三方独立实测。路线图仍待完成 24 小时流、全新机器构建及部分 NAND 型号验证。</dd><dt>许可范围</dt><dd>分组件许可，不能统称全项目 MIT：主机/UI/项目固件等为 MIT；Linux 模块及其客户端、内核补丁为 GPL-2.0-only；U-Boot 补丁为 GPL-2.0+；UAPI 头带 Linux-syscall-note；mt76 派生文件为 BSD-3-Clause-Clear。FFTW 等依赖另审。<br><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/LICENSE" rel="noopener noreferrer">分组件许可清单</a></dd></dl>
+<p class="project-warning">特殊 640/2 模式直接隔样取值，作者明确 160–320 MHz 偏移信号会折叠；频响平坦不等于抗混叠。dBFS 到 dBm 标定仍待做，不能当校准频谱仪。安装会替换原系统并有硬件风险，本卡只提供原理阅读，不提供刷机或网络权限变更步骤。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/README.md" rel="noopener noreferrer">固定版本：项目与环境</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/architecture.md" rel="noopener noreferrer">数据流与采样率口径</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/tests/test_stream.py" rel="noopener noreferrer">解包与丢失标签测试</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/spectrum/src/spectrum.cpp" rel="noopener noreferrer">FFT 前后的块完整性检查</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/host/stream/src/flatten.h" rel="noopener noreferrer">FIR 上下文与延迟边界</a><a href="https://github.com/h0m3us3r/w1700k-sdr/blob/0b0413e4309f0c083702fa4eb2d1c2bca4532163/docs/roadmap.md" rel="noopener noreferrer">尚未完成的验证与标定</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-10-26">2026-10-26</time> · 未在本站复现</p>
 </article></div></section>
 <section class="radar-guide" id="radar-guide" aria-labelledby="radar-guide-title">
 <div class="radar-guide-heading"><span class="exploration-state">雷达入门导读</span><h2 id="radar-guide-title">读懂雷达：从回波到判断</h2><p>先问每一步在解决什么问题，再看算法名字。雷达中的“滤波”只是处理链的一部分；变换、检测、测角和跟踪各有自己的任务。</p></div>
