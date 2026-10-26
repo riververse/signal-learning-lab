@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_eleven_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),11);self.assertEqual(len({x['vendor'] for x in self.cases}),8)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation'])
+    def test_01_twelve_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),12);self.assertEqual(len({x['vendor'] for x in self.cases}),9)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -131,12 +131,14 @@ class CasesTest(unittest.TestCase):
         self.assertAlmostEqual(sum(abs(y)/x*100 for x,y in zip(h,e))/len(e),.4853390815996133,12)
         self.assertAlmostEqual(1491.5/2000,.74575,12)
         self.assertGreater(abs(sum(map(abs,e))/len(e)-.38875038),.2)
-    def test_17_knowledge_alias(self):
-        # c1706d82 intentionally changed only the homepage recommendation and its script version.
+    def test_17_existing_home_and_knowledge_content(self):
+        # Pin current main 6be3e7dd: homepage recommendation was already updated before this case.
         # Pin BOTH approved blocks: any unreviewed edit inside the whitelist must still fail.
-        expected = {'index.html': 'ff7d28d163d5a7a9fd5de40527ccf219475492ad38ca22ee409ac0bc58df32c2', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
-        normalized = []
-        for name, version in [('index.html','20261023-home1'),('knowledge.html','2026-10-21.1')]:
+        expected = {'index.html': 'c52388ff8247368e3bda932e5e8c9133525ebcf25932305f9d7e49c9cf959438', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
+        # Current main also has different home context text; pin complete bytes rather
+        # than pretending these two independently maintained pages remain aliases.
+        page_hashes = {'index.html': '6b49507dc4a625d1cce1bf81c1a22d15aac8adf864693b8cd09902df796dc1a5', 'knowledge.html': 'a6557b12665127c81250588597787074b08c5898d030a87990ff639833adb3f6'}
+        for name, version in [('index.html','2026-10-26.1'),('knowledge.html','2026-10-21.1')]:
             source=read(name)
             matches=list(re.finditer(r'<section class="featured wrap" id="continue">.*?</section>',source,re.S))
             self.assertEqual(len(matches),1)
@@ -144,8 +146,7 @@ class CasesTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256(block.encode()).hexdigest(),expected[name])
             tag='<script src="learning-progress.js?v='+version+'" defer></script>'
             self.assertEqual(source.count(tag),1)
-            normalized.append(source.replace(block,'APPROVED_HOME_RECOMMENDATION',1).replace(tag,'APPROVED_LEARNING_SCRIPT',1))
-        self.assertEqual(*normalized)
+            self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),page_hashes[name])
         subprocess.run(['node',str(ROOT/'test-learning-progress.cjs')],check=True,capture_output=True)
         for c in self.cases[:3]:self.assertIn('engineering-cases.html#'+c['id'],read('index.html'))
         for c in self.cases:self.assertIn('#'+c['id'],self.doc.links)
@@ -185,7 +186,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 11 个案例',self.html)
+        self.assertIn('工程阅读 / 12 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -316,7 +317,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-25')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-26')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -498,4 +499,19 @@ class CasesTest(unittest.TestCase):
         self.assertAlmostEqual(result['raw_rms_error_deg'],2.066862239,8)
         self.assertLess(result['corrected_max_error_rad'],2e-15)
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+    def test_45_median_contract_and_original_model(self):
+        c=next(c for c in self.cases if c['id']=='intel-median-stream-contract')
+        text=json.dumps(c,ensure_ascii=False)
+        for token in ['2021.10','790148','11/07/2023','1.16.0','B≤m<P','51','2 ms','非线性','坏块','实物阶段尚未执行','包内许可未审计']:
+            self.assertIn(token,text)
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-median-model.py')],text=True))
+        self.assertEqual(result['burst_peaks'],[0,0,100])
+        self.assertEqual(result['step_delay_samples'],2)
+        self.assertEqual(result['constant_majority_windows'],51)
+        self.assertEqual(result['invalid_cases_rejected'],11)
+        self.assertTrue(result['block_equivalence'])
+        self.assertEqual(result['padding_first_values'],[1,10])
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        for bad in ['http://www.intel.com/a','https://www.intel.com.evil.example/a','https://www.intel.com@evil.example/a','https://www.intel.com:443/a']:
+            with self.assertRaises(ValueError):self.renderer.url(bad,True)
 if __name__=='__main__':unittest.main(verbosity=2)
