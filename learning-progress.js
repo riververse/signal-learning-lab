@@ -34,15 +34,16 @@
   // BEGIN GENERATED LEARNING PROFILE
   var PROFILE = {
   "schemaVersion": 1,
-  "version": "2026-10-26.1",
-  "reviewedAt": "2026-10-26",
-  "reviewLabel": "2026-10-26 · 北京时间",
+  "version": "2026-10-27.1",
+  "reviewedAt": "2026-10-27",
+  "reviewLabel": "2026-10-27 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
     "quadrature-reference-check",
     "filters-frequency-delay",
     "filters-design-families",
     "fourier-bin-check",
+    "kalman-15",
     "kalman-14",
     "sampling-position-report",
     "fourier-amplitude",
@@ -59,7 +60,6 @@
     "control-poles",
     "pll-input",
     "pll-loop",
-    "kalman-15",
     "kalman-16"
   ],
   "lessonAdditions": [
@@ -145,13 +145,27 @@
     "kalman-14": {
       "goal": "回看第 14 讲已讲过的二状态预测，用预测状态 [100.2, 20] 与协方差 [[4.02, 1], [1, 104]] 核对误差传播。",
       "check": "根据笔记给定的 F、P、Q，独立重算预测状态 [100.2, 20] 与 P⁻ = [[4.02, 1], [1, 104]]；解释交叉协方差从哪里来，以及为什么两侧都乘矩阵。",
-      "frontier": "第 14 讲状态和协方差预测已有讲解；第 15 讲只是预告，仍需先独立核算第 14 讲。",
+      "frontier": "第 14 讲状态和协方差预测已有讲解；第 15 讲测量更新也已讲解，两个算例的独立复算仍待确认。",
       "prerequisiteText": "回看本节给定的二状态 F、P、Q 和单位，再独立计算。",
-      "estimatedMinutes": "10–15 分钟"
+      "estimatedMinutes": "10–15 分钟",
+      "why": "预测是测量更新的必要背景；若卡在交叉协方差从哪里来，回看本节，不把讲解当成掌握。"
     },
     "fourier-amplitude": {
       "frontier": "复系数幅相已有讲解；C(3) = 3 + 4i 的独立幅相检查仍未确认。",
       "prerequisiteText": "先核对笔记的归一化和负指数约定，再做复数模长与相位计算。"
+    },
+    "kalman-15": {
+      "title": "第 15 讲：残差很大，变化率就一定会变吗？",
+      "prerequisites": [],
+      "prerequisiteText": "先认识 H = [1,0] 和 Kv = Pvp⁻/(Ppp⁻ + R)；预测来源可按需回看第 14 讲。",
+      "goal": "用零交叉协方差的例子，解释一份压力测量何时能直接修正压力变化率。",
+      "check": "给定 P⁻ = [[4,0],[0,100]]、H = [1,0]、R \u003e 0，压力残差很大时，本次 v 会改变吗？说明 Kv 的分子和单位，再解释这为何不等于以后永远估不出变化率。",
+      "why": "第 15 讲已讲完一次测量更新，但最新零交叉协方差检查尚未回答；先验证这个连接，再进连续多轮计算。",
+      "frontier": "第 15 讲已讲解，末题仍未独立作答；第 16–19 讲仍为预告，没有新增独立答对记录。",
+      "href": "notes-kalman.html#kalman-measurement-check",
+      "material": "笔记含完整测量更新算例与折叠自查。先解释零交叉协方差，再复算两个增益和协方差；实验是位置/速度类比，不替代压力模型核算。",
+      "outline": false,
+      "estimatedMinutes": "5–10 分钟"
     }
   },
   "evidence": {
@@ -182,8 +196,8 @@
       "summary": "第 14 讲已讲到预测状态和协方差数值例；独立复算仍待确认。"
     },
     "kalman-15": {
-      "status": "pending",
-      "summary": "测量更新目前是下一讲预告，不按已讲解或已掌握处理。"
+      "status": "explained",
+      "summary": "第 15 讲双状态测量更新已有完整讲解；预测交叉协方差为零时，大残差能否直接修正变化率的末题未答，不推断掌握。"
     },
     "sampling-position-report": {
       "status": "pending",
@@ -194,6 +208,10 @@
       "status": "pending",
       "observedAt": "2026-10-25",
       "summary": "独立提问线：中心与半幅、归一化、局部与统一参考下的 sin/cos 角色已有讲解；尚未确认独立算对或真实通道映射。"
+    },
+    "kalman-16": {
+      "status": "pending",
+      "summary": "连续多轮数值递推目前只是第 16 讲预告，尚未开始讲解或独立练习。"
     }
   },
   "topicSummaries": [
@@ -235,15 +253,14 @@
     },
     {
       "topic": "kalman",
-      "title": "卡尔曼 · 预测之后",
+      "title": "卡尔曼 · 测量更新之后",
       "status": "explained",
-      "frontier": "第 14 讲已讲解，第 15 讲为预告。",
-      "summary": "已讲到预测状态 [100.2, 20] 与协方差 [[4.02, 1], [1, 104]]；尚无新增独立答对证据。",
-      "check": "下一次验证：独立重算 FPFᵀ + Q，再接测量更新。",
-      "href": "notes-kalman.html#kalman-frontier"
+      "frontier": "第 15 讲已讲解，零交叉协方差题待答。",
+      "summary": "已讲到两个增益、两个状态和整个协方差的更新；末题尚未独立回答。第 16–19 讲仍为预告。",
+      "check": "下一次验证：Pvp⁻ = 0 时，压力残差再大，本次能否直接修正变化率？",
+      "href": "notes-kalman.html#kalman-measurement-check"
     }
-  ],
-  "latestLearningAt": "2026-10-25"
+  ]
 };
   // END GENERATED LEARNING PROFILE
   var EVIDENCE_LABELS = {'explained':'已讲解 · 待独立验证', 'independent-correct':'有独立答对证据', 'pending':'待独立作答'};

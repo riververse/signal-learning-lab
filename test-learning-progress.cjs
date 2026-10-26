@@ -71,6 +71,11 @@ async function main(){
   ok(Math.abs((4.6-3)/2-.8)<1e-12,'Normalization is dimensionless');
   const theta=Math.atan2(.8,.6), alpha=Math.atan2(-.6,.8);
   ok(Math.abs(alpha+Math.PI/2-theta)<1e-12,'Local reference converts to same angle');
+  eq(profile.evidence['kalman-15'].status,'explained','Lesson 15 taught is not independent mastery');
+  eq(profile.evidence['kalman-16'].status,'pending','Lesson 16 remains preview');
+  eq(lesson('kalman-15').outline,false,'Lesson 15 has full teaching material');
+  eq(lesson('kalman-15').href,'notes-kalman.html#kalman-measurement-check','Latest unanswered check has a stable direct entry');
+  eq(lesson('kalman-15').prerequisites,[],'Targeted check does not force repeating the whole earlier lesson');
   eq(api.key,'river.learning.progress.v1','Storage key is unchanged');
   eq(api.emptyState(),{version:1,preferredTopic:'auto',completed:{}},'v1 shape is unchanged');
   eq(api.lessons.slice(0,17).map(x=>x.id),oldIds,'All original IDs and their base order remain');
@@ -94,9 +99,9 @@ async function main(){
   for(const field of ['reason','prerequisiteText','frontier','verificationQuestion','evidenceStatus','evidenceLabel','evidenceSummary','estimatedMinutes','afterCheck','reviewedAt'])ok(recommendation[field],field+' is exposed');
   eq(recommendation.isPrerequisite,false,'Current filter question does not force stale prerequisites');
   eq(api.recommend(state,'transforms').lesson.id,'fourier-bin-check','Fourier priority uses latest unanswered check');
-  eq(api.recommend(state,'kalman').lesson.id,'kalman-14','Kalman stays at lesson 14 verification');
+  eq(api.recommend(state,'kalman').lesson.id,'kalman-15','Kalman targets latest unanswered lesson 15 check');
   eq(api.recommend(state,'bogus').lesson.id,first,'Unknown direction falls back to current preference');
-  state.preferredTopic='kalman';eq(api.recommend(state).lesson.id,'kalman-14','Saved direction is respected');
+  state.preferredTopic='kalman';eq(api.recommend(state).lesson.id,'kalman-15','Saved direction is respected');
   eq(api.recommend(state,'iir-fir').lesson.id,second,'Explicit direction takes precedence');
   state.preferredTopic='auto';state.completed[first]=stamp;
   eq(api.recommend(state).lesson.id,second,'Completion returns to the older filter question');
@@ -154,7 +159,7 @@ async function main(){
   await fresh.node('nl-complete').fire('click',{detail:2});eq(Object.keys(fresh.model.getState().completed).length,1,'Double click cannot complete the next lesson');
   await fresh.node('nl-complete').fire('click',{detail:1});eq(Object.keys(fresh.model.getState().completed).length,1,'Rapid repeated click cannot complete the next lesson');
   fresh.model.setCompleted(second,true);fresh.model.setCompleted(first,false);eq(fresh.model.getRecommendation().lesson.id,first,'Live undo updates recommendation');ok(fresh.model.getState().completed[second],'Live undo retains dependent history');
-  fresh.node('nl-topic-select').value='kalman';await fresh.node('nl-topic-select').fire('change');eq(fresh.model.getRecommendation().lesson.id,'kalman-14','Direction changes recompute live card');eq(JSON.parse(fresh.store.get(api.key)).preferredTopic,'kalman','Direction persists in v1 format');
+  fresh.node('nl-topic-select').value='kalman';await fresh.node('nl-topic-select').fire('change');eq(fresh.model.getRecommendation().lesson.id,'kalman-15','Direction changes recompute live card');eq(JSON.parse(fresh.store.get(api.key)).preferredTopic,'kalman','Direction persists in v1 format');
   const snapshot=fresh.model.getState();snapshot.completed['kalman-14']=stamp;eq(fresh.model.getState().completed['kalman-14'],undefined,'getState returns a defensive copy');
   await fresh.node('nl-export').fire('click');eq(JSON.parse(fresh.win.exported[0].parts[0]),fresh.model.getState(),'Export contains only v1 local state');eq(fresh.win.revoked,'blob:local-test','Export object URL is released');
   await fresh.import({version:1,preferredTopic:'transforms',completed:{'fourier-amplitude':stamp,[second]:newer}});eq(fresh.model.getState().completed[second],newer,'Import merges the latest timestamp');eq(fresh.model.getState().preferredTopic,'transforms','Import adopts saved preference');eq(fresh.model.getRecommendation().lesson.id,'fourier-bin-check','Imported old progress does not block newest Fourier frontier');
