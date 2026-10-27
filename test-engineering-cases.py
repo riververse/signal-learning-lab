@@ -160,13 +160,13 @@ class CasesTest(unittest.TestCase):
         self.assertAlmostEqual(1491.5/2000,.74575,12)
         self.assertGreater(abs(sum(map(abs,e))/len(e)-.38875038),.2)
     def test_17_existing_home_and_knowledge_content(self):
-        # Pin reviewed lesson-15 boundary summaries and the aligned-estimates recommendation.
+        # Pin reviewed lesson-15 summaries, preserved coordinate reviews, and the two new filter checkpoints.
         # Pin BOTH approved blocks: any unreviewed edit inside the whitelist must still fail.
-        expected = {'index.html': '781cbe9ef3d89c62ab7dabb44196c818a6b680cf6c287b3aae0cc6c9e87d8db0', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
+        expected = {'index.html': '7556e3935345488cc113d603111f6a17bc85c9684fc40ed76a7836365872b967', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
         # Current main also has different home context text; pin complete bytes rather
         # than pretending these two independently maintained pages remain aliases.
-        page_hashes = {'index.html': '83bada419307a401cead01a56c5306478a9717ab3a6a52489a777036d78cb864', 'knowledge.html': '0d6ff00ee762ff06da5d8a1b7e3037e01b37dcf41862bacde01fe14b1d2b5574'}
-        for name, version in [('index.html','2026-10-27.2'),('knowledge.html','2026-10-21.1')]:
+        page_hashes = {'index.html': 'ac75339a84fad1146e0fa31fd7bc4e40b315ac90bbaf8072dc7832c288d76738', 'knowledge.html': '01ddcea098d114e19181908d5a65a22c5785c4bea535e3ea1b6bb99aec2df80f'}
+        for name, version in [('index.html','2026-10-27.3'),('knowledge.html','2026-10-27.3')]:
             source=read(name)
             matches=list(re.finditer(r'<section class="featured wrap" id="continue">.*?</section>',source,re.S))
             self.assertEqual(len(matches),1)

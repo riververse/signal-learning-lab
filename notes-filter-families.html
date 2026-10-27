@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>巴特沃斯与切比雪夫学习笔记 · 信号学习实验室</title><meta name="description" content="从 dB、相位和完整指标走到零极点、二阶巴特沃斯系数与独立检查；区分已讲解与待验证。"><link rel="icon" type="image/png" sizes="800x800" href="favicon-rgb-8b14e515.png"><link rel="stylesheet" href="notes.css"><script src="notes.js" defer></script><link rel="stylesheet" href="lab-shell.css?v=e1c8c0a2"><script src="lab-shell.js?v=20261006-architecture" defer></script><link rel="stylesheet" href="notes-iir-fir.css?v=20261006"><link rel="stylesheet" href="mobile-reading.css?v=20261006"><script src="mobile-reading.js?v=20261006" defer></script><link rel="stylesheet" href="architecture.css?v=20261006-exploration">
+<link rel="stylesheet" href="question-helper.css?v=20261016r3">
+<script src="architecture.js?v=20261006" defer></script>
+<script src="learning-progress.js?v=2026-10-27.3" defer></script>
+<script src="question-helper.js?v=20261016r3" defer></script>
+<link rel="stylesheet" href="signal-design.css?v=20261016r3"><script src="signal-motion.js?v=20261019.4" defer></script><link rel="stylesheet" href="signal-studio.css?v=20261019.8"><link rel="stylesheet" href="river-design.css?v=20261020-river2"><link rel="stylesheet" href="river-reading.css?v=20261020-river2"><link rel="stylesheet" href="river-experiments.css?v=20261020-river2"></head><body class="filter-notes lab-shell page--notes-filter-families math-studio river-v2"><header class="lab-site-header architecture-header"><div class="architecture-bar studio-bar">
+<a class="lab-site-brand studio-brand" href="index.html" aria-label="RIVER 信号学习实验室首页"><svg class="studio-mark" viewBox="0 0 30 30" aria-hidden="true"><path d="M1 17 6 8 12 25 18 2 24 19 29 11" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span><span class="studio-brand-word">RIVER</span><span class="studio-brand-sub">信号学习实验室</span></span></a>
+<nav class="architecture-nav studio-nav" aria-label="主要导航"><a href="knowledge.html" aria-current="page">知识图谱</a><a href="simulation.html">交互实验</a><a href="next-learning.html">接着学</a><a href="exploration.html">探索</a></nav>
+</div></header><nav class="legacy-topic-context" aria-label="当前专题"><a href="knowledge.html?topic=filter-families">滤波器设计家族</a><a href="knowledge.html?topic=filter-families&amp;view=notes">学习笔记入口</a><a href="next-learning.html?topic=iir-fir">接着学这个专题</a></nav>
+<a class="skip-link" href="#notebook-content">跳到笔记正文</a><div class="reading-layout"><aside class="side-panel" aria-label="阅读导航"><p class="side-label">本页目录</p><nav aria-label="桌面笔记目录"><ol class="toc"><li><a href="#family-frontier"><span class="toc-index" aria-hidden="true">01</span><span>已讲到哪里，先验证什么</span></a></li><li><a href="#family-db"><span class="toc-index" aria-hidden="true">02</span><span>dB：幅值与功率分开算</span></a></li><li><a href="#family-phase"><span class="toc-index" aria-hidden="true">03</span><span>相位：延迟不等于衰减</span></a></li><li><a href="#family-specification"><span class="toc-index" aria-hidden="true">04</span><span>先写完整指标，再比较家族</span></a></li><li><a href="#family-poles"><span class="toc-index" aria-hidden="true">05</span><span>从差分方程看到零极点</span></a></li><li><a href="#family-biquad"><span class="toc-index" aria-hidden="true">06</span><span>二阶巴特沃斯：算到可执行系数</span></a></li><li><a href="#family-check"><span class="toc-index" aria-hidden="true">07</span><span>独立检查：不够衰减怎么办</span></a></li><li><a href="#family-next"><span class="toc-index" aria-hidden="true">08</span><span>下一课仍是预告</span></a></li><li><a href="#family-sources"><span class="toc-index" aria-hidden="true">09</span><span>公式核验与继续阅读</span></a></li></ol></nav><div class="side-bottom"><a href="notes-iir-fir.html">回看 IIR / FIR 基础 ↗</a><a href="knowledge.html?topic=filter-families">设计家族比较 ↗</a><button type="button" class="print-button" data-print>打印笔记（含自测答案）</button></div></aside><main class="reading-main" id="notebook-content" tabindex="-1"><div class="page-heading"><p class="eyebrow">NOTEBOOK 04 · 滤波器设计</p><h1>巴特沃斯与切比雪夫学习笔记</h1><p class="deck">为什么不是选一个名字就能滤好？从“保留多少、压低多少”出发，把指标变成系数，再检查计算结果。</p><div class="page-meta"><span>最近整理 <time datetime="2026-10-27">2026-10-27</time> · 北京时间</span><span>已讲解 · 独立作答待确认</span></div></div><details class="mobile-toc"><summary>本页目录 · 9 个章节</summary><nav aria-label="移动端笔记目录"><ol class="toc"><li><a href="#family-frontier"><span class="toc-index" aria-hidden="true">01</span><span>已讲到哪里，先验证什么</span></a></li><li><a href="#family-db"><span class="toc-index" aria-hidden="true">02</span><span>dB：幅值与功率分开算</span></a></li><li><a href="#family-phase"><span class="toc-index" aria-hidden="true">03</span><span>相位：延迟不等于衰减</span></a></li><li><a href="#family-specification"><span class="toc-index" aria-hidden="true">04</span><span>先写完整指标，再比较家族</span></a></li><li><a href="#family-poles"><span class="toc-index" aria-hidden="true">05</span><span>从差分方程看到零极点</span></a></li><li><a href="#family-biquad"><span class="toc-index" aria-hidden="true">06</span><span>二阶巴特沃斯：算到可执行系数</span></a></li><li><a href="#family-check"><span class="toc-index" aria-hidden="true">07</span><span>独立检查：不够衰减怎么办</span></a></li><li><a href="#family-next"><span class="toc-index" aria-hidden="true">08</span><span>下一课仍是预告</span></a></li><li><a href="#family-sources"><span class="toc-index" aria-hidden="true">09</span><span>公式核验与继续阅读</span></a></li></ol></nav></details><article class="notebook" aria-label="滤波器设计家族笔记正文">
+<section id="family-frontier" class="frontier">
+<h2>已讲到哪里，先验证什么</h2>
+<p>这条设计家族学习线已讲解 dB、线性与非线性相位、巴特沃斯与切比雪夫/椭圆的指标取舍，并继续到 Z 变换、零极点、二阶巴特沃斯系数和逐拍实现。它与 <a href="notes-iir-fir.html#filter-ema-derivation">IIR / FIR 的 EMA 系数推导</a>是两条相关但不同的学习线。</p>
+<div class="frontier-box"><strong>证据边界</strong><p>以上是已经出现的讲解，不是已经掌握的证明。目前没有这条线独立答对的记录；最新的“衰减不够，怎样重新选择指标与阶数”检查仍待作答。打开页面、展开答案或勾选完成都不替代独立验证。</p></div>
+<ol class="learning-route"><li>先会把 dB 翻译成幅度比例。</li><li>把通带、阻带、采样率和允许误差写全。</li><li>理解公式中的零极点与系数符号。</li><li>独立判断一个设计是否真正满足指标。</li></ol>
+<p><a href="#family-check">直接做当前检查 →</a>　<a href="next-learning.html?topic=iir-fir">回到接着学 →</a></p>
+</section>
+<section id="family-db">
+<h2>dB：幅值与功率分开算</h2>
+<p>dB（分贝）是对数形式的<strong>比值</strong>，不是电压、压力或频率的单位。设同一频率稳态正弦的输入幅值为 A、输出幅值为 B，则幅值增益是 B/A；不要拿某一拍恰好接近零的样本值相除。</p>
+<div class="formula">G<sub>dB</sub> = 20 log<sub>10</sub>(B/A)<br>B/A = 10<sup>G<sub>dB</sub>/20</sup></div>
+<p>功率比改用 10 log<sub>10</sub>(P<sub>out</sub>/P<sub>in</sub>)。只有功率与幅值平方成正比、比较条件一致（例如同阻抗）时，才能把两种计算直接对应。</p>
+<div class="table-wrap"><table><thead><tr><th>增益</th><th>幅值比例</th><th>含义</th></tr></thead><tbody><tr><td>0 dB</td><td>1</td><td>幅值不变</td></tr><tr><td>−1 dB</td><td>约 0.8913</td><td>幅值保留约 89.1%</td></tr><tr><td>−3.0103 dB</td><td>1/√2 ≈ 0.7071</td><td>半功率，不是半幅值</td></tr><tr><td>−6.0206 dB</td><td>0.5</td><td>半幅值，功率约为 1/4</td></tr><tr><td>−40 dB</td><td>0.01</td><td>幅值剩百分之一</td></tr></tbody></table></div>
+<p class="warning"><strong>“截止”不一定就是 −3 dB。</strong>半功率的精确值是 −3.0102999566 dB，常简称 −3 dB。不同设计函数对边界频率的定义不同，必须先读定义，再比较参数。</p>
+</section>
+<section id="family-phase">
+<h2>相位：延迟不等于衰减</h2>
+<p>幅频响应回答“每个频率变成多大”，相频响应回答“每个频率挪动多少相位”。若所有成分都只延迟同一段时间 τ，那么相位随频率是一条斜线：</p>
+<div class="formula">φ(f) = −2πfτ　（φ 用 rad，f 用 Hz，τ 用 s）<br>τ<sub>g</sub>(f) = −(1/2π) dφ/df　（单位 s）</div>
+<p>群延迟描述相位曲线的局部斜率。用数字角频率 ω（rad/sample）作横轴时，τ<sub>g</sub>(ω) = −dφ/dω 的单位是<strong>样本</strong>；再除以采样率 f<sub>s</sub> 才是秒。比较曲线需展开相位，不能把 ±π 的显示跳变当作突然改变的物理延迟。</p>
+<p>例如 f<sub>s</sub> = 1000 Hz，延迟 5 个样本就是 5 ms。10 Hz 成分相移 −18°，20 Hz 成分相移 −36°；角度不同，但时间延迟相同。</p>
+<p>长度 L 的实系数对称或反对称 FIR 可具有线性相位，群延迟为 (L−1)/2 个样本。<strong>FIR 不自动等于线性相位，线性相位也不等于零延迟。</strong>响应零点处相位和群延迟不能按普通非零点解释。只有幅度也按所需比例保留时，多频信号才只是整体延迟；单有线性相位并不能保证波形幅度不变。</p>
+<p class="note">这里记录已讲过的概念。阶跃、振铃、不同家族的延迟曲线和更深的动态比较仍留在下一课，不提前记作已完成。</p>
+</section>
+<section id="family-specification">
+<h2>先写完整指标，再比较家族</h2>
+<p>低通/高通说的是保留哪些频率；FIR/IIR 说的是冲激响应的持续长度；巴特沃斯、切比雪夫和椭圆说的是一种响应设计取舍。它们不是互相替代的一组分类。</p>
+<div class="table-wrap"><table><thead><tr><th>家族</th><th>幅频形状</th><th>不能据此推断</th></tr></thead><tbody><tr><td>Butterworth 巴特沃斯</td><td>通带最大平坦，幅度单调下降</td><td>不是整个通带增益都恰好等于 1</td></tr><tr><td>Chebyshev I 切比雪夫 I 型</td><td>允许通带等波纹，阻带单调</td><td>纹波不是随机噪声，也不是一定更差</td></tr><tr><td>Chebyshev II 切比雪夫 II 型</td><td>通带单调，阻带等波纹</td><td>边界参数不与 I 型使用相同含义</td></tr><tr><td>Elliptic 椭圆</td><td>通带和阻带均允许等波纹</td><td>低阶不保证延迟、过冲和数值误差都更小</td></tr></tbody></table></div>
+<h3>一个完整的低通设计任务</h3>
+<div class="formula">f<sub>s</sub> = 1000 Hz；通带 0–50 Hz；阻带 100–500 Hz<br>通带最大损失 A<sub>p</sub> = 1 dB；阻带最小衰减 A<sub>s</sub> = 40 dB</div>
+<p>50–100 Hz 是允许响应逐渐下降的过渡带。通带要求幅值不低于 10<sup>−1/20</sup> ≈ 0.8913；阻带要求幅值不高于 10<sup>−40/20</sup> = 0.01。只说“50 Hz 低通”无法表达这两个要求。</p>
+<div class="table-wrap"><table><thead><tr><th>数字低通设计</th><th>最低阶 N</th><th>设计函数 Wn / Hz</th><th>Wn 的含义</th></tr></thead><tbody><tr><td>Butterworth</td><td>8</td><td>54.32426352</td><td>半功率频率</td></tr><tr><td>Chebyshev I</td><td>5</td><td>50</td><td>开始跌出 −A<sub>p</sub> 的通带边界</td></tr><tr><td>Chebyshev II</td><td>5</td><td>88.53250447</td><td>首次达到 −A<sub>s</sub> 的边界</td></tr><tr><td>Elliptic</td><td>4</td><td>50</td><td>开始跌出 −A<sub>p</sub> 的通带边界</td></tr></tbody></table></div>
+<p>这些阶数按同一完整数字指标，用 SciPy 1.17.0 阶数选择与设计函数复核，并用频率网格检查通带和阻带；不是实物测量。高阶实现通常分为二阶节（SOS），上述阶数分别需 4、3、3、2 行 SOS；奇数阶含一个一阶节。</p>
+<h3>巴特沃斯的阶数从哪里来？</h3>
+<p>模拟原型满足 |H(jΩ)|² = 1/[1+(Ω/Ω<sub>c</sub>)<sup>2N</sup>]。先把通带、阻带的容许损失代入，再消去 Ω<sub>c</sub>，得到最低阶条件。数字双线性设计须先预畸变，不能直接拿 Hz 比值冒充精确模拟比值：</p>
+<div class="formula">Ω<sub>p</sub> = 2f<sub>s</sub> tan(πf<sub>p</sub>/f<sub>s</sub>)<br>Ω<sub>st</sub> = 2f<sub>s</sub> tan(πf<sub>st</sub>/f<sub>s</sub>)<br>N ≥ log[(10<sup>A<sub>s</sub>/10</sup>−1)/(10<sup>A<sub>p</sub>/10</sup>−1)] / [2 log(Ω<sub>st</sub>/Ω<sub>p</sub>)]</div>
+<p>最后向上取整，并求合适的临界频率。这里 Ω 单位 rad/s，f 单位 Hz，f<sub>st</sub> 表示阻带边界，避免与采样率 f<sub>s</sub> 混淆。比较家族时仍需共同核对延迟、状态范围、定点精度和计算预算，而不只比较 N。</p>
+</section>
+<section id="family-poles">
+<h2>从差分方程看到零极点</h2>
+<p>先用熟悉的 EMA：y[n] = 0.2x[n] + 0.8y[n−1]。在零初始状态下，延迟一个样本对应 z<sup>−1</sup>：</p>
+<div class="formula">H(z) = Y(z)/X(z) = 0.2 / (1−0.8z<sup>−1</sup>) = 0.2z/(z−0.8)</div>
+<p>分子为零的 z = 0 是零点，分母为零的 z = 0.8 是极点。z 是复变量，不是 Hz；分析频率响应时，沿单位圆取 z = e<sup>j2πf/f<sub>s</sub></sup>。极点与零点的位置共同决定响应形状。</p>
+<p>0.8<sup>n</sup> 会衰减，1.05<sup>n</sup> 会增长，这给出稳定性的直觉。对<strong>因果、有理、约去公共因子后的离散传递函数</strong>，BIBO 稳定要求所有极点严格在单位圆内。单位圆上的极点不能按“差不多小于 1”处理；相消的模型仍需检查实际内部状态和有限精度。</p>
+<p>固定、有限个、有限大小系数的 FIR 对有界输入输出有界；不要把“递推实现”或是否能写出某个分母形式，当成判断 FIR 稳定性的捷径。实际程序还可能因溢出、索引错误或状态初始化而失败。</p>
+</section>
+<section id="family-biquad">
+<h2>二阶巴特沃斯：算到可执行系数</h2>
+<p>先做一个可复算的教学例子：f<sub>s</sub> = 1000 Hz，二阶低通半功率频率 f<sub>c</sub> = 50 Hz。它<strong>不是</strong>上一节的最低阶完整设计，只是把一个二阶节算清楚。条件为 0 &lt; f<sub>c</sub> &lt; f<sub>s</sub>/2，滤波更新必须以这个实际采样率运行。</p>
+<h3>从模拟原型到数字系数</h3>
+<div class="formula">H(s) = Ω<sub>c</sub>² / (s² + √2 Ω<sub>c</sub>s + Ω<sub>c</sub>²)<br>s = 2f<sub>s</sub>(1−z<sup>−1</sup>)/(1+z<sup>−1</sup>)<br>Ω<sub>c</sub> = 2f<sub>s</sub> tan(πf<sub>c</sub>/f<sub>s</sub>)</div>
+<p>双线性变换把模拟频率轴映射到数字单位圆，但频率映射不是线性的。预畸变先调整 Ω<sub>c</sub>，使数字结果真正落在指定 f<sub>c</sub>。这里的 s 是拉普拉斯复变量，不是采样编号。</p>
+<div class="formula">K = tan(πf<sub>c</sub>/f<sub>s</sub>)；D = 1 + √2K + K²<br>b₀ = b₂ = K²/D；b₁ = 2K²/D<br>a₁ = 2(K²−1)/D；a₂ = (1−√2K+K²)/D</div>
+<p>分母已归一化为 a₀ = 1。本例算得：</p>
+<div class="formula">b = [0.0200833655642, 0.0401667311284, 0.0200833655642]<br>a = [1, −1.56101807580, 0.641351538058]</div>
+<h3>把系数放回差分方程，别把符号翻两次</h3>
+<div class="formula">H(z) = (b₀+b₁z<sup>−1</sup>+b₂z<sup>−2</sup>) / (1+a₁z<sup>−1</sup>+a₂z<sup>−2</sup>)<br>y[n] = b₀x[n]+b₁x[n−1]+b₂x[n−2] − a₁y[n−1] − a₂y[n−2]</div>
+<p>a₁ 本身是负数，所以本例第一项反馈实际是 +1.561018…y[n−1]。移项的减号与系数的负号各出现一次。不同库可能使用相反的反馈系数存储约定，不能照抄数组而不核对方程。</p>
+<pre><code>// 合成教学伪代码：每个通道各自保存 x1,x2,y1,y2；这里按零状态启动。
+y = b0*x + b1*x1 + b2*x2 - a1*y1 - a2*y2;
+x2 = x1; x1 = x;
+y2 = y1; y1 = y;</code></pre>
+<p>先算输出再移动历史，旧状态才不会被提前覆盖。正切和系数设计放在初始化/重新设计阶段，不是每采一个样本都重新求一遍。工程上还要决定启动策略、状态共享边界、数值类型和溢出保护；这里未在硬件运行。</p>
+<h3>两次核对：极点位置与频率增益</h3>
+<p>本例有两个 z = −1 的零点，极点约为 0.780509 ± j0.179324，半径约 0.800844 &lt; 1。下面用这些系数计算稳态响应：</p>
+<div class="table-wrap"><table><thead><tr><th>频率 / Hz</th><th>幅值比</th><th>增益 / dB</th></tr></thead><tbody><tr><td>10</td><td>0.999226</td><td>−0.006726</td></tr><tr><td>20</td><td>0.987779</td><td>−0.106805</td></tr><tr><td>50</td><td>0.707107</td><td>−3.010300</td></tr><tr><td>100</td><td>0.231178</td><td>−12.721074</td></tr><tr><td>200</td><td>0.047469</td><td>−26.471738</td></tr></tbody></table></div>
+<p>100 Hz 干扰仍留下约 23.1% 幅度，明显高于 40 dB 衰减所需的 1%。数学稳定只能说明有界输入不导致无界输出，<strong>不能证明滤波指标合格</strong>。</p>
+</section>
+<section id="family-check">
+<h2>独立检查：不够衰减怎么办</h2>
+<p class="note">当前待验证目标：从指标判断，而不是记住某个家族“更好”。请先写答案，再展开自查；本页不自动判分，也不记录为已经独立答对。</p>
+<ol><li>输入 100 Hz 正弦幅值为 2 V，使用上面的二阶滤波器。稳态输出幅值约多少？若要求至少 40 dB 衰减，允许输出最多多少？</li><li>现在只知道有用信号在 0–20 Hz、干扰在 100 Hz。能否唯一决定“加阶数”还是“降低截止”？还缺哪些指标？</li><li>若改成完整要求：0–50 Hz 最大损失 1 dB、100–500 Hz 最少衰减 40 dB，保持二阶且只降低截止频率是否足够？写出下一步验证方法。</li><li>为什么椭圆最低阶更小，不能推出它必然同时有更小延迟、更少过冲和更好的数值鲁棒性？</li></ol>
+<details><summary>完成后展开：核对幅值与重新设计思路</summary><p>1. 输出约 2 × 0.231178 = 0.462356 V；40 dB 衰减允许最多 2 × 0.01 = 0.02 V，所以不合格。</p><p>2. 不能唯一决定。还缺通带允许损失、整个阻带要求、允许延迟/过冲及实现资源。降低截止可加强抑制，却也可能伤害有用信号；增加阶数也可能可行，不应被一概排除。保持 Butterworth 的半功率频率 50 Hz，7 阶在 100 Hz 已约衰减 43.69 dB，但 50 Hz 仍损失 3.0103 dB。</p><p>3. 固定二阶时，满足 100 Hz 至少 40 dB 衰减要求 f<sub>c</sub> ≤ 10.3391 Hz；满足 50 Hz 至多 1 dB 损失却要求 f<sub>c</sub> ≥ 69.5473 Hz，两条件没有交集。应把完整指标交给阶数选择，再设计并检查整个频带。上文 8 阶、Wn ≈ 54.3243 Hz 的巴特沃斯就是一个可行数字设计，而不是把半功率点强行固定在 50 Hz。</p><p>4. 幅频指标不包含所有时间域与有限精度代价。还需比较群延迟、阶跃响应、二阶节内部峰值和量化后的极点/响应；这些不能靠家族名称推断。</p></details>
+<details><summary>轻量复习：−6 dB 是只剩 6% 吗？</summary><p>不是。幅值比例 10<sup>−6/20</sup> ≈ 0.5012，约剩一半。精确半幅值对应 −6.0206 dB。负 dB 表示比例小于 1，并不是“负的幅值”。</p></details>
+</section>
+<section id="family-next">
+<h2>下一课仍是预告</h2>
+<p>后续计划把动态响应、相位/群延迟、阶跃与振铃、二阶节结构和系数量化串成一课。当前只记录相关概念与实现提醒已经出现；更深的比较、定点验证和完整实验仍<strong>待学习、待独立验证</strong>。</p>
+<p>进入新课前的小目标：不看答案解释半功率与半幅值；能按给定分母约定写出反馈符号；能用至少两个频带指标指出二阶例子为什么不合格。若仍卡在 α 怎样从截止频率算出来，先回看 <a href="notes-iir-fir.html#filter-ema-derivation">EMA 推导</a>，不必把前置知识拆成许多新课。</p>
+</section>
+<section id="family-sources">
+<h2>公式核验与继续阅读</h2>
+<p>本页是重新组织的教学概念与合成例子。核实日期为 2026-10-27，不是软件发布日期。数值采用离散公式与 SciPy 1.17.0 独立复算，未做本站实物复现；不附私人对话或原始记录。</p>
+<ul class="source-list"><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html">SciPy butter</a>：巴特沃斯半功率频率、输出形式及高阶数值注意事项。</li><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cheby1.html">SciPy cheby1</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cheby2.html">cheby2</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ellip.html">ellip</a>：纹波与各自临界频率定义。</li><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.buttord.html">buttord</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cheb1ord.html">cheb1ord</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cheb2ord.html">cheb2ord</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ellipord.html">ellipord</a>：完整通带/阻带指标与最低阶设计。</li><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.bilinear.html">SciPy bilinear</a>：双线性变换；函数本身不自动进行预畸变。</li><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.group_delay.html">SciPy group_delay</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html">firwin</a>：群延迟、线性相位与不同截止定义。</li><li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lfilter.html">SciPy lfilter</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.sosfilt.html">sosfilt</a>、<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.freqz.html">freqz</a>：差分方程、二阶节与数字频率响应。</li></ul>
+<p><a href="knowledge.html?topic=filter-families">回到设计家族比较 →</a>　<a href="engineering.html#iir">查看 IIR 工程实现 →</a>　<a href="simulation.html?scenario=frequency">用已有实验观察频率与延迟 →</a></p>
+<p class="source-note">已有频率实验是帮助建立直觉的工具，不是本页四种家族的自动系数设计器；打开实验不代表完成设计验证。</p>
+</section>
+</article><footer class="reading-footer"><nav class="footer-nav" aria-label="继续阅读"><a href="notes-iir-fir.html">IIR / FIR 基础笔记 →</a><a href="next-learning.html?topic=iir-fir">接着学与独立检查 →</a></nav><p>先写指标，再算系数；最后检查，而不是凭名字选滤波器。</p></footer></main></div></body></html>

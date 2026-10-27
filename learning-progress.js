@@ -34,11 +34,13 @@
   // BEGIN GENERATED LEARNING PROFILE
   var PROFILE = {
   "schemaVersion": 1,
-  "version": "2026-10-27.2",
+  "version": "2026-10-27.3",
   "reviewedAt": "2026-10-27",
   "reviewLabel": "2026-10-27 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
+    "filters-ema-design-check",
+    "filters-biquad-spec-check",
     "aligned-estimates-median",
     "quadrature-reference-check",
     "filters-frequency-delay",
@@ -90,10 +92,10 @@
       "goal": "把冲激响应分类、频率响应形状和设计方法放在不同层次，先理解巴特沃斯与切比雪夫的取舍。",
       "check": "分别说明 FIR / IIR 与巴特沃斯、切比雪夫描述什么；再举一个通带纹波、过渡带或延迟指标，说明为什么不能仅凭“适合正弦”选滤波器。",
       "why": "最新追问已经到结构和设计家族的关系；先补清抵消机制，再接这个概念连接。",
-      "frontier": "已提出 FIR / IIR 与设计家族的关系问题；当前没有独立解释正确的记录。",
-      "href": "knowledge.html?topic=filter-families",
+      "frontier": "分类与同指标选型已有讲解；独立解释仍未验证，保留为基础复习。",
+      "href": "notes-filter-families.html#family-specification",
       "experiment": "simulation.html?scenario=frequency",
-      "material": "知识页含巴特沃斯与切比雪夫的设计比较；椭圆部分待继续讲解。相关实验辅助观察幅度与延迟，不是设计家族的系数设计器。",
+      "material": "设计族笔记已包含巴特沃斯、切比雪夫 I / II 与椭圆的同指标比较；更深入的动态、SOS 数值和量化仍为后续课程。",
       "estimatedMinutes": "10–15 分钟"
     },
     {
@@ -155,6 +157,36 @@
       "experiment": "next-learning.html#aligned-estimates-check",
       "material": "本页提供原创理想角度例子和折叠自查，不对应实际通道、设备结构或代码。正交参考练习保留为轻量回看。",
       "estimatedMinutes": "5–10 分钟"
+    },
+    {
+      "id": "filters-ema-design-check",
+      "topic": "iir-fir",
+      "title": "α 公式为什么有余弦和根号？",
+      "prerequisites": [],
+      "prerequisiteText": "先分清采样率 Hz、每拍相位与稳态正弦幅度；本节从一阶差分式开始。",
+      "goal": "把每拍相位、相量差和半功率条件连起来，不只记住系数公式。",
+      "check": "fs 从 1000 Hz 变成 2000 Hz，fc 也从 10 Hz 变成 20 Hz：θ、d、α 是否改变？解释余弦项和根号分别从哪里来，以及为何不能用单拍 y/x 验证幅度比。",
+      "why": "IIR / FIR 学习线最新停在系数公式的来由；推导已补讲，但还没有独立解释，先补这一处比重复分类更合适。",
+      "frontier": "来源：IIR / FIR 课程。半功率系数推导已讲解，独立解释与频率缩放检查仍待验证。",
+      "href": "notes-iir-fir.html#filter-ema-derivation",
+      "experiment": "notes-iir-fir.html#filter-impulse",
+      "material": "先按四步读推导，再独立回答频率缩放题；冲激实验保留为轻量复习，不代替幅频检查。",
+      "estimatedMinutes": "10–15 分钟"
+    },
+    {
+      "id": "filters-biquad-spec-check",
+      "topic": "iir-fir",
+      "title": "算出二阶系数，就已经满足滤波要求了吗？",
+      "prerequisites": [],
+      "prerequisiteText": "知道 dB 是比例，区分通带边缘与截止点；必要时回看本页的 dB 和完整指标。",
+      "goal": "把二阶 Butter 系数、反馈符号与完整通阻带指标连起来。",
+      "check": "fs=1000 Hz、二阶 Butter 半功率 fc=50 Hz，100 Hz 增益约 −12.72 dB：能满足至少40 dB衰减吗？还缺什么通带与时域约束，才能判断增阶、降低截止或更换家族？",
+      "why": "设计族课程已讲到零极点与二阶系数，末尾选型检查没有回答；先验证指标而不是直接推进更高阶实现。",
+      "frontier": "来源：巴特沃斯与切比雪夫课程。dB、相位、选阶、Z 与二阶系数已讲解；独立复算和选型仍待验证，后续完整动态与量化课程为预告。",
+      "href": "notes-filter-families.html#family-check",
+      "experiment": "knowledge.html?topic=filter-families\u0026view=principles",
+      "material": "完整笔记与折叠自查；原有幅频图仅辅助比较，不把它当成目标系数的实物验证。",
+      "estimatedMinutes": "10–15 分钟"
     }
   ],
   "lessonOverrides": {
@@ -192,8 +224,7 @@
     },
     "filters-design-families": {
       "status": "pending",
-      "observedAt": "2026-10-14",
-      "summary": "已提出 FIR / IIR 与巴特沃斯、切比雪夫、椭圆关系的疑问，尚无独立答对证据。"
+      "summary": "设计族课程已讲解分类、dB、相位、同指标选阶和二阶系数；此前分类练习仍无独立答对证据。"
     },
     "fourier-bin-check": {
       "status": "pending",
@@ -233,6 +264,14 @@
       "status": "pending",
       "observedAt": "2026-10-27",
       "summary": "独立提问线：已讲解多组结果先统一参考与周期、再取同帧中位数并检查一致性；尚未独立作答，不把有效组数等同准确度或掌握。"
+    },
+    "filters-ema-design-check": {
+      "status": "pending",
+      "summary": "来源：IIR / FIR 课程。半功率系数推导已讲解，独立解释与频率缩放检查仍待验证。"
+    },
+    "filters-biquad-spec-check": {
+      "status": "pending",
+      "summary": "来源：巴特沃斯与切比雪夫课程。dB、相位、选阶、Z 与二阶系数已讲解；独立复算和选型仍待验证，后续完整动态与量化课程为预告。"
     }
   },
   "topicSummaries": [
@@ -256,12 +295,12 @@
     },
     {
       "topic": "iir-fir",
-      "title": "IIR / FIR · 轻量复习备选",
+      "title": "IIR / FIR 与设计家族 · 两条课程检查",
       "status": "pending",
-      "frontier": "从看到滞后，走到解释抵消与幅度。",
-      "summary": "最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。",
-      "check": "下一次验证：4 点平均为何会抵消 1、0、−1、0？",
-      "href": "notes-iir-fir.html#filter-boundaries"
+      "frontier": "EMA 公式来由与二阶设计指标：已讲，待独立验证。",
+      "summary": "IIR / FIR 线已补讲半功率系数推导；设计族线已讲 dB、相位、选阶、零极点与二阶系数。两线没有新增独立答对证据；动态响应与量化后续课程仍为预告。",
+      "check": "先解释 EMA 中的余弦和根号，再检查二阶 Butter 的 100 Hz 衰减是否达标。",
+      "href": "notes-iir-fir.html#filter-ema-derivation"
     },
     {
       "topic": "transforms",

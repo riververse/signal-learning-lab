@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="lab-shell.css">
 <link rel="stylesheet" href="mobile-reading.css">
-<link rel="stylesheet" href="next-learning.css?v=2026-10-27.2">
+<link rel="stylesheet" href="next-learning.css?v=2026-10-27.3">
 <link rel="stylesheet" href="question-helper.css?v=20261016r3">
-<script src="learning-progress.js?v=2026-10-27.2" defer></script>
+<script src="learning-progress.js?v=2026-10-27.3" defer></script>
 <script src="question-helper.js?v=20261016r3" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
@@ -31,15 +31,15 @@
  <noscript><p class="nl-warning">当前浏览器未启用 JavaScript，不能保存打卡或切换推荐。下面仍显示最新整理的推荐与验证题；本机打卡需要启用 JavaScript。</p></noscript>
  <div class="nl-workspace">
   <section class="nl-recommend" aria-labelledby="nl-lesson-title">
-   <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">数字 PLL</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
-   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">多组结果都有效，为什么还要先对齐再取中位数？</h2>
-   <p class="nl-goal" id="nl-goal">用一组理想合成角度，区分有效筛选、参考对齐、中位数融合和最终一致性检查。</p>
-   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。多组对齐后融合已有讲解，独立计算与有效性边界仍待验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">局部角 170°、80°、−10°，参考偏移分别为 0°、90°、180°，粗参考已确认在 170° 附近。先统一参考与周期，再求中位数；然后求同帧五个已对齐估计 169°、170°、171°、172°、240° 的中位数，说明它为何不是平均或时间滤波。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：近期单独提问已转到多组有效结果如何合成一个结果；先验证坐标对齐和中位数，再讨论更多滤波，避免把有效等同准确。</p>
-   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">会把局部角加回已知参考偏移，并按给定粗参考选周期；若不熟，先回看下方正交坐标小题。</span></p><p class="nl-material-note" id="nl-material-note">本页提供原创理想角度例子和折叠自查，不对应实际通道、设备结构或代码。正交参考练习保留为轻量回看。</p>
-   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#aligned-estimates">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#aligned-estimates-check">打开相关实验</a></div>
+   <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">IIR / FIR</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
+   <p class="nl-task-meta" id="nl-lesson-meta">10–15 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">α 公式为什么有余弦和根号？</h2>
+   <p class="nl-goal" id="nl-goal">把每拍相位、相量差和半功率条件连起来，不只记住系数公式。</p>
+   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：IIR / FIR 课程。半功率系数推导已讲解，独立解释与频率缩放检查仍待验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">fs 从 1000 Hz 变成 2000 Hz，fc 也从 10 Hz 变成 20 Hz：θ、d、α 是否改变？解释余弦项和根号分别从哪里来，以及为何不能用单拍 y/x 验证幅度比。</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：IIR / FIR 学习线最新停在系数公式的来由；推导已补讲，但还没有独立解释，先补这一处比重复分类更合适。</p>
+   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">先分清采样率 Hz、每拍相位与稳态正弦幅度；本节从一阶差分式开始。</span></p><p class="nl-material-note" id="nl-material-note">先按四步读推导，再独立回答频率缩放题；冲激实验保留为轻量复习，不代替幅频检查。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-iir-fir.html#filter-ema-derivation">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="notes-iir-fir.html#filter-impulse">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕这一步的目标，先检查前置理解，再用一个小例子让我独立作答。">带着这一步提问</button></div>
-   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：换一组坐标，sin / cos 的角色会变吗？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：算出二阶系数，就已经满足滤波要求了吗？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
   </section>
   <aside class="nl-route-controls" aria-labelledby="nl-choice-title">
    <h2 id="nl-choice-title">换一条学习线</h2>
@@ -54,7 +54,7 @@
   <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-10-27">2026-10-27 · 北京时间</time></span></div>
   <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>多组估计与参考对齐 · 当前检查</h3><p class="nl-evidence-frontier">先统一参考与周期，再融合；有效不等于准确。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关流程已有讲解，参考转换、中位数及多数同向偏差的边界仍待独立验证。</p><p class="nl-evidence-check">下一次验证：把三组局部角对齐，再解释同帧五个估计为什么取第 3 个。</p><a href="next-learning.html#aligned-estimates">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 保留复习</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
-<article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR · 轻量复习备选</h3><p class="nl-evidence-frontier">从看到滞后，走到解释抵消与幅度。</p><p>最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。</p><p class="nl-evidence-check">下一次验证：4 点平均为何会抵消 1、0、−1、0？</p><a href="notes-iir-fir.html#filter-boundaries">回看相关材料</a></article>
+<article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR 与设计家族 · 两条课程检查</h3><p class="nl-evidence-frontier">EMA 公式来由与二阶设计指标：已讲，待独立验证。</p><p>IIR / FIR 线已补讲半功率系数推导；设计族线已讲 dB、相位、选阶、零极点与二阶系数。两线没有新增独立答对证据；动态响应与量化后续课程仍为预告。</p><p class="nl-evidence-check">先解释 EMA 中的余弦和根号，再检查二阶 Butter 的 100 Hz 衰减是否达标。</p><a href="notes-iir-fir.html#filter-ema-derivation">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>傅里叶 · 并行检查</h3><p class="nl-evidence-frontier">已讲解 DFT 频点与 FFT；最新频点题待答。</p><p>保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。</p><p class="nl-evidence-check">下一次验证：观察时长、Δf 与 k 怎样一起变化？</p><a href="notes-transforms.html#fourier-frontier">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>卡尔曼 · 测量更新之后</h3><p class="nl-evidence-frontier">第 15 讲已讲解，零交叉协方差题待答。</p><p>已讲到两个增益、两个状态和整个协方差的更新；末题尚未独立回答。第 16–19 讲仍为预告。</p><p class="nl-evidence-check">下一次验证：Pvp⁻ = 0 时，压力残差再大，本次能否直接修正变化率？</p><a href="notes-kalman.html#kalman-measurement-check">回看相关材料</a></article></div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>
@@ -80,7 +80,7 @@
   <ol><li><strong>采样：</strong>ADC 何时取数。持续采集不等于每个原始点都能独立解算位置。</li><li><strong>位置更新：</strong>何时产生一个新的有效位置；一组通道或一帧样本可能才够计算一次。运算耗时、更新周期、数据年龄和发送延迟是不同指标。</li><li><strong>位移判定：</strong>拿新位置与参考位置比较。相对上次已报告位置变化达到门槛，只决定“这一拍报不报”，不会补回两拍之间没测到的细节。</li><li><strong>发送：</strong>何时把结果写入队列或传出去。一次发送可包含多个已有独立结果；必须看各自的采集时间戳，而不是只看终端到达时间。</li></ol>
   <h3 id="sampling-position-check">先手算三拍，再看答案</h3><p>假设理想无噪声、单向匀速运动，从 0 mm 开始；每 4 ms 生成一个独立绝对位置，速度 750 mm/s。初始输出 0 mm，以后相对上次输出变化至少 1 mm 才报告；每次至多报告当前一个值。求 0、4、8 ms 的位置与报告值，再判断是否每个整数毫米都有独立测量。</p>
   <details><summary>展开自查：位置正确 ≠ 每毫米都测过</summary><p>4 ms = 0.004 s；相邻位置差 = 750 mm/s × 0.004 s = 3 mm。因此三拍位置和报告值都是 0、3、6 mm。它们可以各自正确，但没有独立测到 1、2、4、5 mm。</p><p>1 mm ÷ 0.004 s = 250 mm/s，只表示在该理想模型中，相邻更新位移不超过 1 mm 的速度条件，不是通用最大跟踪速度，也不保证恰好在每个整数毫米取样。实际时序抖动、方向变化和噪声还需留余量。</p><p>若要覆盖更细的空间变化，需要足够密的独立采样与解算；若要在整数边界触发，还要明确边界判定、时间戳与误差容限。量化为 1 mm、变化至少 1 mm 才报、每毫米一个独立测量，是三种不同要求。</p><p>真实速度上限还受信号带宽、曝光或采集时长、多通道时间偏差、可辨识性和算法搜索范围等限制；不能仅凭这个除法或终点正确下结论。</p></details>
-  <h3>批量输出与补点，怎样辨认？</h3><p>一批发送三个带原始时间戳的独立结果，可以保留三次测量。这里“独立结果”指分别产生的原生结果，并非断言统计上互不相关。只有 0 和 3 mm 两个结果，再插出 1 和 2 mm，则只是估计中间过程，不能标成独立实测；两端相同也不能排除中间曾往返。</p><p>一个可验证的小目标：不看答案，解释采样率、有效位置更新率、发送频率为何可能不同，并说出验证逐毫米记录还缺哪些证据。可查原始时间戳、有效位置计数、丢样/丢包计数与真实位移参考。打开本页不自动记为掌握。</p><p><a href="next-learning.html?topic=iir-fir">轻量复习备选：4 点平均为什么抵消正弦？</a> · <a href="#next-main">返回当前学习安排</a></p>
+  <h3>批量输出与补点，怎样辨认？</h3><p>一批发送三个带原始时间戳的独立结果，可以保留三次测量。这里“独立结果”指分别产生的原生结果，并非断言统计上互不相关。只有 0 和 3 mm 两个结果，再插出 1 和 2 mm，则只是估计中间过程，不能标成独立实测；两端相同也不能排除中间曾往返。</p><p>一个可验证的小目标：不看答案，解释采样率、有效位置更新率、发送频率为何可能不同，并说出验证逐毫米记录还缺哪些证据。可查原始时间戳、有效位置计数、丢样/丢包计数与真实位移参考。打开本页不自动记为掌握。</p><p><a href="notes-iir-fir.html#filter-ema-derivation">EMA 公式推导</a> · <a href="notes-filter-families.html#family-check">二阶设计指标自查</a> · <a href="next-learning.html?topic=iir-fir">轻量复习备选：4 点平均为什么抵消正弦？</a> · <a href="#next-main">返回当前学习安排</a></p>
  </section>
  <section class="nl-plan" aria-labelledby="nl-plan-title">
   <div class="nl-section-heading"><div><h2 id="nl-plan-title">我的下一段路线</h2><p class="nl-small">“已自报完成”只表示你按下了打卡，不表示系统已判定掌握。可以随时撤回。</p></div><span id="nl-progress-count">尚未记录本机完成项</span></div>
