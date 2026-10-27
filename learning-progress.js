@@ -34,11 +34,12 @@
   // BEGIN GENERATED LEARNING PROFILE
   var PROFILE = {
   "schemaVersion": 1,
-  "version": "2026-10-27.1",
+  "version": "2026-10-27.2",
   "reviewedAt": "2026-10-27",
   "reviewLabel": "2026-10-27 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
+    "aligned-estimates-median",
     "quadrature-reference-check",
     "filters-frequency-delay",
     "filters-design-families",
@@ -139,6 +140,21 @@
       "experiment": "next-learning.html#quadrature-reference-check",
       "material": "本页提供理想合成例子与折叠自查；不推断任何实际通道的相位、极性或编号映射。",
       "estimatedMinutes": "5–10 分钟"
+    },
+    {
+      "id": "aligned-estimates-median",
+      "topic": "pll",
+      "title": "多组结果都有效，为什么还要先对齐再取中位数？",
+      "prerequisites": [],
+      "prerequisiteText": "会把局部角加回已知参考偏移，并按给定粗参考选周期；若不熟，先回看下方正交坐标小题。",
+      "goal": "用一组理想合成角度，区分有效筛选、参考对齐、中位数融合和最终一致性检查。",
+      "check": "局部角 170°、80°、−10°，参考偏移分别为 0°、90°、180°，粗参考已确认在 170° 附近。先统一参考与周期，再求中位数；然后求同帧五个已对齐估计 169°、170°、171°、172°、240° 的中位数，说明它为何不是平均或时间滤波。",
+      "why": "近期单独提问已转到多组有效结果如何合成一个结果；先验证坐标对齐和中位数，再讨论更多滤波，避免把有效等同准确。",
+      "frontier": "来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。多组对齐后融合已有讲解，独立计算与有效性边界仍待验证。",
+      "href": "next-learning.html#aligned-estimates",
+      "experiment": "next-learning.html#aligned-estimates-check",
+      "material": "本页提供原创理想角度例子和折叠自查，不对应实际通道、设备结构或代码。正交参考练习保留为轻量回看。",
+      "estimatedMinutes": "5–10 分钟"
     }
   ],
   "lessonOverrides": {
@@ -212,17 +228,22 @@
     "kalman-16": {
       "status": "pending",
       "summary": "连续多轮数值递推目前只是第 16 讲预告，尚未开始讲解或独立练习。"
+    },
+    "aligned-estimates-median": {
+      "status": "pending",
+      "observedAt": "2026-10-27",
+      "summary": "独立提问线：已讲解多组结果先统一参考与周期、再取同帧中位数并检查一致性；尚未独立作答，不把有效组数等同准确度或掌握。"
     }
   },
   "topicSummaries": [
     {
       "topic": "pll",
-      "title": "正交坐标与参考角 · 当前检查",
+      "title": "多组估计与参考对齐 · 当前检查",
       "status": "pending",
-      "frontier": "先归一化，再统一参考；编号不决定 sin/cos。",
-      "summary": "来自另行提出的算法问题，不计入两段课程的新进度。相关概念讲解过，独立归一化、符号与坐标转换尚未验证。",
-      "check": "下一次验证：同一个点换一组坐标后，能否还原同一个参考角？",
-      "href": "next-learning.html#quadrature-reference"
+      "frontier": "先统一参考与周期，再融合；有效不等于准确。",
+      "summary": "来自另行提出的算法问题，不计入两段课程的新进度。相关流程已有讲解，参考转换、中位数及多数同向偏差的边界仍待独立验证。",
+      "check": "下一次验证：把三组局部角对齐，再解释同帧五个估计为什么取第 3 个。",
+      "href": "next-learning.html#aligned-estimates"
     },
     {
       "topic": "control",

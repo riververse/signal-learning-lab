@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="lab-shell.css">
 <link rel="stylesheet" href="mobile-reading.css">
-<link rel="stylesheet" href="next-learning.css?v=2026-10-27.1">
+<link rel="stylesheet" href="next-learning.css?v=2026-10-27.2">
 <link rel="stylesheet" href="question-helper.css?v=20261016r3">
-<script src="learning-progress.js?v=2026-10-27.1" defer></script>
+<script src="learning-progress.js?v=2026-10-27.2" defer></script>
 <script src="question-helper.js?v=20261016r3" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
@@ -32,14 +32,14 @@
  <div class="nl-workspace">
   <section class="nl-recommend" aria-labelledby="nl-lesson-title">
    <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">数字 PLL</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
-   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">换一组坐标，sin / cos 的角色会变吗？</h2>
-   <p class="nl-goal" id="nl-goal">先归一化两路读数，再把局部角换回同一个参考角。</p>
-   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。相关概念已有讲解，归一化与参考转换仍待独立验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">某路最小值 1、最大值 5、当前值 4.6 V，归一化后记作 v；另一路 u = 0.6。求中心、半幅、v 与 atan2(v,u)，再用 (u′,v′)=(v,−u) 算局部角并换回统一参考。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：近期单独提出的问题已转到归一化与相邻组的 sin/cos 角色；先验证参考角和符号，避免把编号当成固定身份。</p>
-   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">先分清中心、半幅与峰峰值；本题明确给定理想正交关系，不按通道编号猜测。</span></p><p class="nl-material-note" id="nl-material-note">本页提供理想合成例子与折叠自查；不推断任何实际通道的相位、极性或编号映射。</p>
-   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#quadrature-reference">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#quadrature-reference-check">打开相关实验</a></div>
+   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">多组结果都有效，为什么还要先对齐再取中位数？</h2>
+   <p class="nl-goal" id="nl-goal">用一组理想合成角度，区分有效筛选、参考对齐、中位数融合和最终一致性检查。</p>
+   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不是傅里叶或卡尔曼课程的新进度。多组对齐后融合已有讲解，独立计算与有效性边界仍待验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">局部角 170°、80°、−10°，参考偏移分别为 0°、90°、180°，粗参考已确认在 170° 附近。先统一参考与周期，再求中位数；然后求同帧五个已对齐估计 169°、170°、171°、172°、240° 的中位数，说明它为何不是平均或时间滤波。</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：近期单独提问已转到多组有效结果如何合成一个结果；先验证坐标对齐和中位数，再讨论更多滤波，避免把有效等同准确。</p>
+   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">会把局部角加回已知参考偏移，并按给定粗参考选周期；若不熟，先回看下方正交坐标小题。</span></p><p class="nl-material-note" id="nl-material-note">本页提供原创理想角度例子和折叠自查，不对应实际通道、设备结构或代码。正交参考练习保留为轻量回看。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#aligned-estimates">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#aligned-estimates-check">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕这一步的目标，先检查前置理解，再用一个小例子让我独立作答。">带着这一步提问</button></div>
-   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：平均为什么会让正弦变小，甚至消失？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：换一组坐标，sin / cos 的角色会变吗？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
   </section>
   <aside class="nl-route-controls" aria-labelledby="nl-choice-title">
    <h2 id="nl-choice-title">换一条学习线</h2>
@@ -52,12 +52,20 @@
  </div>
  <section class="nl-evidence" aria-labelledby="nl-evidence-title">
   <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-10-27">2026-10-27 · 北京时间</time></span></div>
-  <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>正交坐标与参考角 · 当前检查</h3><p class="nl-evidence-frontier">先归一化，再统一参考；编号不决定 sin/cos。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关概念讲解过，独立归一化、符号与坐标转换尚未验证。</p><p class="nl-evidence-check">下一次验证：同一个点换一组坐标后，能否还原同一个参考角？</p><a href="next-learning.html#quadrature-reference">回看相关材料</a></article>
+  <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>多组估计与参考对齐 · 当前检查</h3><p class="nl-evidence-frontier">先统一参考与周期，再融合；有效不等于准确。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关流程已有讲解，参考转换、中位数及多数同向偏差的边界仍待独立验证。</p><p class="nl-evidence-check">下一次验证：把三组局部角对齐，再解释同帧五个估计为什么取第 3 个。</p><a href="next-learning.html#aligned-estimates">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 保留复习</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR · 轻量复习备选</h3><p class="nl-evidence-frontier">从看到滞后，走到解释抵消与幅度。</p><p>最近已观察到窗口与平滑强度影响延迟；正弦幅度的变化、平滑到近乎直线的根因，以及设计家族的关系仍是开放问题。</p><p class="nl-evidence-check">下一次验证：4 点平均为何会抵消 1、0、−1、0？</p><a href="notes-iir-fir.html#filter-boundaries">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>傅里叶 · 并行检查</h3><p class="nl-evidence-frontier">已讲解 DFT 频点与 FFT；最新频点题待答。</p><p>保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。</p><p class="nl-evidence-check">下一次验证：观察时长、Δf 与 k 怎样一起变化？</p><a href="notes-transforms.html#fourier-frontier">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>卡尔曼 · 测量更新之后</h3><p class="nl-evidence-frontier">第 15 讲已讲解，零交叉协方差题待答。</p><p>已讲到两个增益、两个状态和整个协方差的更新；末题尚未独立回答。第 16–19 讲仍为预告。</p><p class="nl-evidence-check">下一次验证：Pvp⁻ = 0 时，压力残差再大，本次能否直接修正变化率？</p><a href="notes-kalman.html#kalman-measurement-check">回看相关材料</a></article></div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>
+ </section>
+ <section class="nl-plan" id="aligned-estimates" aria-labelledby="aligned-estimates-title">
+  <div class="nl-section-heading"><div><h2 id="aligned-estimates-title">先把尺子的零点对齐，再比较读数</h2><p class="nl-small">独立学习线 · 相关流程已讲解，独立作答待验证。不计入两段课程的新进度。</p></div></div>
+  <p><strong>先限定条件：</strong>这是原创理想角度例子，不对应任何实际通道或软件。各组已通过本题给定的有效性筛选，测的是同一时刻、同一个量；参考偏移已知，粗参考能区分周期分支。通过筛选只表示可以参与计算，不保证读数准确，也不表示各组误差统计独立。</p>
+  <ol><li><strong>先各算各的。</strong>校准后的每组正交分量先产生一个局部角；这里直接给出局部角，避免重复整套归一化。</li><li><strong>统一参考。</strong>本题规定统一角 = 局部角 + 已知参考偏移，再加减 360°，选靠近已确认粗参考的分支。这是本题约定，不是所有传感器通用的符号规则。若粗参考不能区分分支，不能靠取中位数补出整圈信息。</li><li><strong>排序取中间。</strong>同帧 2m + 1 个已对齐的一维估计，升序后取第 m + 1 个；偶数个常取中间两个的均值。这是一个明确选定的融合方法，不是所有算法的固定规则。</li><li><strong>最后仍要核对。</strong>检查融合值是否符合测量范围、粗参考与其他一致性条件；这些条件须由具体模型定义，不能仅凭所有组都有效就认定整帧可接受。</li></ol>
+  <h3 id="aligned-estimates-check">先独立算两步，再展开答案</h3><p>三组局部角为 170°、80°、−10°，对应参考偏移为 0°、90°、180°。粗参考已确认真实角在 170° 附近：先加偏移，再选最近的 360° 分支，三个结果与中位数分别是多少？</p><p>另一次同帧五个<strong>已经对齐</strong>的估计是 169°、170°、171°、172°、240°。求中位数与算术平均值；解释为何这不需要过去五帧，也不是按可信度加权。</p>
+  <details><summary>展开自查：对齐、融合、通过检查是三件事</summary><p>先加偏移得到 170°、170°、170°，中位数为 170°。若另一个同参考读数是 −190°，可加 360° 得到 170°；但 −10° 与 170° 相差 180°，不能加减整圈把它伪装成 170°。是否拒收这种不一致，还需预先定义容差。</p><p>五数已升序，中位数取第 3 个，即 171°；算术平均为 (169 + 170 + 171 + 172 + 240)/5 = 184.4°。单个大偏差会明显拉动平均，而本例中位数仍在多数读数附近；但没有外部真值，不能由此宣称 171° 就是真值。</p><p>若这些值来自同一帧的多组估计，这是同帧融合，不是把过去几帧做时间中值滤波；取排序中间项也不是置信度加权。若多数通道共同偏移、周期选错或采样时刻不同，中位数同样可能错。</p></details>
+  <p><strong>小目标：</strong>独立识别“差一整圈”与“真正不一致”，算出中位数，再说出至少一个中位数无法修复的误差。先不展开答案；展开或打开页面不记为掌握。</p><p><a href="#quadrature-reference">轻量前置：归一化与局部参考角</a> · <a href="#next-main">返回当前学习安排</a></p>
  </section>
  <section class="nl-plan" id="quadrature-reference" aria-labelledby="quadrature-reference-title">
   <div class="nl-section-heading"><div><h2 id="quadrature-reference-title">换的是参考坐标，不是信号本身</h2><p class="nl-small">独立学习线 · 已有相关讲解，独立计算待验证。不计入傅里叶或卡尔曼课程的新进度。</p></div></div>
