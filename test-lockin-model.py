@@ -31,7 +31,7 @@ class LockInTests(unittest.TestCase):
     def test_block_deadlines(self):
         self.assertEqual(32/400000*1e6,80);self.assertEqual(32/100000*1e6,320);self.assertGreater(100,80);self.assertLess(100,320)
     def test_case_contract(self):
-        d=json.loads((ROOT/'engineering-cases.json').read_text());c=d['cases'][-1];s=json.dumps(c,ensure_ascii=False)
+        d=json.loads((ROOT/'engineering-cases.json').read_text());c=next(c for c in d['cases'] if c['id']=='microchip-lockin-continuity');s=json.dumps(c,ensure_ascii=False)
         self.assertEqual(c['id'],'microchip-lockin-continuity');self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
         for token in ['2007','2015-06-24','2021-09-24','fs/4','atan2(Q,I)','−sin','缺口','峰值','未下载','32点','80 μs','320 μs','0.127324','100 kSPS','400 kSPS']:self.assertIn(token,s)
         expected='f735a86e9fc0074bb06c04b70064dd5f4dd1aec209addb692081b06bfda998d4';actual=hashlib.sha256(json.dumps(d['cases'][:12],ensure_ascii=False,sort_keys=True).encode()).hexdigest();self.assertEqual(actual,expected)
