@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_fifteen_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),15);self.assertEqual(len({x['vendor'] for x in self.cases}),10)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract'])
+    def test_01_sixteen_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),16);self.assertEqual(len({x['vendor'] for x in self.cases}),10)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -214,7 +214,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 15 个案例',self.html)
+        self.assertIn('工程阅读 / 16 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -345,7 +345,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-10-31')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-01')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -611,4 +611,36 @@ class CasesTest(unittest.TestCase):
     def test_51_original_fourteen_case_objects_preserved(self):
         serialized=json.dumps(self.cases[:14],ensure_ascii=False,sort_keys=True).encode()
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),'6a806532066c4180cc8c12ac3dc566d9ec383fc72be38710f6959499ba967b54')
+    def test_52_aec_freeze_scope_and_original_model(self):
+        c=next(c for c in self.cases if c['id']=='ti-aec-double-talk-freeze')
+        content=json.dumps(c,ensure_ascii=False)
+        for token in ['SPRA162','1997-07','SPRA188','1997-04','v1.14.3',
+                      '256 tap','32 ms','31.875 ms','超过200 ms','TCL','ERLE',
+                      'ETSI-like','不是真实检测器','没有复刻这些活动检测旁路',
+                      '0.09614975','0.46663449','13.71611','未编译或执行']:
+            self.assertIn(token,content)
+        self.assertEqual(c['last_verified'],'2026-11-01')
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'www.ti.com','arm-software.github.io'})
+        self.assertEqual(256/8000*1000,32)
+        self.assertEqual(255/8000*1000,31.875)
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-aec-freeze-model.py')],text=True))
+        self.assertEqual(result['kind'],'original_float_NLMS_oracle_gating_not_TI_reproduction')
+        self.assertEqual(result['hand_step_weights'],[.5,.25])
+        self.assertEqual(result['frozen_predictions'],[1,.5,2])
+        self.assertEqual(result['invalid_inputs_rejected'],16)
+        self.assertLess(result['doubletalk_freeze_echo_only_residual_mse'],1e-20)
+        self.assertGreater(result['doubletalk_update_echo_only_residual_mse'],.001)
+        self.assertGreater(result['doubletalk_update_coefficient_error_squared'],.001)
+        self.assertLess(result['changed_path_resumed_last100_echo_residual_mse'],result['changed_path_frozen_last100_echo_residual_mse']*1e-8)
+        self.assertTrue(result['zero_reference_energy_safe'])
+        self.assertTrue(result['block_state_equivalence'])
+        self.assertTrue(result['wrong_block_reset_detected'])
+        ledger=result['independent_power_ledger']
+        self.assertEqual(ledger['echo_only_ERLE_dB_both_conditions'],20)
+        self.assertAlmostEqual(ledger['far_end_to_total_residual_TCL_dB_single_talk'],26.020599913279625)
+        self.assertAlmostEqual(ledger['far_end_to_total_residual_TCL_dB_with_near_end'],13.716110699496886)
+    def test_53_original_fifteen_case_objects_preserved(self):
+        serialized=json.dumps(self.cases[:15],ensure_ascii=False,sort_keys=True).encode()
+        self.assertEqual(hashlib.sha256(serialized).hexdigest(),'05b2db601901d9220dcc1e332740ad9c4353f4e2496ea7e7b3202b2b51f15ad9')
 if __name__=='__main__':unittest.main(verbosity=2)
