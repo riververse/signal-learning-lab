@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_sixteen_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),16);self.assertEqual(len({x['vendor'] for x in self.cases}),10)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze'])
+    def test_01_seventeen_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),17);self.assertEqual(len({x['vendor'] for x in self.cases}),10)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -182,7 +182,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(len(hardware),1,'The homepage subject index must retain the hardware topic entry')
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
     def test_18_all_unrelated_files_preserved(self):
-        changed={'engineering-cases.json','engineering-cases.html','build-engineering-cases.py','test-engineering-cases.py','question-helper.js','test-question-helper.cjs','test-lockin-model.py'}
+        changed={'engineering-cases.json','engineering-cases.html','build-engineering-cases.py','test-engineering-cases.py'}
         for p in BASE.iterdir():
             if p.is_file() and p.name not in changed:self.assertEqual(p.read_bytes(),(ROOT/p.name).read_bytes(),p.name)
         self.assertEqual(len(list(BASE.glob('*.html'))),len(list(ROOT.glob('*.html'))))
@@ -214,7 +214,7 @@ class CasesTest(unittest.TestCase):
         case=next(c for c in self.cases if c['id']=='ti-fixed-point-fft');text=json.dumps(case,ensure_ascii=False)
         for token in ['1.30.00.02','MSP430FR5994','512 字节','1792 字节','31.25 ms','15.625 ms','MSP_LEA_INVALID_ADDRESS','MSP_LEA_INCORRECT_REVISION','Software Manifest','未确认','无本站或独立第三方板卡实测']:
             self.assertIn(token,text)
-        self.assertIn('工程阅读 / 16 个案例',self.html)
+        self.assertIn('工程阅读 / 17 个案例',self.html)
         self.assertNotIn('第一批 3 个案例',self.html)
         self.assertEqual(case['id'],'ti-fixed-point-fft')
         self.assertNotIn(case['id'],[p['id'] for p in self.catalog['projects']])
@@ -345,7 +345,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-01')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-02')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -643,4 +643,49 @@ class CasesTest(unittest.TestCase):
     def test_53_original_fifteen_case_objects_preserved(self):
         serialized=json.dumps(self.cases[:15],ensure_ascii=False,sort_keys=True).encode()
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),'05b2db601901d9220dcc1e332740ad9c4353f4e2496ea7e7b3202b2b51f15ad9')
+    def test_54_rational_src_scope_and_original_model(self):
+        c=next(c for c in self.cases if c['id']=='adi-rational-src-phase-contract')
+        content=json.dumps(c,ensure_ascii=False)
+        for token in ['EE-183','2006-01-03','DS70668A','2011-09','ADSP-BF535',
+                      'ADSP-BF533','VisualDSP++ 4.0','160/147','88或90个标量',
+                      'p=(mM) mod L','q=floor(mM/L)','ceil(NL/M)','K≥L',
+                      '第3页§1.5.3','2倍插值','多项式','9×44+45=441',
+                      '264.6','未编译或执行','不是ADI或Microchip实现复现']:
+            self.assertIn(token,content)
+        self.assertEqual(c['last_verified'],'2026-11-02')
+        self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},
+                         {'www.analog.com','ww1.microchip.com','docs.scipy.org'})
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-rational-src-model.py')],text=True))
+        self.assertEqual(result['kind'],'original_rational_polyphase_teaching_not_vendor_algorithm')
+        self.assertEqual(result['phase_sequence'][:6],[0,2,1,0,2,1])
+        self.assertEqual(result['q_sequence'][:6],[0,0,1,2,2,3])
+        self.assertEqual(result['online_output_count'],17)
+        self.assertEqual(result['tail_output_count'],3)
+        self.assertEqual(result['full_output_count'],20)
+        self.assertEqual(result['wrong_reset_output_count'],18)
+        for actual,want in zip(result['hand_online_outputs'],[1/6,1/2,1,11/6,13/6]):
+            self.assertAlmostEqual(actual,want,12)
+        for actual,want in zip(result['hand_tail_outputs'],[5/3,1,1]):
+            self.assertAlmostEqual(actual,want,12)
+        self.assertEqual(result['unequal_phase_dc_gains'],[1.5,1,.5])
+        self.assertEqual(result['unequal_phase_steady_output_cycle'],[1.5,.5,1])
+        self.assertAlmostEqual(result['wrong_sum_one_steady_dc'],1/3,12)
+        self.assertEqual(result['additional_direct_comparisons'],48)
+        self.assertEqual(result['invalid_inputs_rejected'],13)
+        self.assertTrue(result['invalid_push_state_preserved'])
+        self.assertTrue(result['overflow_push_state_preserved'])
+        self.assertTrue(result['history_only_loss_preserves_count_but_changes_values'])
+        self.assertTrue(result['finish_idempotent'])
+        count=result['44100_to_48000']
+        self.assertEqual(count['mono_input_count'],441)
+        self.assertEqual(count['mono_output_count'],480)
+        self.assertEqual(count['wrong_sum_individual_ceilings'],481)
+        self.assertEqual(count['stereo_interleaved_input_scalars'],882)
+        self.assertEqual(count['stereo_interleaved_output_scalars'],960)
+        self.assertEqual(count['per_block_counts'],[48]*10)
+        self.assertAlmostEqual(result['100ppm_60s_input_drift_samples_arithmetic_only'],264.6,10)
+    def test_55_original_sixteen_case_objects_preserved(self):
+        serialized=json.dumps(self.cases[:16],ensure_ascii=False,sort_keys=True).encode()
+        self.assertEqual(hashlib.sha256(serialized).hexdigest(),'65c83062c67e87e82985e0e7f5000bc17d3224ccd0d049db972d6624cd3f97f7')
 if __name__=='__main__':unittest.main(verbosity=2)
