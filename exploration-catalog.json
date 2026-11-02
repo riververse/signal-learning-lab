@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26",
+  "updated_at": "2026-11-02",
   "categories": {
     "radar": "民用雷达",
     "dsp": "DSP 基础",
@@ -851,6 +851,86 @@
       "last_verified": "2026-10-26",
       "reproduction_status": "未在本站复现",
       "latest_note": "学习小目标：独立算出 10.24 与 9.6 Gbit/s，解释为何后者不能保证 10GbE 零丢包；再指出“丢块、补零、跳过 FFT”会怎样改变频谱解释。本站仅核读公开文档和实现，没有下载或运行该项目。"
+    },
+    {
+      "id": "pyroomacoustics-rir-delay",
+      "category": "dsp",
+      "title": "给冲激响应一个房间，再核对延迟",
+      "project": "Pyroomacoustics 0.10.1 · 房间声学与阵列处理",
+      "kind": "长期维护的开源科研工具",
+      "application": "从房间几何、声源与麦克风位置生成房间冲激响应 RIR，再用卷积得到麦克风信号。把 FIR、频谱和声传播接起来，先分清几何传播时间、数值滤波延迟与混响尾巴。",
+      "chain": [
+        "房间 / 声源 / 麦克风",
+        "反射路径 / RIR",
+        "各声源卷积后求和",
+        "时域与频谱核对"
+      ],
+      "first_step": "先做原创纸面例子，不安装软件：单程声程 3.43 m，给定声速 343 m/s、采样率 16 kHz，物理传播为 10 ms / 160 点。固定版默认分数延迟滤波长度为 81，额外全局延迟是 40 点 / 2.5 ms；它不是多走了一段声程，也不保证最终波形峰恰在第 200 点。",
+      "prerequisites": [
+        "离散冲激响应、卷积与 FIR",
+        "采样点与秒的换算，幅频与相位",
+        "进阶再学多通道 STFT、波束形成和到达方向估计"
+      ],
+      "algorithms": [
+        "镜像源法把几何反射路径连到 RIR；先从单声源、单麦克风的简单房间读起，不把模型输出当成真实房间测量。",
+        "room.rir[mic][source] 的外层是麦克风、内层是声源。每个声源与相应 RIR 卷积，然后在同一麦克风处求和；声源数和麦克风数不能交换理解。",
+        "分数延迟滤波用来表示非整数采样时延，并引入 frac_delay_length // 2 的数值延迟。固定版还默认启用 RIR 高通，频率分带与窗形也可能改变波形；不能只从峰值索引反推物理距离。",
+        "由目标 RT60 经 Sabine 近似反算材料参数，不保证生成或实测的 RT60 等于目标。先核对单位和时间零点，再讨论混响、频谱或阵列算法。"
+      ],
+      "hardware": "文档阅读与纸面检查无需麦克风或声卡。实际仿真面向桌面 Python；固定版 pyproject.toml 要求 Python >=3.9，并列出 NumPy、SciPy、Cython，源码构建涉及 CMake / C++ 依赖。README 的旧环境段落与元数据有出入，需以固定版本元数据核对；不是可直接烧入 MCU 的实时库。",
+      "maturity": "v0.10.1 于 2026-05-01 正式发布；本卡固定核读 f02b01dd（完整提交见来源）。这是本次新收录的既有工具，不是 11 月新发布。项目提供长期公开实现与测试，包元数据仍标 Beta / 科研用途；不构成声学精度、实时性能或量产适用保证。本站未执行上游测试，也未做房间实测。",
+      "license": "固定提交的项目 LICENSE 为 MIT：复制或再分发软件的重要部分须保留版权和许可声明，软件按原样提供、无担保。外部构建依赖、语音录音、SOFA 等数据各有独立许可，不能由代码 MIT 推定数据可自由再发布；本站不转载这些数据或项目代码。",
+      "warning": "这是声学模型，不是电磁雷达仿真；理想几何和材料不能替代校准与实测。在线文档可能与固定版本不同，0.10.1 已移除旧 absorption 参数，不照搬旧示例。纸面 160 点与 40 点只是分别核对物理时间和默认数值延迟，不是运行结果或测距精度。",
+      "official_links": [
+        {
+          "label": "固定版本：项目范围与算法",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/README.rst"
+        },
+        {
+          "label": "0.10.1 发布日期与接口变化",
+          "url": "https://github.com/LCAV/pyroomacoustics/releases/tag/v0.10.1"
+        },
+        {
+          "label": "RIR 维度、全局延迟与卷积求和",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L260-L305"
+        },
+        {
+          "label": "Sabine 近似与目标 RT60 的边界",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L65-L98"
+        },
+        {
+          "label": "固定版默认参数与高通设置",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/parameters.py#L181-L196"
+        },
+        {
+          "label": "Python 要求、依赖与成熟度元数据",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyproject.toml#L1-L34"
+        }
+      ],
+      "license_links": [
+        {
+          "label": "固定提交 MIT 许可",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/LICENSE"
+        }
+      ],
+      "learning_links": [
+        {
+          "label": "先看冲激响应",
+          "url": "notes-iir-fir.html#filter-impulse"
+        },
+        {
+          "label": "复习频谱与采样",
+          "url": "knowledge.html?topic=spectrum"
+        },
+        {
+          "label": "再读回声路径与自适应更新边界",
+          "url": "engineering-cases.html#ti-aec-double-talk-freeze"
+        }
+      ],
+      "status": "待学习",
+      "last_verified": "2026-11-02",
+      "reproduction_status": "未在本站复现",
+      "latest_note": "学习小目标：独立算出 10 ms / 160 点与 2.5 ms / 40 点，解释为何不能把数值延迟当声程，再说清一支麦克风为什么要把各声源的卷积结果相加。仅核读公开资料，未安装或执行项目、未测量房间。"
     }
   ],
   "radar_guide": {
@@ -1235,6 +1315,30 @@
         }
       ],
       "last_verified": "2026-10-26"
+    },
+    {
+      "id": "pyroomacoustics-rir-time-reference",
+      "project_id": "pyroomacoustics-rir-delay",
+      "title": "房间仿真：冲激响应的时间零点也要核对",
+      "date_label": "软件发布 2026-05-01 · 本次新收录 2026-11-02；不是 11 月新发布",
+      "last_verified": "2026-11-02",
+      "stage": "既有开源科研工具的新阅读入口；待学习、未在本站复现",
+      "summary": "Pyroomacoustics 把房间几何与反射路径变成 RIR，再通过卷积合成麦克风信号。新增的是对 FIR 与频谱的工程连接：默认分数延迟滤波的全局延迟不等于物理传播时间，目标 RT60 也不是仿真或实测保证。",
+      "practice": "先用 3.43 m、343 m/s、16 kHz 手算物理传播，再单独核对 81 抽头对应的 40 点数值延迟。随后按固定版本读 RIR 的麦克风/声源维度与卷积求和，不安装或运行项目，不把模型值当测量。",
+      "sources": [
+        {
+          "label": "版本与发布边界",
+          "url": "https://github.com/LCAV/pyroomacoustics/releases/tag/v0.10.1"
+        },
+        {
+          "label": "固定版 RIR 延迟与卷积说明",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L260-L305"
+        },
+        {
+          "label": "实际默认值",
+          "url": "https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/parameters.py#L181-L196"
+        }
+      ]
     }
   ]
 }

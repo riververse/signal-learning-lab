@@ -98,8 +98,8 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(links,['knowledge.html','simulation.html','next-learning.html','exploration.html'])
         self.assertEqual(nav.count('aria-current="page"'),1)
     def test_11_catalog_schema_and_required_fields(self):
-        self.assertEqual(self.catalog['schema_version'],1);self.assertEqual(len(self.catalog['projects']),12)
-        self.assertEqual([p['id'] for p in self.catalog['projects']],['a121-presence','a121-breathing','ti-people-tracking','cmsis-dsp','liquid-dsp','gnu-radio','px4-ekf2','radarsimpy','nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','w1700k-sdr-stream-integrity'])
+        self.assertEqual(self.catalog['schema_version'],1);self.assertEqual(len(self.catalog['projects']),13)
+        self.assertEqual([p['id'] for p in self.catalog['projects']],['a121-presence','a121-breathing','ti-people-tracking','cmsis-dsp','liquid-dsp','gnu-radio','px4-ekf2','radarsimpy','nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','w1700k-sdr-stream-integrity','pyroomacoustics-rir-delay'])
         required=set(self.catalog['projects'][0])
         # Keep the original catalog entries; later reading cases live in the page index.
         for c in self.cases[:3]:
@@ -107,7 +107,7 @@ class CasesTest(unittest.TestCase):
             self.assertTrue(required<=set(p));self.assertEqual(p['status'],'待学习');self.assertEqual(p['reproduction_status'],'未在本站复现')
             self.assertEqual(p['learning_links'][0]['url'],'engineering-cases.html#'+c['id'])
     def test_11a_new_sdr_scope_and_arithmetic(self):
-        p=self.catalog['projects'][-1]
+        p=next(p for p in self.catalog['projects'] if p['id']=='w1700k-sdr-stream-integrity')
         self.assertEqual(p['id'],'w1700k-sdr-stream-integrity')
         self.assertEqual(p['status'],'待学习');self.assertEqual(p['reproduction_status'],'未在本站复现')
         self.assertEqual(p['last_verified'],'2026-10-26')
@@ -123,7 +123,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(7*32,8*28)
         self.assertEqual((129-1)//2,64)
         self.assertEqual(len({u['id'] for u in self.catalog['recent_updates']}),len(self.catalog['recent_updates']))
-        note=self.catalog['recent_updates'][-1]
+        note=next(u for u in self.catalog['recent_updates'] if u['id']=='w1700k-sdr-sample-contract')
         self.assertEqual(note['project_id'],p['id'])
         self.assertIn('非正式 release',note['date_label'])
     def test_11b_exploration_escape_and_filter(self):
@@ -133,6 +133,29 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn('<img src=x',rendered)
         script="const a=require('node:assert/strict'),f=require('./exploration.js');a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'dsp',' w1700k fft '),true);a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'radar','w1700k'),false);a.equal(f.matches({category:'dsp',text:'W1700K SDR FFT'},'all','missing'),false);"
         subprocess.run(['node','-e',script],cwd=ROOT,check=True,capture_output=True)
+    def test_11c_rir_source_scope_delay_and_prior_catalog_preserved(self):
+        p=next(p for p in self.catalog['projects'] if p['id']=='pyroomacoustics-rir-delay')
+        self.assertEqual(p['category'],'dsp')
+        self.assertEqual(p['status'],'待学习');self.assertEqual(p['reproduction_status'],'未在本站复现')
+        self.assertEqual(p['last_verified'],'2026-11-02')
+        content=json.dumps(p,ensure_ascii=False)
+        for token in ['2026-05-01','0.10.1','160 点','40 点','2.5 ms','MIT','Beta','>=3.9','Sabine','未执行上游测试','不是 11 月新发布']:
+            self.assertIn(token,content)
+        for link in p['official_links']+p['license_links']:
+            self.assertEqual(urlsplit(link['url']).hostname,'github.com')
+            self.assertTrue('/f02b01dd6609709e2089aefa5d1e59c91d3a0601/' in link['url'] or link['url']=='https://github.com/LCAV/pyroomacoustics/releases/tag/v0.10.1')
+        # Original paper arithmetic, not a project run or acoustic validation.
+        self.assertAlmostEqual(3.43/343,.01)
+        self.assertAlmostEqual(3.43/343*16000,160)
+        self.assertEqual(81//2,40)
+        self.assertEqual(40/16000*1000,2.5)
+        note=next(u for u in self.catalog['recent_updates'] if u['id']=='pyroomacoustics-rir-time-reference')
+        self.assertEqual(note['project_id'],p['id']);self.assertIn('不是 11 月新发布',note['date_label'])
+        old_projects=self.catalog['projects'][:12]
+        old_notes=self.catalog['recent_updates'][:10]
+        self.assertEqual(hashlib.sha256(json.dumps(old_projects,ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'35fdc6652cf5cd73abcec43a5edc1d722a18a9aedb418bce8dd1d7c38b2c671a')
+        self.assertEqual(hashlib.sha256(json.dumps(old_notes,ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'d66d128de0f388b21c000646cdac20e3e7e4d616043fc7483b03cc63afbdbdbb')
+        self.assertEqual(hashlib.sha256(json.dumps(self.catalog['radar_guide'],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'fc4c6b9863010ec45ef8bced67b78b371ad3acf790abbe4282b34364971f90fa')
     def test_12_deterministic_builds(self):
         for script,output in [('build-engineering-cases.py','engineering-cases.html'),('build-exploration.py','exploration.html')]:
             before=(ROOT/output).read_bytes();subprocess.run([sys.executable,str(ROOT/script)],check=True,capture_output=True);self.assertEqual(before,(ROOT/output).read_bytes())
