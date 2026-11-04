@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_eighteen_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),18);self.assertEqual(len({x['vendor'] for x in self.cases}),10)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band'])
+    def test_01_nineteen_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),19);self.assertEqual(len({x['vendor'] for x in self.cases}),11)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -368,7 +368,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-03')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-04')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -755,7 +755,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),
                          '08ae3aa42cd9b07d35639627e27a0c1bd693b282f17106c739ef5de611bcc68f')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),18)
+        self.assertEqual(len(articles),19)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:17]).encode()).hexdigest(),
                          '2d91c9ea19cf5a3d802abea2fa73d9c1021335e891e2a4b1d9f4aa6b266e3172')
         # Pin the Nov 2 exploration update, learning state and unchanged styling.
@@ -769,4 +769,14 @@ class CasesTest(unittest.TestCase):
         }
         for name,want in preserved.items():
             self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),want,name)
+    def test_59_original_eighteen_cases_preserved(self):
+        self.assertEqual(hashlib.sha256(json.dumps(self.cases[:18],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'fe5bda332166e4d1d928da1d8d58a88751255fa832eb312b815a28b15d8d9920')
+    def test_60_zero_phase_scope_and_model(self):
+        c=self.cases[-1]
+        self.assertEqual(c['id'],'scipy-forward-backward-contract')
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        text=json.dumps(c,ensure_ascii=False)
+        for token in ['|H(e^jω)|²','−6.0206','4/9','未来','未本站实物复现','不使用 SciPy padding']:
+            self.assertIn(token,text)
+        subprocess.run([sys.executable,str(ROOT/'test-zero-phase-model.py')],check=True,capture_output=True)
 if __name__=='__main__':unittest.main(verbosity=2)
