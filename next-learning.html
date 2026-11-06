@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="lab-shell.css">
 <link rel="stylesheet" href="mobile-reading.css">
-<link rel="stylesheet" href="next-learning.css?v=2026-10-27.3">
+<link rel="stylesheet" href="next-learning.css?v=2026-11-06.1">
 <link rel="stylesheet" href="question-helper.css?v=20261016r3">
-<script src="learning-progress.js?v=2026-10-27.3" defer></script>
+<script src="learning-progress.js?v=2026-11-06.1" defer></script>
 <script src="question-helper.js?v=20261016r3" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
@@ -26,20 +26,20 @@
 <main class="nl-main" id="next-main" tabindex="-1">
  <section class="nl-heading" aria-labelledby="next-title">
   <div><p class="nl-kicker">从最近的问题接着学</p><h1 id="next-title">今天，先弄清这一件事。</h1><p class="nl-lead">根据课程进度与单独提出的算法疑问安排下一步。先独立验证，再继续往前。</p></div>
-  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-10-27">2026-10-27 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
+  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-11-06">2026-11-06 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
  </section>
  <noscript><p class="nl-warning">当前浏览器未启用 JavaScript，不能保存打卡或切换推荐。下面仍显示最新整理的推荐与验证题；本机打卡需要启用 JavaScript。</p></noscript>
  <div class="nl-workspace">
   <section class="nl-recommend" aria-labelledby="nl-lesson-title">
    <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">IIR / FIR</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
-   <p class="nl-task-meta" id="nl-lesson-meta">10–15 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">α 公式为什么有余弦和根号？</h2>
-   <p class="nl-goal" id="nl-goal">把每拍相位、相量差和半功率条件连起来，不只记住系数公式。</p>
-   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：IIR / FIR 课程。半功率系数推导已讲解，独立解释与频率缩放检查仍待验证。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">fs 从 1000 Hz 变成 2000 Hz，fc 也从 10 Hz 变成 20 Hz：θ、d、α 是否改变？解释余弦项和根号分别从哪里来，以及为何不能用单拍 y/x 验证幅度比。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：IIR / FIR 学习线最新停在系数公式的来由；推导已补讲，但还没有独立解释，先补这一处比重复分类更合适。</p>
-   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">先分清采样率 Hz、每拍相位与稳态正弦幅度；本节从一阶差分式开始。</span></p><p class="nl-material-note" id="nl-material-note">先按四步读推导，再独立回答频率缩放题；冲激实验保留为轻量复习，不代替幅频检查。</p>
-   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-iir-fir.html#filter-ema-derivation">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="notes-iir-fir.html#filter-impulse">打开相关实验</a></div>
+   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">前馈乘输入，反馈系数为什么还要看正负号？</h2>
+   <p class="nl-goal" id="nl-goal">辨认前馈与反馈，先用 a₀ 归一化，再按实现公式转换反馈系数的符号。</p>
+   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：IIR / FIR 课程。前馈/反馈、a₀ 归一化和两种反馈符号约定已讲解；没有新增独立答对证据。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">给定 2y[n] = 0.4x[n] − (−1.6)y[n−1]，先归一化；把减号约定改写为加号反馈时应填什么系数？从 y[−1]=5 开始、连续输入两个 0，独立算出两拍输出，并说明前馈是否只能使用当前输入。</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：最新问题转到前馈、反馈与系数记号；先验证输入/输出的区别、归一化和符号，再回看 EMA 的频率设计推导。</p>
+   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">会区分当前输入 x[n] 与历史输出 y[n−1]；先按本节给出的完整方程计算。</span></p><p class="nl-material-note" id="nl-material-note">先读输入与输出两条路径，再独立完成两拍自检；折叠答案只供核对。EMA 推导保留为下一项，不把读过或打卡等同掌握。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-iir-fir.html#filter-feedback">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="notes-iir-fir.html#filter-feedback-check">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕这一步的目标，先检查前置理解，再用一个小例子让我独立作答。">带着这一步提问</button></div>
-   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：算出二阶系数，就已经满足滤波要求了吗？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：α 公式为什么有余弦和根号？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
   </section>
   <aside class="nl-route-controls" aria-labelledby="nl-choice-title">
    <h2 id="nl-choice-title">换一条学习线</h2>
@@ -51,10 +51,10 @@
   </aside>
  </div>
  <section class="nl-evidence" aria-labelledby="nl-evidence-title">
-  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-10-27">2026-10-27 · 北京时间</time></span></div>
+  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-11-06">2026-11-06 · 北京时间</time></span></div>
   <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>多组估计与参考对齐 · 当前检查</h3><p class="nl-evidence-frontier">先统一参考与周期，再融合；有效不等于准确。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关流程已有讲解，参考转换、中位数及多数同向偏差的边界仍待独立验证。</p><p class="nl-evidence-check">下一次验证：把三组局部角对齐，再解释同帧五个估计为什么取第 3 个。</p><a href="next-learning.html#aligned-estimates">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 保留复习</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
-<article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR 与设计家族 · 两条课程检查</h3><p class="nl-evidence-frontier">EMA 公式来由与二阶设计指标：已讲，待独立验证。</p><p>IIR / FIR 线已补讲半功率系数推导；设计族线已讲 dB、相位、选阶、零极点与二阶系数。两线没有新增独立答对证据；动态响应与量化后续课程仍为预告。</p><p class="nl-evidence-check">先解释 EMA 中的余弦和根号，再检查二阶 Butter 的 100 Hz 衰减是否达标。</p><a href="notes-iir-fir.html#filter-ema-derivation">回看相关材料</a></article>
+<article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR 与设计家族 · 两条课程检查</h3><p class="nl-evidence-frontier">先核对前馈/反馈与符号；EMA 推导和二阶设计指标保留复习。</p><p>IIR / FIR 线已补讲前馈、反馈、a₀ 归一化和实现符号约定；EMA 半功率推导仍待验证。设计族线的二阶选型题也未独立作答，动态响应与量化后续课程仍为预告。</p><p class="nl-evidence-check">先按完整方程归一化并独立算两拍，再说明为什么反馈系数不能脱离公式复制。</p><a href="notes-iir-fir.html#filter-feedback">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>傅里叶 · 并行检查</h3><p class="nl-evidence-frontier">已讲解 DFT 频点与 FFT；最新频点题待答。</p><p>保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。</p><p class="nl-evidence-check">下一次验证：观察时长、Δf 与 k 怎样一起变化？</p><a href="notes-transforms.html#fourier-frontier">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>卡尔曼 · 测量更新之后</h3><p class="nl-evidence-frontier">第 15 讲已讲解，零交叉协方差题待答。</p><p>已讲到两个增益、两个状态和整个协方差的更新；末题尚未独立回答。第 16–19 讲仍为预告。</p><p class="nl-evidence-check">下一次验证：Pvp⁻ = 0 时，压力残差再大，本次能否直接修正变化率？</p><a href="notes-kalman.html#kalman-measurement-check">回看相关材料</a></article></div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>

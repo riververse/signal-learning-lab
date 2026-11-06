@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the embedded evidence profile and both learning-page fallbacks, offline."""
+"""Build the embedded profile and learning/home/knowledge fallbacks, offline."""
 from __future__ import annotations
 import argparse
 import html
@@ -12,6 +12,7 @@ import sys
 BEGIN = "  // BEGIN GENERATED LEARNING PROFILE"
 END = "  // END GENERATED LEARNING PROFILE"
 TEMPLATES = ("next-learning", "preview-next-learning")
+HOME_PAGES = ("index.html", "knowledge.html")
 
 HOME_BEGIN = "<!-- BEGIN GENERATED HOME RECOMMENDATION -->"
 HOME_END = "<!-- END GENERATED HOME RECOMMENDATION -->"
@@ -131,16 +132,25 @@ def build(directory, check=False):
         outputs[directory / (basename + ".html")] = rendered
     if not found:
         raise ValueError("No next-learning template found; no outputs written.")
-    home_path = directory / "index.html"
-    if home_path.exists():
+    for basename in HOME_PAGES:
+        home_path = directory / basename
+        if not home_path.exists():
+            continue
         home = home_path.read_text(encoding="utf-8")
         if home.count(HOME_BEGIN) != 1 or home.count(HOME_END) != 1:
-            raise ValueError("Expected exactly one homepage recommendation marker pair.")
+            raise ValueError(f"Expected exactly one recommendation marker pair in {basename}.")
         start, end = home.index(HOME_BEGIN), home.index(HOME_END)
         if start >= end:
-            raise ValueError("Homepage recommendation markers are out of order.")
+            raise ValueError(f"Recommendation markers are out of order in {basename}.")
         content = re.sub(r"\{\{([A-Z_]+)\}\}", lambda match: replacements[match.group(1)], HOME_TEMPLATE)
-        outputs[home_path] = home[:start] + HOME_BEGIN + "\n" + content + "\n" + home[end:]
+        rendered_home = home[:start] + HOME_BEGIN + "\n" + content + "\n" + home[end:]
+        rendered_home, script_count = re.subn(
+            r'(<script\b[^>]*\bsrc="learning-progress\.js)(?:\?[^\"]*)?(\")',
+            lambda match: match.group(1) + "?v=" + replacements["PROFILE_VERSION"] + match.group(2),
+            rendered_home)
+        if script_count != 1:
+            raise ValueError(f"Expected exactly one learning-progress script in {basename}.")
+        outputs[home_path] = rendered_home
 
     changed = [path for path, content in outputs.items() if not path.exists() or path.read_text(encoding="utf-8") != content]
     if check:

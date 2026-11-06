@@ -56,6 +56,24 @@ class Filters(unittest.TestCase):
         fcmin=1000/math.pi*math.atan(math.tan(math.pi*50/1000)/(10**.1-1)**.25)
         self.assertAlmostEqual(fcmax,10.3391,4);self.assertAlmostEqual(fcmin,69.5473,4)
         self.assertLess(fcmax,fcmin)
+    def test_feedback_normalization_and_sign_convention(self):
+        # Original check: preserve a nonzero initial output in both conventions.
+        a0,b0,a1=2,.4,-1.6
+        b,c=b0/a0,-a1/a0
+        self.assertEqual((b,c),(.2,.8))
+        minus=plus=5
+        for x,want in [(0,4),(0,3.2),(10,4.56),(-3,3.048)]:
+            minus=(b0*x-a1*minus)/a0
+            plus=b*x+c*plus
+            self.assertAlmostEqual(minus,want,12)
+            self.assertAlmostEqual(plus,minus,12)
+        self.assertEqual(.2*0+(-.8)*5,-4)  # Wrong sign changes the system.
+        self.assertAlmostEqual(.1*7,.7,14)  # A delayed input remains feedforward.
+        text=(ROOT/'notes-iir-fir.html').read_text()
+        for token in ['a₀ ≠ 0','所有 b 和其余 a 都要一起除','不是离线前后向零相位滤波','<strong>4</strong>','<strong>3.2</strong>']:
+            self.assertIn(token,text)
+        self.assertIn('<details><summary>展开两拍自检答案</summary>',text)
+        self.assertIn('group__BiquadCascadeDF1.html',text)
     def test_pages_unique_ids_local_deep_links_and_privacy(self):
         for name in ['notes-iir-fir.html','notes-filter-families.html']:
             text=(ROOT/name).read_text();doc=Document(text)
@@ -69,9 +87,10 @@ class Filters(unittest.TestCase):
                 self.assertTrue(target.is_file(),link)
                 if u.fragment:self.assertIn(unquote(u.fragment),Document(target.read_text()).ids,link)
         doc=Document((ROOT/'notes-iir-fir.html').read_text())
-        for anchor in ['filter-start','filter-impulse','filter-coefficients','filter-frequency','filter-ema','filter-average','filter-boundaries','filter-check','filter-sources','filter-ema-derivation']:self.assertIn(anchor,doc.ids)
+        for anchor in ['filter-start','filter-impulse','filter-coefficients','filter-frequency','filter-ema','filter-average','filter-boundaries','filter-check','filter-sources','filter-ema-derivation','filter-feedback','filter-feedback-check']:self.assertIn(anchor,doc.ids)
         profile=json.loads((ROOT/'learning-profile.json').read_text())
-        for lesson in ['filters-ema-design-check','filters-biquad-spec-check']:
+        self.assertIn('learning-progress.js?v='+profile['version'],(ROOT/'notes-iir-fir.html').read_text())
+        for lesson in ['filters-ema-design-check','filters-biquad-spec-check','filters-feedback-sign-check']:
             self.assertEqual(profile['evidence'][lesson]['status'],'pending')
             self.assertNotIn('observedAt',profile['evidence'][lesson])
 if __name__=='__main__':unittest.main()

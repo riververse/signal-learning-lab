@@ -34,11 +34,12 @@
   // BEGIN GENERATED LEARNING PROFILE
   var PROFILE = {
   "schemaVersion": 1,
-  "version": "2026-10-27.3",
-  "reviewedAt": "2026-10-27",
-  "reviewLabel": "2026-10-27 · 北京时间",
+  "version": "2026-11-06.1",
+  "reviewedAt": "2026-11-06",
+  "reviewLabel": "2026-11-06 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
+    "filters-feedback-sign-check",
     "filters-ema-design-check",
     "filters-biquad-spec-check",
     "aligned-estimates-median",
@@ -166,7 +167,7 @@
       "prerequisiteText": "先分清采样率 Hz、每拍相位与稳态正弦幅度；本节从一阶差分式开始。",
       "goal": "把每拍相位、相量差和半功率条件连起来，不只记住系数公式。",
       "check": "fs 从 1000 Hz 变成 2000 Hz，fc 也从 10 Hz 变成 20 Hz：θ、d、α 是否改变？解释余弦项和根号分别从哪里来，以及为何不能用单拍 y/x 验证幅度比。",
-      "why": "IIR / FIR 学习线最新停在系数公式的来由；推导已补讲，但还没有独立解释，先补这一处比重复分类更合适。",
+      "why": "半功率系数推导已有讲解但仍未独立解释；先厘清前馈/反馈系数，再回看余弦、根号和频率缩放。",
       "frontier": "来源：IIR / FIR 课程。半功率系数推导已讲解，独立解释与频率缩放检查仍待验证。",
       "href": "notes-iir-fir.html#filter-ema-derivation",
       "experiment": "notes-iir-fir.html#filter-impulse",
@@ -187,6 +188,21 @@
       "experiment": "knowledge.html?topic=filter-families\u0026view=principles",
       "material": "完整笔记与折叠自查；原有幅频图仅辅助比较，不把它当成目标系数的实物验证。",
       "estimatedMinutes": "10–15 分钟"
+    },
+    {
+      "id": "filters-feedback-sign-check",
+      "topic": "iir-fir",
+      "title": "前馈乘输入，反馈系数为什么还要看正负号？",
+      "prerequisites": [],
+      "prerequisiteText": "会区分当前输入 x[n] 与历史输出 y[n−1]；先按本节给出的完整方程计算。",
+      "goal": "辨认前馈与反馈，先用 a₀ 归一化，再按实现公式转换反馈系数的符号。",
+      "check": "给定 2y[n] = 0.4x[n] − (−1.6)y[n−1]，先归一化；把减号约定改写为加号反馈时应填什么系数？从 y[−1]=5 开始、连续输入两个 0，独立算出两拍输出，并说明前馈是否只能使用当前输入。",
+      "why": "最新问题转到前馈、反馈与系数记号；先验证输入/输出的区别、归一化和符号，再回看 EMA 的频率设计推导。",
+      "frontier": "来源：IIR / FIR 课程。前馈/反馈、a₀ 归一化和两种反馈符号约定已讲解；没有新增独立答对证据。",
+      "href": "notes-iir-fir.html#filter-feedback",
+      "experiment": "notes-iir-fir.html#filter-feedback-check",
+      "material": "先读输入与输出两条路径，再独立完成两拍自检；折叠答案只供核对。EMA 推导保留为下一项，不把读过或打卡等同掌握。",
+      "estimatedMinutes": "5–10 分钟"
     }
   ],
   "lessonOverrides": {
@@ -272,6 +288,10 @@
     "filters-biquad-spec-check": {
       "status": "pending",
       "summary": "来源：巴特沃斯与切比雪夫课程。dB、相位、选阶、Z 与二阶系数已讲解；独立复算和选型仍待验证，后续完整动态与量化课程为预告。"
+    },
+    "filters-feedback-sign-check": {
+      "status": "pending",
+      "summary": "来源：IIR / FIR 课程。新问题已补讲前馈乘输入、反馈乘历史输出，α 与 a₁ 的区别、a₀ 归一化及实现正负号约定；尚未独立验证。"
     }
   },
   "topicSummaries": [
@@ -297,10 +317,10 @@
       "topic": "iir-fir",
       "title": "IIR / FIR 与设计家族 · 两条课程检查",
       "status": "pending",
-      "frontier": "EMA 公式来由与二阶设计指标：已讲，待独立验证。",
-      "summary": "IIR / FIR 线已补讲半功率系数推导；设计族线已讲 dB、相位、选阶、零极点与二阶系数。两线没有新增独立答对证据；动态响应与量化后续课程仍为预告。",
-      "check": "先解释 EMA 中的余弦和根号，再检查二阶 Butter 的 100 Hz 衰减是否达标。",
-      "href": "notes-iir-fir.html#filter-ema-derivation"
+      "frontier": "先核对前馈/反馈与符号；EMA 推导和二阶设计指标保留复习。",
+      "summary": "IIR / FIR 线已补讲前馈、反馈、a₀ 归一化和实现符号约定；EMA 半功率推导仍待验证。设计族线的二阶选型题也未独立作答，动态响应与量化后续课程仍为预告。",
+      "check": "先按完整方程归一化并独立算两拍，再说明为什么反馈系数不能脱离公式复制。",
+      "href": "notes-iir-fir.html#filter-feedback"
     },
     {
       "topic": "transforms",

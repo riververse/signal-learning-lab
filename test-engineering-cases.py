@@ -183,13 +183,14 @@ class CasesTest(unittest.TestCase):
         self.assertAlmostEqual(1491.5/2000,.74575,12)
         self.assertGreater(abs(sum(map(abs,e))/len(e)-.38875038),.2)
     def test_17_existing_home_and_knowledge_content(self):
-        # Pin reviewed lesson-15 summaries, preserved coordinate reviews, and the two new filter checkpoints.
+        # Pin the reviewed Nov 6 feedback/sign check and all preserved learning summaries.
         # Pin BOTH approved blocks: any unreviewed edit inside the whitelist must still fail.
-        expected = {'index.html': '7556e3935345488cc113d603111f6a17bc85c9684fc40ed76a7836365872b967', 'knowledge.html': '09fbf2c21d32937d91a7721f53f92af38810a8fa08be81b2ace01882c6d6b684'}
-        # Current main also has different home context text; pin complete bytes rather
-        # than pretending these two independently maintained pages remain aliases.
-        page_hashes = {'index.html': 'ac75339a84fad1146e0fa31fd7bc4e40b315ac90bbaf8072dc7832c288d76738', 'knowledge.html': '01ddcea098d114e19181908d5a65a22c5785c4bea535e3ea1b6bb99aec2df80f'}
-        for name, version in [('index.html','2026-10-27.3'),('knowledge.html','2026-10-27.3')]:
+        expected = {'index.html': '6f860cd91fb2cccc7d74bdb4fa3fde9ffbaf91d881ab32b8fadeb7e46b6d19ea', 'knowledge.html': '6f860cd91fb2cccc7d74bdb4fa3fde9ffbaf91d881ab32b8fadeb7e46b6d19ea'}
+        # Reviewed entry pages now share the recommendation and learning-boundary summary.
+        # Keep both full-byte guards and require their alias contract explicitly.
+        page_hashes = {'index.html': '5cef9590c8f24f5e1d258420ab7747e35feae85978690355be372f25044fc9d3', 'knowledge.html': '5cef9590c8f24f5e1d258420ab7747e35feae85978690355be372f25044fc9d3'}
+        self.assertEqual(read('index.html'),read('knowledge.html'))
+        for name, version in [('index.html','2026-11-06.1'),('knowledge.html','2026-11-06.1')]:
             source=read(name)
             matches=list(re.finditer(r'<section class="featured wrap" id="continue">.*?</section>',source,re.S))
             self.assertEqual(len(matches),1)
@@ -758,13 +759,13 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(len(articles),20)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:17]).encode()).hexdigest(),
                          '2d91c9ea19cf5a3d802abea2fa73d9c1021335e891e2a4b1d9f4aa6b266e3172')
-        # Pin the Nov 2 exploration update, learning state and unchanged styling.
+        # Pin unchanged exploration/styling plus the reviewed Nov 6 learning update.
         preserved={
             'exploration-catalog.json':'304ca07c17704513ea2b9e970f7e09b656099ccccc6c07c98aee498cd2d19016',
             'exploration.html':'3c73362c6808485819f2bf258a3485a2d1d9e312e1c61df65ba073eba5a7c428',
-            'learning-profile.json':'b4d0e96b2b1d24576f2d912115c7c61ab5f334b3e71221e6e30a094c331d3916',
-            'learning-progress.js':'a012a422add97600cb971ed880f7a409016171df0ed5f7e45f1d3deaa32002e6',
-            'README-learning.md':'7ab094731848e0bf7fba5cf014b2d67286b2e36e71a7d79c89ec2164a13e7c06',
+            'learning-profile.json':'1cc30be5c6aab66f9d9dcf0d86133c1ac851283505d19fb36ad98ecc93ed7b2e',
+            'learning-progress.js':'ac1976ab71e43e35e1898f50fc5d2160b549f7f143dc34505952e7d98a1fb9c4',
+            'README-learning.md':'2acf18b13ed944a0dd11024d77b45b09f7b739c98df82b4f2d16b02e4ca251fd',
             'engineering-cases.css':'af689ad79de9e7b32bd1432c3b3cb7564393a1b34b066e5b2c0c4a69ac6f49dc',
         }
         for name,want in preserved.items():

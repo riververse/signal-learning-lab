@@ -16,8 +16,10 @@ function match(actual,pattern,label){assert.match(actual,pattern,label);checks++
 const oldIds=['fourier-amplitude','fourier-overview','kalman-14','filters-impulse','filters-coefficients','filters-specification','sampling','spectrum-axis','spectrum-window','transfer-first-order','transfer-z','control-feedback','control-poles','pll-input','pll-loop','kalman-15','kalman-16'];
 const stamp='2026-10-07T10:12:13.456Z';
 const newer='2099-10-18T01:02:03.000Z'; // Deliberately later than runtime-created self-report fixtures.
-const first='filters-ema-design-check', second='filters-biquad-spec-check';
+const first='filters-feedback-sign-check', second='filters-ema-design-check', third='filters-biquad-spec-check';
 const lesson=id=>api.lessons.find(item=>item.id===id);
+const homeBlock=html=>html.match(/<!-- BEGIN GENERATED HOME RECOMMENDATION -->[\s\S]*?<!-- END GENERATED HOME RECOMMENDATION -->/)?.[0];
+const withoutHomeBlock=html=>html.replace(homeBlock(html),'RECOMMENDATION');
 
 class Element {
   constructor(tag,owner){this.tagName=tag.toUpperCase();this.owner=owner;this.children=[];this.dataset={};this.events={};this.attributes={};this.disabled=false;this.hidden=false;this.value='';this._text='';}
@@ -41,12 +43,13 @@ class Element {
 }
 function mount(options={}){
   const model=api.createModel(options.profile||profile);
-  const template=fs.readFileSync(path.join(__dirname,options.home?'index.html':options.preview?'preview-next-learning.template.html':'next-learning.template.html'),'utf8');
+  const homeFile=options.home==='knowledge'?'knowledge.html':'index.html';
+  const template=fs.readFileSync(path.join(__dirname,options.home?homeFile:options.preview?'preview-next-learning.template.html':'next-learning.template.html'),'utf8');
   const elements=new Map();const document={events:[],getElementById(id){return elements.get(id)||null;},createElement(tag){return new Element(tag,document);},dispatchEvent(event){this.events.push(event);}};
   document.body=new Element('body',document);
   if(!options.noPage)for(const [,id] of template.matchAll(/\bid="([^"]+)"/g)){const node=new Element('div',document);node.id=id;elements.set(id,node);}
   const store=new Map(options.saved===undefined?[]:[[api.key,options.saved]]), writes=[];
-  const win={document,location:{search:options.search||'',pathname:options.pathname||(options.home?'/index.html':options.preview?'/preview-next-learning.html':'/next-learning.html')},events:{},exported:[],confirmValue:true,
+  const win={document,location:{search:options.search||'',pathname:options.pathname||(options.home?'/'+homeFile:options.preview?'/preview-next-learning.html':'/next-learning.html')},events:{},exported:[],confirmValue:true,
     localStorage:{getItem(key){if(options.readError)throw Error('blocked');return store.get(key)||null;},setItem(key,value){if(options.writeError)throw Error('quota');writes.push([key,value]);store.set(key,value);}},
     addEventListener(type,callback){(this.events[type]??=[]).push(callback);},
     emit(type,event){for(const callback of this.events[type]||[])callback(event);},
@@ -85,6 +88,16 @@ async function main(){
   const synthetic=[169,170,171,172,240];
   eq([...synthetic].sort((a,b)=>a-b)[2],171,'Five aligned same-frame estimates select the third');
   eq(synthetic.reduce((a,b)=>a+b,0)/5,184.4,'Arithmetic mean differs from median');
+
+  const allPrior25=api.emptyState();api.lessons.filter(x=>x.id!==first).forEach(x=>allPrior25.completed[x.id]=stamp);
+  const preserved25=mount({saved:JSON.stringify(allPrior25)});
+  eq(preserved25.model.getState(),allPrior25,'All 25 previous stable IDs preserve timestamps');
+  eq(preserved25.writes.length,0,'Adding feedback lesson never rewrites existing 25-item storage');
+  eq(preserved25.store.get(api.key),JSON.stringify(allPrior25),'Existing 25-item storage bytes remain untouched');
+  eq(preserved25.model.getRecommendation().lesson.id,first,'Old completions do not manufacture new verification');
+  eq(lesson(first).href,'notes-iir-fir.html#filter-feedback','Current source point links to new explanation');
+  eq(lesson(first).experiment,'notes-iir-fir.html#filter-feedback-check','Current check has a direct exercise entry');
+  match(lesson(second).title,/余弦和根号/,'Older unverified EMA question stays available');
   const priorIds=[...oldIds,'filters-frequency-delay','filters-design-families','fourier-bin-check','sampling-position-report','quadrature-reference-check','aligned-estimates-median'];
   const priorState=api.emptyState();priorIds.forEach(id=>priorState.completed[id]=stamp);
   eq(api.validateState(priorState),priorState,'All 23 previous stable IDs keep user timestamps');
@@ -93,18 +106,18 @@ async function main(){
   eq(previousMount.model.getState(),priorState,'All 23 previous manual records are preserved');
   eq(previousMount.writes.length,0,'New curriculum does not rewrite previous manual state');
   eq(previousMount.store.get(api.key),JSON.stringify(priorState),'Previous 23-item storage bytes unchanged');
-  for(const id of [first,second]){
+  for(const id of [first,second,third]){
     eq(profile.evidence[id].status,'pending','New filter check has no independent-correct evidence: '+id);
     ok(!('observedAt' in profile.evidence[id]),'Review date does not invent an unknown learning date: '+id);
     eq(lesson(id).prerequisites,[],'New targeted check supplies optional review rather than mandatory replay: '+id);
   }
   match(lesson(first).frontier,/IIR \/ FIR 课程/,'EMA source is correctly attributed');
-  match(lesson(second).frontier,/巴特沃斯与切比雪夫课程/,'Design-family source is separate');
+  match(lesson(third).frontier,/巴特沃斯与切比雪夫课程/,'Design-family source is separate');
   ok(!/chatgpt\.com\/c\/|chatgpt\.com\/g\//.test(JSON.stringify(profile)),'Profile contains no private chat URLs');
   eq(api.key,'river.learning.progress.v1','Storage key is unchanged');
   eq(api.emptyState(),{version:1,preferredTopic:'auto',completed:{}},'v1 shape is unchanged');
   eq(api.lessons.slice(0,17).map(x=>x.id),oldIds,'All original IDs and their base order remain');
-  eq(api.lessons.length,25,'Preserve 23 prior steps and append two targeted filter checks');
+  eq(api.lessons.length,26,'Preserve 25 prior steps and append the feedback-sign check');
   eq(api.profile,profile,'Embedded data matches the curated JSON');
   ok(Object.isFrozen(api.profile)&&Object.isFrozen(api.lessons)&&Object.isFrozen(api.lessons[0]),'Profile and lessons cannot be mutated in place');
   eq(Object.values(profile.evidence).filter(x=>x.status==='independent-correct').length,0,'This review introduces no unsupported independent-correct evidence');
@@ -119,7 +132,7 @@ async function main(){
   eq(oldMount.writes.length,0,'Initialization never rewrites old localStorage');
   eq(oldMount.store.get(api.key),JSON.stringify(allOld),'Original stored bytes are untouched');
   const state=api.emptyState();const before=clone(state);let recommendation=api.recommend(state);
-  eq(recommendation.lesson.id,first,'Default recommendation targets the unresolved EMA derivation');
+  eq(recommendation.lesson.id,first,'Default recommendation targets the unresolved feedforward/feedback question');
   eq(state,before,'Recommendations do not mark anything complete');
   for(const field of ['reason','prerequisiteText','frontier','verificationQuestion','evidenceStatus','evidenceLabel','evidenceSummary','estimatedMinutes','afterCheck','reviewedAt'])ok(recommendation[field],field+' is exposed');
   eq(recommendation.isPrerequisite,false,'Current filter question does not force stale prerequisites');
@@ -129,8 +142,8 @@ async function main(){
   state.preferredTopic='kalman';eq(api.recommend(state).lesson.id,'kalman-15','Saved direction is respected');
   eq(api.recommend(state,'iir-fir').lesson.id,first,'Explicit direction takes precedence');
   state.preferredTopic='auto';state.completed[first]=stamp;
-  eq(api.recommend(state).lesson.id,second,'Completion moves to the separate design-family check');
-  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,'aligned-estimates-median','Recent parallel fusion check retained'); state.completed['aligned-estimates-median']=stamp;eq(api.recommend(state).lesson.id,'quadrature-reference-check','Coordinate review retained'); state.completed['quadrature-reference-check']=stamp;eq(api.recommend(state).lesson.id,'filters-frequency-delay','Prior frequency question retained'); state.completed['filters-frequency-delay']=stamp;eq(api.recommend(state).lesson.id,'filters-design-families','Filter family question remains'); state.completed['filters-design-families']=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
+  eq(api.recommend(state).lesson.id,second,'Completion returns to the previous EMA derivation check');
+  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,third,'Prior design-family check follows EMA');state.completed[third]=stamp;eq(api.recommend(state).lesson.id,'aligned-estimates-median','Recent parallel fusion check retained'); state.completed['aligned-estimates-median']=stamp;eq(api.recommend(state).lesson.id,'quadrature-reference-check','Coordinate review retained'); state.completed['quadrature-reference-check']=stamp;eq(api.recommend(state).lesson.id,'filters-frequency-delay','Prior frequency question retained'); state.completed['filters-frequency-delay']=stamp;eq(api.recommend(state).lesson.id,'filters-design-families','Filter family question remains'); state.completed['filters-design-families']=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
   delete state.completed[first];eq(api.recommend(state).lesson.id,first,'Undo restores missing prerequisite');
   eq(state.completed[second],stamp,'Undo preserves descendant completion history');
   delete state.completed[second];delete state.completed['filters-frequency-delay'];ok(!api.prerequisitesDone(lesson('filters-design-families'),state),'Undone filter prerequisite blocks dependent completion');
@@ -210,14 +223,15 @@ async function main(){
   let resolveOld,resolveNew;const race=mount();const oldImport=race.import({},{text:()=>new Promise(resolve=>resolveOld=resolve)});const newImport=race.import({},{text:()=>new Promise(resolve=>resolveNew=resolve)});resolveNew(JSON.stringify(importedState));await newImport;resolveOld(JSON.stringify(api.emptyState()));await oldImport;eq(race.model.getState(),importedState,'A delayed older import cannot replace newer choice');
   let resolvePending;const interrupted=race.import({},{text:()=>new Promise(resolve=>resolvePending=resolve)});await race.node('nl-reset').fire('click');resolvePending(JSON.stringify(importedState));await interrupted;eq(race.model.getState(),api.emptyState(),'Reset cancels an in-flight import');
 
-  const home=mount({home:true});
+  for(const homePage of ['index','knowledge']){
+  const home=mount({home:homePage});
   eq(home.node('rh-title').textContent,lesson(first).title,'Homepage uses the same current recommendation');
   eq(home.node('rh-link').href,lesson(first).href,'Homepage entry uses its current deep link');
   eq(home.node('rh-check').textContent,'小目标：'+lesson(first).check,'Homepage goal is independently verifiable');
   match(home.node('rh-evidence').textContent,/待独立作答/,'Homepage does not claim mastery');
   eq(home.writes.length,0,'Opening homepage never writes manual state');
   const chosen={version:1,preferredTopic:'kalman',completed:{'kalman-14':stamp}};
-  const chosenHome=mount({home:true,saved:JSON.stringify(chosen)});
+  const chosenHome=mount({home:homePage,saved:JSON.stringify(chosen)});
   eq(chosenHome.node('rh-title').textContent,lesson('kalman-15').title,'Homepage respects stored direction and self-report');
   eq(chosenHome.store.get(api.key),JSON.stringify(chosen),'Stored timestamps and preference are byte-preserved');
   eq(chosenHome.writes.length,0,'Home rendering does not rewrite existing progress');
@@ -234,40 +248,77 @@ async function main(){
   chosenHome.win.emit('pageshow',{persisted:true});
   eq(chosenHome.node('rh-link').href,lesson('kalman-15').href,'Repeated Back reads current selection rather than stale link');
   eq(chosenHome.writes.length,0,'Storage and pageshow refreshes never write');
-  const badHome=mount({home:true,saved:'{invalid'});
+  const badHome=mount({home:homePage,saved:'{invalid'});
   eq(badHome.store.get(api.key),'{invalid','Homepage leaves corrupt local record recoverable');
   match(badHome.node('rh-storage').textContent,/无法读取/,'Homepage discloses unreadable state');
-  const blockedHome=mount({home:true,readError:true});
+  const blockedHome=mount({home:homePage,readError:true});
   eq(blockedHome.node('rh-title').textContent,lesson(first).title,'Blocked storage uses curated fallback');
   eq(blockedHome.writes.length,0,'Blocked storage never triggers reset');
-  const doneHome=mount({home:true,saved:JSON.stringify(all)});
+  const doneHome=mount({home:homePage,saved:JSON.stringify(all)});
   match(doneHome.node('rh-title').textContent,/暂无待完成/,'Home shows bounded completion, not mastery');
   eq(doneHome.node('rh-link').href,'next-learning.html','Completed home still has a valid next-action entry');
+  const pageHTML=fs.readFileSync(path.join(__dirname,homePage==='knowledge'?'knowledge.html':'index.html'),'utf8');
+  match(pageHTML,/轻量复习备选/,'Old filter diagram is explicitly a review alternative: '+homePage);
+  match(pageHTML,/notes-iir-fir.html#filter-average/,'Existing filter review remains reachable: '+homePage);
+  }
   const homeHTML=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');
-  ok(homeHTML.includes('从正交坐标自检开始'),'Coordinate review entry remains reachable');
+  ok(homeHTML.includes('回看正交坐标自检'),'Coordinate review entry remains reachable');
+  ok(homeHTML.includes('notes-iir-fir.html#filter-feedback-check'),'Current independent check is also reachable from the learning-boundary summary');
+  eq(homeHTML,fs.readFileSync(path.join(__dirname,'knowledge.html'),'utf8'),'Home and knowledge entry content stay identical');
   ok(!homeHTML.includes('近期独立学习疑问：采样'),'Old frontier retained as review, not current headline');
   match(homeHTML,/轻量复习备选/,'Old filter diagram is explicitly a review alternative');
   match(homeHTML,/notes-iir-fir.html#filter-average/,'Existing filter review remains reachable');
 
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'river-learning-tests-'));
   try{
-    for(const file of ['learning-profile.json','learning-progress.js','next-learning.template.html','preview-next-learning.template.html','index.html'])fs.copyFileSync(path.join(__dirname,file),path.join(directory,file));
+    for(const file of ['learning-profile.json','learning-progress.js','next-learning.template.html','preview-next-learning.template.html','index.html','knowledge.html'])fs.copyFileSync(path.join(__dirname,file),path.join(directory,file));
     const run=(...args)=>spawnSync('python',[path.join(__dirname,'build-next-learning.py'),'--directory',directory,...args],{encoding:'utf8'});
     let result=run();eq(result.status,0,'Offline generator succeeds: '+result.stderr);
-    const generated=['learning-progress.js','next-learning.html','preview-next-learning.html','index.html'];const firstBuild=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
+    const generated=['learning-progress.js','next-learning.html','preview-next-learning.html','index.html','knowledge.html'];const firstBuild=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
     result=run();eq(result.status,0,'Second generation succeeds');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),firstBuild,'Generation is byte-for-byte deterministic');eq(run('--check').status,0,'Check mode confirms generated files');
+    for(const name of ['index.html','knowledge.html']){
+      const html=fs.readFileSync(path.join(directory,name),'utf8');
+      ok(homeBlock(html)?.includes(lesson(first).title),'Both static entry points use the current default: '+name);
+      ok(homeBlock(html).includes(lesson(first).href),'Both static entry points use the current deep link: '+name);
+      ok(html.includes('src="learning-progress.js?v='+profile.version+'"'),'Both entry points load the matching profile version: '+name);
+      eq(withoutHomeBlock(html),withoutHomeBlock(fs.readFileSync(path.join(__dirname,name),'utf8')),'Generation preserves unrelated content: '+name);
+    }
+    eq(homeBlock(fs.readFileSync(path.join(directory,'index.html'),'utf8')),homeBlock(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8')),'Both entry points have identical generated recommendations');
+    const freshKnowledge=fs.readFileSync(path.join(directory,'knowledge.html'),'utf8');
+    fs.writeFileSync(path.join(directory,'knowledge.html'),freshKnowledge.replace('id="rh-title">','id="rh-title">stale '));
+    result=run('--check');ok(result.status!==0&&result.stderr.includes('knowledge.html'),'Check mode detects stale knowledge fallback');
+    ok(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8').includes('id="rh-title">stale '),'Check mode never rewrites a stale knowledge page');
+    eq(run().status,0,'Generation repairs stale knowledge fallback');
+    eq(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8'),freshKnowledge,'Repair preserves every other knowledge byte');
+    fs.writeFileSync(path.join(directory,'knowledge.html'),freshKnowledge.replace('learning-progress.js?v='+profile.version,'learning-progress.js?v=stale-profile'));
+    result=run('--check');ok(result.status!==0&&result.stderr.includes('knowledge.html'),'Check mode detects stale learning-script cache version');
+    eq(run().status,0,'Generation refreshes the learning-script version');
+    eq(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8'),freshKnowledge,'Cache repair leaves all other bytes unchanged');
     for(const name of ['next-learning.html','preview-next-learning.html']){const html=fs.readFileSync(path.join(directory,name),'utf8');ok(html.includes(lesson(first).title),'Fallback title agrees with live default');ok(html.includes(lesson(first).check),'Fallback check agrees with live default');ok(html.includes('待独立作答'),'Fallback evidence status agrees with live default');ok(!html.includes('{{'),'All fallback tokens resolved');}
-    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">α 公式为什么有余弦和根号？/,'No-script homepage fallback matches recommendation');
+    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">前馈乘输入，反馈系数为什么还要看正负号？/,'No-script homepage fallback matches recommendation');
     fs.appendFileSync(path.join(directory,'next-learning.html'),'stale');ok(run('--check').status!==0,'Check mode detects stale output');
-    const future=clone(profile);future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
+    const future=clone(profile);future.version='2099-01-01.1';future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
+    for(const file of ['index.html','knowledge.html','next-learning.html','preview-next-learning.html'])ok(fs.readFileSync(path.join(directory,file),'utf8').includes('src="learning-progress.js?v='+future.version+'"'),'Changed profile version updates every recommendation entry: '+file);
     match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">第 14 讲/,'Homepage fallback follows future curated priority');
+    eq(homeBlock(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8')),homeBlock(fs.readFileSync(path.join(directory,'index.html'),'utf8')),'Knowledge fallback follows future priority without hard-coded subject');
     const unsafe=clone(profile);unsafe.lessonAdditions.find(x=>x.id===first).title='</script><img src=x onerror="alert(1)"> & "';unsafe.topicSummaries[0].summary='<script>alert(2)</script>';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));eq(run().status,0,'Ordinary text with HTML characters is safely escaped');const escaped=fs.readFileSync(path.join(directory,'next-learning.html'),'utf8');ok(escaped.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'HTML markup in text is escaped');ok(!escaped.includes('<script>alert(2)</script>'),'Evidence text cannot inject executable markup');ok(!fs.readFileSync(path.join(directory,'learning-progress.js'),'utf8').includes('</script>'),'Embedded JSON is safe if script is inlined');
     const escapedHome=fs.readFileSync(path.join(directory,'index.html'),'utf8');ok(escapedHome.includes('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'),'Homepage fallback escapes unsafe text');ok(!escapedHome.includes('</script><img src=x'),'Homepage title cannot inject markup');
+    eq(homeBlock(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8')),homeBlock(escapedHome),'Knowledge fallback applies the same escaping');
     const safeOutputs=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));unsafe.lessonAdditions[0].href='javascript:alert(1)';fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(unsafe));ok(run().status!==0,'Unsafe profile link fails generation');eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),safeOutputs,'Invalid profile does not partially overwrite outputs');
     const savedHome=fs.readFileSync(path.join(directory,'index.html'),'utf8');fs.writeFileSync(path.join(directory,'index.html'),savedHome.replace('<!-- END GENERATED HOME RECOMMENDATION -->',''));ok(run().status!==0,'Missing homepage marker fails safely');fs.writeFileSync(path.join(directory,'index.html'),savedHome);
+    fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));
+    const knowledgePath=path.join(directory,'knowledge.html'),savedKnowledge=fs.readFileSync(knowledgePath,'utf8');
+    const begin='<!-- BEGIN GENERATED HOME RECOMMENDATION -->',end='<!-- END GENERATED HOME RECOMMENDATION -->';
+    for(const invalid of [savedKnowledge.replace(end,''),savedKnowledge.replace(begin,begin+begin),savedKnowledge.replace(begin,'TEMP_MARKER').replace(end,begin).replace('TEMP_MARKER',end)]){
+      fs.writeFileSync(knowledgePath,invalid);
+      const beforeInvalid=generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8'));
+      result=run();ok(result.status!==0&&result.stderr.includes('knowledge.html'),'Missing, duplicate or reversed knowledge markers fail safely');
+      eq(generated.map(file=>fs.readFileSync(path.join(directory,file),'utf8')),beforeInvalid,'Invalid knowledge markers cause no partial generation');
+    }
+    fs.writeFileSync(knowledgePath,savedKnowledge);
     fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(profile));fs.appendFileSync(path.join(directory,'next-learning.template.html'),'{{UNKNOWN_TOKEN}}');ok(run().status!==0,'Unknown tokens fail instead of leaking into generated UI');
   }finally{fs.rmSync(directory,{recursive:true,force:true});}
-  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage same-model recommendations, storage and back/forward refresh; 25-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
+  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage and knowledge same-model recommendations, storage and back/forward refresh; 26-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview + home + knowledge generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
 

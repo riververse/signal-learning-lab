@@ -13,7 +13,8 @@ page visits, or send progress to a server.
 - `next-learning.template.html` and `preview-next-learning.template.html`: formal and
   isolated-preview layouts. Both use the same profile and model.
 - `build-next-learning.py`: validates the profile with the actual JavaScript model,
-  embeds it, and generates both pages with matching static fallback content.
+  embeds it, and generates both pages and the bounded recommendation blocks in
+  `index.html` and `knowledge.html` with matching static fallback content.
 - `test-learning-progress.cjs`: dependency-free offline regression tests.
 
 Run from this directory with Python 3 and Node.js:
@@ -29,7 +30,11 @@ There is no network access, package installation or build-time service dependenc
 `--check` never writes. Generation is deterministic and validates all inputs before
 writing any output. `--directory /path/to/copy` supports isolated build fixtures.
 At least one supported template must exist; present templates are all regenerated.
-Never edit the generated profile marker or generated HTML directly.
+Never edit the generated profile marker, generated HTML, or bounded recommendation
+blocks directly. Both home entry points use the same existing runtime model for
+browser-local direction, self-reports and Back/Forward refreshes without writing progress.
+Their learning-script cache version is regenerated from the profile as well, so a
+new static recommendation cannot be replaced by a stale cached learning profile.
 
 ## Updating the reviewed profile
 
