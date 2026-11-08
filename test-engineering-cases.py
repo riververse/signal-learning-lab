@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_twenty_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),20);self.assertEqual(len({x['vendor'] for x in self.cases}),12)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling'])
+    def test_01_twenty_one_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),21);self.assertEqual(len({x['vendor'] for x in self.cases}),13)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling','mathworks-fft-block-convolution'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-08'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -369,7 +369,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-05')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-08')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -756,7 +756,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),
                          '08ae3aa42cd9b07d35639627e27a0c1bd693b282f17106c739ef5de611bcc68f')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),20)
+        self.assertEqual(len(articles),21)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:17]).encode()).hexdigest(),
                          '2d91c9ea19cf5a3d802abea2fa73d9c1021335e891e2a4b1d9f4aa6b266e3172')
         # Pin unchanged exploration/styling plus the reviewed Nov 6 learning update.
@@ -781,7 +781,7 @@ class CasesTest(unittest.TestCase):
             self.assertIn(token,text)
         subprocess.run([sys.executable,str(ROOT/'test-zero-phase-model.py')],check=True,capture_output=True)
     def test_61_order_tracking_scope_and_original_model(self):
-        c=self.cases[-1]
+        c=next(c for c in self.cases if c['id']=='ni-order-angle-resampling')
         self.assertEqual(c['id'],'ni-order-angle-resampling')
         self.assertEqual(c['last_verified'],'2026-11-05')
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'www.ni.com','www.mathworks.com'})
@@ -808,4 +808,56 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(json.dumps(self.cases[:19],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'3931bce240c628635b92b034084fb56f948c45e66ad1d198fcfd950cecd7e21c')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:19]).encode()).hexdigest(),'c4841aff3dea3a4c1627be9819b243e4fdd1699eb481a216eda550b663a921cd')
+    def test_63_fft_block_scope_sources_and_original_model(self):
+        c=next(c for c in self.cases if c['id']=='mathworks-fft-block-convolution')
+        self.assertEqual(c['last_verified'],'2026-11-08')
+        self.assertEqual(c['status'],'待学习')
+        self.assertEqual(c['reproduction_status'],'未本站实物复现')
+        self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
+        self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},
+                         {'www.mathworks.com','docs.scipy.org'})
+        self.assertEqual([s['url'] for s in c['sources']],[
+            'https://www.mathworks.com/help/dsp/ug/overlap-add-save.html',
+            'https://www.mathworks.com/help/dsp/ref/dsp.frequencydomainfirfilter-system-object.html',
+            'https://docs.scipy.org/doc/scipy-1.16.2/reference/generated/scipy.signal.oaconvolve.html'])
+        content=json.dumps(c,ensure_ascii=False)
+        for token in ['R2026b','R2017b','1.16.2','1.4.0','B=N−M+1','B+M−1',
+                      'M−1','NumLen+1','两处不一致','h=[1,2,3,2,1]/9',
+                      '3 ms','11 ms','群延迟','4 点','7 点','378','31 项',
+                      'O(N²)','same','居中截取','未执行 MATLAB','尚未执行']:
+            self.assertIn(token,content)
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-fft-block-model.py')],text=True))
+        self.assertEqual(result['kind'],'original_bounded_DFT_block_convolution_not_MATLAB_SciPy_or_hardware')
+        self.assertEqual(result['direct_comparisons'],378)
+        self.assertLess(result['max_absolute_error'],1e-12)
+        self.assertEqual(result['invalid_inputs_rejected'],31)
+        self.assertEqual(result['block_size'],4)
+        self.assertEqual(result['online_count_for_11_inputs'],8)
+        self.assertEqual(result['finish_count_for_11_inputs'],7)
+        self.assertEqual(result['full_count_for_11_inputs'],15)
+        self.assertEqual(result['fir_group_delay_samples'],2)
+        self.assertEqual(result['first_sample_gather_wait_ms_at_1khz'],[3,11])
+        self.assertEqual(result['documented_MATLAB_latency_samples_arithmetic_only'],[4,12])
+        for actual,want in zip(result['circular_wrap_first_four'],[2/9,3/9,2/9,1/9]):
+            self.assertAlmostEqual(actual,want,11)
+        for key in ['packet_state_invariance','reset_negative_control','invalid_packet_atomic',
+                    'finish_idempotent','channel_isolation','normalization_checked',
+                    'not_a_fast_FFT_or_timing_benchmark']:
+            self.assertTrue(result[key])
+    def test_64_original_twenty_case_objects_and_articles_preserved(self):
+        self.assertEqual(hashlib.sha256(json.dumps(self.cases[:20],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),
+                         '6c4acdf8bdac690eab4189149ea5e0dc74dc44fb28ee760becedbfd53607a1d4')
+        articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
+        self.assertEqual(len(articles),21)
+        self.assertEqual(hashlib.sha256('\n'.join(articles[:20]).encode()).hexdigest(),
+                         '2d03814ec8ffb68cf5d484b93ea94e113ecdd44db729e377001ca8f0402ad3a2')
+    @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
+    def test_65_exact_release_file_scope(self):
+        previous={p.name for p in BASE.iterdir() if p.is_file()}
+        current={p.name for p in ROOT.iterdir() if p.is_file()}
+        self.assertEqual(previous-current,set())
+        self.assertEqual(current-previous,{'test-fft-block-model.py'})
+        self.assertEqual({name for name in previous if (ROOT/name).read_bytes()!=(BASE/name).read_bytes()},
+                         {'engineering-cases.json','engineering-cases.html',
+                          'build-engineering-cases.py','test-engineering-cases.py'})
 if __name__=='__main__':unittest.main(verbosity=2)
