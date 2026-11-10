@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_twenty_one_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),21);self.assertEqual(len({x['vendor'] for x in self.cases}),13)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling','mathworks-fft-block-convolution'])
+    def test_01_twenty_two_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),22);self.assertEqual(len({x['vendor'] for x in self.cases}),13)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling','mathworks-fft-block-convolution','ni-frf-coherence-acceptance'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-08'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-08','2026-11-10'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -369,7 +369,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-08')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-10')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -756,7 +756,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),
                          '08ae3aa42cd9b07d35639627e27a0c1bd693b282f17106c739ef5de611bcc68f')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),21)
+        self.assertEqual(len(articles),22)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:17]).encode()).hexdigest(),
                          '2d91c9ea19cf5a3d802abea2fa73d9c1021335e891e2a4b1d9f4aa6b266e3172')
         # Pin unchanged exploration/styling plus the reviewed Nov 6 learning update.
@@ -848,7 +848,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(json.dumps(self.cases[:20],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),
                          '6c4acdf8bdac690eab4189149ea5e0dc74dc44fb28ee760becedbfd53607a1d4')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),21)
+        self.assertEqual(len(articles),22)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:20]).encode()).hexdigest(),
                          '2d03814ec8ffb68cf5d484b93ea94e113ecdd44db729e377001ca8f0402ad3a2')
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
@@ -856,8 +856,23 @@ class CasesTest(unittest.TestCase):
         previous={p.name for p in BASE.iterdir() if p.is_file()}
         current={p.name for p in ROOT.iterdir() if p.is_file()}
         self.assertEqual(previous-current,set())
-        self.assertEqual(current-previous,{'test-fft-block-model.py'})
+        self.assertEqual(current-previous,{'test-frf-coherence-model.py'})
         self.assertEqual({name for name in previous if (ROOT/name).read_bytes()!=(BASE/name).read_bytes()},
                          {'engineering-cases.json','engineering-cases.html',
                           'build-engineering-cases.py','test-engineering-cases.py'})
+    def test_66_original_twenty_one_preserved(self):
+        self.assertEqual(hashlib.sha256(json.dumps(self.cases[:21],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'f9f825bb2a3a8525abdc1d68b20a8b058a5167659bfc7555f879bf7685cf1561')
+        articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
+        self.assertEqual(hashlib.sha256('\n'.join(articles[:21]).encode()).hexdigest(),'d95c8ffe79ef83175c41069f18e5de843520e3c3f0db4dba564ca4f99b592dd7')
+    def test_67_frf_contract(self):
+        c=self.cases[-1]
+        self.assertEqual(c['id'],'ni-frf-coherence-acceptance')
+        self.assertEqual(c['last_verified'],'2026-11-10')
+        for token in ['单段','0.8','2.5','1.6','−36°','1 ms','R2026b','未执行']:
+            self.assertIn(token,json.dumps(c,ensure_ascii=False))
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-frf-coherence-model.py')],text=True))
+        self.assertEqual(result['kind'],'original_spectral_arithmetic_not_vendor_or_hardware')
+        self.assertGreaterEqual(result['checks'],100)
+        self.assertTrue(result['single_segment_degeneracy'])
+        self.assertTrue(result['noise_location_and_phase_checked'])
 if __name__=='__main__':unittest.main(verbosity=2)
