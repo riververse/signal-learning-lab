@@ -35,9 +35,9 @@ class CasesTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases=data('engineering-cases.json')['cases'];cls.catalog=data('exploration-catalog.json');cls.html=read('engineering-cases.html');cls.doc=Doc(cls.html);cls.renderer=module('case_builder','build-engineering-cases.py');cls.explore=module('explore_builder','build-exploration.py')
-    def test_01_twenty_three_substantial_distinct_cases(self):
-        self.assertEqual(len(self.cases),23);self.assertEqual(len({x['vendor'] for x in self.cases}),13)
-        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling','mathworks-fft-block-convolution','ni-frf-coherence-acceptance','arm-fir-q15-headroom'])
+    def test_01_twenty_four_substantial_distinct_cases(self):
+        self.assertEqual(len(self.cases),24);self.assertEqual(len({x['vendor'] for x in self.cases}),13)
+        self.assertEqual([c['id'] for c in self.cases],['nxp-magnetic-calibration','adi-vibration-chain','ti-ultrasonic-level','ti-fixed-point-fft','arm-biquad-state-precision','amd-cic-decimation-contract','ni-psd-window-normalization','px4-innovation-gating-contract','nxp-allan-averaging-contract','adi-sampling-jitter-budget','ti-sincos-angle-interpolation','intel-median-stream-contract','microchip-lockin-continuity','adi-interleaving-randomization','ti-dtmf-validation-contract','ti-aec-double-talk-freeze','adi-rational-src-phase-contract','adi-vibration-velocity-band','scipy-forward-backward-contract','ni-order-angle-resampling','mathworks-fft-block-convolution','ni-frf-coherence-acceptance','arm-fir-q15-headroom','adi-static-tilt-calibration'])
         for c in self.cases:
             self.assertGreater(len(json.dumps(c,ensure_ascii=False)),3500)
             for field in ['problem','constraints','decisions','results','pitfalls','reproduction','environment','publication','evidence','exercise','sources','license']:self.assertTrue(c[field])
@@ -46,7 +46,7 @@ class CasesTest(unittest.TestCase):
         for c in self.cases:
             self.assertEqual(c['status'],'待学习');self.assertEqual(c['reproduction_status'],'未本站实物复现')
             self.assertLessEqual(date.fromisoformat(c['last_verified']),date.fromisoformat(data('engineering-cases.json')['verified_at']))
-        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-08','2026-11-10','2026-11-11'])
+        self.assertEqual([c['last_verified'] for c in self.cases],['2026-10-17']*3+['2026-10-18','2026-10-19','2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24','2026-10-25','2026-10-26','2026-10-27','2026-10-30','2026-10-31','2026-11-01','2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-08','2026-11-10','2026-11-11','2026-11-14'])
         self.assertIn('拟议复现',self.html);self.assertIn('未编译或执行',self.html);self.assertIn('没有本案例的独立实测',self.html)
         self.assertNotIn('data-learning-complete',self.html);self.assertNotIn('learning-progress.js',self.html)
     def test_03_dates_are_separate(self):
@@ -369,7 +369,7 @@ class CasesTest(unittest.TestCase):
         self.assertNotIn(c['id'],[p['id'] for p in self.catalog['projects']])
         self.assertEqual({urlsplit(s['url']).hostname for s in c['sources']},{'docs.amd.com'})
         self.assertTrue(all('/pg140-cic-compiler/' in s['url'] and 'contentId=' in s['url'] for s in c['sources']))
-        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-11')
+        self.assertEqual(data('engineering-cases.json')['verified_at'],'2026-11-14')
     @staticmethod
     def own_cic_coefficients():
         # Original finite convolution, no AMD model/HDL/code or copied coefficients.
@@ -756,7 +756,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(serialized).hexdigest(),
                          '08ae3aa42cd9b07d35639627e27a0c1bd693b282f17106c739ef5de611bcc68f')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),23)
+        self.assertEqual(len(articles),24)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:17]).encode()).hexdigest(),
                          '2d91c9ea19cf5a3d802abea2fa73d9c1021335e891e2a4b1d9f4aa6b266e3172')
         # Pin unchanged exploration/styling plus the reviewed Nov 6 learning update.
@@ -848,7 +848,7 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(json.dumps(self.cases[:20],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),
                          '6c4acdf8bdac690eab4189149ea5e0dc74dc44fb28ee760becedbfd53607a1d4')
         articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
-        self.assertEqual(len(articles),23)
+        self.assertEqual(len(articles),24)
         self.assertEqual(hashlib.sha256('\n'.join(articles[:20]).encode()).hexdigest(),
                          '2d03814ec8ffb68cf5d484b93ea94e113ecdd44db729e377001ca8f0402ad3a2')
     @unittest.skipUnless(BASE,'Pass --baseline DIR for preservation checks')
@@ -856,7 +856,7 @@ class CasesTest(unittest.TestCase):
         previous={p.name for p in BASE.iterdir() if p.is_file()}
         current={p.name for p in ROOT.iterdir() if p.is_file()}
         self.assertEqual(previous-current,set())
-        self.assertEqual(current-previous,{'test-fir-q15-model.py'})
+        self.assertEqual(current-previous,{'test-tilt-calibration-model.py'})
         self.assertEqual({name for name in previous if (ROOT/name).read_bytes()!=(BASE/name).read_bytes()},
                          {'engineering-cases.json','engineering-cases.html',
                           'build-engineering-cases.py','test-engineering-cases.py'})
@@ -878,7 +878,7 @@ class CasesTest(unittest.TestCase):
     def test_68_previous_twenty_two_preserved(self):
         self.assertEqual(hashlib.sha256(json.dumps(self.cases[:22],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'f679b21bb544d7d7d1eb61aa4e2b9959dded3fd75a492b937f1ec5b2536ae5d2')
     def test_69_fir_q15_contract_and_model(self):
-        c=self.cases[-1]
+        c=next(c for c in self.cases if c['id']=='arm-fir-q15-headroom')
         self.assertEqual(c['id'],'arm-fir-q15-headroom')
         for token in ['2415919104','−1879048192','1073709056','ARM_MATH_DSP','72 字节','Apache-2.0','未下载、编译或执行']:
             self.assertIn(token,json.dumps(c,ensure_ascii=False))
@@ -887,4 +887,20 @@ class CasesTest(unittest.TestCase):
         self.assertEqual(result['kind'],'original_integer_model_not_CMSIS_or_hardware')
         for source in c['sources']:self.renderer.url(source['url'],True)
         with self.assertRaises(ValueError):self.renderer.url('https://github.com/ARM-software/CMSIS-DSP/blob/main/LICENSE',True)
+    def test_70_previous_twenty_three_preserved(self):
+        self.assertEqual(hashlib.sha256(json.dumps(self.cases[:23],ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'b61f981fd7ac1df384574d199349f5920333c319f3b8a29ebcc68a052a9061bc')
+        articles=re.findall(r'<article class="case-study".*?</article>',self.html,re.S)
+        self.assertEqual(hashlib.sha256('\n'.join(articles[:23]).encode()).hexdigest(),'1204c9140b62ca149b46d130ab3d742f411c428363ceec604cb9ac081f32a07c')
+    def test_71_tilt_model_and_contract(self):
+        c=self.cases[-1]
+        self.assertEqual(c['id'],'adi-static-tilt-calibration')
+        for token in ['十二参数','5.710593','模长','固定温度','QR/SVD','未本站实物复现']:
+            self.assertIn(token,json.dumps(c,ensure_ascii=False))
+        result=json.loads(subprocess.check_output([sys.executable,str(ROOT/'test-tilt-calibration-model.py')],text=True))
+        self.assertEqual(result['kind'],'original_static_tilt_not_vendor_or_hardware')
+        self.assertGreaterEqual(result['checks'],1000)
+        self.assertEqual(result['rejected'],6)
+        self.assertLess(result['max_affine_error'],1e-12)
+        self.assertTrue(result['rotation_norm_blind_spot'])
+        self.assertTrue(result['planar_reference_rejected'])
 if __name__=='__main__':unittest.main(verbosity=2)
