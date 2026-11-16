@@ -19,7 +19,7 @@
 <div class="radar-jump"><a href="#recent-updates">近期值得关注：新版本、真实修复与学习入口 <span aria-hidden="true">↓</span></a></div>
 <div class="radar-jump"><a href="#radar-guide">雷达入门导读：处理链、算法分工与起步顺序 <span aria-hidden="true">↓</span></a></div>
 <section class="radar-guide" id="recent-updates" aria-labelledby="recent-updates-title">
-<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-11-02">2026-11-02</time> 核验</span>
+<div class="radar-guide-heading"><span class="exploration-state">近期值得关注 · <time datetime="2026-11-16">2026-11-16</time> 核验</span>
 <h2 id="recent-updates-title">从新发布与真实修复里，找下一步。</h2>
 <p>这次挑选与滤波、状态估计和雷达学习有关的具体变化。发布日期与本次核验日期分别标注；这是基于官方来源的学习推荐，不是按 Stars 或热度排名。保留原有方向，新条目仍待动手验证。</p></div>
 <div class="radar-cases"><article class="radar-case" id="cmsis-dsp-118-notes">
@@ -88,10 +88,16 @@
 <p><strong>从这里开始：</strong>先用 3.43 m、343 m/s、16 kHz 手算物理传播，再单独核对 81 抽头对应的 40 点数值延迟。随后按固定版本读 RIR 的麦克风/声源维度与卷积求和，不安装或运行项目，不把模型值当测量。</p>
 <div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/LCAV/pyroomacoustics/releases/tag/v0.10.1" rel="noopener noreferrer">版本与发布边界</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L260-L305" rel="noopener noreferrer">固定版 RIR 延迟与卷积说明</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/parameters.py#L181-L196" rel="noopener noreferrer">实际默认值</a><a href="exploration.html?category=dsp#pyroomacoustics-rir-delay">查看项目、先修与许可</a></div>
 <p class="project-verification">来源核验 <time datetime="2026-11-02">2026-11-02</time> · 待学习 · 未在本站复现</p>
+</article><article class="radar-case" id="inslib-143-stillness-veto">
+<p class="radar-architecture">1.4.3 发布 2026-11-14 · 本次核验 2026-11-16</p><h3>新版本的一个细节：冻结样本不该变成零运动证据</h3>
+<p><strong>工程库的新修复导读；上游测试待本站复现</strong></p><p>INSLIB 的静止检测进一步处理全轴无波动样本，并为可能受低通和量化影响的陀螺仪保留多窗判断。值得学习的是：用观测约束修正状态之前，先核对输入是否仍提供新信息。</p>
+<p><strong>从这里开始：</strong>从三轴常数与一轴小幅变化的纸面序列开始，再对照固定版时间窗和冻结测试。分清加速度计一窗、陀螺仪连续十窗，以及“通过冻结检查”与“已经静止”的距离。不安装候选代码，不用加噪声掩盖真实故障。</p>
+<div class="project-links" aria-label="近期更新官方来源"><a href="https://github.com/jnz/INSLIB/releases/tag/v1.4.3" rel="noopener noreferrer">1.4.3 原始发布</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/src/ins.c" rel="noopener noreferrer">固定版检测实现</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/tests/test_ins_core.c" rel="noopener noreferrer">对应上游回归场景</a><a href="exploration.html?category=estimation#inslib-frozen-imu-veto">查看项目、先修与许可</a></div>
+<p class="project-verification">来源核验 <time datetime="2026-11-16">2026-11-16</time> · 待学习 · 未在本站复现</p>
 </article></div>
 </section>
 <section aria-label="筛选探索项目"><div class="exploration-toolbar" id="exploration-toolbar" hidden><div class="exploration-filters" role="group" aria-label="项目分类"><button class="exploration-filter" type="button" data-category-filter="all" aria-pressed="true">全部方向</button><button class="exploration-filter" type="button" data-category-filter="radar" aria-pressed="false">民用雷达</button><button class="exploration-filter" type="button" data-category-filter="dsp" aria-pressed="false">DSP 基础</button><button class="exploration-filter" type="button" data-category-filter="estimation" aria-pressed="false">状态估计</button></div><label class="exploration-search" for="exploration-search">搜索项目或算法<input id="exploration-search" type="search" maxlength="120" placeholder="例如：雷达、FFT、IIR、Python" autocomplete="off"></label></div>
-<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 13 个学习方向</p>
+<p class="exploration-count" id="exploration-count" role="status" aria-live="polite">显示 14 个学习方向</p>
 <noscript><p>所有项目均可直接阅读；开启 JavaScript 后可按分类和关键词筛选。</p></noscript>
 <div class="exploration-empty" id="exploration-empty" hidden><p>没有匹配的方向。试试更短的关键词，或清除筛选。</p><button type="button" class="exploration-reset" id="exploration-reset">清除筛选</button></div>
 <div class="exploration-grid" id="exploration-projects"><article class="project-card" id="a121-presence" data-category="radar" aria-labelledby="a121-presence-title">
@@ -275,6 +281,20 @@
 <p class="project-warning">这是声学模型，不是电磁雷达仿真；理想几何和材料不能替代校准与实测。在线文档可能与固定版本不同，0.10.1 已移除旧 absorption 参数，不照搬旧示例。纸面 160 点与 40 点只是分别核对物理时间和默认数值延迟，不是运行结果或测距精度。</p>
 <div class="project-links" aria-label="外部官方来源"><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/README.rst" rel="noopener noreferrer">固定版本：项目范围与算法</a><a href="https://github.com/LCAV/pyroomacoustics/releases/tag/v0.10.1" rel="noopener noreferrer">0.10.1 发布日期与接口变化</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L260-L305" rel="noopener noreferrer">RIR 维度、全局延迟与卷积求和</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/room.py#L65-L98" rel="noopener noreferrer">Sabine 近似与目标 RT60 的边界</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyroomacoustics/parameters.py#L181-L196" rel="noopener noreferrer">固定版默认参数与高通设置</a><a href="https://github.com/LCAV/pyroomacoustics/blob/f02b01dd6609709e2089aefa5d1e59c91d3a0601/pyproject.toml#L1-L34" rel="noopener noreferrer">Python 要求、依赖与成熟度元数据</a></div>
 </details><p class="project-verification">来源核验 <time datetime="2026-11-02">2026-11-02</time> · 未在本站复现</p>
+</article>
+<article class="project-card" id="inslib-frozen-imu-veto" data-category="estimation" aria-labelledby="inslib-frozen-imu-veto-title">
+<div class="project-meta"><span>状态估计 / 有公开实现与回归测试的工程库</span><span class="project-state">待学习</span></div>
+<h2 id="inslib-frozen-imu-veto-title">读数一动不动，先别急着判静止</h2><p class="project-name">INSLIB 1.4.3 · 静止检测与冻结数据否决</p>
+<ol class="project-chain" aria-label="简化的处理流程"><li>原始六轴样本</li><li>按时间窗统计波动</li><li>冻结检查与静止门限</li><li>允许或否决零运动观测</li></ol>
+<p class="project-application">面向台架状态估计，区分真实静止的小幅噪声、量化后重复读数和驱动反复返回旧样本。静止时可构造零速度或零角速度观测；若输入其实冻结，这类观测会给滤波器错误的信心。</p>
+<p class="project-first"><strong>起步：</strong>先做原创纸面练习：将三轴加速度 (0,0,−9.81) m/s² 连续复制到每个时刻；再只让第三轴交替为 −9.80、−9.82 m/s²，另外两轴不变。前者三轴总波动为零，后者大于零。后者仅排除了这一项“全轴零波动”，仍须检查噪声、幅值、速度证据和持续时间，不能直接判为静止。</p>
+<div class="project-links" aria-label="本站学习入口"><a href="knowledge.html?topic=kalman">回看状态估计与观测</a><a href="next-learning.html?topic=kalman">检查协方差与测量更新</a></div>
+<p class="project-warning"><strong>近期补充：</strong>核验小目标：解释为什么“零波动”与“低波动”不能混为一谈；分别说清加速度计和陀螺仪的否决时机。10 个窗不是任何采样率下都精确 2 秒，低速采样还受最少样本数约束。</p>
+<details class="project-details"><summary>先修、算法、硬件与来源</summary>
+<dl class="project-facts"><dt>先修知识</dt><dd><ul><li>均值、样本方差与三轴单位</li><li>卡尔曼测量更新：可信观测会改变状态和不确定性</li><li>采样时间戳、量化分辨率与低通平滑</li></ul></dd><dt>关键算法</dt><dd><ul><li>Welford 递推均值与离差平方和，分别合并加速度计三轴和陀螺仪三轴的波动；避免只盯某个轴或两帧是否相等。</li><li>v1.4.3 默认统计窗同时要求至少 8 点、跨度至少 0.2 s。加速度计三轴总波动为零，一个完整窗即否决；陀螺仪需连续 10 个零波动完整窗，出现波动便清零计数。</li><li>陀螺仪等待多个窗，是为容纳低通与较粗量化下的合法重复码。通过冻结检查后，仍需波动上限、运动幅值、外部速度证据和驻留时间等门限；零速度更新 ZUPT、零角速度更新 ZARU 是观测约束，不是把原始读数直接改成零。</li></ul></dd><dt>硬件与环境</dt><dd>先读源码和手算，无需 IMU 或开发板。项目核心为 C11，依赖 KFCore；实际编译或移植需按固定版文档核对依赖、坐标系、单位、时间基准和资源。这里只研究台架检测逻辑，不提供可直接用于设备安全控制的配置。</dd><dt>成熟度与复现边界</dt><dd>1.4.3 发布于 2026-11-14，本次核读固定 tag 的实现与测试。上游用 100 Hz、8 s 场景分别检查带微扰静止、仅陀螺仪冻结、仅加速度计冻结，并另测关闭检测、初始化收集和恢复。它们是上游测试代码的预期断言；本站未执行项目、未验证硬件，也不据此宣称通用故障检出率。</dd><dt>许可范围</dt><dd>固定版 LICENSE 为 GNU AGPL v3。使用或分发前需按实际集成与部署方式核对完整许可及依赖条款；不可把它当作无条件可闭源集成的宽松许可。本文只作原创原理导读，不转载项目实现。<br><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/LICENSE" rel="noopener noreferrer">固定版 AGPL 许可全文</a></dd></dl>
+<p class="project-warning">重复值可能来自量化或噪声低于一位分辨率。该否决机制是这版库的保守策略，不能单凭零方差证明传感器坏了；还要查新数据标志、采样序号、时间戳和链路。无噪声合成数据中的微扰用于测试建模，不能给真实冻结数据加噪声以绕过检查。</p>
+<div class="project-links" aria-label="外部官方来源"><a href="https://github.com/jnz/INSLIB/releases/tag/v1.4.3" rel="noopener noreferrer">1.4.3 发布与变更</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/src/ins.c" rel="noopener noreferrer">固定版静止检测实现</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/src/sensor_defaults.h" rel="noopener noreferrer">时间窗、最少样本与重复窗默认值</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/tests/test_ins_core.c" rel="noopener noreferrer">冻结、关闭检测与恢复测试</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/src/ahrs.c" rel="noopener noreferrer">姿态滤波器中的对应检查</a><a href="https://github.com/jnz/INSLIB/blob/v1.4.3/readme.md" rel="noopener noreferrer">固定版环境与使用边界</a></div>
+</details><p class="project-verification">来源核验 <time datetime="2026-11-16">2026-11-16</time> · 未在本站复现</p>
 </article></div></section>
 <section class="radar-guide" id="radar-guide" aria-labelledby="radar-guide-title">
 <div class="radar-guide-heading"><span class="exploration-state">雷达入门导读</span><h2 id="radar-guide-title">读懂雷达：从回波到判断</h2><p>先问每一步在解决什么问题，再看算法名字。雷达中的“滤波”只是处理链的一部分；变换、检测、测角和跟踪各有自己的任务。</p></div>
