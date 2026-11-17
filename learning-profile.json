@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
-  "version": "2026-11-06.1",
-  "reviewedAt": "2026-11-06",
-  "reviewLabel": "2026-11-06 · 北京时间",
+  "version": "2026-11-18.1",
+  "reviewedAt": "2026-11-18",
+  "reviewLabel": "2026-11-18 · 北京时间",
   "evidenceNote": "依据已复核的课程对话和另行提出的算法学习问题整理，分别注明来源线索与证据状态。提问、看过讲解和观察到现象都不等于独立答对；本页不读取私人聊天，也不自动判分。",
   "preferredPriority": [
+    "oversampling-update-check",
     "filters-feedback-sign-check",
     "filters-ema-design-check",
     "filters-biquad-spec-check",
@@ -163,11 +164,26 @@
       "prerequisiteText": "会区分当前输入 x[n] 与历史输出 y[n−1]；先按本节给出的完整方程计算。",
       "goal": "辨认前馈与反馈，先用 a₀ 归一化，再按实现公式转换反馈系数的符号。",
       "check": "给定 2y[n] = 0.4x[n] − (−1.6)y[n−1]，先归一化；把减号约定改写为加号反馈时应填什么系数？从 y[−1]=5 开始、连续输入两个 0，独立算出两拍输出，并说明前馈是否只能使用当前输入。",
-      "why": "最新问题转到前馈、反馈与系数记号；先验证输入/输出的区别、归一化和符号，再回看 EMA 的频率设计推导。",
+      "why": "前馈、反馈与系数记号已有讲解但尚未独立验证；保留输入/输出、归一化和符号检查，再回看 EMA 的频率设计推导。",
       "frontier": "来源：IIR / FIR 课程。前馈/反馈、a₀ 归一化和两种反馈符号约定已讲解；没有新增独立答对证据。",
       "href": "notes-iir-fir.html#filter-feedback",
       "experiment": "notes-iir-fir.html#filter-feedback-check",
       "material": "先读输入与输出两条路径，再独立完成两拍自检；折叠答案只供核对。EMA 推导保留为下一项，不把读过或打卡等同掌握。",
+      "estimatedMinutes": "5–10 分钟"
+    },
+    {
+      "id": "oversampling-update-check",
+      "topic": "iir-fir",
+      "title": "转换速度不变，多采几次后多久有新读数？",
+      "prerequisites": [],
+      "prerequisiteText": "会求平均、相加转换次数，并用次数乘每次耗时；下面给出全部条件。",
+      "goal": "分清原始采样、平均后的输出和整轮更新时间，再判断什么误差能靠平均减小。",
+      "check": "原创简化例：A、B 两路依次采 2、6 次，每次占 3 μs，每路一轮只输出一个平均值。每路多久更新一次？B 的 6 个数若都偏高 5，平均能消掉这 5 吗？",
+      "why": "最近单独提出了过采样疑问；先把多采、平均和输出节奏接起来，再回看 IIR 的反馈与系数。",
+      "frontier": "来源：独立的算法学习提问，不计入四段课程的新进度。过采样与平均已有讲解；更新时间和误差边界仍待独立作答。",
+      "href": "next-learning.html#oversampling-update",
+      "experiment": "next-learning.html#oversampling-update-check",
+      "material": "本页提供合成轮询时序和折叠自查；没有真实器件时序或实板验证结论。前馈/反馈练习保留为下一项。",
       "estimatedMinutes": "5–10 分钟"
     }
   ],
@@ -258,6 +274,11 @@
     "filters-feedback-sign-check": {
       "status": "pending",
       "summary": "来源：IIR / FIR 课程。新问题已补讲前馈乘输入、反馈乘历史输出，α 与 a₁ 的区别、a₀ 归一化及实现正负号约定；尚未独立验证。"
+    },
+    "oversampling-update-check": {
+      "status": "pending",
+      "observedAt": "2026-11-16",
+      "summary": "独立提问线：已讲解 ADC 多次采样后平均，以及多路轮询占用的转换时间；未收到独立练习答案，不推断掌握。"
     }
   },
   "topicSummaries": [
@@ -281,12 +302,12 @@
     },
     {
       "topic": "iir-fir",
-      "title": "IIR / FIR 与设计家族 · 两条课程检查",
+      "title": "过采样与平均 · 独立问题优先",
       "status": "pending",
-      "frontier": "先核对前馈/反馈与符号；EMA 推导和二阶设计指标保留复习。",
-      "summary": "IIR / FIR 线已补讲前馈、反馈、a₀ 归一化和实现符号约定；EMA 半功率推导仍待验证。设计族线的二阶选型题也未独立作答，动态响应与量化后续课程仍为预告。",
-      "check": "先按完整方程归一化并独立算两拍，再说明为什么反馈系数不能脱离公式复制。",
-      "href": "notes-iir-fir.html#filter-feedback"
+      "frontier": "先分清多采、平均和更新时间；IIR / FIR 与设计家族课程检查继续保留。",
+      "summary": "独立提问线已讲解过采样与平均，仍待验证输出节奏和误差边界。另两条课程的前馈/反馈、EMA 推导与二阶选型也仍待独立作答；不合并来源或推断掌握。",
+      "check": "先用两路轮询算出每路更新间隔，再解释共同偏差为何不会被平均消掉。",
+      "href": "next-learning.html#oversampling-update"
     },
     {
       "topic": "transforms",

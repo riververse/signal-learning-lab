@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="lab-shell.css">
 <link rel="stylesheet" href="mobile-reading.css">
-<link rel="stylesheet" href="next-learning.css?v=2026-11-06.1">
+<link rel="stylesheet" href="next-learning.css?v=2026-11-18.1">
 <link rel="stylesheet" href="question-helper.css?v=20261016r3">
-<script src="learning-progress.js?v=2026-11-06.1" defer></script>
+<script src="learning-progress.js?v=2026-11-18.1" defer></script>
 <script src="question-helper.js?v=20261016r3" defer></script>
 <link rel="stylesheet" href="architecture.css?v=20261006-exploration">
 <script src="architecture.js?v=20261006" defer></script>
@@ -26,20 +26,20 @@
 <main class="nl-main" id="next-main" tabindex="-1">
  <section class="nl-heading" aria-labelledby="next-title">
   <div><p class="nl-kicker">从最近的问题接着学</p><h1 id="next-title">今天，先弄清这一件事。</h1><p class="nl-lead">根据课程进度与单独提出的算法疑问安排下一步。先独立验证，再继续往前。</p></div>
-  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-11-06">2026-11-06 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
+  <div class="nl-review-stamp"><span>最近核对</span><time datetime="2026-11-18">2026-11-18 · 北京时间</time><a class="nl-back" href="#nl-evidence-title">查看学习依据 ↗</a></div>
  </section>
  <noscript><p class="nl-warning">当前浏览器未启用 JavaScript，不能保存打卡或切换推荐。下面仍显示最新整理的推荐与验证题；本机打卡需要启用 JavaScript。</p></noscript>
  <div class="nl-workspace">
   <section class="nl-recommend" aria-labelledby="nl-lesson-title">
    <div class="nl-recommend-top"><span class="nl-chip" id="nl-topic-label">IIR / FIR</span><span class="nl-state-label" id="nl-recommend-label">优先补齐当前疑问</span></div>
-   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">前馈乘输入，反馈系数为什么还要看正负号？</h2>
-   <p class="nl-goal" id="nl-goal">辨认前馈与反馈，先用 a₀ 归一化，再按实现公式转换反馈系数的符号。</p>
-   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：IIR / FIR 课程。前馈/反馈、a₀ 归一化和两种反馈符号约定已讲解；没有新增独立答对证据。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">给定 2y[n] = 0.4x[n] − (−1.6)y[n−1]，先归一化；把减号约定改写为加号反馈时应填什么系数？从 y[−1]=5 开始、连续输入两个 0，独立算出两拍输出，并说明前馈是否只能使用当前输入。</p></div>
-   <p class="nl-why" id="nl-why">为什么先学它：最新问题转到前馈、反馈与系数记号；先验证输入/输出的区别、归一化和符号，再回看 EMA 的频率设计推导。</p>
-   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">会区分当前输入 x[n] 与历史输出 y[n−1]；先按本节给出的完整方程计算。</span></p><p class="nl-material-note" id="nl-material-note">先读输入与输出两条路径，再独立完成两拍自检；折叠答案只供核对。EMA 推导保留为下一项，不把读过或打卡等同掌握。</p>
-   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="notes-iir-fir.html#filter-feedback">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="notes-iir-fir.html#filter-feedback-check">打开相关实验</a></div>
+   <p class="nl-task-meta" id="nl-lesson-meta">5–10 分钟 · 一次独立检查</p><h2 id="nl-lesson-title">转换速度不变，多采几次后多久有新读数？</h2>
+   <p class="nl-goal" id="nl-goal">分清原始采样、平均后的输出和整轮更新时间，再判断什么误差能靠平均减小。</p>
+   <div class="nl-frontier"><span id="nl-evidence-status" class="nl-evidence-badge">待独立作答</span><p id="nl-frontier">来源：独立的算法学习提问，不计入四段课程的新进度。过采样与平均已有讲解；更新时间和误差边界仍待独立作答。</p></div><div class="nl-check"><h3>先试着回答</h3><p id="nl-check-text">原创简化例：A、B 两路依次采 2、6 次，每次占 3 μs，每路一轮只输出一个平均值。每路多久更新一次？B 的 6 个数若都偏高 5，平均能消掉这 5 吗？</p></div>
+   <p class="nl-why" id="nl-why">为什么先学它：最近单独提出了过采样疑问；先把多采、平均和输出节奏接起来，再回看 IIR 的反馈与系数。</p>
+   <p class="nl-prerequisite"><strong>需要的前置</strong><span id="nl-prerequisite">会求平均、相加转换次数，并用次数乘每次耗时；下面给出全部条件。</span></p><p class="nl-material-note" id="nl-material-note">本页提供合成轮询时序和折叠自查；没有真实器件时序或实板验证结论。前馈/反馈练习保留为下一项。</p>
+   <div class="nl-actions"><a class="nl-primary" id="nl-read-link" href="next-learning.html#oversampling-update">打开本节材料</a><a class="nl-secondary" id="nl-experiment-link" href="next-learning.html#oversampling-update-check">打开相关实验</a></div>
    <div class="nl-completion" id="nl-completion"><button type="button" id="nl-complete" disabled>我已完成这一步（自报）</button><button type="button" id="nl-ask" class="nl-text-button" data-ask-question="请围绕这一步的目标，先检查前置理解，再用一个小例子让我独立作答。">带着这一步提问</button></div>
-   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：α 公式为什么有余弦和根号？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+   <p class="nl-after-check" id="nl-after-check">独立回答后再自报完成，接着看：前馈乘输入，反馈系数为什么还要看正负号？。</p><p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
   </section>
   <aside class="nl-route-controls" aria-labelledby="nl-choice-title">
    <h2 id="nl-choice-title">换一条学习线</h2>
@@ -51,13 +51,22 @@
   </aside>
  </div>
  <section class="nl-evidence" aria-labelledby="nl-evidence-title">
-  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-11-06">2026-11-06 · 北京时间</time></span></div>
+  <div class="nl-section-heading"><h2 id="nl-evidence-title">已经走到哪里</h2><span>核对至 <time datetime="2026-11-18">2026-11-18 · 北京时间</time></span></div>
   <div class="nl-evidence-grid"><article><span class="nl-evidence-status">待独立作答</span><h3>多组估计与参考对齐 · 当前检查</h3><p class="nl-evidence-frontier">先统一参考与周期，再融合；有效不等于准确。</p><p>来自另行提出的算法问题，不计入两段课程的新进度。相关流程已有讲解，参考转换、中位数及多数同向偏差的边界仍待独立验证。</p><p class="nl-evidence-check">下一次验证：把三组局部角对齐，再解释同帧五个估计为什么取第 3 个。</p><a href="next-learning.html#aligned-estimates">回看相关材料</a></article>
 <article><span class="nl-evidence-status">待独立作答</span><h3>采样与位置记录 · 保留复习</h3><p class="nl-evidence-frontier">先辨认每个数是什么时刻、哪一步产生的。</p><p>来源为单独提出的算法问题，不计入两段课程的学习进度。区分独立测量、批量发送与插值补点，尚未确认独立答对。</p><p class="nl-evidence-check">下一次验证：用合成序列解释位置正确与逐毫米记录的区别。</p><a href="next-learning.html#sampling-position">回看相关材料</a></article>
-<article><span class="nl-evidence-status">待独立作答</span><h3>IIR / FIR 与设计家族 · 两条课程检查</h3><p class="nl-evidence-frontier">先核对前馈/反馈与符号；EMA 推导和二阶设计指标保留复习。</p><p>IIR / FIR 线已补讲前馈、反馈、a₀ 归一化和实现符号约定；EMA 半功率推导仍待验证。设计族线的二阶选型题也未独立作答，动态响应与量化后续课程仍为预告。</p><p class="nl-evidence-check">先按完整方程归一化并独立算两拍，再说明为什么反馈系数不能脱离公式复制。</p><a href="notes-iir-fir.html#filter-feedback">回看相关材料</a></article>
+<article><span class="nl-evidence-status">待独立作答</span><h3>过采样与平均 · 独立问题优先</h3><p class="nl-evidence-frontier">先分清多采、平均和更新时间；IIR / FIR 与设计家族课程检查继续保留。</p><p>独立提问线已讲解过采样与平均，仍待验证输出节奏和误差边界。另两条课程的前馈/反馈、EMA 推导与二阶选型也仍待独立作答；不合并来源或推断掌握。</p><p class="nl-evidence-check">先用两路轮询算出每路更新间隔，再解释共同偏差为何不会被平均消掉。</p><a href="next-learning.html#oversampling-update">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>傅里叶 · 并行检查</h3><p class="nl-evidence-frontier">已讲解 DFT 频点与 FFT；最新频点题待答。</p><p>保持 12 Hz 采样、真实点数 24 → 48，3 Hz 的频点检查未回答。较早的 C(3) = 3 + 4i 也仍待独立验证。</p><p class="nl-evidence-check">下一次验证：观察时长、Δf 与 k 怎样一起变化？</p><a href="notes-transforms.html#fourier-frontier">回看相关材料</a></article>
 <article><span class="nl-evidence-status">已讲解 · 待独立验证</span><h3>卡尔曼 · 测量更新之后</h3><p class="nl-evidence-frontier">第 15 讲已讲解，零交叉协方差题待答。</p><p>已讲到两个增益、两个状态和整个协方差的更新；末题尚未独立回答。第 16–19 讲仍为预告。</p><p class="nl-evidence-check">下一次验证：Pvp⁻ = 0 时，压力残差再大，本次能否直接修正变化率？</p><a href="notes-kalman.html#kalman-measurement-check">回看相关材料</a></article></div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>
+ </section>
+ <section class="nl-plan" id="oversampling-update" aria-labelledby="oversampling-update-title">
+  <div class="nl-section-heading"><div><h2 id="oversampling-update-title">多采、取平均、交出新读数</h2><p class="nl-small">独立学习线 · 已有讲解，独立作答待验证。不计入四段课程的新进度。</p></div></div>
+  <p><strong>先分清三个动作：</strong>过采样指相对目标信号所需的速率，更密地取得原始样本；取平均是处理这些样本的一种滤波方法。在原始转换速率不变时，每凑满一组才输出一个平均值，还包含降低输出速率这一步。滑动平均也可以每来一个样本就输出一次，所以“求平均”本身不能决定输出间隔。</p>
+  <h3 id="oversampling-update-check">先算时间，再判断误差</h3><p>原创简化例：一个 ADC 重复执行 <strong>A 采 2 次 → B 采 6 次 → 下一轮</strong>，每次转换完整占用 3 μs。各路样本不重叠地分组，每路一轮仅在本组结束时交出一个平均值。忽略切换、建立、计算和传输的额外时间，不存在并行采样或流水重叠。</p>
+  <p>从第一轮 t = 0 开始，A、B 各在哪一刻交出结果？各自下一次结果又在何时？如果 B 的每次读数都因为同一个偏差多了 5，平均以后这 5 还在吗？</p>
+  <details><summary>展开自查：更新时间与共同偏差</summary><p>整轮占用 (2 + 6) × 3 = 24 μs。第一轮 A 在 6 μs、B 在 24 μs 交出结果；下一轮分别在 30 μs、48 μs。两路<strong>各自相邻结果都相隔 24 μs</strong>，但不是同时采样或同时出结果。A 自己采 2 次只占 6 μs，还得等 B 完成后才轮到下一组。</p><p>共同多出的 5 仍然保留：平均(x₁ + 5, …, x₆ + 5) = 平均(x₁, …, x₆) + 5。零均值、互不相关的随机噪声在多次平均后通常能减小；共同偏差、强相关噪声和真实信号的快速变化不能一概这样处理。实际硬件还要计入建立、滤波和调度等耗时。</p></details>
+  <p><strong>检查目标：</strong>不用答案，分别说清 ADC 做了多少次转换、每路得到多少个新结果，以及平均能改善哪类误差。打开答案不代表独立答对。平均的噪声收益条件可对照 <a href="https://www.analog.com/en/resources/app-notes/an-2003.html" target="_blank" rel="noopener noreferrer">ADI AN-2003</a>；本题时序为自行设定的合成例子。</p>
+  <p><a href="notes-iir-fir.html#filter-feedback-check">接着复习：前馈、反馈与两拍输出</a> · <a href="notes-iir-fir.html#filter-average">轻量回看：4 点平均为何抵消正弦？</a> · <a href="#next-main">返回当前学习安排</a></p>
  </section>
  <section class="nl-plan" id="aligned-estimates" aria-labelledby="aligned-estimates-title">
   <div class="nl-section-heading"><div><h2 id="aligned-estimates-title">先把尺子的零点对齐，再比较读数</h2><p class="nl-small">独立学习线 · 相关流程已讲解，独立作答待验证。不计入两段课程的新进度。</p></div></div>

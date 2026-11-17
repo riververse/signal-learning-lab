@@ -55,6 +55,15 @@
   <div class="nl-evidence-grid">{{PROFILE_EVIDENCE}}</div>
   <p class="nl-small">对话核对与本机打卡各自保存。新讲解不会自动变成“已掌握”，本机自报也不会改写对话里的验证证据。</p>
  </section>
+ <section class="nl-plan" id="oversampling-update" aria-labelledby="oversampling-update-title">
+  <div class="nl-section-heading"><div><h2 id="oversampling-update-title">多采、取平均、交出新读数</h2><p class="nl-small">独立学习线 · 已有讲解，独立作答待验证。不计入四段课程的新进度。</p></div></div>
+  <p><strong>先分清三个动作：</strong>过采样指相对目标信号所需的速率，更密地取得原始样本；取平均是处理这些样本的一种滤波方法。在原始转换速率不变时，每凑满一组才输出一个平均值，还包含降低输出速率这一步。滑动平均也可以每来一个样本就输出一次，所以“求平均”本身不能决定输出间隔。</p>
+  <h3 id="oversampling-update-check">先算时间，再判断误差</h3><p>原创简化例：一个 ADC 重复执行 <strong>A 采 2 次 → B 采 6 次 → 下一轮</strong>，每次转换完整占用 3 μs。各路样本不重叠地分组，每路一轮仅在本组结束时交出一个平均值。忽略切换、建立、计算和传输的额外时间，不存在并行采样或流水重叠。</p>
+  <p>从第一轮 t = 0 开始，A、B 各在哪一刻交出结果？各自下一次结果又在何时？如果 B 的每次读数都因为同一个偏差多了 5，平均以后这 5 还在吗？</p>
+  <details><summary>展开自查：更新时间与共同偏差</summary><p>整轮占用 (2 + 6) × 3 = 24 μs。第一轮 A 在 6 μs、B 在 24 μs 交出结果；下一轮分别在 30 μs、48 μs。两路<strong>各自相邻结果都相隔 24 μs</strong>，但不是同时采样或同时出结果。A 自己采 2 次只占 6 μs，还得等 B 完成后才轮到下一组。</p><p>共同多出的 5 仍然保留：平均(x₁ + 5, …, x₆ + 5) = 平均(x₁, …, x₆) + 5。零均值、互不相关的随机噪声在多次平均后通常能减小；共同偏差、强相关噪声和真实信号的快速变化不能一概这样处理。实际硬件还要计入建立、滤波和调度等耗时。</p></details>
+  <p><strong>检查目标：</strong>不用答案，分别说清 ADC 做了多少次转换、每路得到多少个新结果，以及平均能改善哪类误差。打开答案不代表独立答对。平均的噪声收益条件可对照 <a href="https://www.analog.com/en/resources/app-notes/an-2003.html" target="_blank" rel="noopener noreferrer">ADI AN-2003</a>；本题时序为自行设定的合成例子。</p>
+  <p><a href="notes-iir-fir.html#filter-feedback-check">接着复习：前馈、反馈与两拍输出</a> · <a href="notes-iir-fir.html#filter-average">轻量回看：4 点平均为何抵消正弦？</a> · <a href="#next-main">返回当前学习安排</a></p>
+ </section>
  <section class="nl-plan" id="aligned-estimates" aria-labelledby="aligned-estimates-title">
   <div class="nl-section-heading"><div><h2 id="aligned-estimates-title">先把尺子的零点对齐，再比较读数</h2><p class="nl-small">独立学习线 · 相关流程已讲解，独立作答待验证。不计入两段课程的新进度。</p></div></div>
   <p><strong>先限定条件：</strong>这是原创理想角度例子，不对应任何实际通道或软件。各组已通过本题给定的有效性筛选，测的是同一时刻、同一个量；参考偏移已知，粗参考能区分周期分支。通过筛选只表示可以参与计算，不保证读数准确，也不表示各组误差统计独立。</p>

@@ -16,7 +16,7 @@ function match(actual,pattern,label){assert.match(actual,pattern,label);checks++
 const oldIds=['fourier-amplitude','fourier-overview','kalman-14','filters-impulse','filters-coefficients','filters-specification','sampling','spectrum-axis','spectrum-window','transfer-first-order','transfer-z','control-feedback','control-poles','pll-input','pll-loop','kalman-15','kalman-16'];
 const stamp='2026-10-07T10:12:13.456Z';
 const newer='2099-10-18T01:02:03.000Z'; // Deliberately later than runtime-created self-report fixtures.
-const first='filters-feedback-sign-check', second='filters-ema-design-check', third='filters-biquad-spec-check';
+const first='oversampling-update-check', second='filters-feedback-sign-check', third='filters-ema-design-check', fourth='filters-biquad-spec-check';
 const lesson=id=>api.lessons.find(item=>item.id===id);
 const homeBlock=html=>html.match(/<!-- BEGIN GENERATED HOME RECOMMENDATION -->[\s\S]*?<!-- END GENERATED HOME RECOMMENDATION -->/)?.[0];
 const withoutHomeBlock=html=>html.replace(homeBlock(html),'RECOMMENDATION');
@@ -62,6 +62,22 @@ function mount(options={}){
 }
 
 async function main(){
+  eq(profile.evidence[first].observedAt,'2026-11-16','Oversampling question date is distinct from review date');
+  match(lesson(first).frontier,/独立的算法学习提问.*不计入四段课程/,'Independent sampling question is not course progress');
+  eq(lesson(first).href,'next-learning.html#oversampling-update','New material has a stable direct entry');
+  eq(lesson(first).experiment,'next-learning.html#oversampling-update-check','New self-check has a stable entry');
+  eq([2*3, (2+6)*3],[6,24],'Synthetic first-round result times');
+  eq([24+6,24+24],[30,48],'Synthetic next-round result times');
+  eq([30-6,48-24],[24,24],'Both channels update at round interval');
+  const samples=[198,202,199,201,200,200];
+  eq(samples.map(x=>x+5).reduce((a,b)=>a+b)/6-samples.reduce((a,b)=>a+b)/6,5,'Averaging preserves common bias');
+  for(const name of ['next-learning.template.html','preview-next-learning.template.html']){
+    const page=fs.readFileSync(path.join(__dirname,name),'utf8');
+    match(page,/滑动平均也可以每来一个样本就输出一次/,'Block averaging is not confused with moving output: '+name);
+    match(page,/忽略切换、建立、计算和传输.*不存在并行采样或流水重叠/,'Timing assumptions remain explicit: '+name);
+    match(page,/零均值、互不相关/,'Noise reduction conditions remain explicit: '+name);
+    match(page,/打开答案不代表独立答对/,'Self-check never claims mastery: '+name);
+  }
   eq(profile.evidence[first].status,'pending','New independent question remains unverified');
   eq(profile.evidence['aligned-estimates-median'].observedAt,'2026-10-27','Substantive question date is explicit');
   match(lesson('aligned-estimates-median').frontier,/不是傅里叶或卡尔曼课程的新进度/,'Sources remain distinct');
@@ -89,15 +105,15 @@ async function main(){
   eq([...synthetic].sort((a,b)=>a-b)[2],171,'Five aligned same-frame estimates select the third');
   eq(synthetic.reduce((a,b)=>a+b,0)/5,184.4,'Arithmetic mean differs from median');
 
-  const allPrior25=api.emptyState();api.lessons.filter(x=>x.id!==first).forEach(x=>allPrior25.completed[x.id]=stamp);
-  const preserved25=mount({saved:JSON.stringify(allPrior25)});
-  eq(preserved25.model.getState(),allPrior25,'All 25 previous stable IDs preserve timestamps');
-  eq(preserved25.writes.length,0,'Adding feedback lesson never rewrites existing 25-item storage');
-  eq(preserved25.store.get(api.key),JSON.stringify(allPrior25),'Existing 25-item storage bytes remain untouched');
-  eq(preserved25.model.getRecommendation().lesson.id,first,'Old completions do not manufacture new verification');
-  eq(lesson(first).href,'notes-iir-fir.html#filter-feedback','Current source point links to new explanation');
-  eq(lesson(first).experiment,'notes-iir-fir.html#filter-feedback-check','Current check has a direct exercise entry');
-  match(lesson(second).title,/余弦和根号/,'Older unverified EMA question stays available');
+  const allPrior26=api.emptyState();api.lessons.filter(x=>x.id!==first).forEach(x=>allPrior26.completed[x.id]=stamp);
+  const preserved26=mount({saved:JSON.stringify(allPrior26)});
+  eq(preserved26.model.getState(),allPrior26,'All 26 previous stable IDs preserve timestamps');
+  eq(preserved26.writes.length,0,'Adding oversampling lesson never rewrites existing 26-item storage');
+  eq(preserved26.store.get(api.key),JSON.stringify(allPrior26),'Existing 26-item storage bytes remain untouched');
+  eq(preserved26.model.getRecommendation().lesson.id,first,'Old completions do not manufacture new verification');
+  eq(lesson(second).href,'notes-iir-fir.html#filter-feedback','Current source point links to new explanation');
+  eq(lesson(second).experiment,'notes-iir-fir.html#filter-feedback-check','Current check has a direct exercise entry');
+  match(lesson(third).title,/余弦和根号/,'Older unverified EMA question stays available');
   const priorIds=[...oldIds,'filters-frequency-delay','filters-design-families','fourier-bin-check','sampling-position-report','quadrature-reference-check','aligned-estimates-median'];
   const priorState=api.emptyState();priorIds.forEach(id=>priorState.completed[id]=stamp);
   eq(api.validateState(priorState),priorState,'All 23 previous stable IDs keep user timestamps');
@@ -106,18 +122,18 @@ async function main(){
   eq(previousMount.model.getState(),priorState,'All 23 previous manual records are preserved');
   eq(previousMount.writes.length,0,'New curriculum does not rewrite previous manual state');
   eq(previousMount.store.get(api.key),JSON.stringify(priorState),'Previous 23-item storage bytes unchanged');
-  for(const id of [first,second,third]){
+  for(const id of [second,third,fourth]){
     eq(profile.evidence[id].status,'pending','New filter check has no independent-correct evidence: '+id);
     ok(!('observedAt' in profile.evidence[id]),'Review date does not invent an unknown learning date: '+id);
     eq(lesson(id).prerequisites,[],'New targeted check supplies optional review rather than mandatory replay: '+id);
   }
-  match(lesson(first).frontier,/IIR \/ FIR 课程/,'EMA source is correctly attributed');
-  match(lesson(third).frontier,/巴特沃斯与切比雪夫课程/,'Design-family source is separate');
+  match(lesson(second).frontier,/IIR \/ FIR 课程/,'EMA source is correctly attributed');
+  match(lesson(fourth).frontier,/巴特沃斯与切比雪夫课程/,'Design-family source is separate');
   ok(!/chatgpt\.com\/c\/|chatgpt\.com\/g\//.test(JSON.stringify(profile)),'Profile contains no private chat URLs');
   eq(api.key,'river.learning.progress.v1','Storage key is unchanged');
   eq(api.emptyState(),{version:1,preferredTopic:'auto',completed:{}},'v1 shape is unchanged');
   eq(api.lessons.slice(0,17).map(x=>x.id),oldIds,'All original IDs and their base order remain');
-  eq(api.lessons.length,26,'Preserve 25 prior steps and append the feedback-sign check');
+  eq(api.lessons.length,27,'Preserve 26 prior steps and append the oversampling check');
   eq(api.profile,profile,'Embedded data matches the curated JSON');
   ok(Object.isFrozen(api.profile)&&Object.isFrozen(api.lessons)&&Object.isFrozen(api.lessons[0]),'Profile and lessons cannot be mutated in place');
   eq(Object.values(profile.evidence).filter(x=>x.status==='independent-correct').length,0,'This review introduces no unsupported independent-correct evidence');
@@ -132,7 +148,7 @@ async function main(){
   eq(oldMount.writes.length,0,'Initialization never rewrites old localStorage');
   eq(oldMount.store.get(api.key),JSON.stringify(allOld),'Original stored bytes are untouched');
   const state=api.emptyState();const before=clone(state);let recommendation=api.recommend(state);
-  eq(recommendation.lesson.id,first,'Default recommendation targets the unresolved feedforward/feedback question');
+  eq(recommendation.lesson.id,first,'Default recommendation targets the unresolved oversampling question');
   eq(state,before,'Recommendations do not mark anything complete');
   for(const field of ['reason','prerequisiteText','frontier','verificationQuestion','evidenceStatus','evidenceLabel','evidenceSummary','estimatedMinutes','afterCheck','reviewedAt'])ok(recommendation[field],field+' is exposed');
   eq(recommendation.isPrerequisite,false,'Current filter question does not force stale prerequisites');
@@ -142,8 +158,8 @@ async function main(){
   state.preferredTopic='kalman';eq(api.recommend(state).lesson.id,'kalman-15','Saved direction is respected');
   eq(api.recommend(state,'iir-fir').lesson.id,first,'Explicit direction takes precedence');
   state.preferredTopic='auto';state.completed[first]=stamp;
-  eq(api.recommend(state).lesson.id,second,'Completion returns to the previous EMA derivation check');
-  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,third,'Prior design-family check follows EMA');state.completed[third]=stamp;eq(api.recommend(state).lesson.id,'aligned-estimates-median','Recent parallel fusion check retained'); state.completed['aligned-estimates-median']=stamp;eq(api.recommend(state).lesson.id,'quadrature-reference-check','Coordinate review retained'); state.completed['quadrature-reference-check']=stamp;eq(api.recommend(state).lesson.id,'filters-frequency-delay','Prior frequency question retained'); state.completed['filters-frequency-delay']=stamp;eq(api.recommend(state).lesson.id,'filters-design-families','Filter family question remains'); state.completed['filters-design-families']=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
+  eq(api.recommend(state).lesson.id,second,'Completion returns to the previous feedback-sign check');
+  state.completed[second]=stamp;eq(api.recommend(state).lesson.id,third,'Prior EMA check follows feedback-sign check');state.completed[third]=stamp;eq(api.recommend(state).lesson.id,fourth,'Design-family check follows EMA');state.completed[fourth]=stamp;eq(api.recommend(state).lesson.id,'aligned-estimates-median','Recent parallel fusion check retained'); state.completed['aligned-estimates-median']=stamp;eq(api.recommend(state).lesson.id,'quadrature-reference-check','Coordinate review retained'); state.completed['quadrature-reference-check']=stamp;eq(api.recommend(state).lesson.id,'filters-frequency-delay','Prior frequency question retained'); state.completed['filters-frequency-delay']=stamp;eq(api.recommend(state).lesson.id,'filters-design-families','Filter family question remains'); state.completed['filters-design-families']=stamp;eq(api.recommend(state).lesson.id,'fourier-bin-check','After filter questions, next parallel frontier is Fourier');
   delete state.completed[first];eq(api.recommend(state).lesson.id,first,'Undo restores missing prerequisite');
   eq(state.completed[second],stamp,'Undo preserves descendant completion history');
   delete state.completed[second];delete state.completed['filters-frequency-delay'];ok(!api.prerequisitesDone(lesson('filters-design-families'),state),'Undone filter prerequisite blocks dependent completion');
@@ -295,7 +311,7 @@ async function main(){
     eq(run().status,0,'Generation refreshes the learning-script version');
     eq(fs.readFileSync(path.join(directory,'knowledge.html'),'utf8'),freshKnowledge,'Cache repair leaves all other bytes unchanged');
     for(const name of ['next-learning.html','preview-next-learning.html']){const html=fs.readFileSync(path.join(directory,name),'utf8');ok(html.includes(lesson(first).title),'Fallback title agrees with live default');ok(html.includes(lesson(first).check),'Fallback check agrees with live default');ok(html.includes('待独立作答'),'Fallback evidence status agrees with live default');ok(!html.includes('{{'),'All fallback tokens resolved');}
-    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">前馈乘输入，反馈系数为什么还要看正负号？/,'No-script homepage fallback matches recommendation');
+    match(fs.readFileSync(path.join(directory,'index.html'),'utf8'),/id="rh-title">转换速度不变，多采几次后多久有新读数？/,'No-script homepage fallback matches recommendation');
     fs.appendFileSync(path.join(directory,'next-learning.html'),'stale');ok(run('--check').status!==0,'Check mode detects stale output');
     const future=clone(profile);future.version='2099-01-01.1';future.preferredPriority=['kalman-14',...future.preferredPriority.filter(x=>x!=='kalman-14')];fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(future));eq(run().status,0,'New curated priority regenerates output');match(fs.readFileSync(path.join(directory,'next-learning.html'),'utf8'),/<h2 id="nl-lesson-title">第 14 讲/,'Fallback follows updated priority, not hard-coded first task');
     for(const file of ['index.html','knowledge.html','next-learning.html','preview-next-learning.html'])ok(fs.readFileSync(path.join(directory,file),'utf8').includes('src="learning-progress.js?v='+future.version+'"'),'Changed profile version updates every recommendation entry: '+file);
@@ -318,7 +334,7 @@ async function main(){
     fs.writeFileSync(knowledgePath,savedKnowledge);
     fs.writeFileSync(path.join(directory,'learning-profile.json'),JSON.stringify(profile));fs.appendFileSync(path.join(directory,'next-learning.template.html'),'{{UNKNOWN_TOKEN}}');ok(run().status!==0,'Unknown tokens fail instead of leaking into generated UI');
   }finally{fs.rmSync(directory,{recursive:true,force:true});}
-  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage and knowledge same-model recommendations, storage and back/forward refresh; 26-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview + home + knowledge generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
+  console.log(JSON.stringify({status:'PASS',checks,scope:'Homepage and knowledge same-model recommendations, storage and back/forward refresh; 27-step evidence-aware engine; all 17 v1 IDs; storage/import/export/undo/cross-tab; priorities and verified prerequisites; safe links; deterministic formal + preview + home + knowledge generation. Offline DOM-contract tests, not visual browser QA.'},null,2));
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
 
